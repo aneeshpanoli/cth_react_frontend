@@ -1,20 +1,37 @@
 import React, { Component } from 'react';
 import Media from 'react-bootstrap/Media';
 import Container from 'react-bootstrap/Container';
-
+import Navbar from 'react-bootstrap/Navbar'
+import Button from 'react-bootstrap/Button'
+import Badge from 'react-bootstrap/Badge'
+import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
+import PostAddOutlinedIcon from '@material-ui/icons/PostAddOutlined';
+import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 
 class SearchResults extends Component {
-
     state = {
         results: ['a', 'b', 'c']
     }
     
   render() {
+    
     return (
-        <Container fluid="md">
+        <Container fluid>
+            <Navbar className="border-bottom border-dark mb-3" bg="white" variant="light" sticky="top">
+                <Navbar.Brand href="#home">
+                    <img
+                    alt=""
+                    src="/logo.svg"
+                    width="30"
+                    height="30"
+                    className="d-inline-block align-top"
+                    />{' '}
+                    Homechef.ai
+                </Navbar.Brand>
+            </Navbar>
             {/* map query results */}
             {this.props.searchRes.map(r => 
-                <Media key={r["_id"]}>
+                <Media className="ml-4 border-bottom border-grey" key={r["_id"]}>
                     <img
                     width={64}
                     height={64}
@@ -23,20 +40,23 @@ class SearchResults extends Component {
                     alt="Generic placeholder"
                     />
                     <Media.Body>
-                    <h5>{r["_source"]["title"]}</h5>
+                        <h5>{r["_source"]["title"]}</h5>
                     <p>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque
-                        ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at,
-                        tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
-                        fringilla. Donec lacinia congue felis in faucibus.
+                        Ingredients: {r["_source"]["ingredients"].join(', ')}
                     </p>
 
                     <p>
-                        Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu
-                        leo. Cum sociis natoque penatibus et magnis dis parturient montes,
-                        nascetur ridiculus mus.
+                        Cook Time:  {r["_source"]["cook_time"]}
                     </p>
+                    <div><p><Button variant="outline-primary">Recipe home <LaunchOutlinedIcon /></Button>{' '}
+                    <Button variant="outline-success">Add to collection <PostAddOutlinedIcon />
+                    </Button>{' '}
+                    <Button variant="outline-danger"><FavoriteOutlinedIcon /> <Badge variant="light">9</Badge></Button>{' '}</p>
+                    
+                    </div>
                     </Media.Body>
+                    
+                    
                 </Media>
             )}
         </Container>
