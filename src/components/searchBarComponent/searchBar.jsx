@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import SearchBar from 'material-ui-search-bar'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import axios from 'axios';
 import throttle from 'lodash.throttle';
+import { searchRecipeTitle } from '../data/axiosComponent'
+import { useDispatch } from 'reactive-react-redux';
+
 
 class Searchbar extends Component {
     constructor(props) {
@@ -20,36 +22,10 @@ class Searchbar extends Component {
         just_searched: ""
     }
   
-    makeRequest = searchValue =>{
-        axios.get('http://localhost:8000/api', {
-            'params': {
-                'q':{
-                    'query':{
-                        'match_phrase_prefix':{
-                            'title': searchValue
-                        }
-                    }
-                }
-            }
-        })
-         .then(response => {
-            // process response.
-            
-            // this.setState({results: response});
-            // console.log(response.data);
-            this.props.resultsCallback(response);
-            
-         })
-         .catch(e => {
-            // catch errors.
-            console.log(e);
-            this.errors.push(e)
-         })
-    }
     queryDatabase = searchValue => {
         //request only IF the search value has changed
         if (searchValue.length > 1 && searchValue !== this.state.just_searched){
-            this.makeRequest(searchValue);
+            searchRecipeTitle(searchValue, this.props.resultsCallback);
             this.setState({just_searched: searchValue});
         }
        }
