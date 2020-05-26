@@ -1,41 +1,48 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import SearchBar from 'material-ui-search-bar'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import throttle from 'lodash.throttle';
 import { searchRecipeTitle } from '../data/axiosComponent'
+import { updateSlideSearchResults, updateRecipeList } from '../redux/actions'
 import { useDispatch } from 'reactive-react-redux';
 
 
-class Searchbar extends Component {
-    constructor(props) {
-        super(props);
-        this.queryDatabase = this.queryDatabase.bind(this);
-        this.queryDatabaseThrottled = throttle(this.queryDatabase, 2000);
-      }
+export default function searchBar (props){
 
-    componentWillUnmount() {
-    this.queryDatabaseThrottled.cancel();
-    // https://reactjs.org/docs/faq-functions.html
-    }
+        
+    const [searchValue, setSearchValue] = useState("");
+    const [newSearchValue, setNewSearchValue] = useState("");
+    const dispatch = useDispatch()
+    
+    const throttled = useRef(throttle((newValue) => queryDatabase(newValue), 1500))
 
-    state = {
-        just_searched: ""
-    }
+    // use setNewSearchValue to update the searchstring when the enter is pressed
+    // control the queryDatabase callback as the newSearchValue changes
+    useEffect(() => throttled.current(newSearchValue), [newSearchValue])
   
-    queryDatabase = searchValue => {
-        //request only IF the search value has changed
-        if (searchValue.length > 1 && searchValue !== this.state.just_searched){
-            searchRecipeTitle(searchValue, this.props.resultsCallback);
-            this.setState({just_searched: searchValue});
+    const queryDatabase = searchValue => {
+        if (searchValue.length > 1){ 
+            // send to axios
+            searchRecipeTitle(searchValue, 'title', dispatch);
+
+            // slide the results panel back in if it had slid off view
+            dispatch(updateSlideSearchResults(false));
         }
        }
 
-    render() {
+       const enterKeyPressedHandler = event => {
+        
+        if (event.keyCode === 13 || event.key === 'Enter' || event.charCode === 13) {
+            setNewSearchValue(searchValue);
+        }
+    }
+      
         return (
             <MuiThemeProvider>
                 <SearchBar
-                onChange={(value) => this.setState({ searchValue: value })}
-                onRequestSearch={() => this.queryDatabaseThrottled(this.state.searchValue)}
+                onChange={(value) => setSearchValue(value)}
+                onRequestSearch={() => setNewSearchValue(searchValue)}
+                onKeyDown={(e) => enterKeyPressedHandler(e)}
                 style={{
                 margin: '0 auto',
                 maxWidth: 800,
@@ -45,6 +52,5 @@ class Searchbar extends Component {
             </MuiThemeProvider>
         );
     }
-}
 
-export default Searchbar;
+

@@ -1,37 +1,58 @@
-import React, { Component } from 'react';
-import Media from 'react-bootstrap/Media';
+import React, { useRef, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button'
-import Badge from 'react-bootstrap/Badge'
-import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
-import PostAddOutlinedIcon from '@material-ui/icons/PostAddOutlined';
-import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 import ScrollUpButton from "react-scroll-up-button";
 import Navbar from './navbarComponent'
 import RecipeCard from './recipeCard'
+import { Collapse } from '@material-ui/core';
+import { useDispatch, useTrackedState } from 'reactive-react-redux';
+import { updateSlideSearchResults } from '../redux/actions'
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
-class SearchResults extends Component {
-    state = {
-        results: ['a', 'b', 'c']
+
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
+  
+
+export default function SearchResults(){
+
+    const { expanded, searchRecipeList } = useTrackedState()
+    const dispatch = useDispatch()
+    const backToSearchResults = () => {
+        dispatch(updateSlideSearchResults(false));
     }
     
-  render() {
-    
+     // scroll search results to top on on state change
+     const resultDiv = useRef(null); 
+     useEffect(() => {
+        window.scrollTo(0, resultDiv.current.offsetTop);
+     });
+
+
     return (
-        <Container >   
+        <Container ref={resultDiv}>   
             <Navbar />
-            <Row className="justify-content-center">
-                {/* map query results */}
-                {this.props.searchRes.map(r => 
-                    <RecipeCard key={r["_id"]} data={r["_source"]}/>
-                )}
-            </Row>
+            <RecipeCard/>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Button variant="contained" 
+            color="secondary" 
+            onClick={backToSearchResults}
+            startIcon={<ArrowBackIosIcon />}
+            >
+            Back
+            </Button>
+                I am in.
+            </Collapse>
             <ScrollUpButton />
         </Container>
 
     );
   }
-}
 
-export default SearchResults;

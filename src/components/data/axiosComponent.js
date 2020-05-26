@@ -1,6 +1,6 @@
 import axios from 'axios';
-import updateRecipeList from '../redux/actions'
-import { useDispatch } from 'reactive-react-redux';
+import * as BuildQuery from './EsQueries'
+import { updateRecipeList } from '../redux/actions'
 
 
 // const BASE_API = process.env.REACT_APP_BASE_URL;
@@ -19,25 +19,17 @@ axios.create({
 });
 
   
-export const searchRecipeTitle = (searchValue, callback) =>{
-  axios.get(BASE_API, {
-      'params': {
-          'q':{
-              'query':{
-                  'match_phrase_prefix':{
-                      'title': searchValue
-                  }
-              }
-          }
-      }
-  })
+export const searchRecipeTitle = (searchValue, column, dispatch) =>{
+
+  axios.get(BASE_API, 
+    BuildQuery.MATCH_PHRASE_PREFIX(searchValue, column)
+    )
    .then(response => {
       // process response.
       
       // this.setState({results: response});
       // console.log(response.data.hits);
-      callback(response);
-      
+      dispatch(updateRecipeList(response.data.hits));
    })
    .catch(error => {
       // catch errors.

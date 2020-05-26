@@ -6,6 +6,10 @@ body, html {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .hero-div { 
     min-height: 500px;
     background-repeat: no-repeat; 
