@@ -10,7 +10,9 @@ export const updateRecipeList = newSearchRecipeList => ({
     searchRecipeList: newSearchRecipeList
 })
 
-export const updateSlideSearchResults = newSlide => ({
-    type: actions.SLIDE_SEARCH_RESULTS, 
-    expanded: newSlide
+
+export const updateSelectedRecipe = newSelectedRecipe => ({
+    type: actions.SELECTED_RECIPE, 
+    selectedRecipe: newSelectedRecipe
 })
+

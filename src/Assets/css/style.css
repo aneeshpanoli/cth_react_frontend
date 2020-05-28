@@ -12,6 +12,7 @@ html {
 
 .hero-div { 
     min-height: 500px;
+    max-height: 500px;
     background-repeat: no-repeat; 
     background-position: center center;
     background-attachment: fixed;

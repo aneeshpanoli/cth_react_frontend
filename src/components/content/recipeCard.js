@@ -16,9 +16,10 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Row from 'react-bootstrap/Row';
-import Slide from '@material-ui/core/Slide';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
-import { updateSlideSearchResults } from '../redux/actions'
+import { Link } from "react-router-dom";
+import { updateSelectedRecipe } from '../redux/actions'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,19 +47,18 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function RecipeCard({data}) {
+export default function RecipeCard() {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [checked] = useState(true);
-  const { expanded, searchRecipeList } = useTrackedState()
+  const { searchRecipeList } = useTrackedState()
 
-  const handleExpandClick = () => {
-    dispatch(updateSlideSearchResults(true));
+  const handleExpandClick = (selectedRecipe) => {
+    dispatch(updateSelectedRecipe(selectedRecipe));
     console.log("sliding...")
   };
 
   return (
-    <Slide direction="right" in={!expanded} mountOnEnter unmountOnExit>
     <Row className="justify-content-center">
     {searchRecipeList.map(r => 
     <Fade in={checked} key={r._id} style={{ transitionDelay: checked ? '300ms' : '0ms' }}>
@@ -94,19 +94,22 @@ export default function RecipeCard({data}) {
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
+        
         <IconButton
           className={clsx(classes.expand)}
-          onClick={handleExpandClick}
+          onClick={() => handleExpandClick(r)}
           aria-label="show more"
         >
+          <Link to="/dashboard">
           <ExpandMoreIcon />
+          </Link>
         </IconButton>
+        
       </CardActions>
       
     </Card>
     </Fade>
   )}
     </Row>
-    </Slide>
   );
 }
