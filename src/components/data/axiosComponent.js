@@ -1,5 +1,4 @@
 import axios from 'axios';
-import * as BuildQuery from './EsQueries'
 import { updateRecipeList } from '../redux/actions'
 
 
@@ -19,16 +18,16 @@ axios.create({
 });
 
   
-export const searchRecipeTitle = (searchValue, column, dispatch) =>{
+export const queryElasticsearch = (query, dispatch) =>{
 
   axios.get(BASE_API, 
-    BuildQuery.MATCH_PHRASE_PREFIX(searchValue, column)
+    query
     )
    .then(response => {
       // process response.
       
       // this.setState({results: response});
-      // console.log(response.data.hits);
+      console.log(response.data.hits);
       dispatch(updateRecipeList(response.data.hits));
    })
    .catch(error => {

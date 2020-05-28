@@ -14,7 +14,7 @@ import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import LongMenu from '../navigaton/longMenu';
 import Row from 'react-bootstrap/Row';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { Link } from "react-router-dom";
@@ -60,7 +60,7 @@ export default function RecipeCard() {
 
   return (
     <Row className="justify-content-center">
-    {searchRecipeList.map(r => 
+    {searchRecipeList.map((r, recipeIndex) => 
     <Fade in={checked} key={r._id} style={{ transitionDelay: checked ? '300ms' : '0ms' }}>
     <Card className={classes.root} >
       <CardHeader
@@ -70,9 +70,8 @@ export default function RecipeCard() {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          
+            <LongMenu selectedRecipe={recipeIndex}/>
         }
         title={r._source.title}
         subheader="Archana's Kitchen"
@@ -97,7 +96,7 @@ export default function RecipeCard() {
         
         <IconButton
           className={clsx(classes.expand)}
-          onClick={() => handleExpandClick(r)}
+          onClick={() => handleExpandClick(recipeIndex)}
           aria-label="show more"
         >
           <Link to="/dashboard">

@@ -15,7 +15,7 @@ html {
     max-height: 500px;
     background-repeat: no-repeat; 
     background-position: center center;
-    background-attachment: fixed;
+    /* background-attachment: fixed; */
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

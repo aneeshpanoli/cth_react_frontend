@@ -2,8 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import SearchBar from 'material-ui-search-bar'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import throttle from 'lodash.throttle';
-import { searchRecipeTitle } from '../data/axiosComponent'
+import { queryElasticsearch } from '../data/axiosComponent'
 import { useDispatch } from 'reactive-react-redux';
+import * as BuildQuery from '../data/EsQueries'
 
 
 export default function searchBar (){
@@ -11,7 +12,8 @@ export default function searchBar (){
     const queryDatabase = searchValue => {
         if (searchValue.length > 1){ 
             // send to axios
-            searchRecipeTitle(searchValue, 'title', dispatch);
+            let query = BuildQuery.MATCH_PHRASE_PREFIX(searchValue, 'title');
+            queryElasticsearch(query, dispatch);
 
             // // slide the results panel back in if it had slid off view
             // dispatch(updateSlideSearchResults(true));
