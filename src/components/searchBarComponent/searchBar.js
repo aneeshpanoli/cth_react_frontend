@@ -50,7 +50,7 @@ export default function searchBar (){
         progress = <LinearProgress style={{
         margin: '0 auto',
         maxWidth: 800,
-        }}/>;
+        }} color="secondary"/>;
     }else{
         progress = <div></div>;
     }

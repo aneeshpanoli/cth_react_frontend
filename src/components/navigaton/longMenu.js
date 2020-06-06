@@ -26,8 +26,7 @@ export default function LongMenu(props) {
   const handleClose = () => {
     setAnchorEl(null);
   }
-  const handleSimilarRecipes = () => {
-    // console.log(searchRecipeList[props.selectedRecipe]);
+  const handleSimilarProjects = () => {
     setAnchorEl(null);
     let query = MORE_LIKE_THIS(
         props.r._source.storyText, ['storyText']
@@ -35,8 +34,7 @@ export default function LongMenu(props) {
     queryElasticsearch(query, dispatch, updateProjectList);
   };
 
-  const handleSimilarIngredients = () => {
-    // console.log(searchRecipeList[props.selectedRecipe]);
+  const handleSimilarStack = () => {
     setAnchorEl(null);
     let query = MORE_LIKE_THIS(
         props.r._source.builtWith, ['builtWith']
@@ -44,14 +42,22 @@ export default function LongMenu(props) {
     queryElasticsearch(query, dispatch, updateProjectList);
   };
 
-  const handleSimilarDish = () => {
-    // console.log(searchRecipeList[props.selectedRecipe]);
+  const handleSimilarCountry= () => {
     setAnchorEl(null);
     let query = MORE_LIKE_THIS(
-        props.r._source.storyText, ['storyText']
+        props.r._source.country, ['country']
         );
     queryElasticsearch(query, dispatch, updateProjectList);
   };
+
+  const handleSimilarHackathon= () => {
+    setAnchorEl(null);
+    let query = MORE_LIKE_THIS(
+        props.r._source.hackathons, ['hackathons']
+        );
+    queryElasticsearch(query, dispatch, updateProjectList);
+  };
+
 
   return (
     <div>
@@ -76,14 +82,17 @@ export default function LongMenu(props) {
           },
         }}
       >
-          <MenuItem onClick={handleSimilarRecipes}>
+          <MenuItem onClick={handleSimilarProjects}>
           Find Similar Projects
           </MenuItem>
-          <MenuItem onClick={handleSimilarIngredients}>
+          <MenuItem onClick={handleSimilarStack}>
           Find Similar Tech Stack
           </MenuItem>
-          <MenuItem onClick={handleSimilarDish}>
+          <MenuItem onClick={handleSimilarCountry}>
           Find Similar Country
+          </MenuItem>
+          <MenuItem onClick={handleSimilarHackathon}>
+          Find Similar Hackathons
           </MenuItem>
       </Menu>
     </div>

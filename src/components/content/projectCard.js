@@ -20,7 +20,7 @@ import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateSelectedProject } from '../redux/actions'
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import { useHistory, useParams, Link} from "react-router-dom";
-
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 // import countries from '../data/countries'
 
 
@@ -122,7 +122,7 @@ export default function RecipeCard() {
     
       </div>
       */}
-      <CardContent>
+      <CardContent title="Tech stack">
         <Typography variant="body2" color="textSecondary" component="p">
         {r._source.builtWith.join(', ')}
         </Typography>
@@ -138,13 +138,13 @@ export default function RecipeCard() {
         <IconButton>
          <a href={r._source.url}><OpenInNewIcon aria-label="open new" title="Open Link"/></a> 
         </IconButton>
-        <IconButton
+        {/* <IconButton
           className={clsx(classes.expand)}
           onClick={() => handleExpandClick(r)}
           aria-label="show more" title="Project details"
         >
           <DashboardIcon />
-        </IconButton>
+        </IconButton> */}
         
       </CardActions>
       
@@ -154,8 +154,8 @@ export default function RecipeCard() {
     </Row>
   );}else{
     return (
-      <Row className="justify-content-center">
-        <h2>Sorry! We couldn't find any projects matching your search :(</h2>
+      <Row className="border-top border-grey justify-content-center">
+        <h3>Sorry! We couldn't find any projects matching your search <ErrorOutlineIcon fontSize="large"/> </h3>
       </Row>
     )
   }
