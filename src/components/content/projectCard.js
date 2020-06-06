@@ -21,19 +21,20 @@ import { updateSelectedProject } from '../redux/actions'
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import { useHistory, useParams, Link} from "react-router-dom";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import Flag from 'react-world-flags'
 // import countries from '../data/countries'
 
 
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11
 
-function coutryToIso(country){
+function countryToIso(country){
    let filteredData = countries.filter(d => d.label === country);
    return filteredData[0].code;
 }
 
 function countryToFlag(country) {
-  let isoCode = coutryToIso(country);
+  let isoCode = countryToIso(country);
   console.log(isoCode);
   return typeof String.fromCodePoint !== 'undefined'
     ? isoCode
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     transform: 'rotate(-90deg)',
   },
   avatar: {
-    backgroundColor: red[500],
+    backgroundColor: 'transparent',
   },
   overlay: {
     position: 'absolute',
@@ -101,10 +102,9 @@ export default function RecipeCard() {
       title={r._source.title}
       subheader={r._source.hackathons}
         avatar={
-          <Avatar title="country" aria-label="project" className={classes.avatar} 
-         
+          <Avatar title={r._source.country} aria-label="project" className={classes.avatar} 
          >
-            
+            <Flag code={ countryToIso(r._source.country)} height="35"/>
           </Avatar>
         }
         action={
