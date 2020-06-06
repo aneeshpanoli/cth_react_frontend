@@ -130,13 +130,13 @@ export default function RecipeCard() {
         <IconButton>
          <a href={r._source.url}><OpenInNewIcon aria-label="open new" title="Open Link"/></a> 
         </IconButton>
-        {/* <IconButton
+        <IconButton
           className={clsx(classes.expand)}
           onClick={() => handleExpandClick(r)}
           aria-label="show more" title="Project details"
         >
           <DashboardIcon />
-        </IconButton> */}
+        </IconButton>
         
       </CardActions>
       
