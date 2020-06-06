@@ -1,16 +1,15 @@
-import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -18,7 +17,19 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import { useHistory}  from "react-router-dom";
+import AvatarMenu from '../navigaton/avatarMenu';
 import Avatar from '@material-ui/core/Avatar';
+import cthLogo from '../../Assets/img/cth.svg'
+import DashProject from './dashProject'
+import HistoryIcon from '@material-ui/icons/History';
+import DraftsIcon from '@material-ui/icons/Drafts';
+
+import { useDispatch, useTrackedState } from 'reactive-react-redux';
+import React, { useEffect, useRef } from 'react';
+import { MATCH_ID } from '../data/EsQueries'
+import { useParams} from 'react-router-dom'
+import { queryEsById } from '../data/axiosComponent'
+import { updateSelectedProject } from '../redux/actions'
 
 const drawerWidth = 240;
 
@@ -59,7 +70,7 @@ function CloseButton(){
   let history = useHistory();
   return (
     <div style={{position: 'absolute', right: 5, display: 'flex'}}>
-    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+    <AvatarMenu />
     <Button variant="text"  
             color="inherit" 
             onClick={() => history.goBack()}
@@ -71,11 +82,23 @@ function CloseButton(){
 }
 
 function DashBoardDrawer(props) {
+  
+  let params = useParams();
+  const dispatch = useDispatch();
+  console.log(useTrackedState());
+  const { selectedProject } = useTrackedState();
+  useEffect(() =>{
+    if (!selectedProject){
+        let query = MATCH_ID(params.id);
+        queryEsById(query, dispatch, updateSelectedProject);
+    }
+}, []);
+  console.log(selectedProject);
   const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -85,18 +108,19 @@ function DashBoardDrawer(props) {
     <div>
       <div className={classes.toolbar} />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {['Project', 'Tasks', 'History', 'Drafts'].map((text, index) => (
           <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            <ListItemIcon>{[<AccountTreeIcon/>, <AssignmentIcon />, 
+          <HistoryIcon />, <DraftsIcon />][index]}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
       </List>
       <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+        {['Verfication', 'Funding', 'Activity'].map((text, index) => (
           <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            <ListItemIcon>{index % 2 === 0 ? <AccountTreeIcon /> : <AccountTreeIcon />}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -108,12 +132,12 @@ function DashBoardDrawer(props) {
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
-
+  
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
+      <AppBar position="fixed" className={classes.appBar} color="inherit">
+        <Toolbar variant="dense">
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -123,9 +147,15 @@ function DashBoardDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
+          <IconButton>
+            <Avatar src={cthLogo}>
+
+            </Avatar>
+         
           <Typography variant="h6" noWrap>
-            Homechef.ai
+             Civic Tech Hub
           </Typography>
+          </IconButton>
           <CloseButton />
         </Toolbar>
         
@@ -163,29 +193,8 @@ function DashBoardDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-          facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-          gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-          donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-          Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-          imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-          arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-          donec massa sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-          facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-          tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-          consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-          vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-          hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-          tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-          nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-          accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        
+        <DashProject/>
       </main>
     </div>
   );

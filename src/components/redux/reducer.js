@@ -1,17 +1,17 @@
-import * as actions from './actionTypes';
+import * as actionType from './actionTypes';
 
 const initialState = {
-    searchRecipeList: [],
-    selectedRecipe: [],
+    searchProjectList: [],
+    selectedProject: null,
 
 };
 
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actions.SEARCH_RECIPE:
-            return {...state, searchRecipeList: action.searchRecipeList}
-        case actions.SELECTED_RECIPE:
-            return {...state, selectedRecipe: action.selectedRecipe}
+        case actionType.SEARCH_PROJECT:
+            return {...state, searchProjectList: action.searchProjectList}
+        case actionType.SELECTED_PROJECT:
+            return {...state, selectedProject: action.selectedProject}
         default: return state
     }
 };

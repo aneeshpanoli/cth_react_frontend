@@ -32,3 +32,20 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
                 }
             }
         }
+
+    
+        export const MATCH_ID = (id) =>{
+            return {
+                'params': {
+                    'q':{
+                        "query" : {
+                            "match":{
+                               "_id": id
+                            }
+                          
+                    }
+                }
+            }
+    
+        }
+    }

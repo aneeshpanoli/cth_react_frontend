@@ -3,9 +3,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import * as BuildQuery from '../data/EsQueries'
+import { MORE_LIKE_THIS } from '../data/EsQueries'
 import { queryElasticsearch } from '../data/axiosComponent'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
+import { updateProjectList } from '../redux/actions'
+
 
 
 
@@ -27,28 +29,28 @@ export default function LongMenu(props) {
   const handleSimilarRecipes = () => {
     // console.log(searchRecipeList[props.selectedRecipe]);
     setAnchorEl(null);
-    let query = BuildQuery.MORE_LIKE_THIS(
-        searchRecipeList[props.selectedRecipe]._source.instructions, ['instructions']
+    let query = MORE_LIKE_THIS(
+        props.r._source.storyText, ['storyText']
         );
-    queryElasticsearch(query, dispatch);
+    queryElasticsearch(query, dispatch, updateProjectList);
   };
 
   const handleSimilarIngredients = () => {
     // console.log(searchRecipeList[props.selectedRecipe]);
     setAnchorEl(null);
-    let query = BuildQuery.MORE_LIKE_THIS(
-        searchRecipeList[props.selectedRecipe]._source.ingredients, ['ingredients']
+    let query = MORE_LIKE_THIS(
+        props.r._source.builtWith, ['builtWith']
         );
-    queryElasticsearch(query, dispatch);
+    queryElasticsearch(query, dispatch, updateProjectList);
   };
 
   const handleSimilarDish = () => {
     // console.log(searchRecipeList[props.selectedRecipe]);
     setAnchorEl(null);
-    let query = BuildQuery.MORE_LIKE_THIS(
-        searchRecipeList[props.selectedRecipe]._source.title, ['title']
+    let query = MORE_LIKE_THIS(
+        props.r._source.storyText, ['storyText']
         );
-    queryElasticsearch(query, dispatch);
+    queryElasticsearch(query, dispatch, updateProjectList);
   };
 
   return (
@@ -75,13 +77,13 @@ export default function LongMenu(props) {
         }}
       >
           <MenuItem onClick={handleSimilarRecipes}>
-          Find Similar Instructions
+          Find Similar Projects
           </MenuItem>
           <MenuItem onClick={handleSimilarIngredients}>
-          Find Similar Ingredients
+          Find Similar Tech Stack
           </MenuItem>
           <MenuItem onClick={handleSimilarDish}>
-          Find Similar Dish
+          Find Similar Country
           </MenuItem>
       </Menu>
     </div>

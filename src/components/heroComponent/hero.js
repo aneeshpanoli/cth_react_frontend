@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import Searchbar from '../searchBarComponent/searchBar'
-import heroimg from '../../Assets/img/hero.jpg'
+import SearchOptions from '../searchBarComponent/searchOptions'
+import heroimg from '../../Assets/img/hero.svg'
 
-class Hero extends Component {
-
-
-    searchResultCallback = searchRes => {
-        console.log(searchRes);
-        this.props.resultsCallback(searchRes);
-        
-    }
-
-  render() {
-
+export default function Hero (){
+    let heroHeight = (window.height > window.width) ? window.innerWidth : window.innerHeight;
+    React.useEffect(() => {
+    function handleResize() {
+        heroHeight = (window.height > window.width) ? window.innerWidth : window.innerHeight;
+        console.log('resized to: ', window.innerWidth, 'x', window.innerHeight)
+      window.addEventListener('resize', handleResize)
+    }});
     return (
-    <div className="jumbotron hero-div mb-0" style={{backgroundImage: "url(" + heroimg + ")" }} >
-        
-        <Searchbar resultsCallback={this.searchResultCallback}/>
+      
+    <div className="jumbotron hero-div mt-5 " style={{backgroundImage: "url(" + heroimg + ")", width:{heroHeight}}} >
+        <Searchbar />
+        {/* <SearchOptions /> */}
     </div>
     );
   }
-}
 
-export default Hero;
+

@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Container from 'react-bootstrap/Container';
 
-class Footer extends Component {
-  render() {
+export default function Footer () {
     return (
         <Jumbotron fluid>
         <Container>
-          <h1>Homechef.AI</h1>
+          <h1>Civic Tech Hub</h1>
           <hr></hr>
           <p>
             
@@ -16,6 +15,5 @@ class Footer extends Component {
       </Jumbotron>
     );
   }
-}
 
-export default Footer;
+

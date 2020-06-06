@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
 import Navbar from 'react-bootstrap/Navbar'
-
+import AvatarMenu from '../navigaton/avatarMenu';
+import cthLogo from '../../Assets/img/cth.svg'
 
 class Navbarmain extends Component {
   render() {
     return (
-        
-        <Navbar className="border-bottom border-dark mb-3" bg="white" variant="light" sticky="top">
+      // border-bottom border-dark 
+        <Navbar className="pr-5 mt-3 pl-5" bg="white" variant="light" sticky="top">
                 <Navbar.Brand href="#home">
                     <img
                     alt=""
-                    src="/logo.svg"
+                    src={cthLogo}
                     width="30"
                     height="30"
                     className="d-inline-block align-top"
                     />{' '}
-                    Homechef.ai
+                    Civic Tech Hub
                 </Navbar.Brand>
+                <div style={{position: 'absolute', right: 5, display: 'flex'}}>
+                {/* <AvatarMenu /> */}
+                </div>
+           
         </Navbar>
     );
   }

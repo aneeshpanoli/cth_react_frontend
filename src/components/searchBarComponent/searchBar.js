@@ -5,6 +5,8 @@ import throttle from 'lodash.throttle';
 import { queryElasticsearch } from '../data/axiosComponent'
 import { useDispatch } from 'reactive-react-redux';
 import * as BuildQuery from '../data/EsQueries'
+import { updateProjectList } from '../redux/actions'
+
 
 
 export default function searchBar (){
@@ -13,10 +15,8 @@ export default function searchBar (){
         if (searchValue.length > 1){ 
             // send to axios
             let query = BuildQuery.MATCH_PHRASE_PREFIX(searchValue, 'title');
-            queryElasticsearch(query, dispatch);
-
-            // // slide the results panel back in if it had slid off view
-            // dispatch(updateSlideSearchResults(true));
+            queryElasticsearch(query, dispatch, updateProjectList);
+            setSearchValue("");
         }
        }
         
@@ -40,18 +40,24 @@ export default function searchBar (){
     }
       
         return (
+           
             <MuiThemeProvider>
                 <SearchBar
                 onChange={(value) => setSearchValue(value)}
                 onRequestSearch={() => setNewSearchValue(searchValue)}
                 onKeyDown={(e) => enterKeyPressedHandler(e)}
+                hintText = "Search projects"
+                spellCheck = {true}
                 style={{
                 margin: '0 auto',
                 maxWidth: 800,
-                marginTop: "20%"
+                marginTop: "30%"
                 }}
+                
                 />
+                
             </MuiThemeProvider>
+            
         );
     }
 
