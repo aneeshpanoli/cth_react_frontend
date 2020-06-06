@@ -36,7 +36,7 @@ export default function FooterGrid() {
   return (
     <Grid container className={classes.root} spacing={1}>
       <Grid item xs={12}>
-        <Grid container justify="left" spacing={spacing}>
+        <Grid container spacing={spacing}>
             <Grid >
               <Paper className={classes.paper} elevation={0}>
                 <Link

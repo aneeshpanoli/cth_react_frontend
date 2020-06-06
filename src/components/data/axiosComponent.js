@@ -4,7 +4,7 @@ import axios from 'axios';
 // const BASE_API = process.env.REACT_APP_BASE_URL;
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.xsrfCookieName = 'csrftoken';
-const BASE_API = 'https://www.civictechhub.net/78c3b495-8369-4f1c-abf2-b6142f406b2a';
+const BASE_API = 'https://www.civictechhub.net/q';
 // const BASE_API = 'http://192.168.68.125:8000/api/';
 
 
@@ -27,7 +27,7 @@ export const queryElasticsearch = (query, dispatch, actionCallback) =>{
       // process response.
       
       // this.setState({results: response});
-      console.log(response.data.hits);
+      // console.log(response.data.hits);
       dispatch(actionCallback(response.data.hits));
    })
    .catch(error => {

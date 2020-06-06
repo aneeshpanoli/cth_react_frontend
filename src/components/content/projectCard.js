@@ -33,15 +33,7 @@ function countryToIso(country){
    return filteredData[0].code;
 }
 
-function countryToFlag(country) {
-  let isoCode = countryToIso(country);
-  console.log(isoCode);
-  return typeof String.fromCodePoint !== 'undefined'
-    ? isoCode
-        .toUpperCase()
-        .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
-    : isoCode;
-}
+
 
 const useStyles = makeStyles((theme) => ({
   root: {

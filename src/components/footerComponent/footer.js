@@ -9,9 +9,7 @@ export default function Footer () {
         <Container>
           <h1>Civic Tech Hub</h1>
           <hr></hr>
-          <p>
             <FooterGrid />
-          </p>
           <hr></hr>
         </Container>
       </Jumbotron>
