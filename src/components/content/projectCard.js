@@ -88,6 +88,9 @@ export default function RecipeCard() {
     dispatch(updateSelectedProject(selectedProject));
     history.push("/dashboard/"+selectedProject._id);
   };
+  if (!searchProjectList) {
+    return (<div></div>);
+  }else if(searchProjectList[0]){
 
   return (
     <Row className="justify-content-center">
@@ -149,7 +152,13 @@ export default function RecipeCard() {
     </Fade>
   )}
     </Row>
-  );
+  );}else{
+    return (
+      <Row className="justify-content-center">
+        <h2>Sorry! We couldn't find any projects matching your search :(</h2>
+      </Row>
+    )
+  }
 }
 
 

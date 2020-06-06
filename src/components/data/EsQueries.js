@@ -49,3 +49,26 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
     
         }
     }
+
+    export const FETCH_RANDOM_ON_SESSION = (session_id) =>{
+        return {
+            'params': {
+                'q':{  
+                    "size": 8,
+                        "query": {
+                           "function_score": {
+                              "functions": [
+                                 {
+                                    "random_score": {
+                                       "seed": session_id
+                                    }
+                                 }
+                              ]
+                           }
+                        }
+                     }  
+                }
+            }
+        }
+
+    

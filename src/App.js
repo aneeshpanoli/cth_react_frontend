@@ -7,8 +7,7 @@ import {
 
 import DashBoard from './components/dashBoard/dashBoard'
 import HomePage from './components/content/home'
-import { Provider } from 'reactive-react-redux';
-import store from './components/redux/store'
+
 //stylesheet
 import 'bootstrap/dist/css/bootstrap.css'
 import './Assets/css/style.css'
@@ -19,7 +18,7 @@ const App = () => {
   const [checked] = useState(true);
   
   return (
-    <Provider store={store}>
+   
 
       <Router >
       <div className="App"> 
@@ -34,7 +33,6 @@ const App = () => {
         </Switch>       
       </div>
       </Router>
-      </Provider>
     );
   }
 

@@ -1,7 +1,7 @@
 import * as actionType from './actionTypes';
 
 const initialState = {
-    searchProjectList: [],
+    searchProjectList: null,
     selectedProject: null,
 
 };

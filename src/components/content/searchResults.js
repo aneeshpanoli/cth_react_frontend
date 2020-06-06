@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
-import Navbar from './navbarComponent'
-import RecipeCard from './projectCard'
+import ProjectCard from './projectCard'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateSlideSearchResults } from '../redux/actions'
 
@@ -25,7 +24,7 @@ export default function SearchResults(){
     return (
         <Container maxwidth="lg" ref={resultDiv}>   
             
-            <RecipeCard/> 
+        <ProjectCard/> 
         </Container>
 
     );
