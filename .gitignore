@@ -15,4 +15,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+deploy.sh
+.env.production
+.env.development
+index_template.html
