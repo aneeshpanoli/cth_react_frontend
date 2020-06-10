@@ -9,6 +9,11 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@brainhubeu/react-carousel@^1.18.5":
+  version "1.18.5"
+  resolved "https://registry.yarnpkg.com/@brainhubeu/react-carousel/-/react-carousel-1.18.5.tgz#4fc8dccdc9183731d6c339bcf4e4225bdd14b9af"
+  integrity sha512-+nC/c5HshdTsuiw229WLXCyY18z5HUaUt5PGQWVWYpll21Mj47xJS/PLNIkewj4ijnhCjflhybd+bxHe79oWew==
+
 "@emotion/hash@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
