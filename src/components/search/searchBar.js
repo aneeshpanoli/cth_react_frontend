@@ -58,6 +58,7 @@ export default function searchBar (){
         return (
            
             <MuiThemeProvider>
+                <React.Fragment>
                 <SearchBar
                 onChange={(value) => setSearchValue(value)}
                 onRequestSearch={() => setNewSearchValue(searchValue)}
@@ -71,6 +72,7 @@ export default function searchBar (){
                 }}
                 />
                 {progress}
+                </React.Fragment>
             </MuiThemeProvider>
             
         );

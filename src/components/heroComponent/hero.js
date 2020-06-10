@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Searchbar from '../searchBarComponent/searchBar'
-import SearchOptions from '../searchBarComponent/searchOptions'
-import heroimg from '../../Assets/img/hero.svg'
+import Searchbar from '../search/searchBar';
+import SearchOptions from '../search/searchOptions';
+import heroimg from '../../Assets/img/hero.svg';
 
 export default function Hero (){
     let heroHeight = (window.height > window.width) ? window.innerWidth : window.innerHeight;

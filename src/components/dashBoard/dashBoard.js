@@ -1,28 +1,35 @@
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
+import clsx from 'clsx';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import MenuIcon from '@material-ui/icons/Menu';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import { useHistory}  from "react-router-dom";
 import AvatarMenu from '../navigaton/avatarMenu';
 import Avatar from '@material-ui/core/Avatar';
 import cthLogo from '../../Assets/img/cth.svg'
-import DashProject from './dashProject'
+import Button from '@material-ui/core/Button';
+import DashProject from './dashProject';
+import DashTasks from './dashChallenges';
+import DashActivity from './dashActivity';
+import DashApprove from './dashApprove';
 import HistoryIcon from '@material-ui/icons/History';
 import DraftsIcon from '@material-ui/icons/Drafts';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import React, { useEffect, useRef } from 'react';
@@ -31,40 +38,76 @@ import { useParams} from 'react-router-dom'
 import { queryEsById } from '../data/axiosComponent'
 import { updateSelectedProject } from '../redux/actions'
 
+
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
   appBar: {
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-    },
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: 5,
+  },
+  small: {
+    width: theme.spacing(3.5),
+    height: theme.spacing(3.5),
+  },
+  hide: {
+    display: 'none',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerClose: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
-      display: 'none',
+      width: theme.spacing(9) + 1,
     },
   },
-  // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
   },
 }));
+
 
 function CloseButton(){
   let history = useHistory();
@@ -81,8 +124,12 @@ function CloseButton(){
   )
 }
 
-function DashBoardDrawer(props) {
-  
+
+export default function MiniDrawer(props) {
+  const classes = useStyles();
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  const [clicked, setClicked] = React.useState(0);
   let params = useParams();
   const dispatch = useDispatch();
   console.log(useTrackedState());
@@ -93,34 +140,96 @@ function DashBoardDrawer(props) {
         queryEsById(query, dispatch, updateSelectedProject);
     }
 }, []);
-  console.log(selectedProject);
-  const { window } = props;
-  const classes = useStyles();
-  const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  
 
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  const handleDrawerOpen = () => {
+    setOpen(true);
   };
 
-  const drawer = (
-    <div>
-      <div className={classes.toolbar} />
-      <List>
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const handleIconClick = (index) => {
+    setClicked(index);
+    console.log(index);
+  }
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+      color="inherit"
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar variant="dense">
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
+          >
+            <MenuIcon />
+          </IconButton>
+          <IconButton>
+            <Avatar src={cthLogo} className={classes.small}>
+
+            </Avatar>
+         
+          <Typography id="logo-text" style={{color:"black"}}className="ml-2" variant="h6" noWrap>
+             Civic Tech Hub
+          </Typography>
+          </IconButton>
+          <CloseButton />
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+      >
+        <div className={classes.toolbar}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </div>
+        <Divider />
+        <List>
         {['Project', 'Tasks', 'History', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{[<AccountTreeIcon/>, <AssignmentIcon />, 
-          <HistoryIcon />, <DraftsIcon />][index]}</ListItemIcon>
+          <ListItem button key={index}>
+            <ListItemIcon>{[<AccountTreeIcon onClick={() => handleIconClick(index)}/>, 
+            <AssignmentIcon onClick={() => handleIconClick(index)}/>, 
+          <HistoryIcon onClick={() => handleIconClick(index)}/>, 
+          <DraftsIcon onClick={() => handleIconClick(index)}/>][index]}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
       </List>
       <Divider />
       <List>
-        {['Verfication', 'Funding', 'Activity'].map((text, index) => (
+        {['Verfication', 'Funding'].map((text, index) => (
           <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <AccountTreeIcon /> : <AccountTreeIcon />}</ListItemIcon>
+            <ListItemIcon>
+            {[<VerifiedUserIcon onClick={() => handleIconClick(index+10)}/>,
+            <AccountBalanceIcon onClick={() => handleIconClick(index+10)}/>,
+            
+          ][index]}
+            </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -128,76 +237,22 @@ function DashBoardDrawer(props) {
          
           </ListItem>
       </List>
-    </div>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-  
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar} color="inherit">
-        <Toolbar variant="dense">
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-          <IconButton>
-            <Avatar src={cthLogo}>
-
-            </Avatar>
-         
-          <Typography variant="h6" noWrap>
-             Civic Tech Hub
-          </Typography>
-          </IconButton>
-          <CloseButton />
-        </Toolbar>
-        
-      </AppBar>
-      <nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
+      </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        
+        {clicked === 0 &&
         <DashProject/>
+        } 
+        {clicked === 1 &&
+        <DashTasks/>
+        } 
+        {clicked === 2 &&
+        <DashActivity />
+        } 
+        {clicked === 10 &&
+        <DashApprove />
+        } 
       </main>
     </div>
   );
 }
-
-export default DashBoardDrawer;

@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
-import ProjectCard from './projectCard'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateSlideSearchResults } from '../redux/actions'
+import CarouselHolder from './carouselHolder'
+
 
 
 
@@ -24,7 +25,7 @@ export default function SearchResults(){
     return (
         <Container maxwidth="lg" ref={resultDiv}>   
             
-        <ProjectCard/> 
+        <CarouselHolder/> 
         </Container>
 
     );

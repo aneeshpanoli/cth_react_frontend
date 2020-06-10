@@ -56,7 +56,7 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
         return {
             'params': {
                 'q':{  
-                    "size": 8,
+                    "size": 50,
                         "query": {
                            "function_score": {
                               "functions": [

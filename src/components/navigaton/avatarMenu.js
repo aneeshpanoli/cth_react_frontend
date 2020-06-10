@@ -14,6 +14,8 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    height: 35,
+    verticalAlign: "top",
   },
   paper: {
     marginRight: theme.spacing(3),
@@ -23,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MenuListComposition() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const anchorRef = React.useRef(null);
 
   const handleToggle = () => {
@@ -54,8 +57,13 @@ export default function MenuListComposition() {
     prevOpen.current = open;
   }, [open]);
 
+    if (isAuthenticated){
   return (
+    
     <div className={classes.root}>
+      <Button style={{right: 5}} variant="outlined" color="primary">
+                    Start a project
+                  </Button>
         <Button
           ref={anchorRef}
           aria-controls={open ? 'menu-list-grow' : undefined}
@@ -83,6 +91,19 @@ export default function MenuListComposition() {
           )}
         </Popper>
     </div>
+  
   );
+}else{
+  return(
+  <div className={classes.root}>
+    <Button style={{right: 5}} variant="outlined" color="primary">
+                    Start a project
+                  </Button>
+     <Button variant="contained" color="primary">
+        Login
+      </Button>
+  </div>
+  );
+}
 }
 

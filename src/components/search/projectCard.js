@@ -20,13 +20,8 @@ import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateSelectedProject } from '../redux/actions'
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import { useHistory, useParams, Link} from "react-router-dom";
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import Flag from 'react-world-flags'
-// import countries from '../data/countries'
-
-
-// ISO 3166-1 alpha-2
-// ⚠️ No support for IE 11
+import CardActionArea from '@material-ui/core/CardActionArea';
 
 function countryToIso(country){
    let filteredData = countries.filter(d => d.label === country);
@@ -39,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
     maxWidth: 275,
+    maxHeight: 400,
+    minHeight: 400,
     margin: "0.3rem",
     position: 'relative',
   },
@@ -70,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function RecipeCard() {
+export default function RecipeCard({r}) {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -81,13 +78,10 @@ export default function RecipeCard() {
     dispatch(updateSelectedProject(selectedProject));
     history.push("/dashboard/"+selectedProject._id);
   };
-  if (!searchProjectList) {
-    return (<div></div>);
-  }else if(searchProjectList[0]){
+  
 
   return (
     <Row className="justify-content-center">
-    {searchProjectList.map((r) => 
     <Fade in={checked} key={r._id} style={{ transitionDelay: checked ? '300ms' : '0ms' }}>
     <Card className={classes.root} >
       <CardHeader
@@ -105,28 +99,24 @@ export default function RecipeCard() {
         }
         
       />
+      <CardActionArea onClick={() => handleExpandClick(r)}>
       <CardMedia
         className={classes.media}
         image={r._source.image}
         title=""
       > </CardMedia>
-      {/* <div className={classes.overlay}>
+      <div className={classes.overlay}>
     
       </div>
-      */}
+     
       <CardContent title="Tech stack">
         <Typography variant="body2" color="textSecondary" component="p">
         {r._source.builtWith.join(', ')}
         </Typography>
       </CardContent>
-
-      <CardActions>
-        {/* <IconButton aria-label="add to favorites" title="Like">
-          <FavoriteIcon />
-        </IconButton> */}
-        {/* <IconButton aria-label="share" title="Share">
-          <ShareIcon />
-        </IconButton> */}
+      </CardActionArea>
+      {/* <CardActions>
+        
         <IconButton>
          <a href={r._source.url}><OpenInNewIcon aria-label="open new" title="Open Link"/></a> 
         </IconButton>
@@ -138,19 +128,12 @@ export default function RecipeCard() {
           <DashboardIcon />
         </IconButton>
         
-      </CardActions>
+      </CardActions> */}
       
     </Card>
     </Fade>
-  )}
     </Row>
-  );}else{
-    return (
-      <Row className="border-top border-grey justify-content-center">
-        <h3>Sorry! We couldn't find any projects matching your search <ErrorOutlineIcon fontSize="large"/> </h3>
-      </Row>
-    )
-  }
+  );
 }
 
 

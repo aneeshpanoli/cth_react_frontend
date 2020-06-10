@@ -7,7 +7,7 @@ import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
 import PostAddOutlinedIcon from '@material-ui/icons/PostAddOutlined';
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 import ScrollUpButton from "react-scroll-up-button";
-import Navbar from './navbarComponent'
+import Navbar from '../content/navbarComponent'
 
 class SearchResults extends Component {
     state = {

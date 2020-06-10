@@ -4,7 +4,7 @@ import React from 'react';
 
 import Footer from '../footerComponent/footer'
 import Hero from '../heroComponent/hero'
-import SearchResults from './searchResults'
+import SearchResults from '../search/searchResults'
 import Navbar from './navbarComponent'
 import { queryElasticsearch } from '../data/axiosComponent'
 import { FETCH_RANDOM_ON_SESSION } from '../data/EsQueries'
