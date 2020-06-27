@@ -81,7 +81,6 @@ export default function RecipeCard({r}) {
   
 
   return (
-    <Row className="justify-content-center">
     <Fade in={checked} key={r._id} style={{ transitionDelay: checked ? '300ms' : '0ms' }}>
     <Card className={classes.root} >
       <CardHeader
@@ -132,7 +131,6 @@ export default function RecipeCard({r}) {
       
     </Card>
     </Fade>
-    </Row>
   );
 }
 

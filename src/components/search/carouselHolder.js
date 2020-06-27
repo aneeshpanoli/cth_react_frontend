@@ -30,8 +30,6 @@ export default function CarouselHolder(){
     const { searchProjectList } = useTrackedState()
     // useEffect(() => filterProjectList(props.projList), [searchProjectList]);
 
-
-
     if (!searchProjectList) {
         return (<div></div>);
       }else if(searchProjectList[0]){

@@ -17,3 +17,14 @@ export const updateSelectedProject = newselectedProject => ({
 })
 
 
+export const updateAuthData = newAuthData => ({
+    type: actionType.AUTH_DATA, 
+    authData: newAuthData
+})
+
+
+
+export const updateUserInfo = newUserInfo => ({
+    type: actionType.USER_INFO, 
+    userInfo: newUserInfo
+})
