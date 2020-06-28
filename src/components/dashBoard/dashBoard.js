@@ -16,7 +16,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import CloseIcon from '@material-ui/icons/Close';
 import { useHistory}  from "react-router-dom";
-import AvatarMenu from '../navigaton/avatarMenu';
+import AvatarMenu from '../navigation/avatarMenu';
 import Avatar from '@material-ui/core/Avatar';
 import cthLogo from '../../Assets/img/cth.svg'
 import Button from '@material-ui/core/Button';
@@ -30,10 +30,11 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import Navbar from '../navigation/TopNav'
 
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import React, { useEffect, useRef } from 'react';
-import { MATCH_ID } from '../data/EsQueries'
+import { MATCH_ID } from '../backend/EsQueries'
 import { useParams} from 'react-router-dom'
 import { queryEsById } from '../data/axiosComponent'
 import { updateSelectedProject } from '../redux/actions'
@@ -113,7 +114,7 @@ function CloseButton(){
   let history = useHistory();
   return (
     <div style={{position: 'absolute', right: 5, display: 'flex'}}>
-    <AvatarMenu />
+    <Navbar />
     <Button variant="text"  
             color="inherit" 
             onClick={() => history.goBack()}
@@ -178,15 +179,7 @@ export default function MiniDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
-          <IconButton>
-            <Avatar src={cthLogo} className={classes.small}>
-
-            </Avatar>
-         
-          <Typography id="logo-text" style={{color:"black"}}className="ml-2" variant="h6" noWrap>
-             Civic Tech Hub
-          </Typography>
-          </IconButton>
+          
           <CloseButton />
         </Toolbar>
       </AppBar>

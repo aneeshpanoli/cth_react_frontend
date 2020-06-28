@@ -5,9 +5,9 @@ import React from 'react';
 import Footer from '../footerComponent/footer'
 import Hero from '../heroComponent/hero'
 import SearchResults from '../search/searchResults'
-import Navbar from './navbarComponent'
+import Navbar from '../navigation/TopNav'
 import { queryElasticsearch } from '../data/axiosComponent'
-import { FETCH_RANDOM_ON_SESSION } from '../data/EsQueries'
+import { FETCH_RANDOM_ON_SESSION } from '../backend/EsQueries'
 import { updateProjectList } from '../redux/actions'
 import { useDispatch } from 'reactive-react-redux';
 

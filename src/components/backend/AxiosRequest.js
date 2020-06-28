@@ -76,7 +76,7 @@ export const queryEsById = (query, dispatch, actionCallback) =>{
      .then((response) => {
        
        saveSessionStore("userInfo", response.data);
-       console.log(response.data);
+      //  console.log(response.data);
        dispatch(updateUserInfo(response.data));
      })
      .catch((error) => {
@@ -149,15 +149,16 @@ export const queryEsById = (query, dispatch, actionCallback) =>{
       localStorage.setItem("expirationDate", expirationDate);
       authData.token = token;
       authData.isAuthenticated = true;
-      console.log(res.data);
       dispatch(actionCallback(authData));
-      console.log(res.data);
       getUserInfo(dispatch);
       //   dispatch(authSuccess(token));
       //   dispatch(checkAuthTimeout(3600));
     })
     .catch((err) => {
-      //   dispatch(authFail(err))
-      console.log(err.response.data);
+      // console.log(err.response.data);
+      authData.error = err.response.data.email? err.response.data.email[0]
+      :err.response.data.password1[0];
+      dispatch(actionCallback(authData));
+      
     });
 };

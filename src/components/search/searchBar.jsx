@@ -4,13 +4,13 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import throttle from 'lodash.throttle';
 import { queryElasticsearch } from '../data/axiosComponent'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
-import { MATCH_PHRASE_PREFIX } from '../data/EsQueries'
+import { MATCH_PHRASE_PREFIX } from '../backend/EsQueries'
 import { updateProjectList } from '../redux/actions'
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 
 
-export default function searchBar (){
+export default function searchBar (props){
     const dispatch = useDispatch()
     const { searchProjectList } = useTrackedState();
     const queryDatabase = searchValue => {
@@ -68,7 +68,8 @@ export default function searchBar (){
                 style={{
                 margin: '0 auto',
                 maxWidth: 800,
-                marginTop: "30%"
+                width: '100%',
+                marginTop: props.marginTop
                 }}
                 />
                 {progress}

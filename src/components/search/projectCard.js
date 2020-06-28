@@ -1,24 +1,16 @@
 import React, { useState }from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
 import Fade from '@material-ui/core/Fade';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import LongMenu from '../navigaton/longMenu';
-import Row from 'react-bootstrap/Row';
+
+import LongMenu from '../menu/longMenu';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateSelectedProject } from '../redux/actions'
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import { useHistory, useParams, Link} from "react-router-dom";
 import Flag from 'react-world-flags'
 import CardActionArea from '@material-ui/core/CardActionArea';

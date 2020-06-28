@@ -211,6 +211,7 @@ export default function SignUp(props) {
               />
             </Grid>
           </Grid>
+          {authData.error? <sub className={classes.error}>{authData.error}</sub> : null}
           <Button
             type="submit"
             fullWidth

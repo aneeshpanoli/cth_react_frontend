@@ -14,7 +14,7 @@ export default function Hero (){
     return (
       
     <div className="jumbotron hero-div mt-5 " style={{backgroundImage: "url(" + heroimg + ")", width:{heroHeight}}} >
-        <Searchbar />
+        <Searchbar marginTop="30%"/>
         {/* <SearchOptions /> */}
     </div>
     );

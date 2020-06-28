@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Navbar from 'react-bootstrap/Navbar'
-import AvatarMenu from '../navigaton/avatarMenu';
+import AvatarMenu from '../navigation/avatarMenu';
 import cthLogo from '../../Assets/img/cth.svg'
 import Typography from '@material-ui/core/Typography';
 
