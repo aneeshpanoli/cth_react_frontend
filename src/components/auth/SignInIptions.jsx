@@ -80,8 +80,8 @@ export default function NavTabs(props) {
           aria-label="navtabs"
           component={'div'}
         >
-          <LinkTab label="Social Singnin" href="/drafts" {...a11yProps(0)} />
-          <LinkTab label="Email Signin" href="/trash" {...a11yProps(1)} />
+          <LinkTab label="Social Singn in" href="/drafts" {...a11yProps(0)} />
+          <LinkTab label="Email Sign in" href="/trash" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0} component={'div'}>

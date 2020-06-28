@@ -38,7 +38,7 @@ export default class SwipeToSlide extends Component {
       className: "center",
       infinite: false,
       centerPadding: "60px",
-      slidesToShow: 4,
+      slidesToShow: 3,
       swipeToSlide: true,
       nextArrow: <SampleNextArrow />,
       prevArrow: <SamplePrevArrow />,
@@ -52,17 +52,17 @@ export default class SwipeToSlide extends Component {
           breakpoint: 1024,
           settings: {
             slidesToShow: 3,
-            slidesToScroll: 3,
-            infinite: true,
-            dots: true,
+            slidesToScroll: 1,
+            infinite: false,
           },
         },
         {
           breakpoint: 800,
           settings: {
             slidesToShow: 2,
-            slidesToScroll: 2,
+            slidesToScroll: 1,
             initialSlide: 2,
+            infinite: false,
           },
         },
         {
@@ -70,6 +70,7 @@ export default class SwipeToSlide extends Component {
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
+            infinite: false,
           },
         },
       ],
