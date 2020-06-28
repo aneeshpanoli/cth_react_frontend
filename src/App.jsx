@@ -6,6 +6,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import DashBoard from "./components/dashBoard/dashBoard";
 import HomePage from "./components/content/Home";
 import SearchProjects from "./components/pages/SearchProjects";
+import ExploreProjects from './components/pages/ExploreProjects'
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { authCheck, quickAuthCheck } from "./components/auth/auth";
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -42,6 +43,10 @@ const App = () => {
 
           <Route exact path="/solve">
             <SearchProjects />
+          </Route>
+
+          <Route exact path="/explore">
+            <ExploreProjects />
           </Route>
 
         </Switch>

@@ -13,7 +13,8 @@ export default function Hero (){
     }});
     return (
       
-    <div className="jumbotron hero-div pt-5 " style={{backgroundImage: "url(" + heroimg + ")", width:{heroHeight}}} >
+    <div className="jumbotron hero-div" 
+    style={{backgroundImage: "url(" + heroimg + ")", width:{heroHeight}, marginTop:'3rem'}} >
         <Searchbar marginTop="30%"/>
         {/* <SearchOptions /> */}
     </div>

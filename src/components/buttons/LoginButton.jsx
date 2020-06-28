@@ -5,7 +5,8 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import SignIn from '../auth/SignIn';
-import SignUp from '../auth/SignUp'
+import SignUp from '../auth/SignUp';
+import SignInOptions from '../auth/SignInIptions'
 
 
 
@@ -43,7 +44,8 @@ export default function AlertDialogSlide() {
         aria-describedby="alert-dialog-slide-description"
       >
         {signIn ?
-        <SignIn signUp={() => setSignIn(false)}/>
+        // <SignIn signUp={() => setSignIn(false)}/>
+        <SignInOptions signUp={() => setSignIn(false)}/>
         :
         <SignUp signIn={() => setSignIn(true)}/>
         }
