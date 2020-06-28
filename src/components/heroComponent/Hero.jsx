@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Searchbar from '../search/searchBar';
+import Searchbar from '../search/SearchBar';
 import SearchOptions from '../search/searchOptions';
 import heroimg from '../../Assets/img/hero.svg';
 
@@ -13,7 +13,7 @@ export default function Hero (){
     }});
     return (
       
-    <div className="jumbotron hero-div mt-5 " style={{backgroundImage: "url(" + heroimg + ")", width:{heroHeight}}} >
+    <div className="jumbotron hero-div pt-5 " style={{backgroundImage: "url(" + heroimg + ")", width:{heroHeight}}} >
         <Searchbar marginTop="30%"/>
         {/* <SearchOptions /> */}
     </div>

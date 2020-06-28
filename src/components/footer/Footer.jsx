@@ -9,7 +9,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-        Onexome.com { }
+        Civic Tech Hub { }
       {new Date().getFullYear()}
       {'.'}
     </Typography>

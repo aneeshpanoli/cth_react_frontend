@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateSlideSearchResults } from '../redux/actions'
-import CarouselHolder from './carouselHolder'
+import CarouselHolder from './CarouselHolder'
 
 
 

@@ -75,7 +75,7 @@ export default function AlertDialogSlide() {
             startIcon={<MenuOpenIcon />}
             style={{ color: "black" }}
           >
-            <h3>Menu</h3>
+            Menu
           </Button>
         </DialogTitle>
 
@@ -84,7 +84,7 @@ export default function AlertDialogSlide() {
             startIcon={<HomeIcon />}
             onClick={() => handleOnClick("/")}
           >
-            <h4>Home</h4>
+            Home
           </MenuButton>
         </DialogActions>
         <DialogActions>
@@ -92,7 +92,7 @@ export default function AlertDialogSlide() {
             startIcon={<AddIcon />}
             onClick={() => handleCreateClick("/create")}
           >
-            <h4>Create a challenge</h4>
+            Create a challenge
           </MenuButton>
         </DialogActions>
         <DialogActions>
@@ -100,7 +100,7 @@ export default function AlertDialogSlide() {
             startIcon={<SearchIcon />}
             onClick={() => handleOnClick("/solve")}
           >
-            <h4>Solve a challenge</h4>
+            Solve a challenge
           </MenuButton>
         </DialogActions>
       </Dialog>

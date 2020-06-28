@@ -9,7 +9,7 @@ import Container from '@material-ui/core/Container';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { useHistory } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
-import Searchbar from '../search/searchBar';
+import Searchbar from '../search/SearchBar';
 
 
 
