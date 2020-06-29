@@ -10,7 +10,7 @@ import { queryElasticsearch } from '../data/axiosComponent'
 import { FETCH_RANDOM_ON_SESSION } from '../backend/EsQueries'
 import { updateProjectList } from '../redux/actions'
 import { useDispatch } from 'reactive-react-redux';
-// import { Circle } from '../d3/AnimatedCircles'
+import { Circle } from '../d3/AnimatedCircles'
 
 
 
@@ -23,7 +23,7 @@ export default function homePage (){
         <div>
         <Navbar />
         <Hero />
-        {/* <Circle /> */}
+        <Circle />
         <SearchResults />
         <Footer />
         </div>

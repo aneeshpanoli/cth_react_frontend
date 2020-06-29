@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { themeDict } from './components/theme/Colors'
 import { createMuiTheme } from '@material-ui/core/styles';
-
+import CreateChallenge from './components/pages/CreateChallenge'
 import DashBoard from "./components/dashBoard/dashBoard";
 import HomePage from "./components/content/Home";
 import SearchProjects from "./components/pages/SearchProjects";
@@ -10,7 +10,7 @@ import ExploreProjects from './components/pages/ExploreProjects'
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { authCheck, quickAuthCheck } from "./components/auth/auth";
 import { MuiThemeProvider } from '@material-ui/core/styles';
-
+import UserProfile from './components/pages/UserProfile'
 //stylesheet
 import "bootstrap/dist/css/bootstrap.css";
 import "./Assets/css/style.css";
@@ -37,6 +37,10 @@ const App = () => {
             <HomePage />
           </Route>
 
+          <Route exact path="/create">
+              <CreateChallenge />
+            </Route>
+
           <Route path="/dashboard/:id">
             <DashBoard />
           </Route>
@@ -44,6 +48,10 @@ const App = () => {
           <Route exact path="/solve">
             <SearchProjects />
           </Route>
+
+          <Route exact path="/me">
+              <UserProfile />
+            </Route>
 
           <Route exact path="/explore">
             <ExploreProjects />
