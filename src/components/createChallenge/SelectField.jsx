@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import { updateProjectFormData } from '../redux/actions'
+import { updateChallengeFormData } from '../redux/actions'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -23,7 +23,7 @@ export default function SimpleSelect() {
   const { challengeFormData } = useTrackedState();
   const handleChange = (event) => {
     challengeFormData.primeArea = event.target.value
-    dispatch(updateProjectFormData(challengeFormData));
+    dispatch(updateChallengeFormData(challengeFormData));
   };
 
   return (
@@ -37,9 +37,9 @@ export default function SimpleSelect() {
           onChange={handleChange}
           
         >
-          <MenuItem value={'Bioinformatics'}>Bioinformatics</MenuItem>
-          <MenuItem value={'Statistics'}>Statistics</MenuItem>
-          <MenuItem value={'Illustrations'}>Illustrations</MenuItem>
+          <MenuItem value={'Web development'}>Web development</MenuItem>
+          <MenuItem value={'Art'}>Art</MenuItem>
+          <MenuItem value={'Text'}>Text</MenuItem>
         </Select>
       </FormControl>
     </div>

@@ -7,7 +7,7 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { updateProjectFormData } from '../redux/actions'
+import { updateChallengeFormData } from '../redux/actions'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 
 
@@ -21,7 +21,7 @@ export default function MaterialUIPickers() {
   const handleDateChange = (date) => {
     setSelectedDate(date);
     challengeFormData['deadLine'] = selectedDate;
-    dispatch(updateProjectFormData(challengeFormData));
+    dispatch(updateChallengeFormData(challengeFormData));
   };
 
   return (

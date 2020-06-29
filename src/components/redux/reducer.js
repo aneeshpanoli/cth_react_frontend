@@ -12,7 +12,7 @@ const initialState = {
         numShares:0,
         solvers: [], //emails
         title: "",
-        primeArea: "Bioinformatics",
+        primeArea: "Web development",
         description: "",
         deadLine: new Date(),
         procedure: "",
@@ -32,6 +32,8 @@ export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionType.SEARCH_PROJECT:
             return {...state, searchProjectList: action.searchProjectList}
+        case actionType.CHALLENGE_FORM:
+            return { ...state, challengeFormData: action.challengeFormData };
         case actionType.SELECTED_PROJECT:
             return {...state, selectedProject: action.selectedProject}
         case actionType.AUTH_DATA:

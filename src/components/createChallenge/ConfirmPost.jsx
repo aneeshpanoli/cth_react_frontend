@@ -10,9 +10,9 @@ import { createChallenge } from '../backend/AxiosRequest'
 import { useHistory } from 'react-router-dom'
 
 
-const validateForm = (projectFormData) =>{
+const validateForm = (challengeFormData) =>{
     // validate title
-    if (!projectFormData.title){
+    if (!challengeFormData.title){
         return false
     }
 
@@ -21,10 +21,10 @@ const validateForm = (projectFormData) =>{
 export default function ConfirmPost(props) {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
-  const {projectFormData, userInfo} = useTrackedState();
+  const {challengeFormData, userInfo} = useTrackedState();
   const postAxios = () => {
-    projectFormData.owners.push(userInfo.email);
-    createChallenge(projectFormData);
+    challengeFormData.owners.push(userInfo.email);
+    createChallenge(challengeFormData);
   }
 
   const handleClickOpen = () => {

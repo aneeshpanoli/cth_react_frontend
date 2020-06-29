@@ -19,6 +19,16 @@ axios.create({
     }
 });
 
+const esAxios = axios.create({
+  baseURL: 'http://54.177.114.14',
+  headers: {
+    "X-CSRFTOKEN": document.cookie.split("=")[1],
+    "X-Requested-With": "XMLHttpRequest",
+    "Content-type": "application/json",
+  },
+});
+
+
 const userAxios = (token) =>
   axios.create({
     baseURL: "http://54.177.114.14",
@@ -85,6 +95,27 @@ export const queryEsById = (query, dispatch, actionCallback) =>{
      });
  };
  
+ export const createChallenge = (challenge) => {
+  esAxios
+    .get(
+      `/add/`, //change to `/add/` tom make it working
+      {
+        params: {
+          q: challenge,
+        },
+      }
+    )
+    .then((response) => {
+      // console.log(response.data);
+      return true;
+    })
+    .catch((error) => {
+      // catch errors.
+      console.log(error);
+      return false;
+    });
+};
+
 
 
  export const authSignIn = (

@@ -28,3 +28,8 @@ export const updateUserInfo = newUserInfo => ({
     type: actionType.USER_INFO, 
     userInfo: newUserInfo
 })
+
+export const updateChallengeFormData = newChallengeFormData => ({
+    type: actionType.PROJECT_FORM, 
+    challengeFormData: newChallengeFormData
+})

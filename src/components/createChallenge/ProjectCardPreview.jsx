@@ -28,7 +28,7 @@ export default function SimpleCard() {
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
   const { challengeFormData } = useTrackedState();
-  console.log(challengeFormData);
+  // console.log(challengeFormData);
   let options = { dateStyle:'long', timeStyle:'long'};
 
 

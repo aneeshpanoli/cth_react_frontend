@@ -64,8 +64,7 @@ export default function RecipeCard({r}) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [checked] = useState(true);
-  const { searchProjectList } = useTrackedState()
-
+  console.log(r)
   const handleExpandClick = (selectedProject) => {
     dispatch(updateSelectedProject(selectedProject));
     history.push("/dashboard/"+selectedProject._id);
@@ -101,8 +100,8 @@ export default function RecipeCard({r}) {
       </div>
      
       <CardContent title="Tech stack">
-        <Typography variant="body2" color="textSecondary" component="p">
-        {r._source.builtWith.join(', ')}
+        <Typography variant="body2" color="textSecondary" component="p" style={{overflow:'hidden'}}>
+        {r._source.subtitle}
         </Typography>
       </CardContent>
       </CardActionArea>
