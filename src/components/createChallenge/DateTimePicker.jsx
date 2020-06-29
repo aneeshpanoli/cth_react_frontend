@@ -32,7 +32,7 @@ export default function MaterialUIPickers() {
           minDate={today}
           margin="normal"
           id="date-picker-dialog"
-          label="Date picker dialog"
+          label="Pick date"
           format="MM/dd/yyyy"
           value={selectedDate}
           onChange={handleDateChange}
@@ -44,7 +44,7 @@ export default function MaterialUIPickers() {
           minDate={today}
           margin="normal"
           id="time-picker"
-          label="Time picker"
+          label="Pick a time"
           value={selectedDate}
           onChange={handleDateChange}
           KeyboardButtonProps={{

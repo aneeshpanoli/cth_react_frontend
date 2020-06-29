@@ -2,7 +2,7 @@ import React from 'react';
 
 //components
 
-import Footer from '../footerComponent/footer'
+import Footer from '../footer/Footer'
 import Hero from '../heroComponent/Hero'
 import SearchResults from '../search/searchResults'
 import Navbar from '../navigation/TopNav'
@@ -23,7 +23,7 @@ export default function homePage (){
         <div>
         <Navbar />
         <Hero />
-        <Circle />
+        {/* <Circle /> */}
         <SearchResults />
         <Footer />
         </div>

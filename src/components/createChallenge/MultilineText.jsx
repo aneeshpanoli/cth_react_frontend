@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { updateProjectFormData } from '../redux/actions'
+import { updateChallengeFormData } from '../redux/actions'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 
 
@@ -21,7 +21,7 @@ export default function MultilineTextFields(props) {
 
   const handleChange = (value, id) => {
     challengeFormData[id] = value;
-    dispatch(updateProjectFormData(challengeFormData));
+    dispatch(updateChallengeFormData(challengeFormData));
     console.log(id);
   };
 

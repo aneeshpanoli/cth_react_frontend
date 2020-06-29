@@ -29,7 +29,7 @@ export default function SimpleSelect() {
   return (
     <div>
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Area of Study</InputLabel>
+        <InputLabel id="demo-simple-select-label">Primary area </InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"

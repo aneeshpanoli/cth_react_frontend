@@ -7,6 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Fade from '@material-ui/core/Fade';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
 
 import LongMenu from '../menu/longMenu';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
@@ -26,8 +28,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
     maxWidth: 275,
-    maxHeight: 400,
-    minHeight: 400,
+    minHeight: 340,
     margin: "0.3rem",
     position: 'relative',
   },
@@ -64,7 +65,7 @@ export default function RecipeCard({r}) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [checked] = useState(true);
-  console.log(r)
+  // console.log(r)
   const handleExpandClick = (selectedProject) => {
     dispatch(updateSelectedProject(selectedProject));
     history.push("/dashboard/"+selectedProject._id);
@@ -76,7 +77,7 @@ export default function RecipeCard({r}) {
     <Card className={classes.root} >
       <CardHeader
       title={r._source.title}
-      subheader={r._source.hackathons}
+      subheader={r._source.hackathons[0]}
         avatar={
           <Avatar title={r._source.country} aria-label="project" className={classes.avatar} 
          >
@@ -89,7 +90,7 @@ export default function RecipeCard({r}) {
         }
         
       />
-      <CardActionArea onClick={() => handleExpandClick(r)}>
+       
       <CardMedia
         className={classes.media}
         image={r._source.image}
@@ -99,19 +100,23 @@ export default function RecipeCard({r}) {
     
       </div>
      
-      <CardContent title="Tech stack">
-        <Typography variant="body2" color="textSecondary" component="p" style={{overflow:'hidden'}}>
-        {r._source.subtitle}
+      <CardContent title="Short description">
+        <Typography variant="body2" color="textSecondary" 
+        component="div" 
+        style={{overflow:'hidden'}}>
+        {r._source.subtitle.substring(0, 125)+"..."}
+        <br></br>
+        <Button size="small" onClick={() => handleExpandClick(r)}>Learn More</Button>
         </Typography>
       </CardContent>
+      {/* <CardActionArea onClick={() => handleExpandClick(r)}>
       </CardActionArea>
-      {/* <CardActions>
-        
+      <CardActions>
+      <Button size="small" onClick={() => handleExpandClick(r)}>Learn More</Button>
         <IconButton>
          <a href={r._source.url}><OpenInNewIcon aria-label="open new" title="Open Link"/></a> 
         </IconButton>
         <IconButton
-          className={clsx(classes.expand)}
           onClick={() => handleExpandClick(r)}
           aria-label="show more" title="Project details"
         >
