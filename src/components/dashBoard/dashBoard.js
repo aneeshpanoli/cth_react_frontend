@@ -36,7 +36,7 @@ import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import React, { useEffect, useRef } from 'react';
 import { MATCH_ID } from '../backend/EsQueries'
 import { useParams} from 'react-router-dom'
-import { queryEsById } from '../data/axiosComponent'
+import { queryEsById } from '../backend/AxiosRequest'
 import { updateSelectedProject } from '../redux/actions'
 
 

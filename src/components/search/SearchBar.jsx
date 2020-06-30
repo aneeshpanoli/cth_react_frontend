@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import SearchBar from 'material-ui-search-bar'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import throttle from 'lodash.throttle';
-import { queryElasticsearch } from '../data/axiosComponent'
+import { queryElasticsearch } from '../backend/AxiosRequest'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { MATCH_PHRASE_PREFIX } from '../backend/EsQueries'
 import { updateProjectList } from '../redux/actions'

@@ -4,7 +4,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { MORE_LIKE_THIS } from '../backend/EsQueries'
-import { queryElasticsearch } from '../data/axiosComponent'
+import { queryElasticsearch } from '../backend/AxiosRequest'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateProjectList } from '../redux/actions'
 

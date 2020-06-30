@@ -6,7 +6,7 @@ import Footer from '../footer/Footer'
 import Hero from '../heroComponent/Hero'
 import SearchResults from '../search/searchResults'
 import Navbar from '../navigation/TopNav'
-import { queryElasticsearch } from '../data/axiosComponent'
+import { queryElasticsearch } from '../backend/AxiosRequest'
 import { FETCH_RANDOM_ON_SESSION } from '../backend/EsQueries'
 import { updateProjectList } from '../redux/actions'
 import { useDispatch } from 'reactive-react-redux';
