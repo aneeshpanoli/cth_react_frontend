@@ -43,13 +43,14 @@ export default function searchBar (props){
             setIsSearching(true);
         }
          }
-
+        
 
     let progress;
     if (isSearching){
         progress = <LinearProgress style={{
         margin: '0 auto',
         maxWidth: 800,
+        width: '100%',
         }} />;
     }else{
         progress = <div></div>;

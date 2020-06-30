@@ -6,7 +6,8 @@ import { saveSessionStore } from "../localStore/session";
 // const BASE_API = process.env.REACT_APP_BASE_URL;
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.xsrfCookieName = 'csrftoken';
-const BASE_API = 'https://www.civictechhub.net/q';
+const BASE_API = 'http://54.177.114.14/q/';
+// const BASE_API = 'https://www.civictechhub.net/q';
 // const BASE_API = 'http://192.168.68.125:8000/api/';
 
 
@@ -28,8 +29,17 @@ const esAxios = axios.create({
   },
 });
 
+const preAuthAxios = axios.create({
+  baseURL: 'http://54.177.114.14',
+  headers: {
+    "X-CSRFTOKEN": document.cookie.split("=")[1],
+    "X-Requested-With": "XMLHttpRequest",
+    "Content-type": "application/json",
+  },
+});
 
-const userAxios = (token) =>
+
+const postAuthAxios = (token) =>
   axios.create({
     baseURL: "http://54.177.114.14",
     headers: {
@@ -62,7 +72,7 @@ export const queryElasticsearch = (query, dispatch, actionCallback) =>{
 
 export const queryEsById = (query, dispatch, actionCallback) =>{
 
-   axios.get(BASE_API, 
+   esAxios.get(`/q/`, 
      query
      )
     .then(response => {
@@ -80,7 +90,7 @@ export const queryEsById = (query, dispatch, actionCallback) =>{
  }
 
  export const getUserInfo = (dispatch) => {
-   const userInfoAxios = userAxios(`Token ${localStorage.getItem("token")}`);
+   const userInfoAxios = postAuthAxios(`Token ${localStorage.getItem("token")}`);
    userInfoAxios
      .get(`/rest-auth/user/`)
      .then((response) => {
@@ -125,8 +135,8 @@ export const queryEsById = (query, dispatch, actionCallback) =>{
    dispatch,
    actionCallback
  ) => {
-   axios
-     .post("http://54.177.114.14/rest-auth/login/", {
+  preAuthAxios
+     .post(`/rest-auth/login/`, {
        email: email,
        password: password,
      })
@@ -164,8 +174,8 @@ export const queryEsById = (query, dispatch, actionCallback) =>{
   actionCallback
 
 ) => {
-  axios
-    .post("http://54.177.114.14/rest-auth/registration/", {
+  preAuthAxios
+    .post(`/rest-auth/registration/`, {
       first_name: firstName,
       last_name: lastName,
       email: email,
