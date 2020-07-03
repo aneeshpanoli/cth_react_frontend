@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 
-import LongMenu from '../menu/longMenu';
+import LongMenu from '../menu/LongMenu';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateSelectedProject } from '../redux/actions'
 import { useHistory, useParams, Link} from "react-router-dom";

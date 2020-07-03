@@ -10,12 +10,15 @@ function filterProjectList(projList) {
   let cat_list = [];
   projList.forEach((element) => {
     if (!categs.includes(element._source.category)) {
+      // get all the unique categories
       categs.push(element._source.category);
+
+      // filter the es search json and add to list
+      cat_list.push(projList.filter((d) => d._source.category === element._source.category));
     }
   });
-  categs.forEach((cat) => {
-    cat_list.push(projList.filter((d) => d._source.category === cat));
-  });
+
+  // sort the list
   cat_list.sort(function (a, b) {
     return b.length - a.length; //ASC, For Descending order use: b - a
   });

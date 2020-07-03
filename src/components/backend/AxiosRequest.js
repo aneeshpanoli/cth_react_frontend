@@ -6,7 +6,7 @@ import { saveSessionStore } from "../localStore/session";
 // const BASE_API = process.env.REACT_APP_BASE_URL;
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.xsrfCookieName = 'csrftoken';
-const BASE_API = 'http://54.177.114.14/q/';
+const BASE_API = 'http://54.193.134.135/q/';
 // const BASE_API = 'https://www.civictechhub.net/q';
 // const BASE_API = 'http://192.168.68.125:8000/api/';
 
@@ -21,7 +21,7 @@ axios.create({
 });
 
 const esAxios = axios.create({
-  baseURL: 'http://54.177.114.14',
+  baseURL: 'http://54.193.134.135',
   headers: {
     "X-CSRFTOKEN": document.cookie.split("=")[1],
     "X-Requested-With": "XMLHttpRequest",
@@ -30,7 +30,7 @@ const esAxios = axios.create({
 });
 
 const preAuthAxios = axios.create({
-  baseURL: 'http://54.177.114.14',
+  baseURL: 'http://54.193.134.135',
   headers: {
     "X-CSRFTOKEN": document.cookie.split("=")[1],
     "X-Requested-With": "XMLHttpRequest",
@@ -41,7 +41,7 @@ const preAuthAxios = axios.create({
 
 const postAuthAxios = (token) =>
   axios.create({
-    baseURL: "http://54.177.114.14",
+    baseURL: "http://54.193.134.135",
     headers: {
       "X-CSRFTOKEN": document.cookie.split("=")[1],
       "X-Requested-With": "XMLHttpRequest",
