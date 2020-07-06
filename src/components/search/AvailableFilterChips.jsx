@@ -5,8 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import TagFacesIcon from '@material-ui/icons/TagFaces';
 import DoneIcon from '@material-ui/icons/Done';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
-import { updateFilterProject } from '../redux/actions'
-import { makeSet } from '../js/utils'
+import Avatar from '@material-ui/core/Avatar';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,49 +22,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChipsArray() {
+export default function ChipsArray(props) {
   const classes = useStyles();
-  const { searchProjectList } = useTrackedState();
-  const [chipData, setChipData] = React.useState([
-    { key: 0, label: 'Angular' },
-    { key: 1, label: 'jQuery' },
-    { key: 2, label: 'Polymer' },
-    { key: 3, label: 'React' },
-    { key: 4, label: 'Vue.js' },
-  ]);
-
-  useEffect(()=>{
-    const builtWithSet = makeSet(searchProjectList);
-    const chipDict = [...builtWithSet].sort().map((x, i) =>({key:i, label:x}) );
-    console.log(chipDict)
-    setChipData(
-      chipDict
-    )
-  },[searchProjectList])
-  const handleDelete = (chipToDelete) => () => {
-    setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
-    
-  };
+  const { searchProjectList } = useTrackedState([{key:0, label:""}]);
+  const [chipData, setChipData] = React.useState([]);
+  useEffect(()=>setChipData(props.data), [props.data])
+  
 
   return (
     <div className={classes.root}>
       {chipData.map((data) => {
-        let icon;
-
-        if (data.label === 'React') {
-          icon = <TagFacesIcon />;
-        }
 
         return (
-          <li key={data.key}>
+          <li key={data.label}>
 
             <Chip
             size="small"
-              icon={icon}
+        avatar={<Avatar>{data.key}</Avatar>}
               label={data.label}
               clickable
-              onDelete={data.label === 'React' ? undefined : handleDelete(data)}
-              onClick={data.label === 'React' ? undefined : handleDelete(data)}
+              onDelete={props.onDelete(data)}
+              onClick={props.onDelete(data)}
               className={classes.chip}
               deleteIcon={<DoneIcon />}
             />

@@ -11,12 +11,14 @@ import Divider from "@material-ui/core/Divider";
 import SendIcon from "@material-ui/icons/Send";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import { useTrackedState } from "reactive-react-redux";
+import { useTrackedState, useDispatch } from "reactive-react-redux";
 import SelectedFilterChips from "./SelectedFilterChips";
 import AvailableFilterChips from "./AvailableFilterChips";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import CancelIcon from "@material-ui/icons/Cancel";
-import { makeSet } from '../js/utils'
+import { makeSet, makeCountDict } from '../js/utils'
+import {  updateFilterProject } from '../redux/actions'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NestedList() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { searchProjectList } = useTrackedState();
 
   const [collapseStates, setCollapseStates] = React.useState({
@@ -40,16 +43,43 @@ export default function NestedList() {
     open1: false,
   });
 
-  const [ availableBuiltWith, setAvailableBuiltWith ] = React.useState();
+  const [ availableBuiltWith, setAvailableBuiltWith ] = React.useState([]);
+  const [ selectedBuiltWith, setSelectedBuiltWith ] = React.useState([]);
 
   useEffect(()=>{
-    const builtWithSet = makeSet(searchProjectList);
-    const chipDict = [...builtWithSet].sort().map((x, i) =>({key:i, label:x}) );
+    console.log("making counts dict");
+    const chipDict = makeCountDict(searchProjectList);
+    // convert set to list and sort and make json
+    // const chipDict = [...builtWithSet].sort().map((x, i) =>({key:i, label:x}) );
+    // we want the tags to update with this useEffect
     console.log(chipDict)
     setAvailableBuiltWith(
-      chipDict
+      chipDict.sort((a, b) => b.key - a.key)
     )
   },[searchProjectList])
+
+  
+  const handleDeleteSelected = (chipToDelete) => () => {
+    console.log('deleting selected')
+    console.log(chipToDelete)
+    setSelectedBuiltWith((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
+    setAvailableBuiltWith([...availableBuiltWith, chipToDelete].sort((a, b) => b.key - a.key));    
+  }
+
+
+  const handleDeleteAvailable = (chipToDelete) => () => {
+    setAvailableBuiltWith((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
+    setSelectedBuiltWith([...selectedBuiltWith, chipToDelete].sort((a, b) => b.key - a.key));
+  }
+
+
+  useEffect(() => {
+      let newD = searchProjectList.filter((d) => 
+      selectedBuiltWith.every(v =>  d._source.builtWith.includes(v.label)));
+      dispatch(updateFilterProject(newD)), [availableBuiltWith]
+});
+
+
 
   const handleClick = (c_state) => {
     let newDict = { ...collapseStates };
@@ -79,12 +109,12 @@ export default function NestedList() {
 
           {collapseStates.open1 ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <SelectedFilterChips />
+        <SelectedFilterChips data={selectedBuiltWith} onDelete={handleDeleteSelected}/>
         <Divider variant="middle" />
 
         <Collapse in={collapseStates.open1} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <AvailableFilterChips />
+            <AvailableFilterChips data={availableBuiltWith} onDelete={handleDeleteAvailable}/>
           </List>
         </Collapse>
       </Collapse>
