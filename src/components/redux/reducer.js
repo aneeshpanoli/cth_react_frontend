@@ -2,6 +2,7 @@ import * as actionType from './actionTypes';
 
 const initialState = {
     searchProjectList: null,
+    filterProjectList: null,
     selectedProject: null,
     challengeFormData: {
         owners: [], // emails
@@ -40,6 +41,8 @@ export const reducer = (state = initialState, action) => {
             return { ...state, authData: action.authData };
         case actionType.USER_INFO:
             return { ...state, userInfo: action.userInfo };
+        case actionType.FILTER_PROJECT:
+            return { ...state, filterProjectList: action.filterProjectList };
         default: return state
     }
 };

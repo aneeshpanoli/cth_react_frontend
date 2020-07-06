@@ -9,6 +9,7 @@ import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateUserOwnChallenge } from '../redux/actions'
 import { queryEsChallenges } from '../backend/AxiosRequest'
 import { MATCH_USER_EMAIL } from '../backend/EsQueries'
+import CalenderHeatmap from './CalenderHeatmap'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -52,6 +53,7 @@ export default function CenteredGrid() {
         <Grid item xs={6} sm={3}>
           <Paper className={classes.paper}>xs=6 sm=3</Paper>
         </Grid>
+        <CalenderHeatmap />
       </Grid>
     </div>
   );

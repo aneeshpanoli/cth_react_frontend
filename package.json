@@ -24,6 +24,7 @@
     "react": "^16.13.1",
     "react-backdrop-filter": "^2.1.0",
     "react-bootstrap": "^1.0.1",
+    "react-calendar-heatmap": "^1.8.1",
     "react-dom": "^16.13.1",
     "react-multi-carousel": "^2.5.5",
     "react-router": "^5.2.0",

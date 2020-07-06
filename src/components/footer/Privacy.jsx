@@ -24,7 +24,7 @@ export default function Footer () {
 <p>Welcome to civictechhub.org!</p>
 <p>Last updated: July 01, 2020</p>
 <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
-<p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the <a href="https://www.termsfeed.com/privacy-policy-generator/" target="_blank">Privacy Policy Generator</a>.</p>
+<p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy.</p>
 <h1>Interpretation and Definitions</h1>
 <h2>Interpretation</h2>
 <p>The words of which the initial letter is capitalized have meanings defined under the following conditions.

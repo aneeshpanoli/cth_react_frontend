@@ -33,3 +33,8 @@ export const updateChallengeFormData = newChallengeFormData => ({
     type: actionType.PROJECT_FORM, 
     challengeFormData: newChallengeFormData
 })
+
+export const updateFilterProject = newFilterProjectList => ({
+    type: actionType.FILTER_PROJECT, 
+    filterProjectList: newFilterProjectList
+})

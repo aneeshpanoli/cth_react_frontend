@@ -25,7 +25,6 @@ export default function SearchResults(){
     return (
         // <Container maxwidth="lg" ref={resultDiv}>   
         <Container maxwidth="lg">   
-            
         <CarouselHolder/> 
         </Container>
 

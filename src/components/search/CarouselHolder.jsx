@@ -8,16 +8,24 @@ import Divider from "@material-ui/core/Divider";
 function filterProjectList(projList) {
   let categs = [];
   let cat_list = [];
+  let other = [];
+  let filtered;
   projList.forEach((element) => {
     if (!categs.includes(element._source.category)) {
       // get all the unique categories
       categs.push(element._source.category);
 
       // filter the es search json and add to list
-      cat_list.push(projList.filter((d) => d._source.category === element._source.category));
-    }
+      filtered = projList.filter((d) => d._source.category === element._source.category);
+      console.log(filtered);
+      if(filtered.length > 2)
+      cat_list.push(filtered);
+      }else{
+      other.push(...filtered);
+       }
   });
-
+  cat_list.push(other);
+  categs.push('Miscellaneous');
   // sort the list
   cat_list.sort(function (a, b) {
     return b.length - a.length; //ASC, For Descending order use: b - a

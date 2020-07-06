@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { updateUserInfo, updateAuthData } from "../redux/actions";
+import { updateUserInfo, updateAuthData, updateFilterProject } from "../redux/actions";
 import { saveSessionStore } from "../localStore/session";
 
 
@@ -60,8 +60,9 @@ export const queryElasticsearch = (query, dispatch, actionCallback) =>{
       // process response.
       
       // this.setState({results: response});
-      // console.log(response.data.hits);
+      console.log(response.data.hits);
       dispatch(actionCallback(response.data.hits));
+      dispatch(updateFilterProject(response.data.hits));
    })
    .catch(error => {
       // catch errors.

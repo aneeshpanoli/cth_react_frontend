@@ -9,7 +9,6 @@ import { updateProjectList } from '../redux/actions'
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 
-
 export default function searchBar (props){
     const dispatch = useDispatch()
     const { searchProjectList } = useTrackedState();
@@ -74,6 +73,7 @@ export default function searchBar (props){
                 }}
                 />
                 {progress}
+                
                 </React.Fragment>
             </MuiThemeProvider>
             
