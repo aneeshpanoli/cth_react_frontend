@@ -12,6 +12,10 @@ import Grid from '@material-ui/core/Grid';
 import Header from './Header'
 import SubTitle from './SubTitle'
 import StoyText from './StoryText'
+import ProjectLinks from './ProjectLinks'
+import ProjectVideo from './ProjectVideo'
+import ProjectTech from './ProjectTech'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,16 +47,14 @@ export default function CenteredGrid() {
         <Header selectedProject={selectedProject}/>
         {/* <SubTitle selectedProject={selectedProject}/> */}
         <StoyText selectedProject={selectedProject}/>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
+        
+        <Grid container spacing={1} alignItems='flex-start' item  sm={3} xs={12}>
+        <ProjectLinks selectedProject={selectedProject}/>
+        <ProjectVideo selectedProject={selectedProject}/>
+        <ProjectTech selectedProject={selectedProject}/>
         </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
+        
+        <Grid item sm={12} xs={12}>
           <Paper className={classes.paper}>xs=3</Paper>
         </Grid>
       </Grid>

@@ -10,6 +10,7 @@ import SocialShare from './SocialShare'
 import { useHistory } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import SportsKabaddiIcon from '@material-ui/icons/SportsKabaddi';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +44,7 @@ export default function Header({ selectedProject }) {
           color='primary' 
           startIcon={<NavigateBeforeIcon />}
           variant="contained" 
-          ize="small" 
+          size="small" 
           onClick={() => history.goBack()}
           style={{marginBottom:10}}
           >Back
@@ -51,7 +52,7 @@ export default function Header({ selectedProject }) {
           <div 
           style={{ backgroundColor: "rgba(255,255,255, 0.8)" 
           , borderRadius:5, padding:10, fontWeight:700, color:'black'}}>
-          <h1>{selectedProject? selectedProject._source.title:null}</h1>
+          <h1 style={{wordWrap: 'break-word' }}>{selectedProject? selectedProject._source.title:null}</h1>
             <h5>{selectedProject? selectedProject._source.subtitle:null}</h5>
 
           </div>
@@ -81,6 +82,17 @@ export default function Header({ selectedProject }) {
               }}
             >
               <PanToolIcon />
+            </IconButton>
+
+            <IconButton
+              color="secondary"
+              aria-label="add to favorites"
+              style={{
+                backgroundColor: "rgba(110, 110, 110, 0.8)",
+                marginLeft: 10,
+              }}
+            >
+              <SportsKabaddiIcon />
             </IconButton>
 
             <IconButton

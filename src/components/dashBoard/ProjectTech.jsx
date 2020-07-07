@@ -10,9 +10,8 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'left',
-    color: theme.palette.text.primary,
-
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
   },
 }));
 
@@ -21,13 +20,16 @@ export default function Header({selectedProject}) {
 
   return (
 
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12} sm={12}>
           <Paper className={classes.paper}
           >
             <HeaderAppBar >
-            Project discription
+            Tech Stack 
             </HeaderAppBar>
-            {selectedProject? selectedProject._source.storyText:null}</Paper>
+            {selectedProject && selectedProject._source.builtWith[0]? 
+            selectedProject._source.builtWith
+            :
+            "This project has no videos"}</Paper>
         </Grid>
   );
 }

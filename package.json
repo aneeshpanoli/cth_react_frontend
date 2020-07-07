@@ -27,6 +27,7 @@
     "react-calendar-heatmap": "^1.8.1",
     "react-dom": "^16.13.1",
     "react-multi-carousel": "^2.5.5",
+    "react-player": "^2.5.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "0.9.5",

@@ -7,6 +7,7 @@ import { MORE_LIKE_THIS } from '../backend/EsQueries'
 import { queryElasticsearch } from '../backend/AxiosRequest'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateProjectList } from '../redux/actions'
+import PagesIcon from '@material-ui/icons/Pages';
 
 
 
@@ -67,7 +68,7 @@ export default function LongMenu(props) {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreVertIcon />
+        <PagesIcon />
       </IconButton>
       <Menu
         id="long-menu"

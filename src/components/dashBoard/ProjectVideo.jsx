@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import HeaderAppBar from './HeaderAppbar'
+import ReactPlayer from 'react-player'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,9 +12,8 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'left',
-    color: theme.palette.text.primary,
-
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
   },
 }));
 
@@ -21,13 +22,16 @@ export default function Header({selectedProject}) {
 
   return (
 
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12} sm={12}>
           <Paper className={classes.paper}
           >
             <HeaderAppBar >
-            Project discription
+            Video 
             </HeaderAppBar>
-            {selectedProject? selectedProject._source.storyText:null}</Paper>
+            {selectedProject && selectedProject._source.video? 
+            <ReactPlayer width="100%" url={selectedProject._source.video} />
+            :
+            "This project has no videos"}</Paper>
         </Grid>
   );
 }

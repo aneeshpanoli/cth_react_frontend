@@ -9,10 +9,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.primary.main,
-    height:40,
-    borderRadius:3,
+    height:30,
+    borderRadius:5,
     color:'white',
-    align:'center'
+    verticalAlign:'middle',
+    textAlign:'center',
+    lineHeight:4,
+    margin:10
   },
 }));
 
@@ -21,7 +24,7 @@ export default function NavTabs(props) {
 
   return (
       <div className={classes.root}>
-          {props.children}
+          <h5 style={{textTransform:'uppercase'}}>{props.children}</h5>
       </div>
 
       
