@@ -4,6 +4,7 @@ const initialState = {
     searchProjectList: null,
     filterProjectList: null,
     selectedProject: null,
+    isProgress: false,
     challengeFormData: {
         owners: [], // emails
         skills: [],
@@ -43,6 +44,8 @@ export const reducer = (state = initialState, action) => {
             return { ...state, userInfo: action.userInfo };
         case actionType.FILTER_PROJECT:
             return { ...state, filterProjectList: action.filterProjectList };
+        case actionType.UPDATE_PROGRESS:
+            return { ...state, isProgress: action.isProgress };
         default: return state
     }
 };

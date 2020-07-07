@@ -5,25 +5,23 @@ import throttle from 'lodash.throttle';
 import { queryElasticsearch } from '../backend/AxiosRequest'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { MATCH_PHRASE_PREFIX } from '../backend/EsQueries'
-import { updateProjectList } from '../redux/actions'
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { updateProjectList, updateProgress } from '../redux/actions'
+import ProgressBar from './ProgressBar';
 
 
 export default function searchBar (props){
     const dispatch = useDispatch()
-    const { searchProjectList } = useTrackedState();
     const queryDatabase = searchValue => {
         if (searchValue.length > 1){ 
             // send to axios
             let query = MATCH_PHRASE_PREFIX(searchValue, 'title');
-            queryElasticsearch(query, dispatch, updateProjectList);
+            queryElasticsearch(searchValue, query, dispatch, updateProjectList);
             setSearchValue("");
         }
        }
         
     const [searchValue, setSearchValue] = useState("");
     const [newSearchValue, setNewSearchValue] = useState("");
-    const [isSearching, setIsSearching] = useState(false);
     
     
     const throttled = useRef(throttle((newValue) => queryDatabase(newValue), 1500))
@@ -31,29 +29,15 @@ export default function searchBar (props){
     // use setNewSearchValue to update the searchstring when the enter is pressed
     // control the queryDatabase callback as the newSearchValue changes
     useEffect(() => throttled.current(newSearchValue), [newSearchValue]);
-    useEffect(() =>  setIsSearching(false), [searchProjectList]);
   
-    
-
        const enterKeyPressedHandler = event => {
         
         if (event.keyCode === 13 || event.key === 'Enter' || event.charCode === 13) {
             setNewSearchValue(searchValue);
-            setIsSearching(true);
+            
         }
          }
         
-
-    let progress;
-    if (isSearching){
-        progress = <LinearProgress style={{
-        margin: '0 auto',
-        maxWidth: 800,
-        width: '100%',
-        }} />;
-    }else{
-        progress = <div></div>;
-    }
       
         return (
            
@@ -72,7 +56,7 @@ export default function searchBar (props){
                 marginTop: props.marginTop
                 }}
                 />
-                {progress}
+                <ProgressBar />
                 
                 </React.Fragment>
             </MuiThemeProvider>

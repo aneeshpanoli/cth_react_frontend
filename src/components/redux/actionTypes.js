@@ -4,3 +4,5 @@ export const AUTH_DATA = 'AUTH_DATA';
 export const USER_INFO = 'USER_INFO';
 export const CHALLENGE_FORM = 'CHALLENGE_FORM';
 export const FILTER_PROJECT = 'FILTER_PROJECT';
+export const UPDATE_PROGRESS = 'UPDATE_PROGRESS';
+

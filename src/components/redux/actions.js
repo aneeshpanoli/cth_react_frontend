@@ -38,3 +38,8 @@ export const updateFilterProject = newFilterProjectList => ({
     type: actionType.FILTER_PROJECT, 
     filterProjectList: newFilterProjectList
 })
+
+export const updateProgress = newIsProgress => ({
+    type: actionType.UPDATE_PROGRESS, 
+    isProgress: newIsProgress
+})

@@ -41,7 +41,7 @@ export default function CenteredGrid() {
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Header selectedProject={selectedProject}/>
-        <SubTitle selectedProject={selectedProject}/>
+        {/* <SubTitle selectedProject={selectedProject}/> */}
         <StoyText selectedProject={selectedProject}/>
         <Grid item xs={3}>
           <Paper className={classes.paper}>xs=3</Paper>

@@ -11,8 +11,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     height:40,
     borderRadius:3,
-    position:'relative',
-    top:-15,
     color:'white',
     align:'center'
   },

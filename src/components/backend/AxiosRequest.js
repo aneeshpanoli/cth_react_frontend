@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { updateUserInfo, updateAuthData, updateFilterProject } from "../redux/actions";
-import { saveSessionStore } from "../localStore/session";
+import { updateUserInfo, updateProgress, updateFilterProject } from "../redux/actions";
+import { saveSessionStore, retriveSessionStore } from "../localStore/session";
 
 
 // const BASE_API = process.env.REACT_APP_BASE_URL;
@@ -51,8 +51,15 @@ const postAuthAxios = (token) =>
   });
 
   
-export const queryElasticsearch = (query, dispatch, actionCallback) =>{
-
+export const queryElasticsearch = (userInput, query, dispatch, actionCallback) =>{
+  dispatch(updateProgress(true));
+  // update the search project list
+  if (retriveSessionStore(userInput+"query", dispatch, actionCallback)){
+    // update filter project list
+    retriveSessionStore(userInput+"query", dispatch, updateFilterProject)
+    return
+  }
+  
   axios.get(BASE_API, 
     query
     )
@@ -63,6 +70,7 @@ export const queryElasticsearch = (query, dispatch, actionCallback) =>{
       // console.log(response.data.hits);
       dispatch(actionCallback(response.data.hits));
       dispatch(updateFilterProject(response.data.hits));
+      saveSessionStore(userInput+"query", response.data.hits)
    })
    .catch(error => {
       // catch errors.

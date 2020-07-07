@@ -23,11 +23,6 @@ export default function SearchProjects (){
     //     }
     //    });
     
-    React.useEffect(() => {
-        let query = FETCH_RANDOM_ON_SESSION("1477072619038");
-        queryElasticsearch(query, dispatch, updateProjectList);
-    }, []);
-    
     return (
         <Container style={{minWidth:"100%"}}>
         <TopNav />

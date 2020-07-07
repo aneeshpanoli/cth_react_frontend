@@ -37,7 +37,7 @@ export default function NestedList() {
   const { searchProjectList, filterProjectList } = useTrackedState();
 
   const [collapseStates, setCollapseStates] = React.useState({
-    open: false,
+    open: true,
     open1: false,
     open2: false,
   });

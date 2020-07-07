@@ -13,7 +13,6 @@ import Searchbar from '../search/SearchBar';
 
 
 
-
 export default function SearchProjects (){
     const dispatch = useDispatch();
     const history = useHistory();
@@ -26,7 +25,7 @@ export default function SearchProjects (){
     
     React.useEffect(() => {
         let query = FETCH_RANDOM_ON_SESSION("1477072619038");
-        queryElasticsearch(query, dispatch, updateProjectList);
+        queryElasticsearch("1477072619038", query, dispatch, updateProjectList);
     }, []);
     
     return (
