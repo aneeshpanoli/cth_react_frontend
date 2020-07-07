@@ -1,23 +1,43 @@
 
 
-export const makeSet = (searchHits) =>{
+export const makeSetStr= (searchHits, col) =>{
 
     let newSet = new Set([]);
     searchHits.forEach(element => {
-        element._source.builtWith.forEach(newSet.add, newSet);
+        newSet.add(element._source[col])
     });
     return newSet;
 
 }
 
-export const makeCountDict = (searchHits) =>{
+export const makeCountDictArr = (searchHits, col) =>{
 
     let newDict = {};
     searchHits.forEach(element => {
-        element._source.builtWith.map((ele, i) => newDict[ele] = newDict[ele]? newDict[ele]+1: 1);
+        element._source[col].map((ele, i) => newDict[ele] = newDict[ele]? newDict[ele]+1: 1);
     });
 
     let newArr = []
     Object.keys(newDict).map((el) => newArr.push({key:newDict[el], label:el}))
     return newArr;
+}
+
+export const makeCountDictStr = (searchHits, col) =>{
+
+    let newDict = {};
+    searchHits.forEach(ele => {
+        newDict[ele._source[col]] = newDict[ele._source[col]]? newDict[ele._source[col]]+1: 1;
+    });
+
+    let newArr = []
+    Object.keys(newDict).map((el) => newArr.push({key:newDict[el], label:el}))
+    return newArr;
+}
+
+export const sortStringObjArr= (objArray) =>{
+    return  objArray.sort(function(a, b) {
+        var textA = a.label.toUpperCase();
+        var textB = b.label.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
 }

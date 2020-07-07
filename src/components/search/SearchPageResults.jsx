@@ -26,8 +26,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchResults(){
     const { filterProjectList } = useTrackedState();
-
-    const dispatch = useDispatch()
     const classes = useStyles();
 
      // scroll search results to top on on state change

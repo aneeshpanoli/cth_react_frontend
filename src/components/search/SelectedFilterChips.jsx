@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
-import Paper from '@material-ui/core/Paper';
-import TagFacesIcon from '@material-ui/icons/TagFaces';
 import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({

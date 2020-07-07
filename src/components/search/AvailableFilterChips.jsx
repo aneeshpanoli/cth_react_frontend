@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
-import Paper from '@material-ui/core/Paper';
-import TagFacesIcon from '@material-ui/icons/TagFaces';
 import DoneIcon from '@material-ui/icons/Done';
-import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import Avatar from '@material-ui/core/Avatar';
 
 
@@ -24,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChipsArray(props) {
   const classes = useStyles();
-  const { searchProjectList } = useTrackedState([{key:0, label:""}]);
   const [chipData, setChipData] = React.useState([]);
   useEffect(()=>setChipData(props.data), [props.data])
   

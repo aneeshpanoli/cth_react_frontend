@@ -16,7 +16,7 @@ import SelectedFilterChips from "./SelectedFilterChips";
 import AvailableFilterChips from "./AvailableFilterChips";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import CancelIcon from "@material-ui/icons/Cancel";
-import { makeSet, makeCountDict } from '../js/utils'
+import { makeCountDictStr, makeCountDictArr, sortStringObjArr } from '../js/utils'
 import {  updateFilterProject } from '../redux/actions'
 
 
@@ -41,43 +41,63 @@ export default function NestedList() {
   const [collapseStates, setCollapseStates] = React.useState({
     open: false,
     open1: false,
+    open2: false,
   });
 
   const [ availableBuiltWith, setAvailableBuiltWith ] = React.useState([]);
   const [ selectedBuiltWith, setSelectedBuiltWith ] = React.useState([]);
+  const [ availableCategories, setAvailableCategories ] = React.useState([]);
+  const [ selectedCategories, setSelectedCategories ] = React.useState([]);
 
   useEffect(()=>{
     console.log("making counts dict");
-    const chipDict = makeCountDict(searchProjectList);
+    const builtWith = makeCountDictArr(searchProjectList, 'builtWith');
+    const categories = makeCountDictStr(searchProjectList, 'category');
+    // set map [...categories].sort().map((x, i) =>({key:i, label:x}) )
     // convert set to list and sort and make json
-    // const chipDict = [...builtWithSet].sort().map((x, i) =>({key:i, label:x}) );
     // we want the tags to update with this useEffect
-    console.log(chipDict)
-    setAvailableBuiltWith(
-      chipDict.sort((a, b) => b.key - a.key)
-    )
+    // console.log(chipDict)
+    setAvailableBuiltWith(sortStringObjArr(builtWith))
+    setAvailableCategories(sortStringObjArr(categories));
+
+    // setAvailableCategories(categories.sort((a, b) => b.value - a.value));
   },[searchProjectList])
 
   
   const handleDeleteSelected = (chipToDelete) => () => {
-    console.log('deleting selected')
-    console.log(chipToDelete)
     setSelectedBuiltWith((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
-    setAvailableBuiltWith([...availableBuiltWith, chipToDelete].sort((a, b) => b.key - a.key));    
+    setAvailableBuiltWith(sortStringObjArr([...availableBuiltWith, chipToDelete]));
+
   }
 
 
   const handleDeleteAvailable = (chipToDelete) => () => {
     setAvailableBuiltWith((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
-    setSelectedBuiltWith([...selectedBuiltWith, chipToDelete].sort((a, b) => b.key - a.key));
+    setSelectedBuiltWith(sortStringObjArr([...selectedBuiltWith, chipToDelete]));
+  }
+
+  const handleDeleteSelected1 = (chipToDelete) => () => {
+    setSelectedCategories((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
+    setAvailableCategories(sortStringObjArr([...availableCategories, chipToDelete]));    
   }
 
 
+  const handleDeleteAvailable1 = (chipToDelete) => () => {
+    setAvailableCategories((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
+    setSelectedCategories(sortStringObjArr([...selectedCategories, chipToDelete]));
+  }
+
   useEffect(() => {
-      let newD = searchProjectList.filter((d) => 
-      selectedBuiltWith.every(v =>  d._source.builtWith.includes(v.label)));
-      dispatch(updateFilterProject(newD)), [availableBuiltWith]
-});
+      const newD = searchProjectList.filter((d) => 
+      selectedBuiltWith.every(v =>  d._source.builtWith.includes(v.label)))
+      dispatch(updateFilterProject(newD))
+}, [selectedBuiltWith]);
+
+useEffect(() => {
+    const newD1 = searchProjectList.filter((d) => 
+    selectedCategories.every(v =>  d._source.category === v.label));
+    dispatch(updateFilterProject(newD1))
+}, [selectedCategories]);
 
 
 
@@ -110,11 +130,29 @@ export default function NestedList() {
           {collapseStates.open1 ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <SelectedFilterChips data={selectedBuiltWith} onDelete={handleDeleteSelected}/>
-        <Divider variant="middle" />
+        
 
         <Collapse in={collapseStates.open1} timeout="auto" unmountOnExit>
+        <Divider variant="middle" />
           <List component="div" disablePadding>
             <AvailableFilterChips data={availableBuiltWith} onDelete={handleDeleteAvailable}/>
+          </List>
+        </Collapse>
+
+
+        <Divider variant="inset" />
+        <ListItem button onClick={() => handleClick("open2")}>
+          <ListItemText primary="Categories" />
+
+          {collapseStates.open2 ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <SelectedFilterChips data={selectedCategories} onDelete={handleDeleteSelected1}/>
+        
+
+        <Collapse in={collapseStates.open2} timeout="auto" unmountOnExit>
+        <Divider variant="middle" />
+          <List component="div" disablePadding>
+            <AvailableFilterChips data={availableCategories} onDelete={handleDeleteAvailable1}/>
           </List>
         </Collapse>
       </Collapse>

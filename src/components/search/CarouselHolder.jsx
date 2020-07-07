@@ -17,7 +17,7 @@ function filterProjectList(projList) {
 
       // filter the es search json and add to list
       filtered = projList.filter((d) => d._source.category === element._source.category);
-      console.log(filtered);
+      // console.log(filtered);
       if(filtered.length > 2)
       cat_list.push(filtered);
       }else{
