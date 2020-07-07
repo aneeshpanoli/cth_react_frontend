@@ -6,7 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     flexWrap: 'wrap',
     listStyle: 'none',
     padding: theme.spacing(0.5),
@@ -29,8 +29,10 @@ export default function ChipsArray(props) {
         return (
           <li key={data.label}>
             <Chip
+            variant="outlined"
             size="small"
               clickable
+              color="primary"
               avatar={<Avatar>{data.key}</Avatar>}
               label={data.label}
               onDelete={props.onDelete(data)}

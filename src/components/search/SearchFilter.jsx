@@ -16,9 +16,12 @@ import SelectedFilterChips from "./SelectedFilterChips";
 import AvailableFilterChips from "./AvailableFilterChips";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import CancelIcon from "@material-ui/icons/Cancel";
-import { makeCountDictStr, makeCountDictArr, sortStringObjArr } from '../js/utils'
-import {  updateFilterProject } from '../redux/actions'
-
+import {
+  makeCountDictStr,
+  makeCountDictArr,
+  sortStringObjArr,
+} from "../js/utils";
+import { updateFilterProject } from "../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,12 +33,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
-
 export default function NestedList() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const resultDiv = React.useRef(null);
   const { searchProjectList } = useTrackedState();
 
   const [collapseStates, setCollapseStates] = React.useState({
@@ -44,62 +45,73 @@ export default function NestedList() {
     open2: false,
   });
 
-  const [ availableBuiltWith, setAvailableBuiltWith ] = React.useState([]);
-  const [ selectedBuiltWith, setSelectedBuiltWith ] = React.useState([]);
-  const [ availableCategories, setAvailableCategories ] = React.useState([]);
-  const [ selectedCategories, setSelectedCategories ] = React.useState([]);
+  const [availableBuiltWith, setAvailableBuiltWith] = React.useState([]);
+  const [selectedBuiltWith, setSelectedBuiltWith] = React.useState([]);
+  const [availableCategories, setAvailableCategories] = React.useState([]);
+  const [selectedCategories, setSelectedCategories] = React.useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("making counts dict");
-    const builtWith = makeCountDictArr(searchProjectList, 'builtWith');
-    const categories = makeCountDictStr(searchProjectList, 'category');
+    const builtWith = makeCountDictArr(searchProjectList, "builtWith");
+    const categories = makeCountDictStr(searchProjectList, "category");
     // set map [...categories].sort().map((x, i) =>({key:i, label:x}) )
     // convert set to list and sort and make json
     // we want the tags to update with this useEffect
     // console.log(chipDict)
-    setAvailableBuiltWith(sortStringObjArr(builtWith))
+    setAvailableBuiltWith(sortStringObjArr(builtWith));
     setAvailableCategories(sortStringObjArr(categories));
 
     // setAvailableCategories(categories.sort((a, b) => b.value - a.value));
-  },[searchProjectList])
+  }, [searchProjectList]);
 
-  
   const handleDeleteSelected = (chipToDelete) => () => {
-    setSelectedBuiltWith((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
-    setAvailableBuiltWith(sortStringObjArr([...availableBuiltWith, chipToDelete]));
-
-  }
-
+    setSelectedBuiltWith((chips) =>
+      chips.filter((chip) => chip.label !== chipToDelete.label)
+    );
+    setAvailableBuiltWith(
+      sortStringObjArr([...availableBuiltWith, chipToDelete])
+    );
+  };
 
   const handleDeleteAvailable = (chipToDelete) => () => {
-    setAvailableBuiltWith((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
-    setSelectedBuiltWith(sortStringObjArr([...selectedBuiltWith, chipToDelete]));
-  }
+    handleClick("open1");
+    setAvailableBuiltWith((chips) =>
+      chips.filter((chip) => chip.label !== chipToDelete.label)
+    );
+    setSelectedBuiltWith(
+      sortStringObjArr([...selectedBuiltWith, chipToDelete])
+    );
+  };
 
   const handleDeleteSelected1 = (chipToDelete) => () => {
-    setSelectedCategories((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
-    setAvailableCategories(sortStringObjArr([...availableCategories, chipToDelete]));    
-  }
-
+    setSelectedCategories((chips) =>
+      chips.filter((chip) => chip.label !== chipToDelete.label)
+    );
+    setAvailableCategories(
+      sortStringObjArr([...availableCategories, chipToDelete])
+    );
+  };
 
   const handleDeleteAvailable1 = (chipToDelete) => () => {
-    setAvailableCategories((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
-    setSelectedCategories(sortStringObjArr([...selectedCategories, chipToDelete]));
-  }
+    handleClick("open2");
+    setAvailableCategories((chips) =>
+      chips.filter((chip) => chip.label !== chipToDelete.label)
+    );
+    setSelectedCategories(
+      sortStringObjArr([...selectedCategories, chipToDelete])
+    );
+  };
 
   useEffect(() => {
-      const newD = searchProjectList.filter((d) => 
-      selectedBuiltWith.every(v =>  d._source.builtWith.includes(v.label)))
-      dispatch(updateFilterProject(newD))
-}, [selectedBuiltWith]);
-
-useEffect(() => {
-    const newD1 = searchProjectList.filter((d) => 
-    selectedCategories.every(v =>  d._source.category === v.label));
-    dispatch(updateFilterProject(newD1))
-}, [selectedCategories]);
-
-
+    let newD = searchProjectList.filter((d) =>
+      selectedBuiltWith.every((v) => d._source.builtWith.includes(v.label))
+    );
+    newD = newD.filter((d) =>
+      selectedCategories.every((v) => d._source.category === v.label)
+    );
+    dispatch(updateFilterProject(newD));
+    //   window.scrollTo(0, resultDiv.current.offsetTop);
+  }, [selectedBuiltWith, selectedCategories]);
 
   const handleClick = (c_state) => {
     let newDict = { ...collapseStates };
@@ -112,6 +124,7 @@ useEffect(() => {
       component="nav"
       aria-labelledby="nested-list-subheader"
       className={classes.root}
+      dense
     >
       <ListItem button onClick={() => handleClick("open")}>
         <ListItemIcon>
@@ -129,16 +142,20 @@ useEffect(() => {
 
           {collapseStates.open1 ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <SelectedFilterChips data={selectedBuiltWith} onDelete={handleDeleteSelected}/>
-        
+        <SelectedFilterChips
+          data={selectedBuiltWith}
+          onDelete={handleDeleteSelected}
+        />
 
         <Collapse in={collapseStates.open1} timeout="auto" unmountOnExit>
-        <Divider variant="middle" />
+          <Divider variant="middle" />
           <List component="div" disablePadding>
-            <AvailableFilterChips data={availableBuiltWith} onDelete={handleDeleteAvailable}/>
+            <AvailableFilterChips
+              data={availableBuiltWith}
+              onDelete={handleDeleteAvailable}
+            />
           </List>
         </Collapse>
-
 
         <Divider variant="inset" />
         <ListItem button onClick={() => handleClick("open2")}>
@@ -146,16 +163,22 @@ useEffect(() => {
 
           {collapseStates.open2 ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <SelectedFilterChips data={selectedCategories} onDelete={handleDeleteSelected1}/>
-        
+        <SelectedFilterChips
+          data={selectedCategories}
+          onDelete={handleDeleteSelected1}
+        />
 
         <Collapse in={collapseStates.open2} timeout="auto" unmountOnExit>
-        <Divider variant="middle" />
+          <Divider variant="middle" />
           <List component="div" disablePadding>
-            <AvailableFilterChips data={availableCategories} onDelete={handleDeleteAvailable1}/>
+            <AvailableFilterChips
+              data={availableCategories}
+              onDelete={handleDeleteAvailable1}
+            />
           </List>
         </Collapse>
       </Collapse>
+      <div ref={resultDiv}></div>
     </List>
   );
 }
