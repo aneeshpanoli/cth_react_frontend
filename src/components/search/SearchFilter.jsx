@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import Divider from "@material-ui/core/Divider";
-import SendIcon from "@material-ui/icons/Send";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
@@ -37,7 +34,7 @@ export default function NestedList() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const resultDiv = React.useRef(null);
-  const { searchProjectList } = useTrackedState();
+  const { searchProjectList, filterProjectList } = useTrackedState();
 
   const [collapseStates, setCollapseStates] = React.useState({
     open: false,
@@ -51,9 +48,8 @@ export default function NestedList() {
   const [selectedCategories, setSelectedCategories] = React.useState([]);
 
   useEffect(() => {
-    console.log("making counts dict");
-    const builtWith = makeCountDictArr(searchProjectList, "builtWith");
-    const categories = makeCountDictStr(searchProjectList, "category");
+    const builtWith = makeCountDictArr(filterProjectList, "builtWith");
+    const categories = makeCountDictStr(filterProjectList, "category");
     // set map [...categories].sort().map((x, i) =>({key:i, label:x}) )
     // convert set to list and sort and make json
     // we want the tags to update with this useEffect
@@ -62,7 +58,7 @@ export default function NestedList() {
     setAvailableCategories(sortStringObjArr(categories));
 
     // setAvailableCategories(categories.sort((a, b) => b.value - a.value));
-  }, [searchProjectList]);
+  }, [filterProjectList]);
 
   const handleDeleteSelected = (chipToDelete) => () => {
     setSelectedBuiltWith((chips) =>
@@ -136,6 +132,28 @@ export default function NestedList() {
       </ListItem>
 
       <Collapse in={collapseStates.open} timeout="auto" unmountOnExit>
+
+      <Divider variant="inset" />
+        <ListItem button onClick={() => handleClick("open2")}>
+          <ListItemText primary="Categories" />
+
+          {collapseStates.open2 ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <SelectedFilterChips
+          data={selectedCategories}
+          onDelete={handleDeleteSelected1}
+        />
+
+        <Collapse in={collapseStates.open2} timeout="auto" unmountOnExit>
+          <Divider variant="middle" />
+          <List component="div" disablePadding>
+            <AvailableFilterChips
+              data={availableCategories}
+              onDelete={handleDeleteAvailable1}
+            />
+          </List>
+        </Collapse>
+
         <Divider variant="inset" />
         <ListItem button onClick={() => handleClick("open1")}>
           <ListItemText primary="Technology" />
@@ -157,26 +175,7 @@ export default function NestedList() {
           </List>
         </Collapse>
 
-        <Divider variant="inset" />
-        <ListItem button onClick={() => handleClick("open2")}>
-          <ListItemText primary="Categories" />
-
-          {collapseStates.open2 ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <SelectedFilterChips
-          data={selectedCategories}
-          onDelete={handleDeleteSelected1}
-        />
-
-        <Collapse in={collapseStates.open2} timeout="auto" unmountOnExit>
-          <Divider variant="middle" />
-          <List component="div" disablePadding>
-            <AvailableFilterChips
-              data={availableCategories}
-              onDelete={handleDeleteAvailable1}
-            />
-          </List>
-        </Collapse>
+        
       </Collapse>
       <div ref={resultDiv}></div>
     </List>

@@ -60,7 +60,7 @@ export const queryElasticsearch = (query, dispatch, actionCallback) =>{
       // process response.
       
       // this.setState({results: response});
-      console.log(response.data.hits);
+      // console.log(response.data.hits);
       dispatch(actionCallback(response.data.hits));
       dispatch(updateFilterProject(response.data.hits));
    })

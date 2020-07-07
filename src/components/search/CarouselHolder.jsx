@@ -47,8 +47,8 @@ export default function CarouselHolder() {
             <Divider />
             <sup>Category</sup>
             <h2>
-              {r[0]._source.category.charAt(0).toUpperCase() +
-                r[0]._source.category.slice(1)}
+              {r[0]? r[0]._source.category.charAt(0).toUpperCase() +
+                r[0]._source.category.slice(1): null}
             </h2>
             <Divider light />
             <SearchCorousel categoryList={r} />
