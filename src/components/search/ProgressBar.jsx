@@ -6,7 +6,7 @@ export default function ProgresBar() {
     // const [isLoading, setIsLoading] = React.useState(false);
     const { isProgress } = useTrackedState();
     // React.useEffect(()=>setIsLoading(isProgress), [isProgress]);
-  if (isProgress) {
+  if (!isProgress) {
     return (
       <LinearProgress
         style={{

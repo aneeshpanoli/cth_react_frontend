@@ -17,8 +17,11 @@ import { Circle } from '../d3/AnimatedCircles'
 
 export default function homePage (){
     const dispatch = useDispatch();
-    let query = FETCH_RANDOM_ON_SESSION("1477072619038");
-    queryElasticsearch("1477072619038", query, dispatch, updateProjectList);
+    React.useEffect(()=>{
+        let query = FETCH_RANDOM_ON_SESSION("1477072619038");
+        queryElasticsearch("1477072619038", query, dispatch, updateProjectList);
+    }, [])
+   
     return (
         <div>
         <Navbar />

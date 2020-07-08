@@ -54,7 +54,8 @@ const postAuthAxios = (token) =>
 export const queryElasticsearch = (userInput, query, dispatch, actionCallback) =>{
   dispatch(updateProgress(true));
   // update the search project list
-  if (retriveSessionStore(userInput+"query", dispatch, actionCallback)){
+  let proceed = userInput && retriveSessionStore(userInput+"query", dispatch, actionCallback);
+  if (proceed){
     // update filter project list
     retriveSessionStore(userInput+"query", dispatch, updateFilterProject)
     return
@@ -70,7 +71,7 @@ export const queryElasticsearch = (userInput, query, dispatch, actionCallback) =
       // console.log(response.data.hits);
       dispatch(actionCallback(response.data.hits));
       dispatch(updateFilterProject(response.data.hits));
-      saveSessionStore(userInput+"query", response.data.hits)
+      proceed && saveSessionStore(userInput+"query", response.data.hits)
    })
    .catch(error => {
       // catch errors.
@@ -136,6 +137,19 @@ export const queryEsById = (query, dispatch, actionCallback) =>{
 };
 
 
+export const socialSignIn = (endpoint) => {
+  preAuthAxios
+     .post(endpoint)
+     .then((res) => {
+       // console.log(res.data);
+      
+     })
+     .catch((err) => {
+       // catch errors.
+   
+       console.log(err.response.data);
+     });
+}
 
  export const authSignIn = (
    email,

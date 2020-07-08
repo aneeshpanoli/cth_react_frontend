@@ -9,6 +9,16 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import google from "../../Assets/img/google.svg";
 import { Fab } from "@material-ui/core";
 import { SvgIcon } from "@material-ui/core";
+import { socialSignIn } from "../backend/AxiosRequest";
+import SocialButton from "./SocialButton";
+//https://github.com/deepakaggarwal7/react-social-login/blob/master/demo/containers/demo.js
+const handleSocialLogin = (user) => {
+  console.log(user);
+};
+
+const handleSocialLoginFailure = (err) => {
+  console.error(err);
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,55 +39,31 @@ export default function ContainedButtons() {
 
   return (
     <div className={classes.root}>
-      <Button
-        variant="contained"
-        color="secondary"
-        className={classes.button}
-        startIcon={<img src={google}></img>}
-      >
-        Sign in With Google
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        className={classes.button}
-        startIcon={<GitHubIcon />}
-      >
-        Sign in with GitHub
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        className={classes.button}
-        startIcon={<LinkedInIcon />}
-      >
-        Sign in with LinkedIn
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        className={classes.button}
-        startIcon={<TwitterIcon />}
-      >
-        Sign in with Twitter
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        className={classes.button}
+      <SocialButton
+        provider="facebook"
+        appId="2005220039621593"
+        onLoginSuccess={handleSocialLogin}
+        onLoginFailure={handleSocialLoginFailure}
         startIcon={<FacebookIcon />}
+        key={'fb'}
       >
         Sign in with Facebook
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        className={classes.button}
+      </SocialButton>
+
+      <SocialButton
+        provider="instagram"
+        redirect=""
+        appId="2005220039621593"
+        onLoginSuccess={handleSocialLogin}
+        onLoginFailure={handleSocialLoginFailure}
         startIcon={<InstagramIcon />}
+        key={'instagram'}
       >
-        Sign in with Instagram
-      </Button>
+        Sign in with instagram
+      </SocialButton>
+
+
+     
     </div>
   );
 }
-

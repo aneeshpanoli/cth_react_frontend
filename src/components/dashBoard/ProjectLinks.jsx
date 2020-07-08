@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: 'left',
     color: theme.palette.text.secondary,
+    wordWrap: 'break-word'
   },
 }));
 
@@ -24,16 +25,15 @@ export default function Header({selectedProject}) {
   const renderLinks = () => {
     const all_links = [...selectedProject._source.links];
     all_links.push(selectedProject._source.url)
-    console.log(all_links);
     const elements = []
     all_links.forEach(element => {
       elements.push(
-      <Button startIcon={<LinkIcon/>}
+      <Button key={element} startIcon={<LinkIcon/>}
       target="_blank" 
       size='small' href={element}
       style={{margin:5}}
       >
-        {new URL(element).hostname}
+        {new URL(element).hostname.slice(0, 31)}
         </Button>)
     });
     return elements;

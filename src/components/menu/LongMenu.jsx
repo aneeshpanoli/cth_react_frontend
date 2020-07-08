@@ -32,7 +32,7 @@ export default function LongMenu(props) {
     let query = MORE_LIKE_THIS(
         props.r._source.storyText, ['storyText']
         );
-    queryElasticsearch(query, dispatch, updateProjectList);
+    queryElasticsearch("", query, dispatch, updateProjectList);
   };
 
   const handleSimilarStack = () => {
@@ -40,7 +40,7 @@ export default function LongMenu(props) {
     let query = MORE_LIKE_THIS(
         props.r._source.builtWith, ['builtWith']
         );
-    queryElasticsearch(query, dispatch, updateProjectList);
+    queryElasticsearch("", query, dispatch, updateProjectList);
   };
 
   const handleSimilarCountry= () => {
@@ -48,7 +48,7 @@ export default function LongMenu(props) {
     let query = MORE_LIKE_THIS(
         props.r._source.country, ['country']
         );
-    queryElasticsearch(query, dispatch, updateProjectList);
+    queryElasticsearch(props.r._source.country, query, dispatch, updateProjectList);
   };
 
   const handleSimilarHackathon= () => {
@@ -56,7 +56,7 @@ export default function LongMenu(props) {
     let query = MORE_LIKE_THIS(
         props.r._source.hackathons, ['hackathons']
         );
-    queryElasticsearch(query, dispatch, updateProjectList);
+    queryElasticsearch("",query, dispatch, updateProjectList);
   };
 
 

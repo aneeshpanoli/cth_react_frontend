@@ -5,7 +5,7 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
     return {
             'params': {
                 'q':{
-                    "size": 50,
+                    "size": 100,
                     'query':{
                         'match_phrase_prefix':{
                             [column]: userInput
@@ -21,7 +21,7 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
         return {
                 'params': {
                     'q':{
-                        "size": 50,
+                        "size": 100,
                         'query':{
                             "more_like_this" : {
                                 "fields" : columns, //array

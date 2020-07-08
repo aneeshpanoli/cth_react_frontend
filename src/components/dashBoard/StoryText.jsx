@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: 'left',
     color: theme.palette.text.primary,
+    wordWrap: 'break-word'
 
   },
 }));

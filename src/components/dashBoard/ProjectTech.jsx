@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import HeaderAppBar from './HeaderAppbar'
+import Chip from '@material-ui/core/Chip';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,6 +20,23 @@ const useStyles = makeStyles((theme) => ({
 export default function Header({selectedProject}) {
   const classes = useStyles();
 
+  const renderChips = () =>{
+    const chips = []
+    selectedProject._source.builtWith.forEach(element => {
+      chips.push(
+      <Chip
+            size="small"
+            key={element}
+              label={element}
+              className={classes.chip}
+              style={{margin:5}}
+            />
+      )
+    }
+    );
+    return chips
+  }
+
   return (
 
         <Grid item xs={12} sm={12}>
@@ -27,9 +46,9 @@ export default function Header({selectedProject}) {
             Tech Stack 
             </HeaderAppBar>
             {selectedProject && selectedProject._source.builtWith[0]? 
-            selectedProject._source.builtWith
+            renderChips()
             :
-            "This project has no videos"}</Paper>
+            "No tags found"}</Paper>
         </Grid>
   );
 }
