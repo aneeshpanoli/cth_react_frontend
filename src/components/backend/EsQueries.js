@@ -4,6 +4,7 @@
 export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
     return {
             'params': {
+                'index':'projects',
                 'q':{
                     "size": 100,
                     'query':{
@@ -16,10 +17,43 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
         }
     }
 
+    export const  MATCH_PHRASE = (userInput, column) =>{
+        return {
+                'params': {
+                    'index':'projects',
+                    'q':{
+                        "size": 100,
+                        'query':{
+                            'match_phrase':{
+                                [column]: userInput
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        export const  MATCH = (userInput, column) =>{
+            return {
+                    'params': {
+                        'index':'projects',
+                        'q':{
+                            "size": 100,
+                            'query':{
+                                'match':{
+                                    [column]: userInput
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+    
 
     export const  MORE_LIKE_THIS = (userInput, columns) =>{
         return {
                 'params': {
+                    'index':'projects',
                     'q':{
                         "size": 100,
                         'query':{
@@ -39,6 +73,7 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
         export const MATCH_ID = (id) =>{
             return {
                 'params': {
+                    'index':'projects',
                     'q':{
                         "query" : {
                             "match":{
@@ -52,9 +87,27 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
         }
     }
 
+    export const MATCH_EMAIL = (email) =>{
+        return {
+            'params': {
+                'index':'user',
+                'q':{
+                    "query" : {
+                        "match":{
+                           "email": email
+                        }
+                      
+                }
+            }
+        }
+
+    }
+}
+
     export const FETCH_RANDOM_ON_SESSION = (session_id) =>{
         return {
             'params': {
+                'index':'projects',
                 'q':{  
                     "size": 50,
                         "query": {

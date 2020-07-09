@@ -29,10 +29,10 @@ export default function SearchResults(){
     const classes = useStyles();
 
      // scroll search results to top on on state change
-    //  const resultDiv = useRef(null); 
-    //  useEffect(() => {
-    //     window.scrollTo(0, resultDiv.current.offsetTop);
-    //  });
+     const resultDiv = useRef(null); 
+     useEffect(() => {
+        window.scrollTo(0, resultDiv.current.offsetTop);
+     }, []);
 
 
     return (
@@ -50,8 +50,10 @@ export default function SearchResults(){
         </Card>
         </Box>
         </Grid>
-        <Grid item xs={12} sm={12} >
-        <Box display="flex" flexWrap="wrap" justifyContent="center"> 
+        {filterProjectList?<span>1 - { filterProjectList.length}/{ filterProjectList.length}</span> :null}
+
+        <Grid item xs={12} sm={12} ref={resultDiv}>
+        <Box display="flex" flexWrap="wrap" justifyContent="center" > 
         {filterProjectList? filterProjectList.map((r, i) => (
             <ProjectCard key={i} r={r} />
           )):null} 

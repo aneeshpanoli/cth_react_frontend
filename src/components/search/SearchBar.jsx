@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import throttle from 'lodash.throttle';
 import { queryElasticsearch } from '../backend/AxiosRequest'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
-import { MATCH_PHRASE_PREFIX } from '../backend/EsQueries'
+import { MATCH } from '../backend/EsQueries'
 import { updateProjectList, updateProgress } from '../redux/actions'
 import ProgressBar from './ProgressBar';
 
@@ -14,7 +14,7 @@ export default function searchBar (props){
     const queryDatabase = searchValue => {
         if (searchValue.length > 1){ 
             // send to axios
-            let query = MATCH_PHRASE_PREFIX(searchValue, 'title');
+            let query = MATCH(searchValue, 'storyText');
             queryElasticsearch(searchValue, query, dispatch, updateProjectList);
             setSearchValue("");
         }

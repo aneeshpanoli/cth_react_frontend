@@ -4,6 +4,9 @@ import { updateProgress } from "../redux/actions";
 import SearchCorousel from "./SearchCorousel";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import Divider from "@material-ui/core/Divider";
+import { useHistory } from "react-router";
+import Button from "@material-ui/core/Button";
+
 
 function filterProjectList(projList) {
   let categs = [];
@@ -26,6 +29,10 @@ function filterProjectList(projList) {
 
 export default function CarouselHolder() {
   const { searchProjectList } = useTrackedState();
+  const history = useHistory();
+  const handleMore =() =>{
+    history.push('/solve');
+  }
   // useEffect(() => filterProjectList(props.projList), [searchProjectList]);
 
   if (!searchProjectList) {
@@ -48,6 +55,15 @@ export default function CarouselHolder() {
             <SearchCorousel categoryList={r} />
           </React.Fragment>
         ))}
+        <Button
+        size='small'
+          variant="contained"
+          color="secondary"
+          style={{ margin: "0.5rem", left: "50%", transform: `translateX(-50%)`, textTransform:'none'}}
+          onClick={handleMore}
+        >
+          Load all ...
+        </Button>
       </React.Fragment>
     );
   } else {

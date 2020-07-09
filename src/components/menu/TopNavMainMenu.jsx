@@ -92,7 +92,7 @@ export default function AlertDialogSlide() {
             startIcon={<AddIcon />}
             onClick={() => handleCreateClick("/create")}
           >
-            Create a challenge
+            Create a Project
           </MenuButton>
         </DialogActions>
         <DialogActions>
@@ -100,7 +100,7 @@ export default function AlertDialogSlide() {
             startIcon={<SearchIcon />}
             onClick={() => handleOnClick("/solve")}
           >
-            Solve a challenge
+            Search Projects
           </MenuButton>
         </DialogActions>
       </Dialog>

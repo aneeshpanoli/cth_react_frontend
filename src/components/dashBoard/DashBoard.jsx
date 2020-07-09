@@ -15,6 +15,7 @@ import StoyText from './StoryText'
 import ProjectLinks from './ProjectLinks'
 import ProjectVideo from './ProjectVideo'
 import ProjectTech from './ProjectTech'
+import Comments from './Comments'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -23,14 +24,13 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
     color: theme.palette.text.secondary,
   },
 }));
 
 export default function CenteredGrid() {
   const classes = useStyles();
-  const { selectedProject } = useTrackedState();
+  const { selectedProject, authData } = useTrackedState();
   let params = useParams();
   const dispatch = useDispatch();
   useEffect(() =>{
@@ -55,7 +55,13 @@ export default function CenteredGrid() {
         </Grid>
         
         <Grid item sm={12} xs={12}>
-          <Paper className={classes.paper}>xs=3</Paper>
+          <Paper className={classes.paper}>
+          <h4>Comments</h4>
+          {authData.isAuthenticated?
+          <Comments />
+            :
+            <h5>Please sign in to post comments</h5>}
+          </Paper>
         </Grid>
       </Grid>
     </div>

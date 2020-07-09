@@ -11,16 +11,22 @@ import { FETCH_RANDOM_ON_SESSION } from '../backend/EsQueries'
 import { updateProjectList } from '../redux/actions'
 import { useDispatch } from 'reactive-react-redux';
 import { Circle } from '../d3/AnimatedCircles'
+import { useTrackedState } from 'reactive-react-redux';
+
 
 
 
 
 export default function homePage (){
     const dispatch = useDispatch();
-    React.useEffect(()=>{
+    const { searchProjectList } = useTrackedState();
+
+    React.useEffect(() => {
+        if(!searchProjectList){
         let query = FETCH_RANDOM_ON_SESSION("1477072619038");
         queryElasticsearch("1477072619038", query, dispatch, updateProjectList);
-    }, [])
+        }
+    }, []);
    
     return (
         <div>

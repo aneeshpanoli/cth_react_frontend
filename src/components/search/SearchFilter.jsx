@@ -57,6 +57,7 @@ export default function NestedList() {
     setAvailableBuiltWith(sortStringObjArr(builtWith));
     setAvailableCategories(sortStringObjArr(categories));
 
+
     // setAvailableCategories(categories.sort((a, b) => b.value - a.value));
   }, [filterProjectList]);
 
@@ -127,7 +128,7 @@ export default function NestedList() {
           <FilterListIcon />
         </ListItemIcon>
         <ListItemText primary="Filter results" />
-
+        
         {collapseStates.open ? <CancelIcon /> : <ExpandMore />}
       </ListItem>
 

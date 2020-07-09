@@ -16,7 +16,7 @@ import Searchbar from '../search/SearchBar';
 export default function SearchProjects (){
     const dispatch = useDispatch();
     const history = useHistory();
-    // const { authData } = useTrackedState();
+    const { searchProjectList } = useTrackedState();
     // React.useEffect(() => {
     //     if (!authData.isAuthenticated){
     //         history.push('/');
@@ -24,8 +24,10 @@ export default function SearchProjects (){
     //    });
     
     React.useEffect(() => {
+        if(!searchProjectList){
         let query = FETCH_RANDOM_ON_SESSION("1477072619038");
         queryElasticsearch("1477072619038", query, dispatch, updateProjectList);
+        }
     }, []);
     
     return (
