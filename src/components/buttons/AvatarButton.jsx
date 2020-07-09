@@ -83,7 +83,7 @@ const { authData, userInfo } = useTrackedState();
           onClick={handleToggle}
         >
          <Avatar variant="circle" 
-         color="primary"
+         color="secondary"
          className={classes.small}
          alt={userInfo? userInfo.first_name:null} 
          src="/static/images/avatar/1.jpg" />

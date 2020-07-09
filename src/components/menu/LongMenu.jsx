@@ -30,7 +30,7 @@ export default function LongMenu(props) {
   const handleSimilarProjects = () => {
     setAnchorEl(null);
     let query = MORE_LIKE_THIS(
-        props.r._source.storyText, ['storyText']
+      props.r._source.storyText? props.r._source.storyText:props.r._source.subtitle, ['storyText']
         );
     queryElasticsearch("", query, dispatch, updateProjectList);
   };

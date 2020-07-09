@@ -76,7 +76,7 @@ export default function BackToTop(props) {
     <React.Fragment>
       <HideOnScroll {...props}>
       <AppBar 
-      color="inherit"
+      color="primary"
       elevation={1}
       >
       {/* <BackdropFilter
@@ -88,10 +88,9 @@ export default function BackToTop(props) {
                 }}
                 > */}
         <Toolbar variant="dense">
-        <img src={Logo} style={{ width:'2rem', height:'2rem', marginRight:'1rem'}}/> 
-        <Link to={location => ({ ...location, pathname: "/" })} style={{ textDecoration: 'none', color:'black'}}>
-          
-          <h5 style={{whiteSpace: 'noWrap'}}>Civic Tech Hub</h5>
+        
+        <Link to={location => ({ ...location, pathname: "/" })}>
+        <img src={Logo} style={{ height:'2rem', marginRight:'1rem'}}/> 
           </Link>
           <AvatarMenu />
           <TopNavMenu />

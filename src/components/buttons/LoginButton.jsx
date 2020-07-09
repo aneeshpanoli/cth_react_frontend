@@ -32,7 +32,7 @@ export default function AlertDialogSlide() {
 
   return (
     <div>
-      <Button color="primary"  onClick={handleClickOpen}>
+      <Button color="secondary"  onClick={handleClickOpen}>
         <LockOutlinedIcon />
       </Button>
       <Dialog

@@ -17,7 +17,7 @@ export default function TopNavMenuBttn(props) {
   return (
     <Button
     variant="contained"
-    color="primary"
+    color="secondary"
     className={classes.button}
     startIcon={props.startIcon}
     onClick={props.onClick} 
