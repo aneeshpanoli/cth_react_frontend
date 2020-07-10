@@ -37,7 +37,7 @@ export default function Footer () {
           <img src={footerLogo} style={{ height:'3rem', marginTop:'1rem', color:'red'}}/> 
           <Divider light />
             <FooterGrid />
-            <Divider variant="middle" light='false'/>
+            <Divider variant="middle" />
             <Copyright>
             
             | <Button size="small" style={{textTransform: "none"}} 

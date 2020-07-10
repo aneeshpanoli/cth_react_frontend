@@ -8,6 +8,7 @@ import { queryElasticsearch } from '../backend/AxiosRequest'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateProjectList } from '../redux/actions'
 import PagesIcon from '@material-ui/icons/Pages';
+import { CircularProgress } from '@material-ui/core';
 
 
 
@@ -18,7 +19,13 @@ export default function LongMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const dispatch = useDispatch()
-  const { searchRecipeList } = useTrackedState()
+  const { filterProjectList } = useTrackedState()
+  const [progress, setProgress] = React.useState(false);
+
+  React.useEffect(() => {
+    setTimeout(() => {  setProgress(false); }, 2000);
+    
+ }, [filterProjectList]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,6 +36,7 @@ export default function LongMenu(props) {
   }
   const handleSimilarProjects = () => {
     setAnchorEl(null);
+    setProgress(true);
     let query = MORE_LIKE_THIS(
       props.r._source.storyText? props.r._source.storyText:props.r._source.subtitle, ['storyText']
         );
@@ -37,6 +45,7 @@ export default function LongMenu(props) {
 
   const handleSimilarStack = () => {
     setAnchorEl(null);
+    setProgress(true);
     let query = MORE_LIKE_THIS(
         props.r._source.builtWith, ['builtWith']
         );
@@ -45,6 +54,7 @@ export default function LongMenu(props) {
 
   const handleSimilarCountry= () => {
     setAnchorEl(null);
+    setProgress(true);
     let query = MORE_LIKE_THIS(
         props.r._source.country, ['country']
         );
@@ -53,6 +63,7 @@ export default function LongMenu(props) {
 
   const handleSimilarHackathon= () => {
     setAnchorEl(null);
+    setProgress(true);
     let query = MORE_LIKE_THIS(
         props.r._source.hackathons, ['hackathons']
         );
@@ -68,7 +79,7 @@ export default function LongMenu(props) {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <PagesIcon />
+       {progress?  <CircularProgress size={30} color='primary'/> : <PagesIcon /> } 
       </IconButton>
       <Menu
         id="long-menu"

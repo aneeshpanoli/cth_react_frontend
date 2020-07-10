@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import SearchFilter from './SearchFilter';
-
+import ProgressCircle from './ProgressCircle'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,7 +46,7 @@ export default function SearchResults(){
         {filterProjectList?
             <SearchFilter />
             :
-            null}
+             null}
         </Card>
         </Box>
         </Grid>
@@ -54,8 +54,8 @@ export default function SearchResults(){
         <Grid item xs={12} sm={12} ref={resultDiv} >
         <Box display="flex" flexWrap="wrap" justifyContent="center" > 
         {filterProjectList? filterProjectList.map((r, i) => (
-          <Grid item key={r._source.id} xs={12} sm={6} md={3} justifyContent="center">
-            <ProjectCard key={i} r={r}/>
+          <Grid item key={i} xs={12} sm={6} md={3}>
+            <ProjectCard r={r}/>
             </Grid>
           )):null} 
           </Box>

@@ -11,8 +11,12 @@ import ProgressBar from './ProgressBar';
 
 export default function searchBar (props){
     const dispatch = useDispatch()
+    const { filterProjectList } = useTrackedState()
+    const { isProgress } = useTrackedState();
+    const [progress, setProgress] = React.useState(false)
     const queryDatabase = searchValue => {
-        if (searchValue.length > 1){ 
+        if (searchValue.length > 1){
+            dispatch(updateProgress(true)); 
             // send to axios
             let query = MATCH(searchValue, 'storyText');
             queryElasticsearch(searchValue, query, dispatch, updateProjectList);
@@ -29,10 +33,12 @@ export default function searchBar (props){
     // use setNewSearchValue to update the searchstring when the enter is pressed
     // control the queryDatabase callback as the newSearchValue changes
     useEffect(() => throttled.current(newSearchValue), [newSearchValue]);
+    useEffect(() => setProgress(isProgress), [isProgress]);
   
        const enterKeyPressedHandler = event => {
         
         if (event.keyCode === 13 || event.key === 'Enter' || event.charCode === 13) {
+            
             setNewSearchValue(searchValue);
             
         }
@@ -56,7 +62,7 @@ export default function searchBar (props){
                 marginTop: props.marginTop
                 }}
                 />
-                <ProgressBar />
+                {progress? <ProgressBar />:null}
                 
                 </React.Fragment>
             </MuiThemeProvider>

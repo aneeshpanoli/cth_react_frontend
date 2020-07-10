@@ -18,7 +18,7 @@ import {
   makeCountDictArr,
   sortStringObjArr,
 } from "../js/utils";
-import { updateFilterProject } from "../redux/actions";
+import { updateFilterProject, updateProgress } from "../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,7 +57,7 @@ export default function NestedList() {
     setAvailableBuiltWith(sortStringObjArr(builtWith));
     setAvailableCategories(sortStringObjArr(categories));
 
-
+    setTimeout(() => {  dispatch(updateProgress(false)); }, 2000);
     // setAvailableCategories(categories.sort((a, b) => b.value - a.value));
   }, [filterProjectList]);
 
