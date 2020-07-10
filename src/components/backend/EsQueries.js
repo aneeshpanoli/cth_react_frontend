@@ -1,4 +1,7 @@
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
 
 
 export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
@@ -104,7 +107,7 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
     }
 }
 
-    export const FETCH_RANDOM_ON_SESSION = (session_id) =>{
+    export const FETCH_RANDOM_ON_SESSION = () =>{
         return {
             'params': {
                 'index':'projects',
@@ -115,7 +118,7 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
                               "functions": [
                                  {
                                     "random_score": {
-                                       "seed": session_id
+                                       "seed": getRandomInt(1000000000000,200000000000)
                                     }
                                  }
                               ]

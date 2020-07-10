@@ -49,7 +49,9 @@ export default function SearchResults(){
         </Card>
         </Box>
         </Grid>
-        {filterProjectList?<span>1 - { filterProjectList.length}/{ filterProjectList.length}</span> :null}
+        {filterProjectList&&filterProjectList[0]?
+        <span>1 - { filterProjectList.length}/{ filterProjectList.length}
+        </span> :<span>Sorry, No projects found!</span>}
         <Grid item xs={12} sm={12} ref={resultDiv} >
         <Box display="flex" flexWrap="wrap" justifyContent="center" > 
         {filterProjectList? filterProjectList.map((r, i) => (
