@@ -83,18 +83,27 @@ export default function LongMenu(props) {
           },
         }}
       >
+          
+          {props.r._source.storyText || props.r._source.subtitle? 
           <MenuItem onClick={handleSimilarProjects}>
-          Find Similar Projects
+            <span> Find Similar Projects</span></MenuItem>
+            :null}
+          
+          
+          {props.r._source.builtWith[0]? 
+          <MenuItem onClick={handleSimilarStack}><span> Find Similar Tech Stack</span>
           </MenuItem>
-          <MenuItem onClick={handleSimilarStack}>
-          Find Similar Tech Stack
-          </MenuItem>
-          <MenuItem onClick={handleSimilarCountry}>
-          Find Similar Country
-          </MenuItem>
-          <MenuItem onClick={handleSimilarHackathon}>
-          Find Similar Hackathons
-          </MenuItem>
+          :null}
+         
+          
+          
+          {props.r._source.country? <MenuItem onClick={handleSimilarCountry}>
+            <span>Find more from {props.r._source.country}</span></MenuItem>:null}
+          
+          
+         {props.r._source.hackathons[0]? <MenuItem onClick={handleSimilarHackathon}>
+           <span>Find more from {props.r._source.hackathons[0]}</span></MenuItem>:null}
+          
       </Menu>
     </div>
   );

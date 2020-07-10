@@ -1,6 +1,6 @@
 import Carousel from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
-import ProjectCard from "./projectCard";
+import ProjectCard from "./ProjectCard";
 import Box from "@material-ui/core/Box";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateFilterProject } from '../redux/actions'
-import ProjectCard from "./projectCard";
+import ProjectCard from "./ProjectCard";
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';

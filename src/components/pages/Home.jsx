@@ -3,7 +3,7 @@ import React from 'react';
 //components
 
 import Footer from '../footer/Footer'
-import Hero from '../heroComponent/Hero'
+import Hero from '../home/Hero'
 import SearchResults from '../search/SearchHomeResults'
 import Navbar from '../navigation/TopNav'
 import { queryElasticsearch } from '../backend/AxiosRequest'
