@@ -60,6 +60,7 @@ export default function NestedList() {
     setTimeout(() => {  dispatch(updateProgress(false)); }, 2000);
     // setAvailableCategories(categories.sort((a, b) => b.value - a.value));
   }, [filterProjectList]);
+  
 
   const handleDeleteSelected = (chipToDelete) => () => {
     setSelectedBuiltWith((chips) =>
