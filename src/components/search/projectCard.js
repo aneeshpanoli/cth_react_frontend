@@ -25,11 +25,8 @@ function countryToIso(country){
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 275,
-    maxWidth: 275,
-    minHeight: 340,
-    margin: "0.3rem",
-    position: 'relative',
+     width: '98%',
+    height: '98%',
   },
   media: {
     height: 0,

@@ -4,7 +4,7 @@ import { themeDict } from './components/theme/Colors'
 import { createMuiTheme } from '@material-ui/core/styles';
 import CreateChallenge from './components/pages/CreateChallenge'
 import ProjectDashboard from "./components/pages/ProjectDashboard";
-import HomePage from "./components/content/Home";
+import HomePage from "./components/pages/Home";
 import SearchProjects from "./components/pages/SearchProjects";
 import ExploreProjects from './components/pages/ExploreProjects'
 import { useDispatch, useTrackedState } from "reactive-react-redux";

@@ -6,6 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { useHistory } from "react-router-dom";
+import footerLogo from '../../Assets/img/cth_footer.svg'
 
 function Copyright(props) {
   return (
@@ -28,18 +29,21 @@ export default function Footer () {
   };
 
     return (
-        <Box>
+        <Box style={{backgroundColor:'silver', borderTop:'5px solid #061F71'}}>
         <Container>
-        <Divider light />
-
-          <h1 style={{color:'grey'}}>Civic Tech Hub</h1>
+{/* 
+          <h1 style={{color:'black', fontWeight:700}}>Civic Tech Hub</h1>
+          <h6 style={{color:'grey', fontWeight:700}}>Together we can survive this crisis</h6> */}
+          <img src={footerLogo} style={{ height:'3rem', marginTop:'1rem', color:'red'}}/> 
           <Divider light />
             <FooterGrid />
-            <Divider light />
+            <Divider variant="middle" light='false'/>
             <Copyright>
             
-            | <Button size="small" onClick={() => handleClick("/privacy-policy")}>Privacy Policy</Button> | 
-            <Button size="small" onClick={() => handleClick("/terms-and-conditions")}>Terms and conditions</Button>
+            | <Button size="small" style={{textTransform: "none"}} 
+            onClick={() => handleClick("/privacy-policy")}>Privacy Policy</Button> | 
+            <Button size="small" style={{textTransform: "none"}} 
+            onClick={() => handleClick("/terms-and-conditions")}>Terms & conditions</Button>
               </Copyright> 
         </Container>
       </Box>

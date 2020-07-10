@@ -10,6 +10,8 @@ import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import AppsIcon from '@material-ui/icons/Apps';
+import Button from '@material-ui/core/Button';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,12 +22,19 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     display: 'table-cell',
-    height: '13rem',
+    height: '17rem',
     width: '100%',
     overflow: 'visible',
     backgroundColor: "transparent",
     verticalAlign:"middle",
-    
+  },
+  button:{
+    textTransform: "none",
+    marginRight:5,
+    fontSize: 15
+  },
+  icon:{
+    marginRight:5,
   },
   control: {
     padding: theme.spacing(2),
@@ -46,54 +55,54 @@ export default function FooterGrid() {
         <Grid container spacing={spacing}>
             <Grid >
               <Paper className={classes.paper} elevation={0}>
-                <Link
+                <Button size="small" color='secondary' className={classes.button}
                     href="https://github.com/civictechhub"
                 >
-                <GitHubIcon className="mr-2"/>
+                <GitHubIcon className={classes.icon}/>
                     GitHub
-                </Link>
+                </Button>
                 <br></br>
-                <Link
+                <Button size="small" color='secondary' className={classes.button}
                     href="https://www.linkedin.com/company/civictechhub"
                 >
-                    <LinkedInIcon className="mr-2"/>
+                    <LinkedInIcon className={classes.icon}/>
                     LinkedIn
-                </Link>
+                </Button>
                 <br></br>
-                <Link
+                <Button size="small" color='secondary' className={classes.button}
                     href="https://www.instagram.com/civictechhub/"
                 >
-                    <InstagramIcon className="mr-2"/>
+                    <InstagramIcon className={classes.icon}/>
                     Instagram
-                </Link>
+                </Button>
                 <br></br>
-                <Link
+                <Button size="small" color='secondary' className={classes.button}
                     href="https://www.facebook.com/civictechhub"
                 >
-                    <FacebookIcon className="mr-2"/>
+                    <FacebookIcon className={classes.icon}/>
                     Facebook
-                </Link>
+                </Button>
                 <br></br>
-                <Link
+                <Button size="small" color='secondary' className={classes.button}
                     href="https://twitter.com/civictechhub?lang=en"
                 >
-                    <TwitterIcon className="mr-2"/>
+                    <TwitterIcon className={classes.icon}/>
                     Twitter
-                </Link>
+                </Button>
                 <br/>
-                <Link
+                <Button size="small" color='secondary' className={classes.button}
                     href="https://www.youtube.com/channel/UCWjIvbOBLmToD4vrOHED89Q"
                 >
-                    <YouTubeIcon className="mr-2"/>
+                    <YouTubeIcon className={classes.icon}/>
                     YouTube
-                </Link>
+                </Button>
                 <br/>
-                <Link
+                <Button size="small" color='secondary' className={classes.button}
                     href="https://join.slack.com/t/civictechhub/shared_invite/zt-dlw4duki-LjqG1llwXA8KDodp3x34cg"
                 >
-                    <AppsIcon className="mr-2"/>
+                    <AppsIcon className={classes.icon}/>
                     Slack
-                </Link>
+                </Button>
                 </Paper>
             </Grid>
         </Grid>
