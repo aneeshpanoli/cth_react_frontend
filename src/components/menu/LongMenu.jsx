@@ -34,40 +34,14 @@ export default function LongMenu(props) {
   const handleClose = () => {
     setAnchorEl(null);
   }
-  const handleSimilarProjects = () => {
+
+  const handleSimilarity = (column) => {
     setAnchorEl(null);
     setProgress(true);
     let query = MORE_LIKE_THIS(
-      props.r._source.storyText? props.r._source.storyText:props.r._source.subtitle, ['storyText']
+        props.r._id, [column]
         );
     queryElasticsearch("", query, dispatch, updateProjectList);
-  };
-
-  const handleSimilarStack = () => {
-    setAnchorEl(null);
-    setProgress(true);
-    let query = MORE_LIKE_THIS(
-        props.r._source.builtWith, ['builtWith']
-        );
-    queryElasticsearch("", query, dispatch, updateProjectList);
-  };
-
-  const handleSimilarCountry= () => {
-    setAnchorEl(null);
-    setProgress(true);
-    let query = MORE_LIKE_THIS(
-        props.r._source.country, ['country']
-        );
-    queryElasticsearch(props.r._source.country, query, dispatch, updateProjectList);
-  };
-
-  const handleSimilarHackathon= () => {
-    setAnchorEl(null);
-    setProgress(true);
-    let query = MORE_LIKE_THIS(
-        props.r._source.hackathons, ['hackathons']
-        );
-    queryElasticsearch("",query, dispatch, updateProjectList);
   };
 
 
@@ -96,23 +70,23 @@ export default function LongMenu(props) {
       >
           
           {props.r._source.storyText || props.r._source.subtitle? 
-          <MenuItem onClick={handleSimilarProjects}>
+          <MenuItem onClick={()=>handleSimilarity('storyText')}>
             <span> Find Similar Projects</span></MenuItem>
             :null}
           
           
           {props.r._source.builtWith[0]? 
-          <MenuItem onClick={handleSimilarStack}><span> Find Similar Tech Stack</span>
+          <MenuItem onClick={()=>handleSimilarity('builtWith')}><span> Find Similar Tech Stack</span>
           </MenuItem>
           :null}
          
           
           
-          {props.r._source.country? <MenuItem onClick={handleSimilarCountry}>
+          {props.r._source.country? <MenuItem onClick={()=>handleSimilarity('country')}>
             <span>Find more from {props.r._source.country}</span></MenuItem>:null}
           
           
-         {props.r._source.hackathons[0]? <MenuItem onClick={handleSimilarHackathon}>
+         {props.r._source.hackathons[0]? <MenuItem onClick={()=>handleSimilarity('hackathons')}>
            <span>Find more from {props.r._source.hackathons[0]}</span></MenuItem>:null}
           
       </Menu>

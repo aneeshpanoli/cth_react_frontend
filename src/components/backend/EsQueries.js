@@ -53,7 +53,7 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
             }
     
 
-    export const  MORE_LIKE_THIS = (userInput, columns) =>{
+    export const  MORE_LIKE_THIS_old = (userInput, columns) =>{
         return {
                 'params': {
                     'index':'projects',
@@ -71,6 +71,29 @@ export const  MATCH_PHRASE_PREFIX = (userInput, column) =>{
                 }
             }
         }
+
+        export const  MORE_LIKE_THIS = (id, columns) =>{
+            return {
+                    'params': {
+                        'index':'projects',
+                        'q':{
+                            "size": 100,
+                            'query':{
+                                "more_like_this" : {
+                                    "fields" : columns, //array
+                                    "like" : [
+                                        {
+                                            "_id" : id
+                                        }],
+                                    "min_term_freq" : 1,
+                                    "max_query_terms" : 25
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+    
 
     
         export const MATCH_ID = (id) =>{

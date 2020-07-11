@@ -54,7 +54,7 @@ export const queryElasticsearch = (userInput, query, dispatch, actionCallback) =
   }
   
   esAxios.get(`/q/`, 
-    query
+    query,
     )
    .then(response => {
       // process response.
@@ -71,6 +71,8 @@ export const queryElasticsearch = (userInput, query, dispatch, actionCallback) =
       return error;
    })
 }
+
+
 
 export const queryEsById = (query, dispatch, actionCallback) =>{
 
