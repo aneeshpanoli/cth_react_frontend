@@ -13,6 +13,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import UserProfile from './components/pages/UserProfile'
 import TermsAndConditions  from './components/pages/TermsAndCond'
 import PrivacyPolicy from './components/pages/PrivacyPolicy'
+import EmailSignIn from './components/pages/EmailSignIn'
 //stylesheet
 import "bootstrap/dist/css/bootstrap.css";
 import "./Assets/css/style.css";
@@ -21,14 +22,14 @@ const App = () => {
   const theme = createMuiTheme(themeDict);
   const { authData } = useTrackedState();
   const dispatch = useDispatch();
-  quickAuthCheck(authData, dispatch);
+  
 
   useEffect(() => {
+    quickAuthCheck(authData, dispatch);
     authCheck(authData, dispatch);
     // console.log(authData);
   }, []);
 
-  const [checked] = useState(true);
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -65,6 +66,10 @@ const App = () => {
 
           <Route exact path="/privacy-policy">
             <PrivacyPolicy />
+          </Route>
+
+          <Route exact path="/sign-in">
+            <EmailSignIn />
           </Route>
 
         </Switch>

@@ -14,6 +14,9 @@ import { useFormik } from 'formik';
 import { useDispatch, useTrackedState} from 'reactive-react-redux';
 import { authSignup } from  '../backend/AxiosRequest';
 import { updateAuthData } from '../redux/actions'
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
   },
   error: {
     color: 'red',
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
 }));
 
@@ -79,6 +86,7 @@ const validate = values => {
 
 export default function SignUp(props) {
 
+  const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const { authData } = useTrackedState();
   const dispatch = useDispatch();
@@ -99,13 +107,16 @@ export default function SignUp(props) {
       values.password1, values.password2,
       authData, dispatch, updateAuthData
       );
+      setOpen(true);
     },
   });
 
 
   return (
     <Container component="main" maxWidth="xs">
+      
       <CssBaseline />
+      {!open? 
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -113,6 +124,7 @@ export default function SignUp(props) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
+        
         <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -230,7 +242,18 @@ export default function SignUp(props) {
           </Grid>
         </form>
       </div>
+      :
+        <div >
+        <div style={{width:'100%', height:'3rem', textAlign:'center', backgroundColor:'#061F71', color:'white'}} >
 
+          <h3 >Confirm email</h3>
+            </div>
+        <h5 style={{fontWeight:400}}>
+      We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.
+      </h5>
+        </div>
+     
+}
     </Container>
   );
 }

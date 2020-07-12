@@ -54,7 +54,7 @@ export default function SearchResults(){
         </span> :<span>Sorry, No projects found!</span>}
         <Grid item xs={12} sm={12} ref={resultDiv} >
         <Box display="flex" flexWrap="wrap" justifyContent="center" > 
-        {filterProjectList? filterProjectList.map((r, i) => (
+        {filterProjectList&&filterProjectList[0]? filterProjectList.map((r, i) => (
           <Grid item key={i} xs={12} sm={6} md={3}>
             <ProjectCard r={r}/>
             </Grid>

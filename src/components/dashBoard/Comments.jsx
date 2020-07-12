@@ -1,6 +1,6 @@
 import React from "react";
-import ReactQuill from "react-quill"; // ES6
-import "react-quill/dist/quill.snow.css"; // ES6
+import ReactQuill from "react-quill"; 
+import "react-quill/dist/quill.snow.css"; 
 import Button from "@material-ui/core/Button";
 
 class Comments extends React.Component {
@@ -22,6 +22,20 @@ class Comments extends React.Component {
 
   handlePost() {
     console.log(this.state.text);
+    let data = {
+      params: {
+        index: 'comments',
+        q: {
+          projectId:this.props.projectId,
+          user: "",
+          comments: this.state.text,
+          createdAt: new Date(),
+          nrVotes:"",
+          nrFlags:""
+
+        },
+      },
+    }
     this.setState({ text: "" });
   }
 

@@ -14,6 +14,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { authSignIn } from  '../backend/AxiosRequest';
 import { updateAuthData } from '../redux/actions'
+import { useHistory } from 'react-router-dom'
 
 
 
@@ -63,6 +64,7 @@ export default function SignIn(props) {
   const classes = useStyles();
   const disaptch = useDispatch();
   const { authData } = useTrackedState();
+  const history = useHistory();
 
 const formik = useFormik({
     initialValues: {
@@ -72,7 +74,7 @@ const formik = useFormik({
     validate,
     onSubmit: values => {
     //   alert(JSON.stringify(values, null, 2));
-    authSignIn(values.email, values.password , authData, disaptch, updateAuthData);
+    authSignIn(values.email, values.password , authData, disaptch, updateAuthData, history);
     },
   });
 
@@ -84,7 +86,7 @@ const formik = useFormik({
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Please sign in with your email and password to continue.
         </Typography>
         <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
         {formik.errors.email ? <sub className={classes.error}>{formik.errors.email}</sub> : null}

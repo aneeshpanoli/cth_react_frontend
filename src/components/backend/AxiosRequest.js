@@ -3,12 +3,23 @@ import { updateUserInfo, updateProgress, updateFilterProject } from "../redux/ac
 import { saveSessionStore, retriveSessionStore } from "../localStore/session";
 
 
-// const BASE_API = process.env.REACT_APP_BASE_URL;
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-axios.defaults.xsrfCookieName = 'csrftoken';
-const BASE_URL = 'http://54.193.134.135';
+// switch API url based on environment
+let development = process.env.NODE_ENV !== 'production'
+// const BASE_URL = development?'http://54.193.134.135':'https://www.civictechhub.org';
+
+const BASE_URL = 'http://54.193.134.135'
+
+// axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+// axios.defaults.xsrfCookieName = 'csrftoken';
+
+
+
 // const BASE_API = 'https://www.civictechhub.net/q';
 // const BASE_API = 'http://192.168.68.125:8000/api/';
+//   require('axios').get(
+//   'https://upload.wikimedia.org/wikipedia/commons/f/fe/A_Different_Slant_on_Carina.jpg',
+//   { maxContentLength: 2000 }
+// )
 
 
 
@@ -21,6 +32,7 @@ const esAxios = axios.create({
   },
 });
 
+// without token. This is the same as esAxios
 const preAuthAxios = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -31,6 +43,7 @@ const preAuthAxios = axios.create({
 });
 
 
+// use for accessing pages that require user authentication
 const postAuthAxios = (token) =>
   axios.create({
     baseURL: BASE_URL,
@@ -100,7 +113,7 @@ export const queryEsById = (query, dispatch, actionCallback) =>{
      .then((response) => {
        
        saveSessionStore("userInfo", response.data);
-      //  console.log(response.data);
+       console.log(response.data);
        dispatch(updateUserInfo(response.data));
      })
      .catch((error) => {
@@ -109,15 +122,11 @@ export const queryEsById = (query, dispatch, actionCallback) =>{
      });
  };
  
- export const createChallenge = (challenge) => {
+ export const createDoc = (doc) => {
   esAxios
     .get(
       `/add/`, //change to `/add/` tom make it working
-      {
-        params: {
-          q: challenge,
-        },
-      }
+      doc
     )
     .then((response) => {
       // console.log(response.data);
@@ -150,7 +159,8 @@ export const socialSignIn = (endpoint) => {
    password,
    authData,
    dispatch,
-   actionCallback
+   actionCallback,
+   history
  ) => {
   preAuthAxios
      .post(`/rest-auth/login/`, {
@@ -163,10 +173,9 @@ export const socialSignIn = (endpoint) => {
        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
        localStorage.setItem("token", token);
        localStorage.setItem("expirationDate", expirationDate);
-       authData.token = token;
-       authData.isAuthenticated = true;
-       dispatch(actionCallback(authData));
+       dispatch(actionCallback({...authData, token:token, isAuthenticated:true}));
        getUserInfo(dispatch);
+       history.push('/')
        // dispatch(authSuccess(token));
        // dispatch(checkAuthTimeout(3600));
      })
@@ -200,15 +209,14 @@ export const socialSignIn = (endpoint) => {
       password2: password2,
     })
     .then((res) => {
-      
-      const token = res.data.key;
-      const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-      localStorage.setItem("token", token);
-      localStorage.setItem("expirationDate", expirationDate);
-      authData.token = token;
-      authData.isAuthenticated = true;
-      dispatch(actionCallback(authData));
-      getUserInfo(dispatch);
+      return res
+      // const token = res.data.key;
+      // const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+      // localStorage.setItem("token", token);
+      // localStorage.setItem("expirationDate", expirationDate);
+      // authData.token = token;
+      // authData.isAuthenticated = true;
+      // dispatch(actionCallback(authData));
       //   dispatch(authSuccess(token));
       //   dispatch(checkAuthTimeout(3600));
     })

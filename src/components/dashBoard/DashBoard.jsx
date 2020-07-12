@@ -58,7 +58,7 @@ export default function CenteredGrid() {
           <Paper className={classes.paper}>
           <h4>Comments</h4>
           {authData.isAuthenticated?
-          <Comments />
+          <Comments projId={params.id}/>
             :
             <h5>Please sign in to post comments</h5>}
           </Paper>

@@ -25,12 +25,12 @@ export default function TopNavAvatarLogin() {
 
   React.useEffect(() => {
     setIsAuthenticated(authData.isAuthenticated);
-   }, []);
+   }, [authData]);
   
 
   return (
     <div className={classes.root}>
-      {authData && authData.isAuthenticated ?
+      {isAuthenticated?
     <AvararButton />
   :
      <LoginButton />

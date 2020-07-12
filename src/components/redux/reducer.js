@@ -19,6 +19,7 @@ const initialState = {
         deadLine: new Date(),
         procedure: "",
       },
+      commentData:{},
       authData: {
         token: null,
         error: null,

@@ -52,7 +52,7 @@ export default function ContainedButtons() {
 
       <SocialButton
         provider="instagram"
-        redirect=""
+        redirect="/login"
         appId="2005220039621593"
         onLoginSuccess={handleSocialLogin}
         onLoginFailure={handleSocialLoginFailure}

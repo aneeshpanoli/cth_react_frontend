@@ -7,9 +7,8 @@ import  { getUserInfo } from '../backend/AxiosRequest'
 export const logout = (authData, dispatch) => {
   localStorage.removeItem('token');
   localStorage.removeItem('expirationDate');
-  authData.isAuthenticated = false;
-  authData.token = null;
-  dispatch(updateAuthData(authData));
+
+  dispatch(updateAuthData({...authData, token:null, isAuthenticated:false}));
   
 }
 
@@ -23,8 +22,7 @@ export const checkAuthTimeout = expirationTime => {
 
 export const quickAuthCheck = (authData, dispatch) => {
   const token = localStorage.getItem('token');
-  authData.isAuthenticated = true;
-  dispatch(updateAuthData(authData));
+  dispatch(updateAuthData({...authData, isAuthenticated:true}));
 }
 
 export const authCheck = (authData, dispatch) => {
@@ -38,9 +36,7 @@ export const authCheck = (authData, dispatch) => {
           } else {
             const newExpData =  (expirationDate.getTime() - new Date().getTime()) / 1000;
             localStorage.setItem('expirationDate', newExpData);
-            authData.isAuthenticated = true;
-            authData.token = token;
-            dispatch(updateAuthData(authData));
+            dispatch(updateAuthData({...authData, token:token, isAuthenticated:true}));
             checkAuthTimeout(newExpData) ;
             getUserInfo(dispatch);
           }
