@@ -12,7 +12,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-        Civic Tech Hub { }
+        CivicTechHub { }
       {new Date().getFullYear()}
       {' '} {props.children}
     </Typography>
