@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import Footer from '../footer/Footer'
 import SearchPageResults from '../search/SearchPageResults'
 import TopNav from '../navigation/TopNav'
@@ -22,16 +22,19 @@ export default function SearchProjects (){
     //         history.push('/');
     //     }
     //    });
-    
+       // scroll search results to top on on state change
+       const resultDiv = useRef(null); 
+
     React.useEffect(() => {
         if(!searchProjectList){
         let query = FETCH_RANDOM_ON_SESSION("1477072619038");
         queryElasticsearch("1477072619038", query, dispatch, updateProjectList);
         }
+        window.scrollTo(0, resultDiv.current.offsetTop);
     }, []);
     
     return (
-        <Box width={1} display='flex' flexDirection='column'>
+        <Box width={1} display='flex' flexDirection='column' ref={resultDiv}>
         <TopNav />
         <Searchbar marginTop="0%"/>
         <SearchPageResults />

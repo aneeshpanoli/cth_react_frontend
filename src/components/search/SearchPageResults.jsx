@@ -27,11 +27,7 @@ export default function SearchResults(){
     const { filterProjectList } = useTrackedState();
     const classes = useStyles();
 
-     // scroll search results to top on on state change
-     const resultDiv = useRef(null); 
-     useEffect(() => {
-        window.scrollTo(0, resultDiv.current.offsetTop);
-     }, []);
+  
 
 
     return (
@@ -52,7 +48,7 @@ export default function SearchResults(){
         {filterProjectList&&filterProjectList[0]?
         <span>1 - { filterProjectList.length}/{ filterProjectList.length}
         </span> :<span>Sorry, No projects found!</span>}
-        <Grid item xs={12} sm={12} ref={resultDiv} >
+        <Grid item xs={12} sm={12}  >
         <Box display="flex" flexWrap="wrap" justifyContent="center" > 
         {filterProjectList&&filterProjectList[0]? filterProjectList.map((r, i) => (
           <Grid item key={i} xs={12} sm={6} md={3}>
