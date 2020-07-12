@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 15,
   },
   icon: {
-    marginRight: 5,
+    height: "1.3rem"
   },
   control: {
     padding: theme.spacing(2),
@@ -55,69 +55,67 @@ export default function FooterGrid() {
   return (
     <Grid container className={classes.root} spacing={1}>
       <Grid item xs={6} sm={6} md={6}>
-        
-              <Button
-                size="small"
-                color="secondary"
-                className={classes.button}
-                href="https://github.com/civictechhub"
-              >
-                <GitHubIcon className={classes.icon} />
-                GitHub
-              </Button>
-              <br></br>
-              <Button
-                size="small"
-                color="secondary"
-                className={classes.button}
-                href="https://www.linkedin.com/company/civictechhub"
-              >
-                <LinkedInIcon className={classes.icon} />
-                LinkedIn
-              </Button>
-              <br></br>
-              <Button
-                size="small"
-                color="secondary"
-                className={classes.button}
-                href="https://www.instagram.com/civictechhub/"
-              >
-                <InstagramIcon className={classes.icon} />
-                Instagram
-              </Button>
-              <br></br>
-              <Button
-                size="small"
-                color="secondary"
-                className={classes.button}
-                href="https://www.facebook.com/civictechhub"
-              >
-                <FacebookIcon className={classes.icon} />
-                Facebook
-              </Button>
-              <br></br>
-              <Button
-                size="small"
-                color="secondary"
-                className={classes.button}
-                href="https://twitter.com/civictechhub?lang=en"
-              >
-                <TwitterIcon className={classes.icon} />
-                Twitter
-              </Button>
-              <br />
-              <Button
-                size="small"
-                color="secondary"
-                className={classes.button}
-                href="https://www.youtube.com/channel/UCWjIvbOBLmToD4vrOHED89Q"
-              >
-                <YouTubeIcon className={classes.icon} />
-                YouTube
-              </Button>
-              <br />
-            
-          </Grid>
+        <Button
+          startIcon={<GitHubIcon className={classes.icon} />}
+          size="small"
+          color="secondary"
+          className={classes.button}
+          href="https://github.com/civictechhub"
+        >
+          GitHub
+        </Button>
+        <br></br>
+        <Button
+          startIcon={<LinkedInIcon className={classes.icon} />}
+          size="small"
+          color="secondary"
+          className={classes.button}
+          href="https://www.linkedin.com/company/civictechhub"
+        >
+          LinkedIn
+        </Button>
+        <br></br>
+        <Button
+          startIcon={<InstagramIcon className={classes.icon} />}
+          size="small"
+          color="secondary"
+          className={classes.button}
+          href="https://www.instagram.com/civictechhub/"
+        >
+          Instagram
+        </Button>
+        <br></br>
+        <Button
+          startIcon={<FacebookIcon className={classes.icon} />}
+          size="small"
+          color="secondary"
+          className={classes.button}
+          href="https://www.facebook.com/civictechhub"
+        >
+          Facebook
+        </Button>
+        <br></br>
+        <Button
+          startIcon={<TwitterIcon className={classes.icon} />}
+          size="small"
+          color="secondary"
+          className={classes.button}
+          href="https://twitter.com/civictechhub?lang=en"
+        >
+          Twitter
+        </Button>
+        <br />
+        <Button
+          startIcon={<YouTubeIcon className={classes.icon} />}
+          size="small"
+          color="secondary"
+          className={classes.button}
+          href="https://www.youtube.com/channel/UCWjIvbOBLmToD4vrOHED89Q"
+        >
+          YouTube
+        </Button>
+        <br />
+      </Grid>
       <Grid item xs={6} sm={6} md={6}>
         <Button
           startIcon={<img style={{ height: "1.3rem" }} src={CthIcon}></img>}
@@ -168,16 +166,16 @@ export default function FooterGrid() {
         >
           Our blog
         </Button>
-        <br/>
+        <br />
         <Button
-                size="small"
-                color="secondary"
-                className={classes.button}
-                href="https://join.slack.com/t/civictechhub/shared_invite/zt-dlw4duki-LjqG1llwXA8KDodp3x34cg"
-              >
-                <AppsIcon className={classes.icon} />
-                Join our Slack
-              </Button>
+          startIcon={<AppsIcon className={classes.icon} />}
+          size="small"
+          color="secondary"
+          className={classes.button}
+          href="https://join.slack.com/t/civictechhub/shared_invite/zt-dlw4duki-LjqG1llwXA8KDodp3x34cg"
+        >
+          Join our Slack
+        </Button>
       </Grid>
     </Grid>
   );
