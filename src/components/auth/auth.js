@@ -23,6 +23,7 @@ export const checkAuthTimeout = expirationTime => {
 export const quickAuthCheck = (authData, dispatch) => {
   const token = localStorage.getItem('token');
   dispatch(updateAuthData({...authData, isAuthenticated:true}));
+  return token? true:false
 }
 
 export const authCheck = (authData, dispatch) => {

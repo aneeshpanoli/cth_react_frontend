@@ -14,6 +14,10 @@ import UserProfile from './components/pages/UserProfile'
 import TermsAndConditions  from './components/pages/TermsAndCond'
 import PrivacyPolicy from './components/pages/PrivacyPolicy'
 import EmailSignIn from './components/pages/EmailSignIn'
+import AboutUs from './components/pages/AboutUs'
+import Feedback from './components/pages/Feedback'
+import PageNotFound from './components/pages/PageNotFound'
+
 //stylesheet
 import "bootstrap/dist/css/bootstrap.css";
 import "./Assets/css/style.css";
@@ -25,7 +29,7 @@ const App = () => {
   
 
   useEffect(() => {
-    quickAuthCheck(authData, dispatch);
+    // quickAuthCheck(authData, dispatch);
     authCheck(authData, dispatch);
     // console.log(authData);
   }, []);
@@ -36,15 +40,18 @@ const App = () => {
     <Router>
       <div className="App">
         <Switch>
-          <Route exact path={["/", "/dashboard/"]}>
+          <Route exact path="/">
             <HomePage />
           </Route>
 
           <Route exact path="/create">
               <CreateChallenge />
             </Route>
+            <Route path="/:a(/^@[A-Za-z]+)">
+              <UserProfile />
+            </Route>
 
-          <Route path="/dashboard/:id">
+          <Route path="/:name/:id">
             <ProjectDashboard />
           </Route>
 
@@ -52,9 +59,7 @@ const App = () => {
             <SearchProjects />
           </Route>
 
-          <Route exact path="/me">
-              <UserProfile />
-            </Route>
+          
 
           <Route exact path="/explore">
             <ExploreProjects />
@@ -70,6 +75,18 @@ const App = () => {
 
           <Route exact path="/sign-in">
             <EmailSignIn />
+          </Route>
+
+          <Route exact path="/about-us">
+            <AboutUs />
+          </Route>
+
+          <Route exact path="/feedback">
+            <Feedback />
+          </Route>
+
+          <Route exact path={["*", "/page-not-found"]}> 
+            <PageNotFound />
           </Route>
 
         </Switch>

@@ -87,7 +87,7 @@ export const queryElasticsearch = (userInput, query, dispatch, actionCallback) =
 
 
 
-export const queryEsById = (query, dispatch, actionCallback) =>{
+export const queryEsById = (query, dispatch, actionCallback, history) =>{
 
    esAxios.get(`/q/`, 
      query
@@ -97,7 +97,9 @@ export const queryEsById = (query, dispatch, actionCallback) =>{
        
        // this.setState({results: response});
        console.log(response.data.hits);
+       if(response.data.hits[0]){
        dispatch(actionCallback(response.data.hits[0]));
+       }else{history.push('/page-not-found')}
     })
     .catch(error => {
        // catch errors.
@@ -169,12 +171,13 @@ export const socialSignIn = (endpoint) => {
      })
      .then((res) => {
        const token = res.data.key;
-       // console.log(res.data);
+       console.log(res.data);
        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
        localStorage.setItem("token", token);
        localStorage.setItem("expirationDate", expirationDate);
        dispatch(actionCallback({...authData, token:token, isAuthenticated:true}));
-       getUserInfo(dispatch);
+       dispatch(updateUserInfo(res.data.user));
+      //  getUserInfo(dispatch);
        history.push('/')
        // dispatch(authSuccess(token));
        // dispatch(checkAuthTimeout(3600));

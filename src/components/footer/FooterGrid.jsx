@@ -122,7 +122,7 @@ export default function FooterGrid() {
           size="small"
           color="secondary"
           className={classes.button}
-          href=""
+          href="/about-us"
         >
           About us
         </Button>
@@ -132,7 +132,7 @@ export default function FooterGrid() {
           size="small"
           color="secondary"
           className={classes.button}
-          href=""
+          href="/feedback"
         >
           Feedback
         </Button>
@@ -152,7 +152,7 @@ export default function FooterGrid() {
           size="small"
           color="secondary"
           className={classes.button}
-          href=""
+          href="mailto:civictechhub@gmail.com"
         >
           Contact us
         </Button>

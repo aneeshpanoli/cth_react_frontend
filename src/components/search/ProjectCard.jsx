@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function RecipeCard({r}) {
+export default function ProjectCard({r}) {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -64,7 +64,7 @@ export default function RecipeCard({r}) {
   // console.log(r)
   const handleExpandClick = (selectedProject) => {
     dispatch(updateSelectedProject(selectedProject));
-    history.push("/dashboard/"+selectedProject._id);
+    history.push("/"+selectedProject._source.title.replace(/\s+/g, '-')+"/"+selectedProject._id);
   };
   
 
@@ -73,7 +73,7 @@ export default function RecipeCard({r}) {
     <Card className={classes.root} >
       <CardHeader
       title={r._source.title}
-      subheader={r._source.hackathons[0]}
+      subheader={r._source.hackathons[0]?r._source.hackathons[0]:null}
         avatar={
           <Avatar title={r._source.country} aria-label="project" className={classes.avatar} 
          >

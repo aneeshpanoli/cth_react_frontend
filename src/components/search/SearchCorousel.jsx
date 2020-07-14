@@ -32,14 +32,26 @@ function SamplePrevArrow(props) {
   );
 }
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
 export default class SwipeToSlide extends Component {
   render() {
     const settings = {
       className: "center",
-      infinite: false,
+      infinite: true,
       centerPadding: "60px",
       slidesToShow: 3,
       swipeToSlide: true,
+      lazyLoad: true,
+
+      autoplay: true,
+      autoplaySpeed: getRandomInt(2800, 3000),
+      cssEase: "linear",
+      pauseOnHover: true,
       nextArrow: <SampleNextArrow />,
       prevArrow: <SamplePrevArrow />,
       afterChange: function (index) {
@@ -53,7 +65,7 @@ export default class SwipeToSlide extends Component {
           settings: {
             slidesToShow: 3,
             slidesToScroll: 1,
-            infinite: false,
+            infinite: true,
           },
         },
         {
@@ -62,7 +74,7 @@ export default class SwipeToSlide extends Component {
             slidesToShow: 2,
             slidesToScroll: 1,
             initialSlide: 2,
-            infinite: false,
+            infinite: true,
           },
         },
         {
@@ -70,7 +82,7 @@ export default class SwipeToSlide extends Component {
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            infinite: false,
+            infinite: true,
           },
         },
       ],

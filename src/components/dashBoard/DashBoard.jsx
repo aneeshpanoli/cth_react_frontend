@@ -1,7 +1,7 @@
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import React, { useEffect, useRef } from 'react';
 import { MATCH_ID } from '../backend/EsQueries'
-import { useParams} from 'react-router-dom'
+import { useParams, useHistory} from 'react-router-dom'
 import { queryEsById } from '../backend/AxiosRequest'
 import { updateSelectedProject } from '../redux/actions'
 
@@ -30,25 +30,28 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CenteredGrid() {
   const classes = useStyles();
+  const history = useHistory();
   const { selectedProject, authData } = useTrackedState();
   let params = useParams();
   const dispatch = useDispatch();
   useEffect(() =>{
 
     if (!selectedProject){
-        let query = MATCH_ID(params.id);
-        queryEsById(query, dispatch, updateSelectedProject);
+      // replace - with space
+        let query = MATCH_ID(params.id, params.name.replace(/-/g, ' '));
+        queryEsById(query, dispatch, updateSelectedProject, history);
     }
 }, []);
 
+
   return (
     <div className={classes.root}>
+      {selectedProject?
       <Grid container spacing={3}>
         <Header selectedProject={selectedProject}/>
         {/* <SubTitle selectedProject={selectedProject}/> */}
         <StoyText selectedProject={selectedProject}/>
-        
-        <Grid container spacing={1} alignItems='flex-start' item  sm={3} xs={12}>
+        <Grid container spacing={1} alignItems='flex-start' item  sm={3} md={3} xs={12}>
         <ProjectLinks selectedProject={selectedProject}/>
         <ProjectVideo selectedProject={selectedProject}/>
         <ProjectTech selectedProject={selectedProject}/>
@@ -64,6 +67,8 @@ export default function CenteredGrid() {
           </Paper>
         </Grid>
       </Grid>
+      :
+      null}
     </div>
   );
 }
