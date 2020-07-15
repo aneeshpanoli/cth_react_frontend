@@ -3,7 +3,6 @@ import Footer from '../footer/Footer'
 import TopNav from '../navigation/TopNav'
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import Container from '@material-ui/core/Container';
-import ChallengeForm from '../createChallenge/ChallengeForm'
 import { useHistory } from 'react-router-dom';
 
 

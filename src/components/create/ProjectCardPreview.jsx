@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useSelector, useTrackedState } from 'reactive-react-redux';
+import { parseToDays } from '../js/datePrase'
 
 const useStyles = makeStyles({
   root: {
@@ -44,6 +45,8 @@ export default function SimpleCard() {
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
         {'Deadline: ' + challengeFormData.deadLine.toLocaleString('default', options)}
+        <br/>
+        {'Created: ' + parseToDays(challengeFormData.createdDate.toLocaleString())}
         </Typography>
         <Typography variant="body2" component="p">
         {challengeFormData.description}

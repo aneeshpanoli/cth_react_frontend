@@ -16,7 +16,7 @@ const initialState = {
     title: "",
     primeArea: "Web development",
     description: "",
-    deadLine: new Date(),
+    deadLine: new Date(new Date().getTime() + (48 * 60 * 60 * 1000)),
     procedure: "",
   },
   commentData: {},
@@ -28,7 +28,7 @@ const initialState = {
   },
   userInfo: null,
   userOwnChallenge: null,
-  commentsData: null,
+  commentsData: [],
 };
 
 export const reducer = (state = initialState, action) => {

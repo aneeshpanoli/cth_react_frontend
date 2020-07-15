@@ -139,15 +139,10 @@ export const MATCH_PROJ_ID = (id, index) => {
     params: {
       index: index,
       q: {
+        size: 100,
         query: {
-          bool: {
-            must: [
-              {
-                match: {
-                  projectId: id,
-                }
-              },
-            ],
+          match: {
+            projectId: id,
           },
         },
       },

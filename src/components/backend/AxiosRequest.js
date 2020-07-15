@@ -89,6 +89,34 @@ export const queryElasticsearch = (
     });
 };
 
+
+export const simpleQueryElasticsearch = (
+  query,
+  dispatch,
+  actionCallback
+) => {
+  dispatch(updateProgress(true));
+  // update the search project list
+
+
+  esAxios
+    .get(`/q/`, query)
+    .then((response) => {
+      // process response.
+
+      // this.setState({results: response});
+      console.log(response.data.hits);
+      dispatch(actionCallback(response.data.hits));
+
+    })
+    .catch((error) => {
+      // catch errors.
+      console.log(error);
+      return error;
+    });
+};
+
+
 export const queryEsById = (query, dispatch, actionCallback, history) => {
   esAxios
     .get(`/q/`, query)
@@ -126,10 +154,30 @@ export const queryEsById = (query, dispatch, actionCallback, history) => {
 //      });
 //  };
 
-export const createDoc = (doc, token) => {
+export const createDoc = (doc, token, getUpdatedData) => {
   const userInfoAxios = postAuthAxios(`Token ${token}`);
   console.log(doc);
   userInfoAxios
+    .get(`/create/`, doc)
+    .then((response) => {
+      console.log(response.data);
+      setTimeout(() => {
+        // get updated data back from server after a second
+        getUpdatedData? getUpdatedData():null;
+      }, 1000)
+      
+      return true;
+    })
+    .catch((error) => {
+      // catch errors.
+      console.log(error);
+      return false;
+    });
+};
+
+export const createDocFeedback = (doc) => {
+  console.log(doc);
+  preAuthAxios
     .get(`/create/`, doc)
     .then((response) => {
       console.log(response.data);

@@ -26,7 +26,7 @@ export default function Header({selectedProject}) {
           <Paper className={classes.paper}
           >
             <HeaderAppBar >
-            Project discription
+            Project description
             </HeaderAppBar>
             {selectedProject? selectedProject._source.storyText:null}</Paper>
         </Grid>

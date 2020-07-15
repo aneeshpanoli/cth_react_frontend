@@ -39,7 +39,7 @@ export default function AlertDialogSlide() {
       history.push(path);
       return;
     }
-    enqueueSnackbar("Please Sign in to create challenge!", {
+    enqueueSnackbar("Please Sign in to create project!", {
       variant: "error",
     });
   };
@@ -90,7 +90,7 @@ export default function AlertDialogSlide() {
         <DialogActions>
           <MenuButton
             startIcon={<AddIcon />}
-            onClick={() => handleCreateClick("/create")}
+            onClick={() => handleCreateClick("/create-project")}
           >
             Create a Project
           </MenuButton>

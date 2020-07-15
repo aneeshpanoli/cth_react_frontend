@@ -17,6 +17,8 @@ import EmailSignIn from "./components/pages/EmailSignIn";
 import AboutUs from "./components/pages/AboutUs";
 import Feedback from "./components/pages/Feedback";
 import PageNotFound from "./components/pages/PageNotFound";
+import CreateProject from "./components/pages/CreateProject";
+
 
 //stylesheet
 import "bootstrap/dist/css/bootstrap.css";
@@ -39,8 +41,11 @@ const App = () => {
               <HomePage />
             </Route>
 
-            <Route exact path="/create">
+            <Route exact path="/create-challenge">
               <CreateChallenge />
+            </Route>
+            <Route exact path="/create-project">
+              <CreateProject />
             </Route>
 
             <Route exact path="/search">
