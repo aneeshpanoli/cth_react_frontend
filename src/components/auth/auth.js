@@ -1,46 +1,38 @@
+import { updateAuthData } from "../redux/actions";
 
-import { updateAuthData } from '../redux/actions'
-import  { getUserInfoElastic } from '../backend/AxiosRequest'
+export const logout = (dispatch) => {
+  sessionStorage.removeItem("authData");
+  dispatch(updateAuthData({ token: null, isAuthenticated: false, user: null }));
+};
 
+export const checkAuthTimeout = (expirationDate) => {
+  return (dispatch) => {
+    setTimeout(() => {
+      logout();
+    }, expirationDate * 1000);
+  };
+};
 
-
-export const logout = (authData, dispatch) => {
-  sessionStorage.removeItem('token');
-  sessionStorage.removeItem('expirationDate');
-
-  dispatch(updateAuthData({...authData, token:null, isAuthenticated:false}));
-  
-}
-
-export const checkAuthTimeout = expirationTime => {
-  return dispatch => {
-      setTimeout(() => {
-          logout();
-      }, expirationTime * 1000)
+export const authCheck = (dispatch) => {
+  const authData = JSON.parse(sessionStorage.getItem("authData"));
+  if (!authData) {
+    logout(dispatch);
+  } else {
+    console.log(authData);
+    const expirationDate = new Date(authData.expirationDate);
+    if (expirationDate <= new Date()) {
+      logout(dispatch);
+    } else {
+      const newExpirationDate =
+        (expirationDate.getTime() - new Date().getTime()) / 1000;
+      dispatch(
+        updateAuthData({
+          ...authData,
+          isAuthenticated: true,
+          expirationDate: newExpirationDate,
+        })
+      );
+      checkAuthTimeout(newExpirationDate);
+    }
   }
-}
-
-export const quickAuthCheck = (authData, dispatch) => {
-  const token = sessionStorage.getItem('token');
-  dispatch(updateAuthData({...authData, isAuthenticated:true}));
-  return token? true:false
-}
-
-export const authCheck = (authData, dispatch) => {
-      const token = sessionStorage.getItem('token');
-      if (token === undefined) {
-          logout(authData, dispatch);
-      } else {
-          const expirationDate = new Date(sessionStorage.getItem('expirationDate'));
-          if ( expirationDate <= new Date() ) {
-              logout(authData, dispatch);
-          } else {
-            const newExpData =  (expirationDate.getTime() - new Date().getTime()) / 1000;
-            sessionStorage.setItem('expirationDate', newExpData);
-            dispatch(updateAuthData({...authData, token:token, isAuthenticated:true}));
-            checkAuthTimeout(newExpData) ;
-            // getUserInfo(dispatch);
-          }
-      }
-  
-}
+};

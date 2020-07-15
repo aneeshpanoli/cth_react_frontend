@@ -28,6 +28,7 @@ const initialState = {
       },
       userInfo: null,
       userOwnChallenge: null,
+      comments: null,
 
 };
 

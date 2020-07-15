@@ -1,4 +1,3 @@
-import { authCheck, quickAuthCheck } from '../auth/auth'
 
 
 export const saveSessionStore = (key, value) =>{
@@ -11,3 +10,4 @@ export const retriveSessionStore = (key, dispatch, actionCallBack) =>{
     dispatch(actionCallBack(storeData))
     return storeData? true:false
 }
+

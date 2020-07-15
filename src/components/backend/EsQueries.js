@@ -108,7 +108,7 @@ export const MORE_LIKE_THIS = (id, columns) => {
   };
 };
 
-export const MATCH_ID = (id, title) => {
+export const MATCH_ID_TITLE = (id, title) => {
   return {
     params: {
       index: "projects",
@@ -125,6 +125,27 @@ export const MATCH_ID = (id, title) => {
                 match: {
                   title: title,
                 },
+              },
+            ],
+          },
+        },
+      },
+    },
+  };
+};
+
+export const MATCH_PROJ_ID = (id, index) => {
+  return {
+    params: {
+      index: index,
+      q: {
+        query: {
+          bool: {
+            must: [
+              {
+                match: {
+                  projectId: id,
+                }
               },
             ],
           },

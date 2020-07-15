@@ -1,19 +1,20 @@
-import axios from 'axios';
-import { updateUserInfo, updateProgress, updateFilterProject } from "../redux/actions";
+import axios from "axios";
+import {
+  updateUserInfo,
+  updateProgress,
+  updateFilterProject,
+} from "../redux/actions";
 import { saveSessionStore, retriveSessionStore } from "../localStore/session";
-import { MATCH_USER } from './EsQueries'
-
+import { MATCH_USER } from "./EsQueries";
 
 // switch API url based on environment
-let development = process.env.NODE_ENV !== 'production'
+let development = process.env.NODE_ENV !== "production";
 // const BASE_URL = development?'http://54.193.134.135':'https://www.civictechhub.org';
 
-const BASE_URL = 'http://54.193.134.135'
+const BASE_URL = "http://54.193.134.135";
 
 // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 // axios.defaults.xsrfCookieName = 'csrftoken';
-
-
 
 // const BASE_API = 'https://www.civictechhub.net/q';
 // const BASE_API = 'http://192.168.68.125:8000/api/';
@@ -21,8 +22,6 @@ const BASE_URL = 'http://54.193.134.135'
 //   'https://upload.wikimedia.org/wikipedia/commons/f/fe/A_Different_Slant_on_Carina.jpg',
 //   { maxContentLength: 2000 }
 // )
-
-
 
 const esAxios = axios.create({
   baseURL: BASE_URL,
@@ -43,7 +42,6 @@ const preAuthAxios = axios.create({
   },
 });
 
-
 // use for accessing pages that require user authentication
 const postAuthAxios = (token) =>
   axios.create({
@@ -56,65 +54,68 @@ const postAuthAxios = (token) =>
     },
   });
 
-  
-export const queryElasticsearch = (userInput, query, dispatch, actionCallback) =>{
+export const queryElasticsearch = (
+  userInput,
+  query,
+  dispatch,
+  actionCallback
+) => {
   dispatch(updateProgress(true));
   // update the search project list
-  let proceed = userInput && retriveSessionStore(userInput+"query", dispatch, actionCallback);
-  if (proceed){
+  let proceed =
+    userInput &&
+    retriveSessionStore(userInput + "query", dispatch, actionCallback);
+  if (proceed) {
     // update filter project list
-    retriveSessionStore(userInput+"query", dispatch, updateFilterProject)
-    return
+    retriveSessionStore(userInput + "query", dispatch, updateFilterProject);
+    return;
   }
-  
-  esAxios.get(`/q/`, 
-    query,
-    )
-   .then(response => {
+
+  esAxios
+    .get(`/q/`, query)
+    .then((response) => {
       // process response.
-      
+
       // this.setState({results: response});
       // console.log(response.data.hits);
       dispatch(actionCallback(response.data.hits));
       dispatch(updateFilterProject(response.data.hits));
-      proceed && saveSessionStore(userInput+"query", response.data.hits)
-   })
-   .catch(error => {
+      proceed && saveSessionStore(userInput + "query", response.data.hits);
+    })
+    .catch((error) => {
       // catch errors.
       console.log(error);
       return error;
-   })
-}
+    });
+};
 
+export const queryEsById = (query, dispatch, actionCallback, history) => {
+  esAxios
+    .get(`/q/`, query)
+    .then((response) => {
+      // process response.
 
-
-export const queryEsById = (query, dispatch, actionCallback, history) =>{
-
-   esAxios.get(`/q/`, 
-     query
-     )
-    .then(response => {
-       // process response.
-       
-       // this.setState({results: response});
-       console.log(response.data.hits);
-       if(response.data.hits[0]){
-       dispatch(actionCallback(response.data.hits[0]));
-       }else{history.push('/page-not-found')}
+      // this.setState({results: response});
+      console.log(response.data.hits);
+      if (response.data.hits[0]) {
+        dispatch(actionCallback(response.data.hits[0]));
+      } else {
+        history.push("/page-not-found");
+      }
     })
-    .catch(error => {
-       // catch errors.
-       console.log(error);
-       return error;
-    })
- }
+    .catch((error) => {
+      // catch errors.
+      console.log(error);
+      return error;
+    });
+};
 
 //  export const getUserInfo = (dispatch) => {
 //    const userInfoAxios = postAuthAxios(`Token ${localStorage.getItem("token")}`);
 //    userInfoAxios
 //      .get(`/rest-auth/user/`)
 //      .then((response) => {
-       
+
 //        saveSessionStore("userInfo", response.data);
 //        console.log(response.data);
 //        dispatch(updateUserInfo(response.data));
@@ -125,19 +126,11 @@ export const queryEsById = (query, dispatch, actionCallback, history) =>{
 //      });
 //  };
 
- export const createDocUser = (doc) => {
-  const userInfoAxios = postAuthAxios(`Token ${localStorage.getItem("token")}`);
-   console.log(doc)
-   userInfoAxios
-    .get(
-      `/create/`,
-      {
-        params: {
-          index: 'user',
-          q: doc
-        },
-      }
-    )
+export const createDoc = (doc, token) => {
+  const userInfoAxios = postAuthAxios(`Token ${token}`);
+  console.log(doc);
+  userInfoAxios
+    .get(`/create/`, doc)
     .then((response) => {
       console.log(response.data);
       return true;
@@ -149,82 +142,92 @@ export const queryEsById = (query, dispatch, actionCallback, history) =>{
     });
 };
 
-
- export const getUserInfoElastic = (user, dispatch, authData, actionCallback) => {
-  const userInfoAxios = postAuthAxios(`Token ${localStorage.getItem("token")}`);
-  let query = MATCH_USER(user.id, 'id')
+export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
+  const userInfoAxios = postAuthAxios(`Token ${loginData.key}`);
+  let query = MATCH_USER(loginData.user.id, "id");
+  const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
   userInfoAxios
     .get(`/q/`, query)
     .then((response) => {
-      
-     if(!response.data.hits[0]){
-       createDocUser(user)
-       sessionStorage.setItem("authData", user);
-      console.log(response.data);
-     }else{
-      console.log(response.data.hits[0]._source);
-      dispatch(actionCallback({...authData, user:response.data.hits[0]._source}));
-      sessionStorage.setItem("authData", {...authData, user:response.data.hits[0]._source});
-     }
+      if (!response.data.hits[0]) {
+        // create a new entry in the elasticsearch db
+        createDoc(
+          {
+            params: {
+              index: "user",
+              q: loginData.user,
+            },
+          },
+          loginData.key
+          );
+
+        // store to session
+        sessionStorage.setItem(
+          "authData",
+          JSON.stringify({ ...loginData, expirationDate: expirationDate, isAuthenticated: true })
+        );
+        console.log(response.data);
+      } else {
+        // console.log(response.data.hits[0]._source);
+        const authData = {
+          ...loginData,
+          user: response.data.hits[0]._source,
+          expirationDate: expirationDate,
+          isAuthenticated: true
+        };
+        dispatch(actionCallback(authData));
+        sessionStorage.setItem("authData", JSON.stringify(authData));
+      }
     })
     .catch((error) => {
       // catch errors.
       console.log(error.response.data);
     });
 };
- 
-
 
 export const socialSignIn = (endpoint) => {
   preAuthAxios
-     .post(endpoint)
-     .then((res) => {
-       // console.log(res.data);
-      
-     })
-     .catch((err) => {
-       // catch errors.
-   
-       console.log(err.response.data);
-     });
-}
+    .post(endpoint)
+    .then((res) => {
+      // console.log(res.data);
+    })
+    .catch((err) => {
+      // catch errors.
 
- export const authSignIn = (
-   email,
-   password,
-   authData,
-   dispatch,
-   actionCallback,
-   history
- ) => {
+      console.log(err.response.data);
+    });
+};
+
+export const authSignIn = (
+  email,
+  password,
+  authData,
+  dispatch,
+  actionCallback
+) => {
   preAuthAxios
-     .post(`/rest-auth/login/`, {
-       email: email,
-       password: password,
-     })
-     .then((res) => {
-       const token = res.data.key;
-       console.log(res.data);
-       const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-       sessionStorage.setItem("token", token);
-       sessionStorage.setItem("expirationDate", expirationDate);
-       getUserInfoElastic(res.data.user, dispatch, 
-        {...authData, token:token, isAuthenticated:true}, actionCallback);
-      //  history.push('/')
-       // dispatch(authSuccess(token));
-       // dispatch(checkAuthTimeout(3600));
-     })
-     .catch((err) => {
-       // catch errors.
-       authData.error = err.response.data.non_field_errors[0];
-       dispatch(actionCallback(authData));
-       console.log(err.response.data.non_field_errors);
-     });
- };
+    .post(`/rest-auth/login/`, {
+      email: email,
+      password: password,
+    })
+    .then((res) => {
+      const token = res.data.key;
+      console.log(res.data);
+      getUserInfoElastic(res.data, dispatch, actionCallback);
+    })
+    .catch((err) => {
+      // catch errors.
+      dispatch(
+        actionCallback({
+          ...authData,
+          error: err.response.data.non_field_errors[0],
+        })
+      );
+      console.log(err.response.data.non_field_errors);
+    });
+};
 
-
-
- export const authSignup = (
+export const authSignup = (
   firstName,
   lastName,
   email,
@@ -233,7 +236,6 @@ export const socialSignIn = (endpoint) => {
   authData,
   dispatch,
   actionCallback
-
 ) => {
   preAuthAxios
     .post(`/rest-auth/registration/`, {
@@ -244,13 +246,13 @@ export const socialSignIn = (endpoint) => {
       password2: password2,
     })
     .then((res) => {
-      return res
+      return res;
     })
     .catch((err) => {
       // console.log(err.response.data);
-      authData.error = err.response.data.email? err.response.data.email[0]
-      :err.response.data.password1[0];
+      authData.error = err.response.data.email
+        ? err.response.data.email[0]
+        : err.response.data.password1[0];
       dispatch(actionCallback(authData));
-      
     });
 };

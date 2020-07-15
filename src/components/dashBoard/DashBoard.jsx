@@ -1,6 +1,6 @@
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import React, { useEffect, useRef } from 'react';
-import { MATCH_ID } from '../backend/EsQueries'
+import { MATCH_ID_TITLE } from '../backend/EsQueries'
 import { useParams, useHistory} from 'react-router-dom'
 import { queryEsById } from '../backend/AxiosRequest'
 import { updateSelectedProject } from '../redux/actions'
@@ -38,7 +38,7 @@ export default function CenteredGrid() {
 
     if (!selectedProject){
       // replace - with space
-        let query = MATCH_ID(params.id, params.name.replace(/-/g, ' '));
+        let query = MATCH_ID_TITLE(params.id, params.name.replace(/-/g, ' '));
         queryEsById(query, dispatch, updateSelectedProject, history);
     }
 }, []);

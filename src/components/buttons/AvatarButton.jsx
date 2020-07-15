@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MenuListComposition() {
+export default function AvatarButton() {
   const history = useHistory();
 const dispatch = useDispatch();
 const { authData } = useTrackedState();
@@ -50,10 +50,10 @@ const { authData } = useTrackedState();
       return;
     }
     setOpen(false);
-    history.push('/me');
+    history.push('/'+'@'+authData.user.username);
   };
     const handleLogout = (event) => {
-      logout(authData, dispatch);
+      logout(dispatch);
   };
 
   function handleListKeyDown(event) {
@@ -86,7 +86,7 @@ const { authData } = useTrackedState();
          color="secondary"
          className={classes.small}
          alt={authData.user? authData.user.first_name:null} 
-         src="/static/images/avatar/1.jpg" />
+         src="/static/images/avatar/1.jpg"/>
         </Button>
         <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (

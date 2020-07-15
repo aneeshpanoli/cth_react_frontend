@@ -1,67 +1,66 @@
 import React from "react";
-import ReactQuill from "react-quill"; 
-import "react-quill/dist/quill.snow.css"; 
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import Button from "@material-ui/core/Button";
+import { useTrackedState } from 'reactive-react-redux'
+import { createDoc } from '../backend/AxiosRequest'
 
-class Comments extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { text: "" }; // You can also pass a Quill Delta here
-    this.handleChange = this.handleChange.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
-    this.handlePost = this.handlePost.bind(this);
-  }
+export default function Comments(props) {
+  const [text, setText] = React.useState("");
+  const [comments, setComments] = React.useState([])
+  const {authData} = useTrackedState();
 
-  handleChange(value) {
-    this.setState({ text: value });
-  }
+  const handleChange = (value) => {
+    setText(value);
+    console.log(value);
+  };
 
-  handleCancel() {
-    this.setState({ text: "" });
-  }
+  const handleCancel = () => {
+    setText("");
+  };
 
-  handlePost() {
-    console.log(this.state.text);
+  const handlePost = () => {
+    console.log(text);
     let data = {
       params: {
-        index: 'comments',
+        index: "comments",
         q: {
-          projectId:this.props.projectId,
-          user: "",
-          comments: this.state.text,
-          createdAt: new Date(),
-          nrVotes:"",
-          nrFlags:""
-
+          projectId: props.projectId,
+          userId: authData.user.id,
+          userFnLn: authData.user.first_name+' '+authData.user.last_name,
+          comments: text,
+          createdAt: new Date()
         },
       },
-    }
-    this.setState({ text: "" });
-  }
+    };
+    createDoc(data, authData.key)
+    setText("");
+  };
 
-  render() {
-    return (
-      <React.Fragment>
-        <ReactQuill value={this.state.text} onChange={this.handleChange} />
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{ margin: "0.5rem" }}
-          onClick={this.handlePost}
-        >
-          Post comment
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{ margin: "0.5rem" }}
-          onClick={this.handleCancel}
-        >
-          Cancel
-        </Button>
-      </React.Fragment>
-    );
-  }
+  return (
+    <React.Fragment>
+      <ReactQuill value={text} onChange={handleChange} />
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{ margin: "0.5rem" }}
+        onClick={handlePost}
+      >
+        Post comment
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{ margin: "0.5rem" }}
+        onClick={handleCancel}
+      >
+        Cancel
+      </Button>
+      <div>
+        {comments.map((comment) =>
+        comment
+        )}
+      </div>
+    </React.Fragment>
+  );
 }
-
-export default Comments;
