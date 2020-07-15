@@ -50,6 +50,22 @@ export const MATCH = (userInput, column) => {
   };
 };
 
+export const MATCH_USER = (userInput, column) => {
+  return {
+    params: {
+      index: "user",
+      q: {
+        size: 1,
+        query: {
+          match: {
+            [column]: userInput,
+          },
+        },
+      },
+    },
+  };
+};
+
 export const MORE_LIKE_THIS_old = (userInput, columns) => {
   return {
     params: {

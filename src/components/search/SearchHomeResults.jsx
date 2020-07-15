@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateSlideSearchResults } from '../redux/actions'
 import CarouselHolder from './CarouselHolder'
+import Box from '@material-ui/core/Box';
 
 
 
@@ -23,11 +24,10 @@ export default function SearchResults(){
 
 
     return (
-        // <Container maxwidth="lg" ref={resultDiv}>   
-        <Container maxwidth="lg">   
-        <CarouselHolder/> 
-        </Container>
 
+        <CarouselHolder/> 
+        
     );
   }
+
 

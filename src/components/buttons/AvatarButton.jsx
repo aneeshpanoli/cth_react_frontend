@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MenuListComposition() {
   const history = useHistory();
 const dispatch = useDispatch();
-const { authData, userInfo } = useTrackedState();
+const { authData } = useTrackedState();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -85,7 +85,7 @@ const { authData, userInfo } = useTrackedState();
          <Avatar variant="circle" 
          color="secondary"
          className={classes.small}
-         alt={userInfo? userInfo.first_name:null} 
+         alt={authData.user? authData.user.first_name:null} 
          src="/static/images/avatar/1.jpg" />
         </Button>
         <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>

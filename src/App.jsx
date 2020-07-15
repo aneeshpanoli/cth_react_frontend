@@ -55,7 +55,7 @@ const App = () => {
             <ProjectDashboard />
           </Route>
 
-          <Route exact path="/solve">
+          <Route exact path="/search">
             <SearchProjects />
           </Route>
 

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { updateUserInfo, updateProgress, updateFilterProject } from "../redux/actions";
 import { saveSessionStore, retriveSessionStore } from "../localStore/session";
+import { MATCH_USER } from './EsQueries'
 
 
 // switch API url based on environment
@@ -108,30 +109,37 @@ export const queryEsById = (query, dispatch, actionCallback, history) =>{
     })
  }
 
- export const getUserInfo = (dispatch) => {
-   const userInfoAxios = postAuthAxios(`Token ${localStorage.getItem("token")}`);
-   userInfoAxios
-     .get(`/rest-auth/user/`)
-     .then((response) => {
+//  export const getUserInfo = (dispatch) => {
+//    const userInfoAxios = postAuthAxios(`Token ${localStorage.getItem("token")}`);
+//    userInfoAxios
+//      .get(`/rest-auth/user/`)
+//      .then((response) => {
        
-       saveSessionStore("userInfo", response.data);
-       console.log(response.data);
-       dispatch(updateUserInfo(response.data));
-     })
-     .catch((error) => {
-       // catch errors.
-       console.log(error.response.data);
-     });
- };
- 
- export const createDoc = (doc) => {
-  esAxios
+//        saveSessionStore("userInfo", response.data);
+//        console.log(response.data);
+//        dispatch(updateUserInfo(response.data));
+//      })
+//      .catch((error) => {
+//        // catch errors.
+//        console.log(error.response.data);
+//      });
+//  };
+
+ export const createDocUser = (doc) => {
+  const userInfoAxios = postAuthAxios(`Token ${localStorage.getItem("token")}`);
+   console.log(doc)
+   userInfoAxios
     .get(
-      `/add/`, //change to `/add/` tom make it working
-      doc
+      `/create/`,
+      {
+        params: {
+          index: 'user',
+          q: doc
+        },
+      }
     )
     .then((response) => {
-      // console.log(response.data);
+      console.log(response.data);
       return true;
     })
     .catch((error) => {
@@ -140,6 +148,31 @@ export const queryEsById = (query, dispatch, actionCallback, history) =>{
       return false;
     });
 };
+
+
+ export const getUserInfoElastic = (user, dispatch, authData, actionCallback) => {
+  const userInfoAxios = postAuthAxios(`Token ${localStorage.getItem("token")}`);
+  let query = MATCH_USER(user.id, 'id')
+  userInfoAxios
+    .get(`/q/`, query)
+    .then((response) => {
+      
+     if(!response.data.hits[0]){
+       createDocUser(user)
+       sessionStorage.setItem("authData", user);
+      console.log(response.data);
+     }else{
+      console.log(response.data.hits[0]._source);
+      dispatch(actionCallback({...authData, user:response.data.hits[0]._source}));
+      sessionStorage.setItem("authData", {...authData, user:response.data.hits[0]._source});
+     }
+    })
+    .catch((error) => {
+      // catch errors.
+      console.log(error.response.data);
+    });
+};
+ 
 
 
 export const socialSignIn = (endpoint) => {
@@ -173,12 +206,11 @@ export const socialSignIn = (endpoint) => {
        const token = res.data.key;
        console.log(res.data);
        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-       localStorage.setItem("token", token);
-       localStorage.setItem("expirationDate", expirationDate);
-       dispatch(actionCallback({...authData, token:token, isAuthenticated:true}));
-       dispatch(updateUserInfo(res.data.user));
-      //  getUserInfo(dispatch);
-       history.push('/')
+       sessionStorage.setItem("token", token);
+       sessionStorage.setItem("expirationDate", expirationDate);
+       getUserInfoElastic(res.data.user, dispatch, 
+        {...authData, token:token, isAuthenticated:true}, actionCallback);
+      //  history.push('/')
        // dispatch(authSuccess(token));
        // dispatch(checkAuthTimeout(3600));
      })
@@ -213,15 +245,6 @@ export const socialSignIn = (endpoint) => {
     })
     .then((res) => {
       return res
-      // const token = res.data.key;
-      // const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-      // localStorage.setItem("token", token);
-      // localStorage.setItem("expirationDate", expirationDate);
-      // authData.token = token;
-      // authData.isAuthenticated = true;
-      // dispatch(actionCallback(authData));
-      //   dispatch(authSuccess(token));
-      //   dispatch(checkAuthTimeout(3600));
     })
     .catch((err) => {
       // console.log(err.response.data);

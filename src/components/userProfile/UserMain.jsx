@@ -26,10 +26,10 @@ const useStyles = makeStyles((theme) => ({
 export default function CenteredGrid() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { userInfo } = useTrackedState();
+  const { authData } = useTrackedState();
   const getUserOwnChallenges = () => {
     let query = MATCH_USER_EMAIL(
-        userInfo.email, 'owners'
+        authData.user.email, 'owners'
         );
         queryEsChallenges(query, dispatch, updateUserOwnChallenge);
   };

@@ -27,7 +27,7 @@ export default function Hero () {
 
   const history = useHistory();
   const handleClick = (selectedProject) => {
-    history.push("/solve");
+    history.push("/search");
   };
 
 
@@ -59,5 +59,6 @@ export default function Hero () {
       </Box>
     );
   }
+  
 
 

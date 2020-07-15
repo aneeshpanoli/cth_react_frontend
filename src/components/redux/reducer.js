@@ -41,8 +41,6 @@ export const reducer = (state = initialState, action) => {
             return {...state, selectedProject: action.selectedProject}
         case actionType.AUTH_DATA:
             return { ...state, authData: action.authData };
-        case actionType.USER_INFO:
-            return { ...state, userInfo: action.userInfo };
         case actionType.FILTER_PROJECT:
             return { ...state, filterProjectList: action.filterProjectList };
         case actionType.UPDATE_PROGRESS:

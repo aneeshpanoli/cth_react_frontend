@@ -29,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
   const classes = useStyles();
-  const { userInfo } = useTrackedState();
+  const { authData } = useTrackedState();
   // console.log(userInfo);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!userInfo) {
+    if (!authData.user) {
       retriveSessionStore("userInfo", dispatch, updateUserInfo);
     }
   }, []);
@@ -53,7 +53,7 @@ export default function Header(props) {
 
           <Grid item xs={7} sm={2} >
             <Typography gutterBottom variant="subtitle1" >
-              {userInfo ? userInfo.first_name + " " + userInfo.last_name : null}
+              {authData.user ? authData.user.first_name + " " + authData.user.last_name : null}
             </Typography>
             <Typography variant="body2" gutterBottom>
               Associate @Some Org

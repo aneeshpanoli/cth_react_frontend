@@ -1,4 +1,4 @@
-import Carousel from "@brainhubeu/react-carousel";
+import Container from '@material-ui/core/Container';
 import "@brainhubeu/react-carousel/lib/style.css";
 import ProjectCard from "./ProjectCard";
 import Box from "@material-ui/core/Box";
@@ -38,8 +38,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-export default class SwipeToSlide extends Component {
-  render() {
+export default function SwipeToSlide({categoryList}) {
     const settings = {
       className: "center",
       infinite: true,
@@ -88,13 +87,20 @@ export default class SwipeToSlide extends Component {
       ],
     };
     return (
-      <div>
+      
+      <Box style={{marginBottom:'2rem'}}>
+        {categoryList&&categoryList[0]?
+      <Container maxwidth="lg">  
         <Slider {...settings}>
-          {this.props.categoryList.map((r, i) => (
+          {categoryList.map((r, i) => (
             <ProjectCard key={i} r={r} />
           ))}
         </Slider>
-      </div>
+        </Container>
+         :
+         null}
+        </Box>
+       
     );
   }
-}
+

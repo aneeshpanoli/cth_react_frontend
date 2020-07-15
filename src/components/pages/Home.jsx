@@ -32,12 +32,11 @@ export default function homePage (){
     }, []);
    
     return (
-        <div>
+        <React.Fragment>
         <Navbar />
         <Hero />
-        {/* <Circle /> */}
         <SearchResults />
         <Footer />
-        </div>
+        </React.Fragment>
     );
 }
