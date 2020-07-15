@@ -22,6 +22,10 @@ export const updateAuthData = newAuthData => ({
     authData: newAuthData
 })
 
+export const updateCommentsData = newCommentsData => ({
+    type: actionType.UPDATE_COMMENTS, 
+    commentsData: newCommentsData
+})
 
 
 export const updateChallengeFormData = newChallengeFormData => ({

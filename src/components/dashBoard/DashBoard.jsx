@@ -37,6 +37,7 @@ export default function CenteredGrid() {
   useEffect(() =>{
 
     if (!selectedProject){
+        console.log(params.id)
       // replace - with space
         let query = MATCH_ID_TITLE(params.id, params.name.replace(/-/g, ' '));
         queryEsById(query, dispatch, updateSelectedProject, history);
@@ -60,8 +61,8 @@ export default function CenteredGrid() {
         <Grid item sm={12} xs={12}>
           <Paper className={classes.paper}>
           <h4>Comments</h4>
-          {authData.isAuthenticated?
-          <Comments projId={params.id}/>
+          {authData.isAuthenticated && params.id?
+          <Comments projectId={params.id}/>
             :
             <h5>Please sign in to post comments</h5>}
           </Paper>

@@ -2,14 +2,16 @@ import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Button from "@material-ui/core/Button";
-import { useTrackedState } from 'reactive-react-redux'
-import { createDoc } from '../backend/AxiosRequest'
+import { useTrackedState, useDispatch } from 'reactive-react-redux'
+import { createDoc, queryElasticsearch } from '../backend/AxiosRequest'
+import { MATCH_PROJ_ID } from '../backend/EsQueries'
+import { updateCommentsData} from '../redux/actions'
 
 export default function Comments(props) {
+  const {authData, commentsData} = useTrackedState();
+  const dispatch = useDispatch();
   const [text, setText] = React.useState("");
   const [comments, setComments] = React.useState([])
-  const {authData} = useTrackedState();
-
   const handleChange = (value) => {
     setText(value);
     console.log(value);
@@ -20,7 +22,7 @@ export default function Comments(props) {
   };
 
   const handlePost = () => {
-    console.log(text);
+    console.log(props.projectId);
     let data = {
       params: {
         index: "comments",
@@ -36,6 +38,17 @@ export default function Comments(props) {
     createDoc(data, authData.key)
     setText("");
   };
+
+  React.useEffect(() =>{
+    if (props.projectId){
+    const query = MATCH_PROJ_ID(props.projectId, 'comments');
+    queryElasticsearch('', query, dispatch, updateCommentsData)}
+
+  }, [props.projectId])
+  React.useEffect(()=> {
+    setComments(commentsData);
+    console.log(commentsData);
+  }, [commentsData])
 
   return (
     <React.Fragment>
@@ -56,11 +69,14 @@ export default function Comments(props) {
       >
         Cancel
       </Button>
-      <div>
-        {comments.map((comment) =>
-        comment
-        )}
-      </div>
+      
+        {comments&&comments[0]?comments.map((comment, i) =>
+        <React.Fragment key={i} >
+        <span dangerouslySetInnerHTML={{ __html:comment._source.comments}}>
+        </span> <span>{comment._source.userFnLn}</span>
+        </React.Fragment>
+        ):null}
+      
     </React.Fragment>
   );
 }
