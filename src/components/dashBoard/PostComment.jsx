@@ -1,5 +1,5 @@
 import React from "react";
-import ReactQuill from "react-quill";
+import ReactQuill, {Quill} from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Button from "@material-ui/core/Button";
 import { useTrackedState, useDispatch } from 'reactive-react-redux'
@@ -23,6 +23,9 @@ export default function PostComment(props) {
   };
 
   const handlePost = () => {
+    if(!text || text.length < 25){
+      return
+    }
     // console.log(props.projectId);
     let data = {
       params: {
@@ -33,6 +36,7 @@ export default function PostComment(props) {
           username: authData.user.username,
           comments: text,
           createdAt: new Date()
+          
         },
       },
     };

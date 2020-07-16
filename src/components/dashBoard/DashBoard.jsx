@@ -16,6 +16,7 @@ import ProjectVideo from "./ProjectVideo";
 import ProjectTech from "./ProjectTech";
 import PostComment from "./PostComment";
 import ListComments from "./ListComments";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,7 +79,7 @@ export default function CenteredGrid() {
               {authData.isAuthenticated && params.id ? (
                 <PostComment projectId={params.id} />
               ) : (
-                <h5>Please sign in to post comments</h5>
+                <h5>Please <Button href='/sign-in'>sign in </Button> to post comments</h5>
               )}
             </Paper>
           </Grid>

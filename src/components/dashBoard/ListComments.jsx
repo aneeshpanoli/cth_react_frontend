@@ -66,7 +66,6 @@ export default function ListComments(props) {
                     <Button startIcon={<ThumbUpIcon />} size='small'>
                       {''}
                     </Button>
-                    
                   </Grid>
                   <Grid item xs={12}>
                   <Button startIcon={<FlagIcon />} size='small'>

@@ -34,7 +34,8 @@ export default function Header(props) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (!authData.user) {
-      retriveSessionStore("userInfo", dispatch, updateUserInfo);
+      retriveSessionStore("authData", dispatch, updateUserInfo);
+
     }
   }, []);
 

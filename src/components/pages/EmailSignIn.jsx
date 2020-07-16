@@ -16,7 +16,8 @@ export default function UserProfile (){
     
     React.useEffect(() => {
         if (authData.isAuthenticated){
-            history.push('/');
+            // if redirected from cth go back after login otherwise go to home page
+            history&&document.referrer.includes(window.location.hostname)? history.goBack(): history.push('/');
         }
        });
 

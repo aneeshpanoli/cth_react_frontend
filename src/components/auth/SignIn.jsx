@@ -74,7 +74,7 @@ const formik = useFormik({
     validate,
     onSubmit: values => {
     //   alert(JSON.stringify(values, null, 2));
-    authSignIn(values.email, values.password , authData, disaptch, updateAuthData, history);
+    authSignIn(values.email, values.password , authData, disaptch, updateAuthData);
     },
   });
 
