@@ -30,45 +30,35 @@ const useStyles = makeStyles((theme) => ({
 export default function Header(props) {
   const classes = useStyles();
   const { authData } = useTrackedState();
-  // console.log(userInfo);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (!authData.user) {
-      retriveSessionStore("authData", dispatch, updateUserInfo);
-
-    }
-  }, []);
 
   return (
     <React.Fragment>
-      <div style={{height:'1rem'}}></div>
-    <Grid container spacing={0} alignContent='space-between'>
-      <Grid item sm={2} xs={5}>
-            <img
-              className={classes.image}
-              alt="complex"
-              src={Icon}
-              className={classes.image}
-            />
-          </Grid>
+      <div style={{ height: "1rem" }}></div>
+      <Grid container spacing={0} alignContent="space-between">
+        <Grid item sm={2} xs={5}>
+          <img
+            className={classes.image}
+            alt="complex"
+            src={Icon}
+            className={classes.image}
+          />
+        </Grid>
 
-          <Grid item xs={7} sm={2} >
-            <Typography gutterBottom variant="subtitle1" >
-              {authData.user ? authData.user.first_name + " " + authData.user.last_name : null}
-            </Typography>
-            <Typography variant="body2" gutterBottom>
-              Associate @Some Org
-            </Typography>
+        <Grid item xs={7} sm={2}>
+          <Typography gutterBottom variant="subtitle1">
+            {authData.user
+              ? authData.user.first_name + " " + authData.user.last_name
+              : null}
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            Associate @Some Org
+          </Typography>
 
-            <Typography variant="body2" color="textSecondary">
-              ID: 1030114
-            </Typography>
-          </Grid>
-
-    </Grid>
-
-    
-
+          <Typography variant="body2" color="textSecondary">
+            ID: 1030114
+          </Typography>
+        </Grid>
+      </Grid>
 
       <div style={{ height: "1rem" }}></div>
 
@@ -77,12 +67,16 @@ export default function Header(props) {
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item>
-                <Typography variant="body2" style={{ cursor: "pointer" }}>
-                </Typography>
+                <Typography
+                  variant="body2"
+                  style={{ cursor: "pointer" }}
+                ></Typography>
               </Grid>
               <Grid item>
-                <Typography variant="body2" style={{ cursor: "pointer" }}>
-                </Typography>
+                <Typography
+                  variant="body2"
+                  style={{ cursor: "pointer" }}
+                ></Typography>
               </Grid>
             </Grid>
             <Grid item>

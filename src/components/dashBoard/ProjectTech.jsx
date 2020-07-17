@@ -27,9 +27,9 @@ export default function Header({selectedProject}) {
       <Chip
             size="small"
             key={element}
-              label={element}
+              label={element.slice(0, 38)}
               className={classes.chip}
-              style={{margin:5}}
+              style={{margin:3}}
             />
       )
     }

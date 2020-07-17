@@ -26,15 +26,22 @@ export default function Header({selectedProject}) {
     const all_links = [...selectedProject._source.links];
     all_links.push(selectedProject._source.url)
     const elements = []
+    let newUrl;
     all_links.forEach(element => {
-      elements.push(
+      try {
+       newUrl = new URL(element).hostname.slice(0, 31)
+     } catch (error) {
+      newUrl= null
+     }
+     newUrl?elements.push(
       <Button key={element} startIcon={<LinkIcon/>}
       target="_blank" 
       size='small' href={element}
       style={{margin:5}}
       >
-        {new URL(element).hostname.slice(0, 31)}
-        </Button>)
+       { newUrl}
+       
+        </Button>):null
     });
     return elements;
   }

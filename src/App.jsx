@@ -75,7 +75,8 @@ const App = () => {
             <Route exact path="/feedback">
               <Feedback />
             </Route>
-            <Route exact path="/:user">
+            {/* <Route path=":(^/@[a-z0-9]+)"> */}
+            <Route exact path="/@:user">
               <UserProfile />
             </Route>
             <Route path="/:name/:id">

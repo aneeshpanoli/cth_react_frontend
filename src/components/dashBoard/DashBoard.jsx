@@ -55,7 +55,7 @@ export default function CenteredGrid() {
             spacing={1}
             alignItems="flex-start"
             item
-            sm={3}
+            sm={12}
             md={3}
             xs={12}
           >

@@ -10,6 +10,7 @@ import { updateUserOwnChallenge } from '../redux/actions'
 import { queryEsChallenges } from '../backend/AxiosRequest'
 import { MATCH_USER_EMAIL } from '../backend/EsQueries'
 import CalenderHeatmap from './CalenderHeatmap'
+import { useParams, useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
 export default function CenteredGrid() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const params = useParams();
+  console.log(params.user);
   const { authData } = useTrackedState();
   const getUserOwnChallenges = () => {
     let query = MATCH_USER_EMAIL(
@@ -35,10 +38,11 @@ export default function CenteredGrid() {
   };
 
   return (
+    
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Header onClick={getUserOwnChallenges} />
+          <Header onClick={null} />
         </Grid>
         <UserOwnChallenges />
         <Grid item xs={6} sm={3}>
