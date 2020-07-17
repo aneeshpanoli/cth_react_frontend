@@ -12,6 +12,8 @@ import { useFormik } from "formik";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { createDoc } from "../backend/AxiosRequest";
 import MUIRichTextEditor from "mui-rte";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { countries, sectors, roles} from '../search/utils'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -74,13 +76,13 @@ export default function storyTextForm(props) {
   const { authData } = useTrackedState();
   const dispatch = useDispatch();
 
-  
   const formik = useFormik({
     initialValues: {
       title: "",
       country: "",
       storyText: "",
-      embed: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"
+      embed:
+        "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg",
     },
     validate,
     onSubmit: (values) => {
@@ -101,18 +103,15 @@ export default function storyTextForm(props) {
     },
   });
 
-  const handleEmbed = (url)=>{
+  const handleEmbed = (url) => {
     try {
-      console.log(url)
-      new URL(url)
-      setEmbed(url)
-      
+      console.log(url);
+      new URL(url);
+      setEmbed(url);
     } catch (error) {
-      setEmbed(null)
+      setEmbed(null);
     }
-  }
-
-
+  };
 
   return (
     <Container component="main" maxWidth="md">
@@ -156,16 +155,39 @@ export default function storyTextForm(props) {
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
-                <TextField
-                  variant="standard"
-                  required
-                  fullWidth
-                  id="title"
-                  label="Category"
-                  name="title"
-                  autoComplete="none"
-                  onChange={formik.handleChange}
-                  value={formik.values.title}
+                <Autocomplete
+                  id="combo-box-demo"
+                  options={sectors}
+                  getOptionLabel={(option) => option.sector}
+                  style={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Sector"
+                      variant="standard"
+                    />
+                  )}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                {formik.errors.title ? (
+                  <sup className={classes.error}>{formik.errors.title}</sup>
+                ) : (
+                  <sup className={classes.error}>{""}</sup>
+                )}
+                <Autocomplete
+                  id="combo-box-roles"
+                  options={roles}
+                  getOptionLabel={(option) => option.role}
+                  style={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Roles needed"
+                      variant="standard"
+                    />
+                  )}
                 />
               </Grid>
 
@@ -187,8 +209,6 @@ export default function storyTextForm(props) {
                 />
               </Grid>
 
-            
-
               <Grid item xs={12}>
                 <TextField
                   variant="standard"
@@ -201,14 +221,17 @@ export default function storyTextForm(props) {
                   value={formik.values.embed}
                 />
               </Grid>
-             
-              {formik.values.embed?
-              <Grid item xs={12}>
-                <img src={formik.values.embed} alt="title-image" style={{width:'100%'}} />
-              </Grid>
-              :
-              null}
+
+              {formik.values.embed ? (
                 <Grid item xs={12}>
+                  <img
+                    src={formik.values.embed}
+                    alt="title-image"
+                    style={{ width: "100%" }}
+                  />
+                </Grid>
+              ) : null}
+              <Grid item xs={12}>
                 {formik.errors.title ? (
                   <sup className={classes.error}>{formik.errors.title}</sup>
                 ) : (
@@ -238,7 +261,7 @@ export default function storyTextForm(props) {
                       "bulletList",
                       "quote",
                       "code",
-                      "link"
+                      "link",
                     ]}
                     toolbarButtonSize="small"
                   />
@@ -251,17 +274,18 @@ export default function storyTextForm(props) {
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
-                <TextField
-                  variant="standard"
-                  required
-                  fullWidth
-                  name="country"
-                  label="Country"
-                  type="text"
-                  id="country"
-                  autoComplete="current-password"
-                  onChange={formik.handleChange}
-                  value={formik.values.country}
+                <Autocomplete
+                  id="combo-box"
+                  options={countries}
+                  getOptionLabel={(option) => option.label}
+                  style={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Country"
+                      variant="standard"
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -390,3 +414,4 @@ export default function storyTextForm(props) {
     </Container>
   );
 }
+
