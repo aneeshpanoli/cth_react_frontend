@@ -193,7 +193,6 @@ export const createDocFeedback = (doc) => {
 export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
   const userInfoAxios = postAuthAxios(`Token ${loginData.key}`);
   let query = MATCH_USER(loginData.user.id, "id");
-  const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
   userInfoAxios
     .get(`/q/`, query)
     .then((response) => {
@@ -212,15 +211,19 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
         // store to session
         sessionStorage.setItem(
           "authData",
-          JSON.stringify({ ...loginData, expirationDate: expirationDate, isAuthenticated: true })
+          JSON.stringify({ ...loginData, isAuthenticated: true })
         );
+
+        //update tabs
+        localStorage.setItem('REQUESTING_SHARED_CREDENTIALS', Date.now().toString())
+        console.log('requesting shared creds from axios')
+        localStorage.removeItem('REQUESTING_SHARED_CREDENTIALS')
         console.log(response.data);
       } else {
         // console.log(response.data.hits[0]._source);
         const authData = {
           ...loginData,
           user: response.data.hits[0]._source,
-          expirationDate: expirationDate,
           isAuthenticated: true
         };
         dispatch(actionCallback(authData));

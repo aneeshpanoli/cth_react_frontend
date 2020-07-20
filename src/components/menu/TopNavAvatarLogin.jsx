@@ -24,7 +24,9 @@ export default function TopNavAvatarLogin() {
   const classes = useStyles();
 
   React.useEffect(() => {
+    if (authData){
     setIsAuthenticated(authData.isAuthenticated);
+    }
    }, [authData]);
   
 

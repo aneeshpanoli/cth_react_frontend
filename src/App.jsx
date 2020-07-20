@@ -18,6 +18,8 @@ import AboutUs from "./components/pages/AboutUs";
 import Feedback from "./components/pages/Feedback";
 import PageNotFound from "./components/pages/PageNotFound";
 import CreateProject from "./components/pages/CreateProject";
+import { updateAuthData } from "./components/redux/actions";
+import { logout, tabLogin } from './components/auth/auth'
 
 
 //stylesheet
@@ -27,10 +29,33 @@ import "./Assets/css/style.css";
 const App = () => {
   const theme = createMuiTheme(themeDict);
   const dispatch = useDispatch();
+  const {authData} = useTrackedState()
+
+  window.addEventListener('storage', (event) => {
+
+    if(event.key === 'CREDENTIALS_FLUSH' && authData){
+      logout(dispatch)
+    }
+    if(event.key === 'REQUESTING_SHARED_CREDENTIALS' && (authData && authData.user)){
+    console.log('setting auth data')
+    localStorage.setItem('authData', JSON.stringify(authData))
+    localStorage.removeItem('authData')
+    }
+   
+    if(event.key === 'authData' && (authData && !authData.user)){
+      const newValue = JSON.parse(event.newValue)
+      if (newValue&&newValue.user){
+        // console.log('updating authData')
+      tabLogin(dispatch, event.newValue)
+      }
+    }
+  })
 
   useEffect(() => {
-    authCheck(dispatch);
+  
+  authCheck(dispatch);
   }, []);
+
 
   return (
     <MuiThemeProvider theme={theme}>

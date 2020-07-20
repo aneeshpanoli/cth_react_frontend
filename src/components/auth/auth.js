@@ -5,6 +5,11 @@ export const logout = (dispatch) => {
   dispatch(updateAuthData({ token: null, isAuthenticated: false, user: null }));
 };
 
+export const tabLogin = (dispatch, credFromOtherTab) => {
+  dispatch(updateAuthData(JSON.parse(credFromOtherTab)));
+  sessionStorage.setItem("authData", credFromOtherTab);
+};
+
 export const checkAuthTimeout = (expirationDate) => {
   return (dispatch) => {
     setTimeout(() => {
@@ -13,11 +18,9 @@ export const checkAuthTimeout = (expirationDate) => {
   };
 };
 
-export const authCheck = (dispatch) => {
+export const authCheckExp = (dispatch) => {
   const authData = JSON.parse(sessionStorage.getItem("authData"));
-  if (!authData) {
-    logout(dispatch);
-  } else {
+  if (authData) {
     console.log(authData);
     const expirationDate = new Date(authData.expirationDate);
     if (expirationDate <= new Date()) {
@@ -32,7 +35,31 @@ export const authCheck = (dispatch) => {
           expirationDate: newExpirationDate,
         })
       );
-      checkAuthTimeout(newExpirationDate);
+      checkAuthTimeout(newExpirationDate, dispatch);
     }
+  } else {
+    localStorage.setItem(
+      "REQUESTING_SHARED_CREDENTIALS",
+      Date.now().toString()
+    );
+    localStorage.removeItem("REQUESTING_SHARED_CREDENTIALS");
+    console.log("requesting token");
+  }
+};
+
+export const authCheck = (dispatch) => {
+  const authData = JSON.parse(sessionStorage.getItem("authData"));
+  if (!authData) {
+    localStorage.setItem(
+      "REQUESTING_SHARED_CREDENTIALS",
+      Date.now().toString()
+    );
+    localStorage.removeItem("REQUESTING_SHARED_CREDENTIALS");
+    console.log("requesting token");
+  }else{
+    dispatch(
+      updateAuthData({
+        ...authData})
+    );
   }
 };

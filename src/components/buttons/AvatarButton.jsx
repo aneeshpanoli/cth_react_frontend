@@ -54,6 +54,9 @@ const { authData } = useTrackedState();
   };
     const handleLogout = (event) => {
       logout(dispatch);
+      // logout tabs
+  localStorage.setItem('CREDENTIALS_FLUSH', Date.now().toString())
+  localStorage.removeItem('CREDENTIALS_FLUSH')
   };
 
   function handleListKeyDown(event) {
@@ -85,7 +88,7 @@ const { authData } = useTrackedState();
          <Avatar variant="circle" 
          color="secondary"
          className={classes.small}
-         alt={authData.user? authData.user.first_name:null} 
+         alt={authData&&authData.user? authData.user.first_name:null} 
          src="/static/images/avatar/1.jpg"/>
         </Button>
         <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
