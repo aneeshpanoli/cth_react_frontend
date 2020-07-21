@@ -37,7 +37,7 @@ const App = () => {
       logout(dispatch)
     }
     if(event.key === 'REQUESTING_SHARED_CREDENTIALS' && (authData && authData.user)){
-    console.log('setting auth data')
+    // console.log('setting auth data')
     localStorage.setItem('authData', JSON.stringify(authData))
     localStorage.removeItem('authData')
     }

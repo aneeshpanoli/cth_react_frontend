@@ -54,6 +54,19 @@ const postAuthAxios = (token) =>
     },
   });
 
+
+// use for POST request that require user authentication
+const postPostAuthAxios = (token) =>
+  axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      "X-CSRFTOKEN": document.cookie.split("=")[1],
+      "X-Requested-With": "XMLHttpRequest",
+      "Content-type": 'multipart/form-data',
+      Authorization: token,
+    },
+  });
+
 export const queryElasticsearch = (
   userInput,
   query,
@@ -172,6 +185,20 @@ export const createDoc = (doc, token, getUpdatedData) => {
       // catch errors.
       console.log(error);
       return false;
+    });
+};
+
+
+export const postProject = (formData, token) => {
+  const postpostAuthAxios = postPostAuthAxios(`Token ${token}`);
+  postpostAuthAxios
+    .post(`/post/`, formData)
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      // catch errors.
+      console.log(error);
     });
 };
 

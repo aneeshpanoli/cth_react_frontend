@@ -82,16 +82,19 @@ export default function FeedbackForm(props) {
                   onAdd={(newFileObjs) => {
                     console.log("onAdd", newFileObjs);
                     setFileObjects(newFileObjs);
-                  }}
+                  }} 
                   onDelete={(deleteFileObj) => {
                     console.log("onDelete", deleteFileObj);
                     setFileObjects([])
                   }}
                   onClose={() => setFileOpen(false)}
-                  onSave={() => {
-                    console.log("onSave", fileObjects);
+                  onSave={()=> {props.onSave(fileObjects);
                     setFileOpen(false);
                   }}
+                  // onSave={() => {
+                  //   console.log("onSave", fileObjects);
+                  //   setFileOpen(false);
+                  // }}
                   showPreviews={true}
                   showFileNamesInPreview={true}
                 />

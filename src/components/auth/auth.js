@@ -43,7 +43,7 @@ export const authCheckExp = (dispatch) => {
       Date.now().toString()
     );
     localStorage.removeItem("REQUESTING_SHARED_CREDENTIALS");
-    console.log("requesting token");
+    // console.log("requesting token");
   }
 };
 
@@ -55,7 +55,7 @@ export const authCheck = (dispatch) => {
       Date.now().toString()
     );
     localStorage.removeItem("REQUESTING_SHARED_CREDENTIALS");
-    console.log("requesting token");
+    // console.log("requesting token");
   }else{
     dispatch(
       updateAuthData({

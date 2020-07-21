@@ -10,10 +10,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useFormik } from "formik";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import { createDoc } from "../backend/AxiosRequest";
+import { postProject } from "../backend/AxiosRequest";
 import MUIRichTextEditor from "mui-rte";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries, sectors, roles} from '../search/utils'
+import { convertToRaw } from 'draft-js'
+import ImageUpload from './ImageUpload'
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -47,11 +50,6 @@ const useStyles = makeStyles((theme) => ({
 const validate = (values) => {
   const errors = {};
 
-  if (!values.country) {
-    errors.country = "Required*";
-  } else if (values.country.length < 8) {
-    errors.country = "Must be atleast 8 characters long*";
-  }
   if (!values.storyText) {
     errors.storyText = "Required*";
   } else if (values.storyText.length < 100) {
@@ -72,6 +70,7 @@ const validate = (values) => {
 export default function storyTextForm(props) {
   const [open, setOpen] = React.useState(false);
   const [embed, setEmbed] = React.useState(null);
+  const [image, setImage] = React.useState(null);
   const classes = useStyles();
   const { authData } = useTrackedState();
   const dispatch = useDispatch();
@@ -79,38 +78,45 @@ export default function storyTextForm(props) {
   const formik = useFormik({
     initialValues: {
       title: "",
-      country: "",
       storyText: "",
-      embed:
-        "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg",
+      motivation: "",
+      subtitle: "",
     },
-    validate,
+    // validate,
     onSubmit: (values) => {
       //   alert(JSON.stringify(values, null, 2));
       let data = {
-        params: {
           index: "storyText",
           q: {
-            country: values.country,
+            country: values.country, //undefined right now
             title: values.title,
             storyText: values.storyText,
-            createdAt: new Date(),
+            createdAt: new Date()          
           },
-        },
       };
-      createDoc(data, authData.key, null);
+      let formData = new FormData();
+      // formData.append('country', values.country)
+      // formData.append('title', values.title)
+      // formData.append('storyText', values.storyText)
+      // formData.append('createdAt', new Date())
+      formData.append('params', JSON.stringify(data))
+      formData.append('image', image, image.path)
+      
+      postProject(formData, authData.key);
       setOpen(true);
     },
   });
 
   const handleEmbed = (url) => {
-    try {
-      console.log(url);
-      new URL(url);
-      setEmbed(url);
-    } catch (error) {
-      setEmbed(null);
+    setImage(url[0].file);
+    console.log(url[0].file.path)
+    let reader = new FileReader();
+    
+    reader.onloadend = () => {
+      setEmbed(reader.result)
+      console.log(embed)
     }
+    reader.readAsDataURL(url[0].file)
   };
 
   return (
@@ -149,6 +155,19 @@ export default function storyTextForm(props) {
                   value={formik.values.title}
                 />
               </Grid>
+              <Grid item xs={12}> 
+              <ImageUpload onSave={handleEmbed}/>
+              {embed ? (
+                <Grid item xs={12}>
+                  <img
+                    src={embed}
+                    alt="title-image"
+                    style={{ maxHeight: "400px", marginTop:'1rem' }}
+                  />
+                </Grid>
+              ) : null}
+              </Grid>
+              
               <Grid item xs={12}>
                 {formik.errors.title ? (
                   <sup className={classes.error}>{formik.errors.title}</sup>
@@ -201,36 +220,15 @@ export default function storyTextForm(props) {
                   variant="standard"
                   required
                   fullWidth
-                  id="title"
+                  id="subtitle"
                   label="Short description"
-                  name="title"
+                  name="subtitle"
                   onChange={formik.handleChange}
-                  value={formik.values.title}
+                  value={formik.values.subtitle}
                 />
               </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  variant="standard"
-                  required
-                  fullWidth
-                  id="embed"
-                  label="<embed an image url>"
-                  name="embed"
-                  onChange={formik.handleChange}
-                  value={formik.values.embed}
-                />
-              </Grid>
-
-              {formik.values.embed ? (
-                <Grid item xs={12}>
-                  <img
-                    src={formik.values.embed}
-                    alt="title-image"
-                    style={{ width: "100%" }}
-                  />
-                </Grid>
-              ) : null}
+              
               <Grid item xs={12}>
                 {formik.errors.title ? (
                   <sup className={classes.error}>{formik.errors.title}</sup>
@@ -241,11 +239,11 @@ export default function storyTextForm(props) {
                   variant="standard"
                   required
                   fullWidth
-                  id="title"
+                  id="motivation"
                   label="Motivation"
-                  name="title"
+                  name="motivation"
                   onChange={formik.handleChange}
-                  value={formik.values.title}
+                  value={formik.values.motivation}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -254,6 +252,8 @@ export default function storyTextForm(props) {
                 >
                   <MUIRichTextEditor
                     label="Description *"
+                    id='storyText'
+                    name="storyText"
                     controls={[
                       "bold",
                       "italic",
@@ -264,6 +264,8 @@ export default function storyTextForm(props) {
                       "link",
                     ]}
                     toolbarButtonSize="small"
+                    onChange={(event)=>formik.handleChange(JSON.stringify(convertToRaw(event.getCurrentContent())))}
+                    value={formik.values.storyText}
                   />
                 </div>
               </Grid>
@@ -275,13 +277,16 @@ export default function storyTextForm(props) {
                   <sup className={classes.error}>{""}</sup>
                 )}
                 <Autocomplete
-                  id="combo-box"
+               
+                 onChange={(_, value)=> formik.handleChange(value.label)}
+                 
                   options={countries}
                   getOptionLabel={(option) => option.label}
                   style={{ width: 300 }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
+                      id="country"
                       label="Country"
                       variant="standard"
                     />
@@ -298,13 +303,13 @@ export default function storyTextForm(props) {
                   variant="standard"
                   required
                   fullWidth
-                  name="country"
+                  name="importantLink"
                   label="Important links"
                   type="text"
-                  id="country"
+                  id="impLinks"
                   autoComplete="current-password"
                   onChange={formik.handleChange}
-                  value={formik.values.country}
+                  value={formik.values.impLinks}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -317,13 +322,13 @@ export default function storyTextForm(props) {
                   variant="standard"
                   required
                   fullWidth
-                  name="country"
+                  name="tags"
                   label="Tags"
                   type="text"
-                  id="country"
+                  id="tags"
                   autoComplete="current-password"
                   onChange={formik.handleChange}
-                  value={formik.values.country}
+                  value={formik.values.tags}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -336,13 +341,13 @@ export default function storyTextForm(props) {
                   variant="standard"
                   required
                   fullWidth
-                  name="country"
+                  name="videour;"
                   label="Video url"
                   type="text"
-                  id="country"
+                  id="videoUrl"
                   autoComplete="current-password"
                   onChange={formik.handleChange}
-                  value={formik.values.country}
+                  value={formik.values.videoUrl}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -355,13 +360,13 @@ export default function storyTextForm(props) {
                   variant="standard"
                   required
                   fullWidth
-                  name="country"
+                  name="eventHackathons"
                   label="Events/Hackathons"
                   type="text"
-                  id="country"
+                  id="hackathons"
                   autoComplete="current-password"
                   onChange={formik.handleChange}
-                  value={formik.values.country}
+                  value={formik.values.hackathons}
                 />
               </Grid>
             </Grid>
