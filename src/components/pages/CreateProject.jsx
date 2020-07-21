@@ -11,17 +11,13 @@ import { useHistory } from 'react-router-dom';
 
 export default function homePage (){
     const history = useHistory();
-    const dispatch = useDispatch();
-    let query = FETCH_RANDOM_ON_SESSION("1477072619038");
     const { authData } = useTrackedState();
     React.useEffect(() => {
+        console.log(authData)
         if (!authData.isAuthenticated){
-            history.push('/');
+            // history.push('/');
         }
-       });
-    // React.useEffect(() => {
-    //     queryElasticsearch(query, dispatch, updateProjectList);
-    // }, []);
+       }, [authData]);
     
     return (
         <Container style={{minHeight: '100vh'}}>

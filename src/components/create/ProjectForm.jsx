@@ -8,7 +8,6 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useFormik } from "formik";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { postProject } from "../backend/AxiosRequest";
 import MUIRichTextEditor from "mui-rte";
@@ -55,7 +54,6 @@ const validate = (values) => {
   } else if (values.storyText.length < 100) {
     errors.storyText = "storyText should be atleast 100 characters long";
   }
-
   if (!values.title) {
     errors.title = "Required*";
   } else if (/[*._%+-]+/i.test(values.title)) {
@@ -71,41 +69,57 @@ export default function storyTextForm(props) {
   const [open, setOpen] = React.useState(false);
   const [embed, setEmbed] = React.useState(null);
   const [image, setImage] = React.useState(null);
+  const [formValues, setFormValues] = React.useState(
+    {
+      builtWith: [],
+      category: "",
+      country: "",
+      createdAt: new Date(),
+      storyText: "",
+      subtitle: "",
+      owners: "",
+      video: "",
+      hackathons: [],
+      updatedAt: "",
+      links: [],
+      keywords: "",
+      title: "",
+      roles: [],
+      motivation: "",
+      rewards: "",
+      crisis: "",
+      language: "",
+
+    }
+  );
+  const [formErrors, setFormErrors ] = React.useState({});
   const classes = useStyles();
   const { authData } = useTrackedState();
   const dispatch = useDispatch();
 
-  const formik = useFormik({
-    initialValues: {
-      title: "",
-      storyText: "",
-      motivation: "",
-      subtitle: "",
-    },
-    // validate,
-    onSubmit: (values) => {
+    const handleChange = (values) =>{
+          setFormValues(Object.assign({},formValues, values))
+          setFormErrors(validate(values));
+    }
+    const handleSubmit = (values) => {
       //   alert(JSON.stringify(values, null, 2));
       let data = {
-          index: "storyText",
+          index: "projectsNew",
           q: {
             country: values.country, //undefined right now
             title: values.title,
             storyText: values.storyText,
-            createdAt: new Date()          
+            createdAt: values.createdAt,      
           },
       };
       let formData = new FormData();
-      // formData.append('country', values.country)
-      // formData.append('title', values.title)
-      // formData.append('storyText', values.storyText)
-      // formData.append('createdAt', new Date())
+
       formData.append('params', JSON.stringify(data))
       formData.append('image', image, image.path)
       
       postProject(formData, authData.key);
       setOpen(true);
-    },
-  });
+    }
 
   const handleEmbed = (url) => {
     setImage(url[0].file);
@@ -131,15 +145,19 @@ export default function storyTextForm(props) {
             Create A Project
           </Typography>
 
+
+
           <form
             className={classes.form}
             noValidate
-            onSubmit={formik.handleSubmit}
+            onSubmit={()=>handleSubmit(formValues)}
           >
+
+
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                {formik.errors.title ? (
-                  <sup className={classes.error}>{formik.errors.title}</sup>
+                {formErrors.title ? (
+                  <sup className={classes.error}>{formErrors.title}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
@@ -151,10 +169,12 @@ export default function storyTextForm(props) {
                   label="Project title"
                   name="title"
                   autoComplete="none"
-                  onChange={formik.handleChange}
-                  value={formik.values.title}
+                  onChange={()=>handleChange({title:event.target.value})}
+                  value={formValues.title}
                 />
               </Grid>
+
+
               <Grid item xs={12}> 
               <ImageUpload onSave={handleEmbed}/>
               {embed ? (
@@ -169,8 +189,8 @@ export default function storyTextForm(props) {
               </Grid>
               
               <Grid item xs={12}>
-                {formik.errors.title ? (
-                  <sup className={classes.error}>{formik.errors.title}</sup>
+                {formErrors.title ? (
+                  <sup className={classes.error}>{formErrors.title}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
@@ -179,6 +199,9 @@ export default function storyTextForm(props) {
                   options={sectors}
                   getOptionLabel={(option) => option.sector}
                   style={{ width: 300 }}
+                  onChange={(_, value) => {
+                    console.log(value.sector)
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -190,8 +213,8 @@ export default function storyTextForm(props) {
               </Grid>
 
               <Grid item xs={12}>
-                {formik.errors.title ? (
-                  <sup className={classes.error}>{formik.errors.title}</sup>
+                {formErrors.title ? (
+                  <sup className={classes.error}>{formErrors.title}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
@@ -211,8 +234,8 @@ export default function storyTextForm(props) {
               </Grid>
 
               <Grid item xs={12}>
-                {formik.errors.title ? (
-                  <sup className={classes.error}>{formik.errors.title}</sup>
+                {formErrors.title ? (
+                  <sup className={classes.error}>{formErrors.title}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
@@ -223,15 +246,15 @@ export default function storyTextForm(props) {
                   id="subtitle"
                   label="Short description"
                   name="subtitle"
-                  onChange={formik.handleChange}
-                  value={formik.values.subtitle}
+                  onChange={()=>handleChange({field:"", value:""})}
+                  value={formValues.subtitle}
                 />
               </Grid>
 
               
               <Grid item xs={12}>
-                {formik.errors.title ? (
-                  <sup className={classes.error}>{formik.errors.title}</sup>
+                {formErrors.title ? (
+                  <sup className={classes.error}>{formErrors.title}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
@@ -242,8 +265,8 @@ export default function storyTextForm(props) {
                   id="motivation"
                   label="Motivation"
                   name="motivation"
-                  onChange={formik.handleChange}
-                  value={formik.values.motivation}
+                  onChange={()=>handleChange({field:"", value:""})}
+                  value={formValues.motivation}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -264,21 +287,21 @@ export default function storyTextForm(props) {
                       "link",
                     ]}
                     toolbarButtonSize="small"
-                    onChange={(event)=>formik.handleChange(JSON.stringify(convertToRaw(event.getCurrentContent())))}
-                    value={formik.values.storyText}
+                    onChange={(event)=>()=>handleChange({field:"", value:""})(JSON.stringify(convertToRaw(event.getCurrentContent())))}
+                    value={formValues.storyText}
                   />
                 </div>
               </Grid>
 
               <Grid item xs={12}>
-                {formik.errors.country ? (
-                  <sup className={classes.error}>{formik.errors.country}</sup>
+                {formErrors.country ? (
+                  <sup className={classes.error}>{formErrors.country}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
                 <Autocomplete
                
-                 onChange={(_, value)=> formik.handleChange(value.label)}
+                 onChange={(_, value)=> ()=>handleChange({field:"", value:""})(value.label)}
                  
                   options={countries}
                   getOptionLabel={(option) => option.label}
@@ -294,8 +317,8 @@ export default function storyTextForm(props) {
                 />
               </Grid>
               <Grid item xs={12}>
-                {formik.errors.country ? (
-                  <sup className={classes.error}>{formik.errors.country}</sup>
+                {formErrors.country ? (
+                  <sup className={classes.error}>{formErrors.country}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
@@ -308,13 +331,13 @@ export default function storyTextForm(props) {
                   type="text"
                   id="impLinks"
                   autoComplete="current-password"
-                  onChange={formik.handleChange}
-                  value={formik.values.impLinks}
+                  onChange={()=>handleChange({field:"", value:""})}
+                  value={formValues.impLinks}
                 />
               </Grid>
               <Grid item xs={12}>
-                {formik.errors.country ? (
-                  <sup className={classes.error}>{formik.errors.country}</sup>
+                {formErrors.country ? (
+                  <sup className={classes.error}>{formErrors.country}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
@@ -327,13 +350,13 @@ export default function storyTextForm(props) {
                   type="text"
                   id="tags"
                   autoComplete="current-password"
-                  onChange={formik.handleChange}
-                  value={formik.values.tags}
+                  onChange={()=>handleChange({field:"", value:""})}
+                  value={formValues.tags}
                 />
               </Grid>
               <Grid item xs={12}>
-                {formik.errors.country ? (
-                  <sup className={classes.error}>{formik.errors.country}</sup>
+                {formErrors.country ? (
+                  <sup className={classes.error}>{formErrors.country}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
@@ -346,13 +369,13 @@ export default function storyTextForm(props) {
                   type="text"
                   id="videoUrl"
                   autoComplete="current-password"
-                  onChange={formik.handleChange}
-                  value={formik.values.videoUrl}
+                  onChange={()=>handleChange({field:"", value:""})}
+                  value={formValues.videoUrl}
                 />
               </Grid>
               <Grid item xs={12}>
-                {formik.errors.country ? (
-                  <sup className={classes.error}>{formik.errors.country}</sup>
+                {formErrors.country ? (
+                  <sup className={classes.error}>{formErrors.country}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
@@ -365,8 +388,8 @@ export default function storyTextForm(props) {
                   type="text"
                   id="hackathons"
                   autoComplete="current-password"
-                  onChange={formik.handleChange}
-                  value={formik.values.hackathons}
+                  onChange={()=>handleChange({field:"", value:""})}
+                  value={formValues.hackathons}
                 />
               </Grid>
             </Grid>
@@ -386,7 +409,7 @@ export default function storyTextForm(props) {
               type="submit"
               fullWidth
               variant="contained"
-              disabled={Object.keys(formik.errors)[0] ? true : false}
+              disabled={Object.keys(formErrors)[0] ? true : false}
               color="primary"
               className={classes.submit}
             >
