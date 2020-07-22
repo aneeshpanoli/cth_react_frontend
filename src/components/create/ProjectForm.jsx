@@ -12,10 +12,11 @@ import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { postProject } from "../backend/AxiosRequest";
 import MUIRichTextEditor from "mui-rte";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { countries, sectors, roles} from '../search/utils'
-import { convertToRaw } from 'draft-js'
-import ImageUpload from './ImageUpload'
-
+import { countries, categories, roles } from "../search/utils";
+import { convertToRaw, EditorState } from "draft-js";
+import ImageUpload from "./ImageUpload";
+import { convertToHTML, convertFromHTML } from "draft-convert";
+import ChipInput from "material-ui-chip-input";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -65,72 +66,78 @@ const validate = (values) => {
   return errors;
 };
 
-export default function storyTextForm(props) {
-  const [open, setOpen] = React.useState(false);
-  const [embed, setEmbed] = React.useState(null);
-  const [image, setImage] = React.useState(null);
-  const [formValues, setFormValues] = React.useState(
-    {
-      builtWith: [],
-      category: "",
-      country: "",
-      createdAt: new Date(),
-      storyText: "",
-      subtitle: "",
-      owners: "",
-      video: "",
-      hackathons: [],
-      updatedAt: "",
-      links: [],
-      keywords: "",
-      title: "",
-      roles: [],
-      motivation: "",
-      rewards: "",
-      crisis: "",
-      language: "",
-
-    }
-  );
-  const [formErrors, setFormErrors ] = React.useState({});
+export default function ProjectForm(props) {
+  const [formErrors, setFormErrors] = React.useState({});
   const classes = useStyles();
   const { authData } = useTrackedState();
   const dispatch = useDispatch();
+  const [open, setOpen] = React.useState(false);
+  const [embed, setEmbed] = React.useState(null);
+  const [image, setImage] = React.useState(null);
+  const [formValues, setFormValues] = React.useState({
+    builtWith: [],
+    category: "",
+    country: "",
+    createdAt: new Date(),
+    storyText: "",
+    subtitle: "",
+    owners: "",
+    video: "",
+    hackathons: [],
+    updatedAt: "",
+    links: [],
+    keywords: [],
+    title: "",
+    roles: [],
+    motivation: "",
+    rewards: "",
+    crisis: "",
+    language: "",
+  });
 
-    const handleChange = (values) =>{
-          setFormValues(Object.assign({},formValues, values))
-          setFormErrors(validate(values));
+  const handleDeleteChip = (chip, index, objProp) => {
+    let newArr = [...formValues[objProp]].filter(item => item !== chip)
+    setFormValues(Object.assign({}, formValues, {[objProp]:newArr}));
+  };
+  const handleChange = (values) => {
+    // copy new values to formValues
+    console.log(values)
+    setFormValues(Object.assign({}, formValues, values));
+    setFormErrors(validate(values));
+  };
+  const handleSubmit = (values) => {
+    if(formErrors){
+      return
     }
-    const handleSubmit = (values) => {
-      //   alert(JSON.stringify(values, null, 2));
-      let data = {
-          index: "projectsNew",
-          q: {
-            country: values.country, //undefined right now
-            title: values.title,
-            storyText: values.storyText,
-            createdAt: values.createdAt,      
-          },
-      };
-      let formData = new FormData();
+    //   alert(JSON.stringify(values, null, 2));
+    let data = {
+      index: "projectsNew",
+      q: {
+        country: values.country, //undefined right now
+        title: values.title,
+        storyText: values.storyText,
+        createdAt: values.createdAt,
+      },
+    };
+    let formData = new FormData();
 
-      formData.append('params', JSON.stringify(data))
-      formData.append('image', image, image.path)
-      
-      postProject(formData, authData.key);
-      setOpen(true);
-    }
+    formData.append("params", JSON.stringify(data));
+    formData.append("image", image, image.path);
+
+    postProject(formData, authData.key);
+    setOpen(true);
+  };
 
   const handleEmbed = (url) => {
     setImage(url[0].file);
-    console.log(url[0].file.path)
+    console.log(url[0].file.path);
     let reader = new FileReader();
-    
+
     reader.onloadend = () => {
-      setEmbed(reader.result)
-      console.log(embed)
-    }
-    reader.readAsDataURL(url[0].file)
+      setEmbed(reader.result);
+      console.log(embed);
+    };
+    reader.readAsDataURL(url[0].file);
   };
 
   return (
@@ -145,15 +152,15 @@ export default function storyTextForm(props) {
             Create A Project
           </Typography>
 
-
-
           <form
             className={classes.form}
             noValidate
-            onSubmit={()=>handleSubmit(formValues)}
+            onSubmit={(e)=>{
+              e.preventDefault();
+              handleSubmit(formValues)
+            }}
           >
-
-
+            {/* TITLE */}
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 {formErrors.title ? (
@@ -169,73 +176,30 @@ export default function storyTextForm(props) {
                   label="Project title"
                   name="title"
                   autoComplete="none"
-                  onChange={()=>handleChange({title:event.target.value})}
+                  onChange={() => handleChange({ title: event.target.value })}
                   value={formValues.title}
                 />
               </Grid>
 
-
-              <Grid item xs={12}> 
-              <ImageUpload onSave={handleEmbed}/>
-              {embed ? (
-                <Grid item xs={12}>
-                  <img
-                    src={embed}
-                    alt="title-image"
-                    style={{ maxHeight: "400px", marginTop:'1rem' }}
-                  />
-                </Grid>
-              ) : null}
-              </Grid>
-              
+              {/* IMAGE EMBED */}
               <Grid item xs={12}>
-                {formErrors.title ? (
-                  <sup className={classes.error}>{formErrors.title}</sup>
-                ) : (
-                  <sup className={classes.error}>{""}</sup>
-                )}
-                <Autocomplete
-                  id="combo-box-demo"
-                  options={sectors}
-                  getOptionLabel={(option) => option.sector}
-                  style={{ width: 300 }}
-                  onChange={(_, value) => {
-                    console.log(value.sector)
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Sector"
-                      variant="standard"
+                <ImageUpload onSave={handleEmbed} />
+                {embed ? (
+                  <Grid item xs={12}>
+                    <img
+                      src={embed}
+                      alt="title-image"
+                      style={{ maxHeight: "400px", marginTop: "1rem" }}
                     />
-                  )}
-                />
+                  </Grid>
+                ) : null}
               </Grid>
 
-              <Grid item xs={12}>
-                {formErrors.title ? (
-                  <sup className={classes.error}>{formErrors.title}</sup>
-                ) : (
-                  <sup className={classes.error}>{""}</sup>
-                )}
-                <Autocomplete
-                  id="combo-box-roles"
-                  options={roles}
-                  getOptionLabel={(option) => option.role}
-                  style={{ width: 300 }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Roles needed"
-                      variant="standard"
-                    />
-                  )}
-                />
-              </Grid>
+              {/* SUBTITLE */}
 
               <Grid item xs={12}>
-                {formErrors.title ? (
-                  <sup className={classes.error}>{formErrors.title}</sup>
+                {formErrors.subtitle ? (
+                  <sup className={classes.error}>{formErrors.subtitle}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
@@ -244,16 +208,18 @@ export default function storyTextForm(props) {
                   required
                   fullWidth
                   id="subtitle"
-                  label="Short description"
+                  label="Subtitle"
                   name="subtitle"
-                  onChange={()=>handleChange({field:"", value:""})}
+                  onChange={() =>
+                    handleChange({ subtitle: event.target.value })
+                  }
                   value={formValues.subtitle}
                 />
               </Grid>
 
-              
+              {/* MOTIVATION               */}
               <Grid item xs={12}>
-                {formErrors.title ? (
+                {formErrors.motivation ? (
                   <sup className={classes.error}>{formErrors.title}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
@@ -265,17 +231,22 @@ export default function storyTextForm(props) {
                   id="motivation"
                   label="Motivation"
                   name="motivation"
-                  onChange={()=>handleChange({field:"", value:""})}
+                  onChange={() =>
+                    handleChange({ motivation: event.target.value })
+                  }
                   value={formValues.motivation}
                 />
               </Grid>
+
+              {/* DESCRIPTION */}
+
               <Grid item xs={12}>
                 <div
                   style={{ borderBottom: "1px solid grey", minHeight: "4rem" }}
                 >
                   <MUIRichTextEditor
                     label="Description *"
-                    id='storyText'
+                    id="storyText"
                     name="storyText"
                     controls={[
                       "bold",
@@ -287,11 +258,67 @@ export default function storyTextForm(props) {
                       "link",
                     ]}
                     toolbarButtonSize="small"
-                    onChange={(event)=>()=>handleChange({field:"", value:""})(JSON.stringify(convertToRaw(event.getCurrentContent())))}
-                    value={formValues.storyText}
+                    onChange={(state) =>
+                      handleChange({
+                        storyText: convertToHTML(state.getCurrentContent()),
+                      })
+                    }
+                    // value={EditorState.createWithContent(convertFromHTML(formValues.storyText)) }
                   />
                 </div>
               </Grid>
+
+              {/* CATEGORY              */}
+              <Grid item xs={12}>
+                {formErrors.category ? (
+                  <sup className={classes.error}>{formErrors.category}</sup>
+                ) : (
+                  <sup className={classes.error}>{""}</sup>
+                )}
+                <Autocomplete
+                  id="combo-box-demo"
+                  options={categories}
+                  getOptionLabel={(option) => option.category}
+                  fullWidth
+                  onChange={(_, value) => {
+                    handleChange({ category: value.category });
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Category"
+                      variant="standard"
+                    />
+                  )}
+                />
+              </Grid>
+
+              {/* ROLES */}
+              <Grid item xs={12}>
+                {formErrors.role ? (
+                  <sup className={classes.error}>{formErrors.role}</sup>
+                ) : (
+                  <sup className={classes.error}>{""}</sup>
+                )}
+                <Autocomplete
+                  id="role"
+                  options={roles}
+                  getOptionLabel={(option) => option.role}
+                  fullWidth
+                  onChange={(_, value) => {
+                    handleChange({ role: value.role });
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Roles needed"
+                      variant="standard"
+                    />
+                  )}
+                />
+              </Grid>
+
+              {/* COUNTRY */}
 
               <Grid item xs={12}>
                 {formErrors.country ? (
@@ -300,60 +327,55 @@ export default function storyTextForm(props) {
                   <sup className={classes.error}>{""}</sup>
                 )}
                 <Autocomplete
-               
-                 onChange={(_, value)=> ()=>handleChange({field:"", value:""})(value.label)}
-                 
+                  id="role"
                   options={countries}
                   getOptionLabel={(option) => option.label}
-                  style={{ width: 300 }}
+                  fullWidth
+                  onChange={(_, value) => {
+                    handleChange({ role: value.label });
+                  }}
                   renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      id="country"
-                      label="Country"
-                      variant="standard"
-                    />
+                    <TextField {...params} label="Country" variant="standard" />
                   )}
                 />
               </Grid>
+              {/* LINKS */}
               <Grid item xs={12}>
                 {formErrors.country ? (
                   <sup className={classes.error}>{formErrors.country}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
-                <TextField
-                  variant="standard"
-                  required
+                <ChipInput
+                  value={formValues.links}
                   fullWidth
-                  name="importantLink"
-                  label="Important links"
-                  type="text"
-                  id="impLinks"
-                  autoComplete="current-password"
-                  onChange={()=>handleChange({field:"", value:""})}
-                  value={formValues.impLinks}
+                  label='Important links (press enter to add more than one link)'
+                  onAdd={(chip) => {
+                    handleChange({ links: [...formValues.links].concat([chip]) });
+                  }}
+                  onDelete={(chip, index) => handleDeleteChip(chip, index, 'links')}
                 />
+
               </Grid>
+
+              {/* TAGS/KEYWORDS */}
               <Grid item xs={12}>
                 {formErrors.country ? (
                   <sup className={classes.error}>{formErrors.country}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
-                <TextField
-                  variant="standard"
-                  required
+                <ChipInput
+                  value={formValues.keywords}
                   fullWidth
-                  name="tags"
-                  label="Tags"
-                  type="text"
-                  id="tags"
-                  autoComplete="current-password"
-                  onChange={()=>handleChange({field:"", value:""})}
-                  value={formValues.tags}
+                  label='Tags (press enter to add more than one keyword)'
+                  onAdd={(chip) => {
+                    handleChange({ keywords: [...formValues.keywords].concat([chip]) });
+                  }}
+                  onDelete={(chip, index) => handleDeleteChip(chip, index, 'keywords')}
                 />
               </Grid>
+              {/* VIDEO URL */}
               <Grid item xs={12}>
                 {formErrors.country ? (
                   <sup className={classes.error}>{formErrors.country}</sup>
@@ -369,27 +391,25 @@ export default function storyTextForm(props) {
                   type="text"
                   id="videoUrl"
                   autoComplete="current-password"
-                  onChange={()=>handleChange({field:"", value:""})}
+                  onChange={() => handleChange({ field: "", value: "" })}
                   value={formValues.videoUrl}
                 />
               </Grid>
+              {/* EVENTS/HACKATHONS */}
               <Grid item xs={12}>
                 {formErrors.country ? (
                   <sup className={classes.error}>{formErrors.country}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
-                <TextField
-                  variant="standard"
-                  required
-                  fullWidth
-                  name="eventHackathons"
-                  label="Events/Hackathons"
-                  type="text"
-                  id="hackathons"
-                  autoComplete="current-password"
-                  onChange={()=>handleChange({field:"", value:""})}
+                <ChipInput
                   value={formValues.hackathons}
+                  fullWidth
+                  label='Events/hackathons (press enter to add more than one events/hackathons)'
+                  onAdd={(chip) => {
+                    handleChange({ hackathons: [...formValues.hackathons].concat([chip]) });
+                  }}
+                  onDelete={(chip, index) => handleDeleteChip(chip, index, 'hackathons')}
                 />
               </Grid>
             </Grid>
@@ -442,4 +462,3 @@ export default function storyTextForm(props) {
     </Container>
   );
 }
-
