@@ -180,7 +180,6 @@ export default function ProjectForm() {
   };
   const handleChange = (field, values) => {
     // copy new values to formValues
-    console.log(values);
     setFormValues({ ...formValues, [field]: values });
   };
 
@@ -298,7 +297,7 @@ export default function ProjectForm() {
                     <img
                       src={embed}
                       alt="title-image"
-                      style={{ maxHeight: "400px", marginTop: "1rem" }}
+                      style={{ maxHeight: "400px", marginTop: "1rem", maxWidth:'100%' }}
                     />
                   </Grid>
                 ) : null}
@@ -373,7 +372,29 @@ export default function ProjectForm() {
                     onChange={(state) =>
                       handleChange(
                         "storyText",
-                        convertToHTML(state.getCurrentContent())
+                        convertToHTML({
+                          styleToHTML: (style) => {
+                            if (style === 'BOLD') {
+                              return <span style={{color: 'blue'}} />;
+                            }
+                          },
+                          blockToHTML: (block) => {
+                            if (block.type === 'code-block') {
+                              return <code />;
+                            }
+                          },
+                          entityToHTML: (entity, originalText) => {
+                            try {
+                              new URL(entity.data.url)
+                            } catch (error) {
+                              return originalText+' ('+entity.data.url+')'
+                            }
+                            if (entity.type === 'LINK' ) {
+                              return <a href={entity.data.url} target={'_blank'}>{originalText}</a>;
+                            }
+                            return originalText;
+                          }
+                        })(state.getCurrentContent())
                       )
                     }
                     // value={EditorState.createWithContent(convertFromHTML(formValues.storyText)) }

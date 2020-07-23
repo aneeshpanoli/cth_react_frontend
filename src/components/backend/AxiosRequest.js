@@ -195,7 +195,9 @@ export const postProject = (formData, token, history, title) => {
     .post(`/post/`, formData)
     .then((response) => {
       console.log(response.data);
+      setTimeout(() => {
       history.push("/"+title.replace(/\s+/g, '-')+"/"+response.data._id);
+    }, 1000)
     })
     .catch((error) => {
       // catch errors.
