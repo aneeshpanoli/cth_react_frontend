@@ -123,6 +123,10 @@ const validate = (values) => {
     errors.keywords = "Required";
   }
 
+  if (values.builtWith.length === 0 || !values.builtWith) {
+    errors.builtWith = "Required";
+  }
+
   if (!values.country) {
     errors.country = "Required";
   }
@@ -479,6 +483,31 @@ export default function ProjectForm() {
                     handleChange("links", [...formValues.links].concat([chip]));
                   }}
                   onDelete={(chip, index) => handleDeleteChip(chip, "links")}
+                />
+              </Grid>
+
+
+              {/* BUITWITH */}
+              <Grid item xs={12}>
+                {formErrors.builtWith ? (
+                  <sup className={classes.error}>{formErrors.builtWith}</sup>
+                ) : (
+                  <sup className={classes.error}>{""}</sup>
+                )}
+                <ChipInput
+                  classes={{
+                    chip: classes.chip,
+                  }}
+                  value={formValues.builtWith}
+                  fullWidth
+                  label="Technology (press enter to add more than one technologies)"
+                  onAdd={(chip) => {
+                    handleChange(
+                      "builtWith",
+                      [...formValues.builtWith].concat([chip])
+                    );
+                  }}
+                  onDelete={(chip, index) => handleDeleteChip(chip, "builtWith")}
                 />
               </Grid>
 

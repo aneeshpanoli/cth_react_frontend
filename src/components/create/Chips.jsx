@@ -26,6 +26,7 @@ export default function ChipsArray(props) {
     <div className={classes.root}>
       {chipData.map((data, i) => {
 
+        return (
           <li key={i}>
             <Chip
             variant="outlined"
@@ -38,6 +39,7 @@ export default function ChipsArray(props) {
               className={classes.chip}
             />
           </li>
+        );
       })}
       </div>
   );
