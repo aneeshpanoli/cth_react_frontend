@@ -26,6 +26,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header({ selectedProject }) {
   const classes = useStyles();
+
+  const getImgUrl = () =>{
+    if(!selectedProject._source.image.includes('http')){
+      return 'http://54.193.134.135' +selectedProject._source.image
+    }
+    return selectedProject._source.image
+  }
   let history = useHistory();
   React.useEffect(() => {
     window.scrollTo(0, 0)
@@ -36,7 +43,7 @@ export default function Header({ selectedProject }) {
         <Paper
           className={`${classes.paper} dash-header-div`}
           style={{
-            backgroundImage: "url(" + selectedProject._source.image + ")",
+            backgroundImage: "url(" + getImgUrl() + ")",
           }}
         >
           {/* <Title selectedProject={selectedProject}/> */}

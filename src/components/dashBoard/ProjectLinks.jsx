@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import HeaderAppBar from './HeaderAppbar'
 import LinkIcon from '@material-ui/icons/Link';
 import Button from '@material-ui/core/Button';
+import { NavigationFullscreen } from 'material-ui/svg-icons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +25,8 @@ export default function Header({selectedProject}) {
 
   const renderLinks = () => {
     const all_links = [...selectedProject._source.links];
-    all_links.push(selectedProject._source.url)
+    selectedProject._source.url?all_links.push(selectedProject._source.url):null;
+    console.log(all_links)
     const elements = []
     let newUrl;
     all_links.forEach(element => {

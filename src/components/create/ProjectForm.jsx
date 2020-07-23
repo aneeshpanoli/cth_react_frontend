@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -17,8 +18,24 @@ import { convertToRaw, EditorState } from "draft-js";
 import ImageUpload from "./ImageUpload";
 import { convertToHTML, convertFromHTML } from "draft-convert";
 import ChipInput from "material-ui-chip-input";
+import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles((theme) => ({
+  chipRoot: {
+    display: "flex",
+    justifyContent: "flex-start",
+    flexWrap: "wrap",
+    listStyle: "none",
+    padding: theme.spacing(0.5),
+    margin: 0,
+  },
+  chip: {
+    margin: theme.spacing(0.5),
+    variant: "outlined",
+    height: "1.5rem",
+    color: theme.palette.primary.main,
+    border: "1px solid",
+  },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
@@ -50,23 +67,74 @@ const useStyles = makeStyles((theme) => ({
 const validate = (values) => {
   const errors = {};
 
-  if (!values.storyText) {
-    errors.storyText = "Required*";
-  } else if (values.storyText.length < 100) {
-    errors.storyText = "storyText should be atleast 100 characters long";
-  }
   if (!values.title) {
-    errors.title = "Required*";
+    errors.title = "Required";
+  } else if (values.title.length < 4) {
+    errors.title = "The title should be atleast 4 characters long";
+  } else if (values.title.length > 60) {
+    errors.title = "The title should be less than 60 characters";
   } else if (/[*._%+-]+/i.test(values.title)) {
     errors.title = "Invalid characters in the title*";
-  } else if (values.title.length < 5) {
-    errors.title = "Title should have more then 4 characters*";
+  }
+
+  if (!values.subtitle) {
+    errors.subtitle = "Required";
+  } else if (values.subtitle.length < 60) {
+    errors.subtitle = "The description should be atleast 60 characters long";
+  }
+
+  if (!values.motivation) {
+    errors.motivation = "Required";
+  } else if (values.motivation.length < 60) {
+    errors.motivation = "The description should be atleast 60 characters long";
+  }
+
+  if (!values.storyText) {
+    errors.storyText = "Required";
+  } else if (values.storyText.length < 60) {
+    errors.storyText = "The description should be atleast 60 characters long";
+  }
+
+  if (!values.category) {
+    errors.category = "Required";
+  }
+
+  if (values.roles.length === 0 || !values.roles) {
+    errors.roles = "Required";
+  }
+
+  if (values.links && values.links.length > 0) {
+    try {
+      new URL(values.links.slice(-1));
+    } catch (error) {
+      errors.links = "Not a valid url";
+    }
+  }
+
+  if (values.video) {
+    try {
+      new URL(values.video);
+    } catch (error) {
+      errors.video = "Not a valid url";
+    }
+  }
+
+  if (values.keywords.length === 0 || !values.keywords) {
+    errors.keywords = "Required";
+  }
+
+  if (!values.country) {
+    errors.country = "Required";
+  }
+
+  if (!values.image) {
+    errors.image = "Required";
   }
 
   return errors;
 };
 
-export default function ProjectForm(props) {
+export default function ProjectForm() {
   const [formErrors, setFormErrors] = React.useState({});
   const classes = useStyles();
   const { authData } = useTrackedState();
@@ -74,6 +142,8 @@ export default function ProjectForm(props) {
   const [open, setOpen] = React.useState(false);
   const [embed, setEmbed] = React.useState(null);
   const [image, setImage] = React.useState(null);
+  const history = useHistory();
+  const [newChips, setNewChips] = React.useState(null);
   const [formValues, setFormValues] = React.useState({
     builtWith: [],
     category: "",
@@ -81,7 +151,7 @@ export default function ProjectForm(props) {
     createdAt: new Date(),
     storyText: "",
     subtitle: "",
-    owners: "",
+    owners: authData && authData.user ? authData.user.id : "",
     video: "",
     hackathons: [],
     updatedAt: "",
@@ -95,36 +165,45 @@ export default function ProjectForm(props) {
     language: "",
   });
 
-  const handleDeleteChip = (chip, index, objProp) => {
-    let newArr = [...formValues[objProp]].filter(item => item !== chip)
-    setFormValues(Object.assign({}, formValues, {[objProp]:newArr}));
+  const handleDeleteChip = (chip, objProp) => {
+    let newArr = [...formValues[objProp]].filter((item) => item !== chip);
+    setFormValues(Object.assign({}, formValues, { [objProp]: newArr }));
   };
-  const handleChange = (values) => {
+
+  const handleDeleteChipRoles = (chip) => {
+    let newArr = [...formValues.roles].filter((item) => item !== chip);
+    setFormValues(Object.assign({}, formValues, { roles: newArr }));
+  };
+  const handleChange = (field, values) => {
     // copy new values to formValues
-    console.log(values)
-    setFormValues(Object.assign({}, formValues, values));
-    setFormErrors(validate(values));
+    console.log(values);
+    setFormValues({ ...formValues, [field]: values });
   };
-  const handleSubmit = (values) => {
-    if(formErrors){
-      return
+
+  React.useEffect(() => {
+    console.log(formValues);
+    setFormErrors(validate({ ...formValues, image: embed ? true : false }));
+    setNewChips(makeChips(formValues));
+  }, [formValues, embed]);
+
+  const handleSubmit = () => {
+    console.log(formErrors);
+    if (!Object.keys(formErrors).length === 0) {
+      console.log("not submitting");
+      return;
     }
     //   alert(JSON.stringify(values, null, 2));
+    console.log("submitting data");
     let data = {
       index: "projectsNew",
-      q: {
-        country: values.country, //undefined right now
-        title: values.title,
-        storyText: values.storyText,
-        createdAt: values.createdAt,
-      },
+      q: formValues,
     };
     let formData = new FormData();
 
     formData.append("params", JSON.stringify(data));
     formData.append("image", image, image.path);
 
-    postProject(formData, authData.key);
+    postProject(formData, authData.key, history, formValues.title);
     setOpen(true);
   };
 
@@ -138,6 +217,25 @@ export default function ProjectForm(props) {
       console.log(embed);
     };
     reader.readAsDataURL(url[0].file);
+  };
+
+  const makeChips = (values) => {
+    return (
+      <div className={classes.chipRoot}>
+        {values.roles.map((role, i) => {
+          return (
+            <li key={i}>
+              <Chip
+                label={role}
+                onDelete={() => handleDeleteChipRoles(role)}
+                onClick={() => handleDeleteChipRoles(role)}
+                className={classes.chip}
+              />
+            </li>
+          );
+        })}
+      </div>
+    );
   };
 
   return (
@@ -155,9 +253,10 @@ export default function ProjectForm(props) {
           <form
             className={classes.form}
             noValidate
-            onSubmit={(e)=>{
+            onSubmit={(e) => {
               e.preventDefault();
-              handleSubmit(formValues)
+              return false
+              
             }}
           >
             {/* TITLE */}
@@ -172,17 +271,23 @@ export default function ProjectForm(props) {
                   variant="standard"
                   required
                   fullWidth
+                  multiline
                   id="title"
                   label="Project title"
                   name="title"
                   autoComplete="none"
-                  onChange={() => handleChange({ title: event.target.value })}
+                  onChange={() => handleChange("title", event.target.value)}
                   value={formValues.title}
                 />
               </Grid>
 
               {/* IMAGE EMBED */}
               <Grid item xs={12}>
+                {formErrors.image ? (
+                  <sup className={classes.error}>{formErrors.image}</sup>
+                ) : (
+                  <sup className={classes.error}>{""}</sup>
+                )}
                 <ImageUpload onSave={handleEmbed} />
                 {embed ? (
                   <Grid item xs={12}>
@@ -210,9 +315,7 @@ export default function ProjectForm(props) {
                   id="subtitle"
                   label="Subtitle"
                   name="subtitle"
-                  onChange={() =>
-                    handleChange({ subtitle: event.target.value })
-                  }
+                  onChange={() => handleChange("subtitle", event.target.value)}
                   value={formValues.subtitle}
                 />
               </Grid>
@@ -220,7 +323,7 @@ export default function ProjectForm(props) {
               {/* MOTIVATION               */}
               <Grid item xs={12}>
                 {formErrors.motivation ? (
-                  <sup className={classes.error}>{formErrors.title}</sup>
+                  <sup className={classes.error}>{formErrors.motivation}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
@@ -232,7 +335,7 @@ export default function ProjectForm(props) {
                   label="Motivation"
                   name="motivation"
                   onChange={() =>
-                    handleChange({ motivation: event.target.value })
+                    handleChange("motivation", event.target.value)
                   }
                   value={formValues.motivation}
                 />
@@ -241,6 +344,11 @@ export default function ProjectForm(props) {
               {/* DESCRIPTION */}
 
               <Grid item xs={12}>
+                {formErrors.storyText ? (
+                  <sup className={classes.error}>{formErrors.storyText}</sup>
+                ) : (
+                  <sup className={classes.error}>{""}</sup>
+                )}
                 <div
                   style={{ borderBottom: "1px solid grey", minHeight: "4rem" }}
                 >
@@ -259,9 +367,10 @@ export default function ProjectForm(props) {
                     ]}
                     toolbarButtonSize="small"
                     onChange={(state) =>
-                      handleChange({
-                        storyText: convertToHTML(state.getCurrentContent()),
-                      })
+                      handleChange(
+                        "storyText",
+                        convertToHTML(state.getCurrentContent())
+                      )
                     }
                     // value={EditorState.createWithContent(convertFromHTML(formValues.storyText)) }
                   />
@@ -281,7 +390,7 @@ export default function ProjectForm(props) {
                   getOptionLabel={(option) => option.category}
                   fullWidth
                   onChange={(_, value) => {
-                    handleChange({ category: value.category });
+                    handleChange("category", value ? value.category : "");
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -293,25 +402,34 @@ export default function ProjectForm(props) {
                 />
               </Grid>
 
+
+              
+
               {/* ROLES */}
               <Grid item xs={12}>
-                {formErrors.role ? (
-                  <sup className={classes.error}>{formErrors.role}</sup>
+                {formErrors.roles ? (
+                  <sup className={classes.error}>{formErrors.roles}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
+                {newChips}
                 <Autocomplete
                   id="role"
                   options={roles}
                   getOptionLabel={(option) => option.role}
                   fullWidth
                   onChange={(_, value) => {
-                    handleChange({ role: value.role });
+                    handleChange(
+                      "roles",
+                      value && !formValues.roles.includes(value.role)
+                        ? [...formValues.roles].concat([value.role])
+                        : [...formValues.roles]
+                    );
                   }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Roles needed"
+                      label="Roles needed*"
                       variant="standard"
                     />
                   )}
@@ -327,89 +445,108 @@ export default function ProjectForm(props) {
                   <sup className={classes.error}>{""}</sup>
                 )}
                 <Autocomplete
-                  id="role"
+                  id="country"
                   options={countries}
                   getOptionLabel={(option) => option.label}
                   fullWidth
                   onChange={(_, value) => {
-                    handleChange({ role: value.label });
+                    handleChange("country", value ? value.label : "");
                   }}
                   renderInput={(params) => (
-                    <TextField {...params} label="Country" variant="standard" />
+                    <TextField
+                      {...params}
+                      label="Country*"
+                      variant="standard"
+                    />
                   )}
                 />
               </Grid>
               {/* LINKS */}
               <Grid item xs={12}>
-                {formErrors.country ? (
-                  <sup className={classes.error}>{formErrors.country}</sup>
+                {formErrors.links ? (
+                  <sup className={classes.error}>{formErrors.links}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
                 <ChipInput
                   value={formValues.links}
-                  fullWidth
-                  label='Important links (press enter to add more than one link)'
-                  onAdd={(chip) => {
-                    handleChange({ links: [...formValues.links].concat([chip]) });
+                  classes={{
+                    chip: classes.chip,
                   }}
-                  onDelete={(chip, index) => handleDeleteChip(chip, index, 'links')}
+                  fullWidth
+                  label="Important links (press enter to add more than one link)"
+                  onAdd={(chip) => {
+                    handleChange("links", [...formValues.links].concat([chip]));
+                  }}
+                  onDelete={(chip, index) => handleDeleteChip(chip, "links")}
                 />
-
               </Grid>
 
               {/* TAGS/KEYWORDS */}
               <Grid item xs={12}>
-                {formErrors.country ? (
-                  <sup className={classes.error}>{formErrors.country}</sup>
+                {formErrors.keywords ? (
+                  <sup className={classes.error}>{formErrors.keywords}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
                 <ChipInput
+                  classes={{
+                    chip: classes.chip,
+                  }}
                   value={formValues.keywords}
                   fullWidth
-                  label='Tags (press enter to add more than one keyword)'
+                  label="Tags (press enter to add more than one keyword)"
                   onAdd={(chip) => {
-                    handleChange({ keywords: [...formValues.keywords].concat([chip]) });
+                    handleChange(
+                      "keywords",
+                      [...formValues.keywords].concat([chip])
+                    );
                   }}
-                  onDelete={(chip, index) => handleDeleteChip(chip, index, 'keywords')}
+                  onDelete={(chip, index) => handleDeleteChip(chip, "keywords")}
                 />
               </Grid>
               {/* VIDEO URL */}
               <Grid item xs={12}>
-                {formErrors.country ? (
-                  <sup className={classes.error}>{formErrors.country}</sup>
+                {formErrors.video ? (
+                  <sup className={classes.error}>{formErrors.video}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
                 <TextField
                   variant="standard"
-                  required
                   fullWidth
-                  name="videour;"
+                  name="videourl"
                   label="Video url"
                   type="text"
                   id="videoUrl"
                   autoComplete="current-password"
-                  onChange={() => handleChange({ field: "", value: "" })}
+                  onChange={() => handleChange("video", event.target.value)}
                   value={formValues.videoUrl}
                 />
               </Grid>
               {/* EVENTS/HACKATHONS */}
               <Grid item xs={12}>
-                {formErrors.country ? (
-                  <sup className={classes.error}>{formErrors.country}</sup>
+                {formErrors.hackathons ? (
+                  <sup className={classes.error}>{formErrors.hackathons}</sup>
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
                 <ChipInput
                   value={formValues.hackathons}
                   fullWidth
-                  label='Events/hackathons (press enter to add more than one events/hackathons)'
-                  onAdd={(chip) => {
-                    handleChange({ hackathons: [...formValues.hackathons].concat([chip]) });
+                  classes={{
+                    chip: classes.chip,
                   }}
-                  onDelete={(chip, index) => handleDeleteChip(chip, index, 'hackathons')}
+                  label="Events/hackathons (press enter to add more than one events/hackathons)"
+                  onAdd={(chip) => {
+                    handleChange(
+                      "hackathons",
+                      [...formValues.hackathons].concat([chip])
+                    );
+                  }}
+                  onDelete={(chip, index) =>
+                    handleDeleteChip(chip, "hackathons")
+                  }
                 />
               </Grid>
             </Grid>
@@ -426,7 +563,7 @@ export default function ProjectForm(props) {
               <sub className={classes.error}>{authData.error}</sub>
             ) : null}
             <Button
-              type="submit"
+              onClick={handleSubmit}
               fullWidth
               variant="contained"
               disabled={Object.keys(formErrors)[0] ? true : false}
@@ -453,10 +590,7 @@ export default function ProjectForm(props) {
           >
             <h3>Thank you!</h3>
           </div>
-          <h5 style={{ fontWeight: 400 }}>
-            We appreciate your feecback. If you have given the email address, we
-            will get back to you with the updates.
-          </h5>
+          <h5 style={{ fontWeight: 400 }}>Thank you submitting the project.</h5>
         </div>
       )}
     </Container>

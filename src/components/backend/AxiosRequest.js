@@ -189,12 +189,13 @@ export const createDoc = (doc, token, getUpdatedData) => {
 };
 
 
-export const postProject = (formData, token) => {
+export const postProject = (formData, token, history, title) => {
   const postpostAuthAxios = postPostAuthAxios(`Token ${token}`);
   postpostAuthAxios
     .post(`/post/`, formData)
     .then((response) => {
       console.log(response.data);
+      history.push("/"+title.replace(/\s+/g, '-')+"/"+response.data._id);
     })
     .catch((error) => {
       // catch errors.

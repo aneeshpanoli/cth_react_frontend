@@ -45,7 +45,7 @@ export default function Header({selectedProject}) {
             <HeaderAppBar >
             Tech Stack 
             </HeaderAppBar>
-            {selectedProject && selectedProject._source.builtWith[0]? 
+            {selectedProject &&selectedProject._source.builtWith && selectedProject._source.builtWith[0]? 
             renderChips()
             :
             "No tags found"}</Paper>
