@@ -212,9 +212,9 @@ export const updateProject = (formData, token, history, title, getUpdatedData) =
     .then((response) => {
       console.log(response.data);
       setTimeout(() => {
-        getUpdatedData();
+      getUpdatedData();
       history.push("/"+title.replace(/\s+/g, '-')+"/"+response.data._id);
-    }, 1000)
+    }, 2000)
     })
     .catch((error) => {
       // catch errors.

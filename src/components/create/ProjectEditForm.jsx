@@ -20,9 +20,9 @@ import { convertToHTML } from "draft-convert";
 import ChipInput from "material-ui-chip-input";
 import Chip from "@material-ui/core/Chip";
 import { getImgUrl } from '../js/utils'
-import { simpleQueryElasticsearch } from '../backend/AxiosRequest'
+import { queryEsById } from '../backend/AxiosRequest'
 import { updateSelectedProject} from '../redux/actions'
-import { MATCH_PROJ_ID} from '../backend/EsQueries'
+import { MATCH_ID_TITLE } from '../backend/EsQueries'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -227,8 +227,8 @@ export default function ProjectEditForm() {
     } catch (error) {
       formData.append("image", "");
     }
-    const query = MATCH_PROJ_ID(selectedProject._id, 'comments');
-    const updateData = () => simpleQueryElasticsearch( query, dispatch, updateSelectedProject)
+    let query = MATCH_ID_TITLE(selectedProject._id, formValues.title.replace(/-/g, " "));
+    const updateData = () => queryEsById(query, dispatch, updateSelectedProject, history);
     updateProject(formData, authData.key, history, formValues.title, updateData);
     setOpen(true);
   };
@@ -653,7 +653,7 @@ export default function ProjectEditForm() {
               color="primary"
               className={classes.submit}
             >
-              Submit
+              Update
             </Button>
             <Grid container justify="flex-end">
               <Grid item></Grid>
@@ -673,7 +673,7 @@ export default function ProjectEditForm() {
           >
             <h3>Thank you!</h3>
           </div>
-          <h5 style={{ fontWeight: 400 }}>Thank you submitting the project.</h5>
+          <h5 style={{ fontWeight: 400 }}>Your project has been updated.</h5>
         </div>
       )}
     </Container>

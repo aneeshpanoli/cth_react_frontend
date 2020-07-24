@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header({ selectedProject }) {
   const classes = useStyles();
-
+  console.log(selectedProject)
   let history = useHistory();
   React.useEffect(() => {
     window.scrollTo(0, 0)
