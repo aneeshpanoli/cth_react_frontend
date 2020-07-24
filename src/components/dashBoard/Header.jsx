@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import SportsKabaddiIcon from '@material-ui/icons/SportsKabaddi';
+import { getImgUrl } from '../js/utils'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,12 +28,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Header({ selectedProject }) {
   const classes = useStyles();
 
-  const getImgUrl = () =>{
-    if(!selectedProject._source.image.includes('http')){
-      return 'http://54.193.134.135' +selectedProject._source.image
-    }
-    return selectedProject._source.image
-  }
   let history = useHistory();
   React.useEffect(() => {
     window.scrollTo(0, 0)
@@ -43,7 +38,7 @@ export default function Header({ selectedProject }) {
         <Paper
           className={`${classes.paper} dash-header-div`}
           style={{
-            backgroundImage: "url(" + getImgUrl() + ")",
+            backgroundImage: "url(" + getImgUrl(selectedProject._source.image) + ")",
           }}
         >
           {/* <Title selectedProject={selectedProject}/> */}

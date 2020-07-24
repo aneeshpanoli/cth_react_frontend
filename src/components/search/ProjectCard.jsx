@@ -15,6 +15,8 @@ import { updateSelectedProject } from '../redux/actions'
 import { useHistory, useParams, Link} from "react-router-dom";
 import Flag from 'react-world-flags'
 import CardActionArea from '@material-ui/core/CardActionArea';
+import { getImgUrl } from '../js/utils'
+
 import { countries } from './utils';
 
 function countryToIso(country){
@@ -68,12 +70,7 @@ export default function ProjectCard({r}) {
     history.push("/"+selectedProject._source.title.replace(/\s+/g, '-')+"/"+selectedProject._id);
   };
   
-  const getImgUrl = (r) =>{
-    if(!r._source.image.includes('http')){
-      return 'http://54.193.134.135' +r._source.image
-    }
-    return r._source.image
-  }
+
 
   return (
     <Fade in={checked} key={r._id} style={{ transitionDelay: checked ? '300ms' : '0ms' }}>
@@ -96,7 +93,7 @@ export default function ProjectCard({r}) {
        
       <CardMedia
         className={classes.media}
-        image={getImgUrl(r)}
+        image={getImgUrl(r._source.image)}
         title=""
       > </CardMedia>
       <div className={classes.overlay}>

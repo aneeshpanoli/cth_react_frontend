@@ -10,16 +10,20 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import { postProject } from "../backend/AxiosRequest";
+import { updateProject } from "../backend/AxiosRequest";
 import MUIRichTextEditor from "mui-rte";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries, categories, roles } from "../search/utils";
-import { convertToRaw, EditorState } from "draft-js";
+import { convertToRaw, ContentState, convertFromHTML } from "draft-js";
 import ImageUpload from "./ImageUpload";
-import { convertToHTML, convertFromHTML } from "draft-convert";
+import { convertToHTML } from "draft-convert";
 import ChipInput from "material-ui-chip-input";
 import Chip from "@material-ui/core/Chip";
 import { getImgUrl } from '../js/utils'
+import { simpleQueryElasticsearch } from '../backend/AxiosRequest'
+import { updateSelectedProject} from '../redux/actions'
+import { MATCH_PROJ_ID} from '../backend/EsQueries'
+
 
 const useStyles = makeStyles((theme) => ({
   chipRoot: {
@@ -139,16 +143,18 @@ const validate = (values) => {
   return errors;
 };
 
-export default function ProjectForm() {
+export default function ProjectEditForm() {
   const [formErrors, setFormErrors] = React.useState({});
   const classes = useStyles();
   const history = useHistory();
   const [embed, setEmbed] = React.useState(null);
+  const [defaultDesc, setDefaultDesc] = React.useState(null)
   const { authData, selectedProject } = useTrackedState();
   React.useEffect(() =>{
     if(selectedProject && selectedProject._source.owners && selectedProject._source.owners === authData.user.id){
     setFormValues(Object.assign({}, formValues, selectedProject._source));
-    setEmbed(getImgUrl(selectedProject))
+    setEmbed(getImgUrl(selectedProject._source.image)) //dosent affect formvalue jus the embed
+    setDefaultDesc(getDescription());
     }else{
     history.push('/page-not-found');
     }
@@ -208,15 +214,22 @@ export default function ProjectForm() {
     //   alert(JSON.stringify(values, null, 2));
     console.log("submitting data");
     let data = {
-      index: "projectsNew",
+      status: "projectupdate",
+      index: selectedProject._index,
+      id: selectedProject._id,
       q: formValues,
     };
     let formData = new FormData();
 
     formData.append("params", JSON.stringify(data));
-    formData.append("image", image, image.path);
-
-    postProject(formData, authData.key, history, formValues.title);
+    try {
+      formData.append("image", image, image.path);
+    } catch (error) {
+      formData.append("image", "");
+    }
+    const query = MATCH_PROJ_ID(selectedProject._id, 'comments');
+    const updateData = () => simpleQueryElasticsearch( query, dispatch, updateSelectedProject)
+    updateProject(formData, authData.key, history, formValues.title, updateData);
     setOpen(true);
   };
 
@@ -231,6 +244,15 @@ export default function ProjectForm() {
     };
     reader.readAsDataURL(url[0].file);
   };
+
+  const getDescription=() =>{
+    if(selectedProject){
+    const contentHTML = convertFromHTML(selectedProject._source.storyText)
+  const state = ContentState.createFromBlockArray(contentHTML.contentBlocks, contentHTML.entityMap)
+  return JSON.stringify(convertToRaw(state))
+    }
+    return null
+  }
 
   const makeChips = (values) => {
     return (
@@ -260,7 +282,7 @@ export default function ProjectForm() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create A Project
+            Edit Project
           </Typography>
 
           <form
@@ -366,6 +388,7 @@ export default function ProjectForm() {
                   style={{ borderBottom: "1px solid grey", minHeight: "4rem" }}
                 >
                   <MUIRichTextEditor
+                  defaultValue={defaultDesc}
                     label="Description *"
                     id="storyText"
                     name="storyText"

@@ -42,9 +42,9 @@ export const sortStringObjArr= (objArray) =>{
     });
 }
 
-export const getImgUrl = (r) =>{
-    if(!r._source.image.includes('http')){
-      return 'http://54.193.134.135' +r._source.image
+export const getImgUrl = (url) =>{
+    if(!url.includes('http')){
+      return 'http://54.193.134.135/media/' + url
     }
-    return r._source.image
+    return url
   }

@@ -142,6 +142,12 @@ export default function ProjectForm() {
   const [formErrors, setFormErrors] = React.useState({});
   const classes = useStyles();
   const { authData } = useTrackedState();
+  React.useEffect(() => {
+    if (!authData.user){
+        history.push('/');
+    }
+   });
+
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [embed, setEmbed] = React.useState(null);
@@ -184,10 +190,12 @@ export default function ProjectForm() {
   };
 
   React.useEffect(() => {
-    console.log(formValues);
+    // console.log(formValues);
     setFormErrors(validate({ ...formValues, image: embed ? true : false }));
     setNewChips(makeChips(formValues));
   }, [formValues, embed]);
+
+  
 
   const handleSubmit = () => {
     console.log(formErrors);
@@ -198,7 +206,7 @@ export default function ProjectForm() {
     //   alert(JSON.stringify(values, null, 2));
     console.log("submitting data");
     let data = {
-      index: "projectsNew",
+      index: "projectnew",
       q: formValues,
     };
     let formData = new FormData();

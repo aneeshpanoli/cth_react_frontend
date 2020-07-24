@@ -18,7 +18,7 @@ import AboutUs from "./components/pages/AboutUs";
 import Feedback from "./components/pages/Feedback";
 import PageNotFound from "./components/pages/PageNotFound";
 import CreateProject from "./components/pages/CreateProject";
-import EditProject from "./components/create/ProjectEditForm";
+import EditProject from "./components/pages/EditProject";
 import { logout, tabLogin } from './components/auth/auth'
 
 

@@ -205,6 +205,23 @@ export const postProject = (formData, token, history, title) => {
     });
 };
 
+export const updateProject = (formData, token, history, title, getUpdatedData) => {
+  const postpostAuthAxios = postPostAuthAxios(`Token ${token}`);
+  postpostAuthAxios
+    .post(`/post/`, formData)
+    .then((response) => {
+      console.log(response.data);
+      setTimeout(() => {
+        getUpdatedData();
+      history.push("/"+title.replace(/\s+/g, '-')+"/"+response.data._id);
+    }, 1000)
+    })
+    .catch((error) => {
+      // catch errors.
+      console.log(error);
+    });
+};
+
 export const createDocFeedback = (doc) => {
   console.log(doc);
   preAuthAxios
