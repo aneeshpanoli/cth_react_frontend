@@ -173,6 +173,7 @@ export default function ProjectForm() {
     rewards: "",
     crisis: "",
     language: "",
+    approved: "no"
   });
 
   const handleDeleteChip = (chip, objProp) => {
@@ -206,6 +207,7 @@ export default function ProjectForm() {
     //   alert(JSON.stringify(values, null, 2));
     console.log("submitting data");
     let data = {
+      status: "projectnew",
       index: "projectnew",
       q: formValues,
     };
@@ -648,7 +650,7 @@ export default function ProjectForm() {
           >
             <h3>Thank you!</h3>
           </div>
-          <h5 style={{ fontWeight: 400 }}>Thank you submitting the project.</h5>
+          <h5 style={{ fontWeight: 400 }}>Your project has been submitted.</h5>
         </div>
       )}
     </Container>

@@ -79,6 +79,10 @@ export const MORE_LIKE_THIS_old = (userInput, columns) => {
             min_term_freq: 1,
             max_query_terms: 25,
           },
+          filter: [
+            { term: { status: "published" } },
+            { range: { publish_date: { gte: "2015-01-01" } } },
+          ],
         },
       },
     },
@@ -92,15 +96,24 @@ export const MORE_LIKE_THIS = (id, columns) => {
       q: {
         size: 100,
         query: {
-          more_like_this: {
-            fields: columns, //array
-            like: [
+          bool: {
+            must: [
               {
-                _id: id,
+                more_like_this: {
+                  fields: columns, //array
+                  like: [
+                    {
+                      _id: id,
+                    },
+                  ],
+                  min_term_freq: 1,
+                  max_query_terms: 25,
+                },
               },
             ],
-            min_term_freq: 1,
-            max_query_terms: 25,
+            filter: {
+              term: { approved: "yes" },
+            },
           },
         },
       },
@@ -172,17 +185,26 @@ export const FETCH_RANDOM_ON_SESSION = () => {
       q: {
         size: 50,
         query: {
-          function_score: {
-            functions: [
+          bool: {
+            must: [
               {
-                random_score: {
-                  seed: getRandomInt(1000000000000, 200000000000),
-                },
-              },
+                function_score: {
+                  functions: [
+                    {
+                      random_score: {
+                        seed: getRandomInt(1000000000000, 200000000000),
+                      }
+                    }
+                  ]
+                }
+              }
             ],
-          },
-        },
-      },
-    },
-  };
+            filter: {
+              term: { approved: "yes" }
+            }
+          }
+        }
+      }
+    }
+  }
 };

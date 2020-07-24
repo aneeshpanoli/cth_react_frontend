@@ -151,6 +151,9 @@ export default function ProjectEditForm() {
   const [defaultDesc, setDefaultDesc] = React.useState(null)
   const { authData, selectedProject } = useTrackedState();
   React.useEffect(() =>{
+    if (!authData || !authData.user){
+      history.push('/');
+  }
     if(selectedProject && selectedProject._source.owners && selectedProject._source.owners === authData.user.id){
     setFormValues(Object.assign({}, formValues, selectedProject._source));
     setEmbed(getImgUrl(selectedProject._source.image)) //dosent affect formvalue jus the embed
