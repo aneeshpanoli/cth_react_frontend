@@ -36,7 +36,7 @@ export default function CenteredGrid() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (!selectedProject) {
-      console.log(params.id);
+      // console.log(params.id);
       // replace - with space
       let query = MATCH_ID_TITLE(params.id, params.name.replace(/-/g, " "));
       queryEsById(query, dispatch, updateSelectedProject, history);

@@ -118,7 +118,7 @@ export const simpleQueryElasticsearch = (
       // process response.
 
       // this.setState({results: response});
-      console.log(response.data.hits);
+      // console.log(response.data.hits);
       dispatch(actionCallback(response.data.hits));
 
     })
@@ -137,7 +137,7 @@ export const queryEsById = (query, dispatch, actionCallback, history) => {
       // process response.
 
       // this.setState({results: response});
-      console.log(response.data.hits);
+      // console.log(response.data.hits);
       if (response.data.hits[0]) {
         dispatch(actionCallback(response.data.hits[0]));
       } else {

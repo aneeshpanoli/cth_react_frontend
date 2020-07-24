@@ -29,7 +29,7 @@ export default function ListComments(props) {
   }, []);
   React.useEffect(() => {
     setComments(commentsData);
-    console.log(commentsData);
+    // console.log(commentsData);
   }, [commentsData]);
 
   return (

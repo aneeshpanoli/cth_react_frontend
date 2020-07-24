@@ -14,7 +14,7 @@ export default function homePage (){
     const history = useHistory();
     const { authData } = useTrackedState();
     React.useEffect(() => {
-        console.log(authData)
+        // console.log(authData)
         if (!authData.user){
             // history.push('/');
         }

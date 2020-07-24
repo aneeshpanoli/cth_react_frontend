@@ -28,7 +28,7 @@ export default function UserMain() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const params = useParams();
-  console.log(params.user);
+  // console.log(params.user);
   const { authData, userOwnChallenge } = useTrackedState();
   const getUserOwnChallenges = () => {
     let query = MATCH(

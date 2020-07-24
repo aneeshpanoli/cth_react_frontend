@@ -200,19 +200,19 @@ export default function ProjectEditForm() {
   };
 
   React.useEffect(() => {
-    console.log(formValues);
+    // console.log(formValues);
     setFormErrors(validate({ ...formValues, image: embed ? true : false }));
     setNewChips(makeChips(formValues));
   }, [formValues, embed]);
 
   const handleSubmit = () => {
-    console.log(formErrors);
+    // console.log(formErrors);
     if (!Object.keys(formErrors).length === 0) {
       console.log("not submitting");
       return;
     }
     //   alert(JSON.stringify(values, null, 2));
-    console.log("submitting data");
+    // console.log("submitting data");
     let data = {
       status: "projectupdate",
       index: selectedProject._index,
@@ -235,12 +235,12 @@ export default function ProjectEditForm() {
 
   const handleEmbed = (url) => {
     setImage(url[0].file);
-    console.log(url[0].file.path);
+    // console.log(url[0].file.path);
     let reader = new FileReader();
 
     reader.onloadend = () => {
       setEmbed(reader.result);
-      console.log(embed);
+      // console.log(embed);
     };
     reader.readAsDataURL(url[0].file);
   };
@@ -634,6 +634,7 @@ export default function ProjectEditForm() {
               </Grid>
             </Grid>
             <Button
+            onClick={() =>history.goBack()}
               type="submit"
               fullWidth
               variant="contained"

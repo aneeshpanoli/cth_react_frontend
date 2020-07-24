@@ -26,7 +26,7 @@ export default function Header({selectedProject}) {
   const renderLinks = () => {
     const all_links = [...selectedProject._source.links];
     selectedProject._source.url?all_links.push(selectedProject._source.url):null;
-    console.log(all_links)
+    // console.log(all_links)
     const elements = []
     let newUrl;
     all_links.forEach(element => {
