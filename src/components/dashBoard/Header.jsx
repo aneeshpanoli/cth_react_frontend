@@ -12,6 +12,11 @@ import Button from '@material-ui/core/Button';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import SportsKabaddiIcon from '@material-ui/icons/SportsKabaddi';
 import { getImgUrl } from '../js/utils'
+import EditIcon from '@material-ui/icons/Edit';
+import { useTrackedState } from 'reactive-react-redux'
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,11 +32,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header({ selectedProject }) {
   const classes = useStyles();
+  const { authData } = useTrackedState();
+  const [editPermission, setEditPermission] = React.useState(false);
+  const [approvePermission, setApprovePermission] = React.useState(false);
+  const [approved, setApproved] = React.useState(true)
   // console.log(selectedProject)
   let history = useHistory();
   React.useEffect(() => {
     window.scrollTo(0, 0)
-  }, [])
+    setEditPermission((authData&&authData.user&&authData.user.staff==='yes')
+    || (selectedProject && selectedProject._source.owners 
+      && selectedProject._source.owners === authData.user.id));
+    setApprovePermission(authData&&authData.user&&authData.user.staff==='yes')
+    setApproved(selectedProject&&selectedProject._source.approved==='yes')
+  }, [authData])
   return (
     <Grid item xs={12}>
       {selectedProject ? (
@@ -51,15 +65,31 @@ export default function Header({ selectedProject }) {
           style={{marginBottom:10}}
           >Back
           </Button>
+
+          {editPermission?
           <Button 
           color='primary' 
-          startIcon={<NavigateBeforeIcon />}
+          endIcon={<EditIcon />}
           variant="contained" 
           size="small" 
           onClick={() => history.push('/edit-project')}
-          style={{marginBottom:10}}
+          style={{marginBottom:10, marginLeft:10}}
           >Edit
           </Button>
+          :null}
+
+          {approvePermission?
+          <Button
+          disabled={approved?true:false}
+          color='primary' 
+          endIcon={approved?<CheckCircleIcon/>:<ThumbUpIcon />}
+          variant="contained" 
+          size="small" 
+          onClick={() => history.push('/edit-project')}
+          style={{marginBottom:10, marginLeft:10}}
+          >{approved?'Approved':'Approve'}
+          </Button>
+          :null}
           <div 
           style={{ backgroundColor: "rgba(255,255,255, 0.8)" 
           , borderRadius:5, padding:10, fontWeight:700, color:'black'}}>

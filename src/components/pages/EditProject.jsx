@@ -16,7 +16,7 @@ export default function homePage (){
     React.useEffect(() => {
         // console.log(authData)
         if (!authData.user){
-            // history.push('/');
+            history.push('/');
         }
        }, [authData]);
     
