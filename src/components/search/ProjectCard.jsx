@@ -68,6 +68,12 @@ export default function ProjectCard({r}) {
     history.push("/"+selectedProject._source.title.replace(/\s+/g, '-')+"/"+selectedProject._id);
   };
   
+  const getImgUrl = (r) =>{
+    if(!r._source.image.includes('http')){
+      return 'http://54.193.134.135' +r._source.image
+    }
+    return r._source.image
+  }
 
   return (
     <Fade in={checked} key={r._id} style={{ transitionDelay: checked ? '300ms' : '0ms' }}>
@@ -90,7 +96,7 @@ export default function ProjectCard({r}) {
        
       <CardMedia
         className={classes.media}
-        image={r._source.image}
+        image={getImgUrl(r)}
         title=""
       > </CardMedia>
       <div className={classes.overlay}>

@@ -42,3 +42,13 @@ export const updateProgress = newIsProgress => ({
     type: actionType.UPDATE_PROGRESS, 
     isProgress: newIsProgress
 })
+
+export const updateEditProject = newEditProject => ({
+    type: actionType.UPDATE_EDIT_PROJECT, 
+    editProject: newEditProject
+})
+
+export const updateUserOwnChallenge = newUserOwnChallenge => ({
+    type: actionType.USER_OWN_CHALLENGE, 
+    userOwnChallenge: newUserOwnChallenge
+})

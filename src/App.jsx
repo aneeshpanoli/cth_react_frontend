@@ -18,7 +18,7 @@ import AboutUs from "./components/pages/AboutUs";
 import Feedback from "./components/pages/Feedback";
 import PageNotFound from "./components/pages/PageNotFound";
 import CreateProject from "./components/pages/CreateProject";
-import { updateAuthData } from "./components/redux/actions";
+import EditProject from "./components/create/ProjectEditForm";
 import { logout, tabLogin } from './components/auth/auth'
 
 
@@ -71,6 +71,10 @@ const App = () => {
             </Route>
             <Route exact path="/create-project">
               <CreateProject />
+            </Route>
+
+            <Route exact path="/edit-project">
+              <EditProject />
             </Route>
 
             <Route exact path="/search">

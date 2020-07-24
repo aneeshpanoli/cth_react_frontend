@@ -7,8 +7,8 @@ import Grid from "@material-ui/core/Grid";
 import UserOwnChallenges from "./UserOwnChallenges";
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateUserOwnChallenge } from '../redux/actions'
-import { queryEsChallenges } from '../backend/AxiosRequest'
-import { MATCH_USER_EMAIL } from '../backend/EsQueries'
+import { simpleQueryElasticsearch } from '../backend/AxiosRequest'
+import { MATCH } from '../backend/EsQueries'
 import CalenderHeatmap from './CalenderHeatmap'
 import { useParams, useHistory } from "react-router-dom";
 
@@ -24,18 +24,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CenteredGrid() {
+export default function UserMain() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const params = useParams();
   console.log(params.user);
-  const { authData } = useTrackedState();
+  const { authData, userOwnChallenge } = useTrackedState();
   const getUserOwnChallenges = () => {
-    let query = MATCH_USER_EMAIL(
-        authData.user.email, 'owners'
+    let query = MATCH(
+        authData.user.id, 'owners'
         );
-        queryEsChallenges(query, dispatch, updateUserOwnChallenge);
+        simpleQueryElasticsearch(query, dispatch, updateUserOwnChallenge);
   };
+  React.useEffect(() => {if(!userOwnChallenge&&authData.user){getUserOwnChallenges()}}, [])
 
   return (
     

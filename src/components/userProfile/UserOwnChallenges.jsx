@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import ChallengeCard from "./ChallengeCard";
+import ProjectCard from "../search/ProjectCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CenteredGrid() {
+export default function UserOwnChallenge() {
   const classes = useStyles();
   const { userOwnChallenge } = useTrackedState();
 
@@ -25,7 +25,7 @@ export default function CenteredGrid() {
       {userOwnChallenge
         ? userOwnChallenge.map((r, i) => (
             <Grid item key={i} xs={12} sm={6}>
-              <ChallengeCard r={r} />
+              <ProjectCard r={r} />
             </Grid>
           ))
         : null}

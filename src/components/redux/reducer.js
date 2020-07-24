@@ -4,6 +4,7 @@ const initialState = {
   searchProjectList: null,
   filterProjectList: null,
   selectedProject: null,
+  editProject: null,
   isProgress: false,
   challengeFormData: {
     owners: [], // emails
@@ -16,7 +17,7 @@ const initialState = {
     title: "",
     primeArea: "Web development",
     description: "",
-    deadLine: new Date(new Date().getTime() + (48 * 60 * 60 * 1000)),
+    deadLine: new Date(new Date().getTime() + 48 * 60 * 60 * 1000),
     procedure: "",
   },
   commentData: {},
@@ -47,6 +48,10 @@ export const reducer = (state = initialState, action) => {
       return { ...state, commentsData: action.commentsData };
     case actionType.UPDATE_PROGRESS:
       return { ...state, isProgress: action.isProgress };
+    case actionType.UPDATE_EDIT_PROJECT:
+      return { ...state, editProject: action.editProject };
+      case actionType.USER_OWN_CHALLENGE:
+        return { ...state, userOwnChallenge: action.userOwnChallenge };
     default:
       return state;
   }

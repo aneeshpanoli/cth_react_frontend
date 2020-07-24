@@ -41,3 +41,10 @@ export const sortStringObjArr= (objArray) =>{
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
     });
 }
+
+export const getImgUrl = (r) =>{
+    if(!r._source.image.includes('http')){
+      return 'http://54.193.134.135' +r._source.image
+    }
+    return r._source.image
+  }

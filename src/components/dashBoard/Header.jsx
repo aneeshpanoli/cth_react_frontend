@@ -56,6 +56,15 @@ export default function Header({ selectedProject }) {
           style={{marginBottom:10}}
           >Back
           </Button>
+          <Button 
+          color='primary' 
+          startIcon={<NavigateBeforeIcon />}
+          variant="contained" 
+          size="small" 
+          onClick={() => history.push('/edit-project')}
+          style={{marginBottom:10}}
+          >Edit
+          </Button>
           <div 
           style={{ backgroundColor: "rgba(255,255,255, 0.8)" 
           , borderRadius:5, padding:10, fontWeight:700, color:'black'}}>
