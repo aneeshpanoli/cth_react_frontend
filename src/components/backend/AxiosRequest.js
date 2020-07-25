@@ -283,6 +283,27 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
     });
 };
 
+
+export const getAnotherUserInfoElastic = (loginData, otherUserId, dispatch, actionCallback) => {
+  const userInfoAxios = postAuthAxios(`Token ${loginData.key}`);
+  let query = MATCH_USER(otherUserId, "id");
+  console.log(query)
+  userInfoAxios
+    .get(`/q/`, query)
+    .then((response) => {
+     
+        console.log(response.data);
+
+        dispatch(actionCallback(response.data.hits[0]._source));
+       
+      }
+    )
+    .catch((error) => {
+      // catch errors.
+      console.log(error.response.data);
+    });
+};
+
 export const socialSignIn = (endpoint) => {
   preAuthAxios
     .post(endpoint)
@@ -310,7 +331,7 @@ export const authSignIn = (
     })
     .then((res) => {
       const token = res.data.key;
-      console.log(res.data);
+      // console.log(res.data);
       getUserInfoElastic(res.data, dispatch, actionCallback);
     })
     .catch((err) => {

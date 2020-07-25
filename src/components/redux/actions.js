@@ -52,3 +52,8 @@ export const updateUserOwnChallenge = newUserOwnChallenge => ({
     type: actionType.USER_OWN_CHALLENGE, 
     userOwnChallenge: newUserOwnChallenge
 })
+
+export const updateOtherUserData = newOtherUserData => ({
+    type: actionType.OTHER_USER_DATA, 
+    otherUserData: newOtherUserData
+})

@@ -2,14 +2,13 @@ import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
-import { updateUserInfo, updateAuthData } from "../redux/actions";
-import { retriveSessionStore } from "../localStore/session";
 import UserProfileMenu from "../menu/UserProfileMenu";
 import GreyRoundButton from "../buttons/GreyRounded";
 import Icon from "../../Assets/img/user.png";
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -43,7 +42,7 @@ export default function Header(props) {
             className={classes.image}
           />
         </Grid>
-
+        
         <Grid item xs={7} sm={2}>
           <Typography gutterBottom variant="subtitle1">
             {authData.user

@@ -30,6 +30,7 @@ const initialState = {
   userInfo: null,
   userOwnChallenge: null,
   commentsData: [],
+  otherUserData: null,
 };
 
 export const reducer = (state = initialState, action) => {
@@ -50,8 +51,10 @@ export const reducer = (state = initialState, action) => {
       return { ...state, isProgress: action.isProgress };
     case actionType.UPDATE_EDIT_PROJECT:
       return { ...state, editProject: action.editProject };
-      case actionType.USER_OWN_CHALLENGE:
-        return { ...state, userOwnChallenge: action.userOwnChallenge };
+    case actionType.USER_OWN_CHALLENGE:
+      return { ...state, userOwnChallenge: action.userOwnChallenge };
+      case actionType.OTHER_USER_DATA:
+      return { ...state, otherUserData: action.otherUserData };
     default:
       return state;
   }
