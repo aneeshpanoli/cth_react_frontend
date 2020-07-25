@@ -22,6 +22,7 @@ html {
   }
 
   .dash-header-div { 
+    width: '100%';
     background-repeat: no-repeat; 
     background-position: center center;
     /* background-attachment: fixed; */
@@ -32,6 +33,7 @@ html {
   }
 
   .footer-div { 
+    
     background-repeat: no-repeat; 
     background-position: top center;
     /* background-attachment: fixed; */

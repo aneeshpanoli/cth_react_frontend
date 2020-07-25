@@ -24,10 +24,10 @@ export default function SearchProjects (){
     //    });
     
     return (
-        <Container style={{minWidth:"100%"}}>
+        <React.Fragment>
         <TopNav />
         <DashBoard />
         <Footer />
-        </Container>
+        </React.Fragment>
     );
 }

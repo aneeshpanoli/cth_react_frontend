@@ -4,11 +4,13 @@ import { MATCH_ID_TITLE } from "../backend/EsQueries";
 import { useParams, useHistory } from "react-router-dom";
 import { queryEsById } from "../backend/AxiosRequest";
 import { updateSelectedProject } from "../redux/actions";
+import TitleSubtitle from './TitleSubtitle';
+import Container from '@material-ui/core/Container';
 
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import Header from "./Header";
+import ImageMain from "./ImageMain";
 import Divider from '@material-ui/core/Divider';
 import StoyText from "./StoryText";
 import ProjectLinks from "./ProjectLinks";
@@ -46,10 +48,16 @@ export default function CenteredGrid() {
   return (
     <div className={classes.root}>
       {currProject ? (
+        <React.Fragment>
         <Grid container spacing={3}>
-          <Header selectedProject={currProject} />
-          {/* <SubTitle selectedProject={currProject}/> */}
+           <TitleSubtitle selectedProject={currProject} />
+           </Grid>
+          <ImageMain selectedProject={currProject} />
+          <Container>
+          <Grid container spacing={3}>
+           
           <StoyText selectedProject={currProject} />
+          
           <Grid
             container
             spacing={1}
@@ -83,7 +91,10 @@ export default function CenteredGrid() {
               )}
             </Paper>
           </Grid>
+          
         </Grid>
+        </Container>
+        </React.Fragment>
       ) : null}
     </div>
   );

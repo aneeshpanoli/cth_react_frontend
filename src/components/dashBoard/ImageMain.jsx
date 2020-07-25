@@ -1,6 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+import Box from '@material-ui/core/Box'
+import Container from '@material-ui/core/Container';
+
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -19,6 +21,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { queryEsById, updateProject } from '../backend/AxiosRequest'
 import { updateSelectedProject} from '../redux/actions'
 import { MATCH_ID_TITLE } from '../backend/EsQueries'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,15 +69,15 @@ export default function Header({ selectedProject }) {
     setApproved(selectedProject&&selectedProject._source.approved==='yes')
   }, [authData])
   return (
-    <Grid item xs={12}>
+    <Box className={`${classes.paper} dash-header-div`}
+    style={{
+      backgroundImage: "url(" + getImgUrl(selectedProject._source.image) + ")",
+    }}>
       {selectedProject ? (
-        <Paper
-          className={`${classes.paper} dash-header-div`}
-          style={{
-            backgroundImage: "url(" + getImgUrl(selectedProject._source.image) + ")",
-          }}
+      
+        <Container
+          
         >
-          {/* <Title selectedProject={selectedProject}/> */}
           <Button 
           color='primary' 
           startIcon={<NavigateBeforeIcon />}
@@ -109,13 +112,7 @@ export default function Header({ selectedProject }) {
           >{approved?'Approved':'Approve'}
           </Button>
           :null}
-          <div 
-          style={{ backgroundColor: "rgba(255,255,255, 0.8)" 
-          , borderRadius:5, padding:10, fontWeight:700, color:'black'}}>
-          <h1 style={{wordWrap: 'break-word' }}>{selectedProject? selectedProject._source.title:null}</h1>
-            <h5>{selectedProject? selectedProject._source.subtitle:null}</h5>
-
-          </div>
+          
           <div
             style={{
               position: "absolute",
@@ -166,8 +163,8 @@ export default function Header({ selectedProject }) {
               <MoreHorizIcon />
             </IconButton>
           </div>
-        </Paper>
+        </Container>
       ) : null}
-    </Grid>
+    </Box>
   );
 }
