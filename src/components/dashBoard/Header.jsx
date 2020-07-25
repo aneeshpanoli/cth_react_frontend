@@ -13,10 +13,12 @@ import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import SportsKabaddiIcon from '@material-ui/icons/SportsKabaddi';
 import { getImgUrl } from '../js/utils'
 import EditIcon from '@material-ui/icons/Edit';
-import { useTrackedState } from 'reactive-react-redux'
+import { useTrackedState, useDispatch } from 'reactive-react-redux'
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-
+import { queryEsById, updateProject } from '../backend/AxiosRequest'
+import { updateSelectedProject} from '../redux/actions'
+import { MATCH_ID_TITLE } from '../backend/EsQueries'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,8 +38,25 @@ export default function Header({ selectedProject }) {
   const [editPermission, setEditPermission] = React.useState(false);
   const [approvePermission, setApprovePermission] = React.useState(false);
   const [approved, setApproved] = React.useState(true)
-  // console.log(selectedProject)
+  const dispatch = useDispatch()
   let history = useHistory();
+  const approveProject = () =>{
+    let data = {
+      status: "projectapprove",
+      index: selectedProject._index,
+      id: selectedProject._id,
+      q: {approved:'yes'}
+    };
+    let formData = new FormData();
+
+    formData.append("params", JSON.stringify(data));
+   
+    let query = MATCH_ID_TITLE(selectedProject._id, selectedProject._source.title.replace(/-/g, " "));
+    const updateData = () => queryEsById(query, dispatch, updateSelectedProject, history);
+    updateProject(formData, authData.key, history, selectedProject._source.title, updateData);
+  }
+  // console.log(selectedProject)
+  
   React.useEffect(() => {
     window.scrollTo(0, 0)
     setEditPermission((authData&&authData.user&&authData.user.staff==='yes')
@@ -85,7 +104,7 @@ export default function Header({ selectedProject }) {
           endIcon={approved?<CheckCircleIcon/>:<ThumbUpIcon />}
           variant="contained" 
           size="small" 
-          onClick={() => history.push('/edit-project')}
+          onClick={approveProject}
           style={{marginBottom:10, marginLeft:10}}
           >{approved?'Approved':'Approve'}
           </Button>

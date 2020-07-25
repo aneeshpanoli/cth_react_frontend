@@ -31,25 +31,25 @@ const useStyles = makeStyles((theme) => ({
 export default function CenteredGrid() {
   const classes = useStyles();
   const history = useHistory();
+  const [currProject, setCurrProject] = React.useState();
   const { selectedProject, authData } = useTrackedState();
   let params = useParams();
   const dispatch = useDispatch();
   useEffect(() => {
     if (!selectedProject) {
-      // console.log(params.id);
-      // replace - with space
       let query = MATCH_ID_TITLE(params.id, params.name.replace(/-/g, " "));
       queryEsById(query, dispatch, updateSelectedProject, history);
     }
-  }, []);
+    setCurrProject(selectedProject)
+  }, [selectedProject]);
 
   return (
     <div className={classes.root}>
-      {selectedProject ? (
+      {currProject ? (
         <Grid container spacing={3}>
-          <Header selectedProject={selectedProject} />
-          {/* <SubTitle selectedProject={selectedProject}/> */}
-          <StoyText selectedProject={selectedProject} />
+          <Header selectedProject={currProject} />
+          {/* <SubTitle selectedProject={currProject}/> */}
+          <StoyText selectedProject={currProject} />
           <Grid
             container
             spacing={1}
@@ -59,9 +59,9 @@ export default function CenteredGrid() {
             md={3}
             xs={12}
           >
-            <ProjectLinks selectedProject={selectedProject} />
-            <ProjectVideo selectedProject={selectedProject} />
-            <ProjectTech selectedProject={selectedProject} />
+            <ProjectLinks selectedProject={currProject} />
+            <ProjectVideo selectedProject={currProject} />
+            <ProjectTech selectedProject={currProject} />
           </Grid>
 
           <Grid item sm={12} xs={12}>
