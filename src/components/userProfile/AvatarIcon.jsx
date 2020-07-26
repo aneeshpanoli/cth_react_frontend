@@ -1,6 +1,6 @@
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
-import RedeemIcon from '@material-ui/icons/Redeem';
+import RedeemIcon from "@material-ui/icons/Redeem";
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,6 +8,11 @@ import { useHistory, useParams, Link } from "react-router-dom";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
 import { getAnotherUserInfoElastic } from "../backend/AxiosRequest";
 import { updateOtherUserData } from "../redux/actions";
+import { queryEsById, updateProject } from "../backend/AxiosRequest";
+import { updateSelectedProject } from "../redux/actions";
+import { MATCH_ID_TITLE } from "../backend/EsQueries";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import ThumbDownAltIcon from "@material-ui/icons/ThumbDownAlt";
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -43,6 +48,55 @@ export default function AvatarIcon() {
     history.push("/" + "@" + otherUserData.username);
   };
 
+  const handleClaim = () => {
+    if (authData && authData.user) {
+      history.push("/claim-project");
+    } else {
+      history.push("/sign-in");
+    }
+  };
+
+  const rejectClaim = () => {
+    claimProject({
+      claimed: "no",
+      owners: "",
+    });
+  };
+
+  const approveClaim = () => {
+    claimProject({
+      claimed: "yes",
+      owners: selectedProject._source.claimed,
+      claimApprovedAt: new Date(),
+    });
+  };
+
+  const claimProject = (es_data) => {
+    let data = {
+      status: "projectclaim",
+      index: selectedProject._index,
+      id: selectedProject._id,
+      q: es_data,
+    };
+    let formData = new FormData();
+
+    formData.append("params", JSON.stringify(data));
+
+    let query = MATCH_ID_TITLE(
+      selectedProject._id,
+      selectedProject._source.title.replace(/-/g, " ")
+    );
+    const updateData = () =>
+      queryEsById(query, dispatch, updateSelectedProject, history);
+    updateProject(
+      formData,
+      authData.key,
+      history,
+      selectedProject._source.title,
+      updateData
+    );
+  };
+
   return (
     <Grid container alignItems="center">
       <Grid item xs={3} sm={2} md={1} container justify="flex-end">
@@ -72,21 +126,65 @@ export default function AvatarIcon() {
             {selectedProject._source.createdAt}
           </div>
         </Grid>
-      ) : (
+      ) : null}
+      {selectedProject && !otherUserData ? (
         <Grid item xs={9} sm={10} md={11}>
           <Button
-          startIcon={<RedeemIcon />}
-          disableElevation
-          size='small'
+            disabled={
+              selectedProject._source.claimed !== "no"
+                ? true
+                : false
+            }
+            startIcon={<RedeemIcon />}
+            disableElevation
+            size="small"
             color="primary"
             variant="outlined"
             style={{ textTransform: "none", borderRadius: 25 }}
+            onClick={handleClaim}
           >
             {" "}
-            Claim this project
+            {
+              selectedProject._source.claimed !== "no"
+                ? "Claim pending"
+                : "Claim this project"
+            }
           </Button>
         </Grid>
-      )}
+      ) : null}
+
+      {authData &&
+      authData.user &&
+      authData.user.staff === "yes" &&
+      !otherUserData &&
+      selectedProject._source.claimed !== "no" ? (
+        <Grid item xs={9} sm={10} md={11}>
+          <Button
+            startIcon={<CheckCircleIcon />}
+            disableElevation
+            size="small"
+            color="primary"
+            variant="outlined"
+            style={{ textTransform: "none", borderRadius: 25 }}
+            onClick={approveClaim}
+          >
+            {" "}
+            Approve claim
+          </Button>
+          <Button
+            startIcon={<ThumbDownAltIcon />}
+            disableElevation
+            size="small"
+            color="default"
+            variant="contained"
+            style={{ textTransform: "none", borderRadius: 25 }}
+            onClick={rejectClaim}
+          >
+            {" "}
+            Reject claim
+          </Button>
+        </Grid>
+      ) : null}
     </Grid>
   );
 }

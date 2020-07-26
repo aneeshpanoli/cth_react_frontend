@@ -19,6 +19,7 @@ import Feedback from "./components/pages/Feedback";
 import PageNotFound from "./components/pages/PageNotFound";
 import CreateProject from "./components/pages/CreateProject";
 import EditProject from "./components/pages/EditProject";
+import ClaimProject from "./components/pages/ClaimProject";
 import { logout, tabLogin } from './components/auth/auth'
 
 
@@ -75,6 +76,10 @@ const App = () => {
 
             <Route exact path="/edit-project">
               <EditProject />
+            </Route>
+
+            <Route exact path="/claim-project">
+              <ClaimProject />
             </Route>
 
             <Route exact path="/search">

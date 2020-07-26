@@ -210,7 +210,6 @@ export const updateProject = (formData, token, history, title, getUpdatedData) =
   postpostAuthAxios
     .post(`/post/`, formData)
     .then((response) => {
-      console.log(response.data);
       setTimeout(() => {
       getUpdatedData();
       history.push("/"+title.replace(/\s+/g, '-')+"/"+response.data._id);
