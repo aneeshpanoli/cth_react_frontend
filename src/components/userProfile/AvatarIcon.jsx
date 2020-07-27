@@ -16,7 +16,7 @@ import ThumbDownAltIcon from "@material-ui/icons/ThumbDownAlt";
 import { parseToDays } from "../js/datePrase";
 
 const useStyles = makeStyles((theme) => ({
-  small: {
+  project: {
     width: theme.spacing(6),
     height: theme.spacing(6),
     fontWeight: 700,
@@ -118,7 +118,7 @@ export default function AvatarIcon() {
           <Avatar
             variant="circle"
             color="secondary"
-            className={classes.small}
+            className={classes.project}
             alt={otherUserData ? otherUserData.first_name : null}
             src="/static/images/avatar/1.jpg"
           />

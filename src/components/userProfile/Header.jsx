@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
-import UserProfileMenu from "../menu/UserProfileMenu";
-import GreyRoundButton from "../buttons/GreyRounded";
-import Icon from "../../Assets/img/user.png";
-
+import Avatar from "@material-ui/core/Avatar";
+import StarsIcon from '@material-ui/icons/Stars';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,44 +22,86 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 100,
     backgroundColor: "grey",
   },
+  project: {
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+    fontWeight: 700,
+    fontSize:'3rem'
+  },
 }));
 
 export default function Header(props) {
   const classes = useStyles();
   const { authData } = useTrackedState();
+  console.log(authData)
+
+  const handleFollow = () =>{
+
+  }
 
   return (
     <React.Fragment>
-      <div style={{ height: "1rem" }}></div>
-      <Grid container spacing={0} alignContent="space-between">
-        <Grid item sm={2} xs={5}>
-          <img
-            className={classes.image}
-            alt="complex"
-            src={Icon}
-            className={classes.image}
+      <Grid container spacing={2} alignItems="center">
+        <Grid item md={2} sm={4} xs={3} container justify="flex-end">
+        <Avatar
+            variant="circle"
+            color="secondary"
+            className={classes.project}
+            // alt={authData.user ? authData.user.first_name : null}
+            src="/static/images/avatar/1.jpg"
           />
+          
         </Grid>
         
-        <Grid item xs={7} sm={2}>
-          <Typography gutterBottom variant="subtitle1">
+        <Grid item md={10} sm={8} xs={9} container justify="flex-start">
+          <h4>
             {authData.user
               ? authData.user.first_name + " " + authData.user.last_name
               : null}
-          </Typography>
-          <Typography variant="body2" gutterBottom>
-            Associate @Some Org
-          </Typography>
+          </h4>
 
-          <Typography variant="body2" color="textSecondary">
-            ID: 1030114
-          </Typography>
+          </Grid>
+          <Grid item md={12} sm={12} xs={12}>
+            <span style={{color:'grey'}}>{authData.user
+              ? authData.user.email
+              : null}</span>
+            
+              <br/>
+           {authData.user?authData.user.followers.length:0} Followers  
+              <br/>
+              {authData.user?authData.user.likes.length:0} Following
+        </Grid>
+        <Grid item md={12} sm={12} xs={12} >
+        <Button
+          startIcon={<StarsIcon />}
+          disableElevation
+          size="small"
+          color="default"
+          variant="contained"
+          style={{ textTransform: "none", borderRadius: 25}}
+          onClick={handleFollow}
+        >
+          {" "}
+          Follow
+        </Button>
+        </Grid>
+        <Grid item md={12} sm={12} xs={12} >
+        <Button
+          startIcon={<EditIcon />}
+          disableElevation
+          size="small"
+          color="default"
+          variant="contained"
+          style={{ textTransform: "none", borderRadius: 25}}
+          onClick={handleFollow}
+        >
+          Edit profile
+        </Button>
         </Grid>
       </Grid>
 
-      <div style={{ height: "1rem" }}></div>
 
-      <Paper className={classes.paper} elevation={2}>
+      {/* <Paper className={classes.paper} elevation={2}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
@@ -97,7 +137,7 @@ export default function Header(props) {
             </Grid>
           </Grid>
         </Grid>
-      </Paper>
+      </Paper> */}
     </React.Fragment>
   );
 }

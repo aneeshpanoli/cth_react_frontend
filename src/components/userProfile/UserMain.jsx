@@ -9,7 +9,7 @@ import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateUserOwnChallenge } from '../redux/actions'
 import { simpleQueryElasticsearch } from '../backend/AxiosRequest'
 import { MATCH } from '../backend/EsQueries'
-import CalenderHeatmap from './CalenderHeatmap'
+import UserActivity from './UserActivity'
 import { useParams, useHistory } from "react-router-dom";
 
 
@@ -40,26 +40,18 @@ export default function UserMain() {
 
   return (
     
-    <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={12} md={3}>
           <Header onClick={null} />
         </Grid>
+        <Grid item xs={12} sm={12} md={9}>
+        <Grid container spacing={2}>
         <UserOwnChallenges />
-        <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>xs=6 sm=3</Paper>
         </Grid>
-        <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>xs=6 sm=3</Paper>
-        </Grid>
-        <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>xs=6 sm=3</Paper>
-        </Grid>
-        <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>xs=6 sm=3</Paper>
-        </Grid>
-        <CalenderHeatmap />
+       
+       
+        <UserActivity />
       </Grid>
-    </div>
+      </Grid>
   );
 }

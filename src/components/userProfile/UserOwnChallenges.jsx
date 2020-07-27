@@ -24,7 +24,7 @@ export default function UserOwnChallenge() {
     <React.Fragment>
       {userOwnChallenge
         ? userOwnChallenge.map((r, i) => (
-            <Grid item key={i} xs={12} sm={6}>
+            <Grid item key={i} xs={12} sm={6} md={4}>
               <ProjectCard r={r} />
             </Grid>
           ))

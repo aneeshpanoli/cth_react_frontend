@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header({ selectedProject }) {
+export default function UserActivity({ selectedProject }) {
   const classes = useStyles();
 
   return (
@@ -25,7 +25,7 @@ export default function Header({ selectedProject }) {
       <Paper className={classes.paper}>
         <CalendarHeatmap
           startDate={new Date("2016-01-01")}
-          endDate={new Date("2017-02-01")}
+          endDate={new Date("2016-12-31")}
           values={[
             { date: "2016-01-01", count: 12 },
             { date: "2016-01-22", count: 122 },

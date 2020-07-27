@@ -266,7 +266,7 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
         localStorage.removeItem('REQUESTING_SHARED_CREDENTIALS')
         console.log(response.data);
       } else {
-        // console.log(response.data.hits[0]._source);
+        console.log(response.data.hits[0]._source);
         const authData = {
           ...loginData,
           user: response.data.hits[0]._source,
