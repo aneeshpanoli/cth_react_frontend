@@ -164,7 +164,7 @@ export default function ProjectForm() {
     owners: authData && authData.user ? authData.user.id : "",
     video: "",
     hackathons: [],
-    updatedAt: "",
+    updatedAt: new Date(),
     links: [],
     keywords: [],
     title: "",
@@ -173,7 +173,8 @@ export default function ProjectForm() {
     rewards: "",
     crisis: "",
     language: "",
-    approved: "no"
+    approved: "no",
+    claimed:"yes"
   });
 
   const handleDeleteChip = (chip, objProp) => {

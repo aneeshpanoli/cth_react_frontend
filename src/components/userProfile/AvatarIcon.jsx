@@ -13,6 +13,7 @@ import { updateSelectedProject } from "../redux/actions";
 import { MATCH_ID_TITLE } from "../backend/EsQueries";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import ThumbDownAltIcon from "@material-ui/icons/ThumbDownAlt";
+import { parseToDays } from "../js/datePrase";
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -29,10 +30,15 @@ export default function AvatarIcon() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { selectedProject, otherUserData, authData } = useTrackedState();
+  
   const classes = useStyles();
 
   React.useEffect(() => {
+  //   console.log(otherUserData)
+  // console.log(authData)
+  // console.log(selectedProject)
     if (selectedProject && selectedProject._source.owners) {
+      
       getAnotherUserInfoElastic(
         authData,
         selectedProject._source.owners,
@@ -57,23 +63,27 @@ export default function AvatarIcon() {
   };
 
   const rejectClaim = () => {
-    claimProject({
+    claimProject('projectclaimreject',{
       claimed: "no",
       owners: "",
     });
   };
 
   const approveClaim = () => {
-    claimProject({
+    claimProject('projectclaimapprove', {
       claimed: "yes",
       owners: selectedProject._source.claimed,
       claimApprovedAt: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
   };
 
-  const claimProject = (es_data) => {
+  const claimProject = (action, es_data) => {
     let data = {
-      status: "projectclaim",
+      email:selectedProject._source.proof[1],
+      firstName:selectedProject._source.proof[2],
+      status: action,
       index: selectedProject._index,
       id: selectedProject._id,
       q: es_data,
@@ -123,7 +133,7 @@ export default function AvatarIcon() {
           </div>
 
           <div style={{ fontWeight: 400, color: "grey" }}>
-            {selectedProject._source.createdAt}
+            {"Last updated: "+parseToDays(selectedProject._source.updatedAt)}
           </div>
         </Grid>
       ) : null}
@@ -166,7 +176,7 @@ export default function AvatarIcon() {
             color="primary"
             variant="outlined"
             style={{ textTransform: "none", borderRadius: 25 }}
-            onClick={approveClaim}
+            onClick={() =>approveClaim()}
           >
             {" "}
             Approve claim

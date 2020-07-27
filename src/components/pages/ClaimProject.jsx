@@ -21,10 +21,12 @@ export default function UserProfile (){
        });
 
     return (
-        <Container style={{minWidth:"100%", backgroundColor:'#ffffff00' }}>
+        <Box>
         <TopNav />
+        <Container>
         <ClaimFrom />
-        <Footer />
         </Container>
+        <Footer />
+        </Box>
     );
 }

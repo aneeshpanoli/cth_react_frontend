@@ -64,7 +64,7 @@ export default function Header({ selectedProject }) {
     window.scrollTo(0, 0)
     setEditPermission((authData&&authData.user&&authData.user.staff==='yes')
     || (selectedProject && selectedProject._source.owners 
-      && selectedProject._source.owners === authData.user.id));
+      && (authData.user&&selectedProject._source.owners === authData.user.id)));
     setApprovePermission(authData&&authData.user&&authData.user.staff==='yes')
     setApproved(selectedProject&&selectedProject._source.approved==='yes')
   }, [authData])

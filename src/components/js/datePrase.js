@@ -4,5 +4,5 @@ export const parseToDays = (dateString) => {
   const secondDate = new Date();
 
   const daysSince = Math.round(Math.abs((firstDate - secondDate) / oneDay));
-  return !daysSince? "today": daysSince+" days ago"
+  return !daysSince? "Today": daysSince+" days ago"
 };
