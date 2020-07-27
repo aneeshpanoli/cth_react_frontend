@@ -41,6 +41,7 @@ export default function AvatarIcon() {
       
       getAnotherUserInfoElastic(
         authData,
+        "id",
         selectedProject._source.owners,
         dispatch,
         updateOtherUserData

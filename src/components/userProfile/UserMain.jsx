@@ -29,24 +29,25 @@ export default function UserMain() {
   const dispatch = useDispatch();
   const params = useParams();
   // console.log(params.user);
-  const { authData, userOwnChallenge } = useTrackedState();
+  const { authData, otherUserData } = useTrackedState();
   const getUserOwnChallenges = () => {
+    if(otherUserData&&otherUserData.id){
     let query = MATCH(
-        authData.user.id, 'owners'
+        otherUserData.id, 'owners'
         );
         simpleQueryElasticsearch(query, dispatch, updateUserOwnChallenge);
+    }
   };
-  React.useEffect(() => {if(!userOwnChallenge&&authData.user){getUserOwnChallenges()}}, [])
 
   return (
     
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={3}>
-          <Header onClick={null} />
+          <Header onClick={null} username={params.user} />
         </Grid>
         <Grid item xs={12} sm={12} md={9}>
         <Grid container spacing={2}>
-        <UserOwnChallenges />
+        <UserOwnChallenges getChallenges={getUserOwnChallenges}/>
         </Grid>
        
        

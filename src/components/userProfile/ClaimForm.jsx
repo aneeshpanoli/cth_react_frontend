@@ -1,4 +1,3 @@
-import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import RedeemIcon from "@material-ui/icons/Redeem";
 import React from "react";
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AvatarIcon() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { selectedProject, otherUserData, authData } = useTrackedState();
+  const { selectedProject, authData } = useTrackedState();
   const [errors, setErrors] = React.useState({
     proof: "",
     email: "",
@@ -66,6 +65,7 @@ export default function AvatarIcon() {
     if (selectedProject && selectedProject._source.owners) {
       getAnotherUserInfoElastic(
         authData,
+        "id",
         selectedProject._source.owners,
         dispatch,
         updateOtherUserData

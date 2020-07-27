@@ -283,9 +283,9 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
 };
 
 
-export const getAnotherUserInfoElastic = (loginData, otherUserId, dispatch, actionCallback) => {
+export const getAnotherUserInfoElastic = (loginData, field, otherUserId, dispatch, actionCallback) => {
   const userInfoAxios = postAuthAxios(`Token ${loginData.key}`);
-  let query = MATCH_USER(otherUserId, "id");
+  let query = MATCH_USER(otherUserId, field);
   // console.log(query)
   userInfoAxios
     .get(`/q/`, query)

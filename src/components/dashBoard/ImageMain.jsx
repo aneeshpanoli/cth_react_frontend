@@ -130,27 +130,7 @@ export default function Header({ selectedProject }) {
               <FavoriteIcon />
             </IconButton>
             <SocialShare />
-            <IconButton
-              color="secondary"
-              aria-label="add to favorites"
-              style={{
-                backgroundColor: "rgba(110, 110, 110, 0.8)",
-                marginLeft: 10,
-              }}
-            >
-              <PanToolIcon />
-            </IconButton>
-
-            <IconButton
-              color="secondary"
-              aria-label="add to favorites"
-              style={{
-                backgroundColor: "rgba(110, 110, 110, 0.8)",
-                marginLeft: 10,
-              }}
-            >
-              <SportsKabaddiIcon />
-            </IconButton>
+            
 
             <IconButton
               color="secondary"
