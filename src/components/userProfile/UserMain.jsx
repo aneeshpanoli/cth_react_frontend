@@ -11,7 +11,8 @@ import { simpleQueryElasticsearch } from '../backend/AxiosRequest'
 import { MATCH } from '../backend/EsQueries'
 import UserActivity from './UserActivity'
 import { useParams, useHistory } from "react-router-dom";
-
+import { getAnotherUserInfoElastic } from "../backend/AxiosRequest";
+import { updateOtherUserData } from "../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +31,16 @@ export default function UserMain() {
   const params = useParams();
   // console.log(params.user);
   const { authData, otherUserData } = useTrackedState();
+  React.useEffect(() =>{
+    getAnotherUserInfoElastic(
+      authData,
+      "username",
+      params.user,
+      dispatch,
+      updateOtherUserData
+    );
+  }, [params.user])
+
   const getUserOwnChallenges = () => {
     if(otherUserData&&otherUserData.id){
     let query = MATCH(
@@ -39,6 +50,9 @@ export default function UserMain() {
     }
   };
 
+  React.useEffect(() =>getUserOwnChallenges(), [otherUserData])
+
+
   return (
     
       <Grid container spacing={3}>
@@ -47,7 +61,7 @@ export default function UserMain() {
         </Grid>
         <Grid item xs={12} sm={12} md={9}>
         <Grid container spacing={2}>
-        <UserOwnChallenges getChallenges={getUserOwnChallenges}/>
+        <UserOwnChallenges/>
         </Grid>
        
        

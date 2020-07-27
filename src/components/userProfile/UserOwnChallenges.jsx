@@ -16,10 +16,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserOwnChallenge(props) {
+export default function UserOwnChallenge() {
   const classes = useStyles();
-  React.useEffect(() => props.getChallenges(), [])
-
   const { userOwnChallenge } = useTrackedState();
 
 

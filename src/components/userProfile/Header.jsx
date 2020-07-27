@@ -6,8 +6,7 @@ import { useTrackedState, useDispatch } from "reactive-react-redux";
 import Avatar from "@material-ui/core/Avatar";
 import StarsIcon from '@material-ui/icons/Stars';
 import EditIcon from '@material-ui/icons/Edit';
-import { getAnotherUserInfoElastic } from "../backend/AxiosRequest";
-import { updateOtherUserData } from "../redux/actions";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,16 +36,7 @@ export default function Header(props) {
   const dispatch = useDispatch();
   const { authData, otherUserData } = useTrackedState();
   const [personal, setPersonal] = React.useState(true);
-  React.useEffect(() =>{
-    getAnotherUserInfoElastic(
-      authData,
-      "username",
-      props.username,
-      dispatch,
-      updateOtherUserData
-    );
-  })
-
+ 
   React.useEffect(() =>{
     setPersonal((authData.user && otherUserData) && authData.user.id==otherUserData.id)
   }, [otherUserData])
@@ -71,7 +61,7 @@ export default function Header(props) {
         
         <Grid item md={10} sm={8} xs={9} container justify="flex-start">
           <h4>
-            {authData.user
+            {otherUserData
               ? otherUserData.first_name + " " + otherUserData.last_name
               : null}
           </h4>
@@ -86,9 +76,9 @@ export default function Header(props) {
               </React.Fragment>
               :null}
               
-           {authData.user?authData.user.followers.length:0} Followers  
+           {otherUserData?otherUserData.followers.length:0} Followers  
               <br/>
-              {authData.user?authData.user.likes.length:0} Following
+              {otherUserData?otherUserData.likes.length:0} Following
         </Grid>
         {personal?
        
