@@ -1,10 +1,10 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-
+import { useHistory } from 'react-router-dom';
 import Slide from '@material-ui/core/Slide';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import SignIn from '../auth/SignIn';
+import SignIn from '../auth/EmailSignin';
 import SignUp from '../auth/SignUp';
 import SignInOptions from '../auth/SignInIptions'
 
@@ -19,15 +19,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function AlertDialogSlide() {
   const [open, setOpen] = React.useState(false);
   const [signIn, setSignIn] = React.useState(false);
+  const history = useHistory();
 
   const handleClickOpen = () => {
-    setOpen(true);
+    history.push('/sign-in')
+    // setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
   
+
 
 
   return (

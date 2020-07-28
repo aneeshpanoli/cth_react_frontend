@@ -208,3 +208,17 @@ export const FETCH_RANDOM_ON_SESSION = () => {
     }
   }
 };
+
+
+export const ADD_TO_ARRAY = (field, value) => {
+  return {
+    script: {
+      source: "ctx._source." + field + ".add(params." + field + ")",
+      lang: "painless",
+      params: {
+        [field]: value,
+      },
+    },
+  
+};
+}

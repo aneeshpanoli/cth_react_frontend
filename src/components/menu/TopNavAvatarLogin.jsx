@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import LoginButton from '../buttons/LoginButton';
+import LoginButton from '../buttons/SigninButton';
 import AvararButton from '../buttons/AvatarButton';
 import { useTrackedState} from 'reactive-react-redux';
 

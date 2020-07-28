@@ -13,7 +13,7 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import UserProfile from "./components/pages/UserProfile";
 import TermsAndConditions from "./components/pages/TermsAndCond";
 import PrivacyPolicy from "./components/pages/PrivacyPolicy";
-import EmailSignIn from "./components/pages/EmailSignIn";
+import Auth from "./components/pages/Auth";
 import AboutUs from "./components/pages/AboutUs";
 import Feedback from "./components/pages/Feedback";
 import PageNotFound from "./components/pages/PageNotFound";
@@ -99,7 +99,7 @@ const App = () => {
             </Route>
 
             <Route exact path="/sign-in">
-              <EmailSignIn />
+              <Auth />
             </Route>
 
             <Route exact path="/about-us">

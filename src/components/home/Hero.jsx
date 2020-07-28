@@ -23,27 +23,20 @@ export default function Hero() {
 
   return (
     <Box style={{ borderBottom: "1px solid #061F71", marginBottom: "2rem" }}>
-      <Grid container>
-        <Grid item xs={12} sm={6} md={8}>
-          <Container>
+      <Grid container spacing={2}>
+        
+        <Grid item xs={12} sm={6} md={6}>
+        <Container>
           <Grid item xs={12}>
            
               <h1 style={{ fontWeight: 700, wordWrap: "break-word" }}>
-                COVID-19 Pandemic
+                THE LARGEST NETWORK OF COVID SOLUTIONS
               </h1>
-              <h4 style={{ color: "#696969" }}>
-                is the defining global health{" "}
-                <span style={{ fontWeight: 700, color: "black" }}>crisis </span>
-                of our time. The world needs your help!
-              </h4>
+ 
               <h3 style={{ marginTop: "1rem", color: "grey" }}>
-                <span style={{ fontWeight: 700, color: "#061F71" }}>
-                  CivicTechHub{" "}
-                </span>
-                offers the largest database of projects dedicated to fighting
-                <span style={{ fontWeight: 700, color: "black" }}> crises</span>
-                . <span style={{ fontWeight: 700, color: "black" }}>Join </span>
-                a project and help humanity defeat COVID.
+                CivicTechHub offers the largest database of projects dedicated
+                to fighting the current crises. <br/> Join now to browse projects, find support
+                and help humanity defeat COVID-19.
               </h3>
           
           </Grid>
@@ -70,7 +63,7 @@ export default function Hero() {
         </Grid>
         <Grid
           item
-          xs={12} sm={6} md={4}
+          xs={12} sm={6} md={6}
           className="hero-div"
           style={{ backgroundImage: "url(" + heroimg + ")", minHeight: '30rem' }}
         ></Grid>

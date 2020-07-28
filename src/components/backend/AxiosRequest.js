@@ -11,7 +11,8 @@ import { MATCH_USER } from "./EsQueries";
 let development = process.env.NODE_ENV !== "production";
 // const BASE_URL = development?'http://54.193.134.135':'https://www.civictechhub.org';
 
-const BASE_URL = "http://54.193.134.135";
+const BASE_URL = "http://3.101.59.160";
+// const BASE_URL = "https://www.civictechhub.org";
 
 // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 // axios.defaults.xsrfCookieName = 'csrftoken';
@@ -221,6 +222,22 @@ export const updateProject = (formData, token, history, title, getUpdatedData) =
     });
 };
 
+export const updateUser = (formData, token, history, username, getUpdatedData) => {
+  const postpostAuthAxios = postPostAuthAxios(`Token ${token}`);
+  postpostAuthAxios
+    .post(`/post/`, formData)
+    .then((response) => {
+      setTimeout(() => {
+        getUpdatedData?getUpdatedData():null;
+      history.push("/@"+username);
+    }, 1000)
+    })
+    .catch((error) => {
+      // catch errors.
+      console.log(error);
+    });
+};
+
 export const createDocFeedback = (doc) => {
   console.log(doc);
   preAuthAxios
@@ -253,23 +270,13 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
           },
           loginData.key
           );
+          getUserInfoElastic(loginData, dispatch, actionCallback)
 
-        // store to session
-        sessionStorage.setItem(
-          "authData",
-          JSON.stringify({ ...loginData, isAuthenticated: true })
-        );
-
-        //update tabs
-        localStorage.setItem('REQUESTING_SHARED_CREDENTIALS', Date.now().toString())
-        console.log('requesting shared creds from axios')
-        localStorage.removeItem('REQUESTING_SHARED_CREDENTIALS')
-        console.log(response.data);
       } else {
-        console.log(response.data.hits[0]._source);
+        // console.log(response.data.hits[0]._source);
         const authData = {
           ...loginData,
-          user: response.data.hits[0]._source,
+          ...response.data.hits[0],
           isAuthenticated: true
         };
         dispatch(actionCallback(authData));
@@ -293,7 +300,7 @@ export const getAnotherUserInfoElastic = (loginData, field, otherUserId, dispatc
      
         // console.log(response.data);
 
-        dispatch(actionCallback(response.data.hits[0]._source));
+        dispatch(actionCallback(response.data.hits[0]));
        
       }
     )

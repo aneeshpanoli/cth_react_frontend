@@ -22,7 +22,7 @@ export default function ListComments(props) {
 
   React.useEffect(() => {
     if (props.projectId) {
-      console.log("getting comments");
+      // console.log("getting comments");
       const query = MATCH_PROJ_ID(props.projectId, "comments");
       simpleQueryElasticsearch(query, dispatch, updateCommentsData);
     }

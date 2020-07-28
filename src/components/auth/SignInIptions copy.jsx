@@ -6,8 +6,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
-import EmailSignin from './EmailSignin';
-import SocialSignin from '../auth/SocialSignin';
+import SignIn from './EmailSignin';
+import SocialSignIn from '../auth/SocialSignin';
 
 
 function TabPanel(props) {
@@ -72,10 +72,25 @@ export default function NavTabs(props) {
 
   return (
     <Container component="main" maxWidth="xs">
-
+      <AppBar position="static">
+        <Tabs
+          variant="fullWidth"
+          value={value}
+          onChange={handleChange}
+          aria-label="navtabs"
+          component={'div'}
+        >
+          <LinkTab label="Social Singn in" href="/drafts" {...a11yProps(0)} />
+          <LinkTab label="Email Sign in" href="/trash" {...a11yProps(1)} />
+        </Tabs>
+      </AppBar>
+      <TabPanel value={value} index={0} component={'div'}>
        
-        <SocialSignin />
-      <EmailSignin signUp={props.signUp}/>
+        <SocialSignIn />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+      <SignIn signUp={props.signUp}/>
+      </TabPanel>
       
     </Container>
   );

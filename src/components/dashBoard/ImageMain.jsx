@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import SportsKabaddiIcon from '@material-ui/icons/SportsKabaddi';
-import { getImgUrl } from '../js/utils'
+import { coverImgUrl } from '../js/utils'
 import EditIcon from '@material-ui/icons/Edit';
 import { useTrackedState, useDispatch } from 'reactive-react-redux'
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -41,6 +41,7 @@ export default function Header({ selectedProject }) {
   const [editPermission, setEditPermission] = React.useState(false);
   const [approvePermission, setApprovePermission] = React.useState(false);
   const [approved, setApproved] = React.useState(true)
+  
   const dispatch = useDispatch()
   let history = useHistory();
   const approveProject = () =>{
@@ -71,7 +72,7 @@ export default function Header({ selectedProject }) {
   return (
     <Box className={`${classes.paper} dash-header-div`}
     style={{
-      backgroundImage: "url(" + getImgUrl(selectedProject._source.image) + ")",
+      backgroundImage: "url("+ coverImgUrl(selectedProject._source.image) + ")",
     }}>
       {selectedProject ? (
       

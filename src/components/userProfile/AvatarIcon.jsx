@@ -52,7 +52,7 @@ export default function AvatarIcon() {
   }, []);
 
   const handleProfile = (event) => {
-    history.push("/" + "@" + otherUserData.username);
+    history.push("/" + "@" + otherUserData._source.username);
   };
 
   const handleClaim = () => {
@@ -120,7 +120,7 @@ export default function AvatarIcon() {
             variant="circle"
             color="secondary"
             className={classes.project}
-            alt={otherUserData ? otherUserData.first_name : null}
+            alt={otherUserData ? otherUserData._source.first_name : null}
             src="/static/images/avatar/1.jpg"
           />
         </Button>
@@ -129,7 +129,7 @@ export default function AvatarIcon() {
         <Grid item xs={9} sm={10} md={11}>
           <div style={{ fontWeight: 400 }}>
             {otherUserData
-              ? otherUserData.first_name + " " + otherUserData.last_name
+              ? otherUserData._source.first_name + " " + otherUserData._source.last_name
               : "claim this project"}
           </div>
 
@@ -165,8 +165,8 @@ export default function AvatarIcon() {
       ) : null}
 
       {authData &&
-      authData.user &&
-      authData.user.staff === "yes" &&
+      authData._source &&
+      authData._source.staff === "yes" &&
       !otherUserData &&
       selectedProject._source.claimed !== "no" ? (
         <Grid item xs={9} sm={10} md={11}>

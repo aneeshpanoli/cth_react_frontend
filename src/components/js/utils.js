@@ -44,7 +44,16 @@ export const sortStringObjArr= (objArray) =>{
 
 export const getImgUrl = (url) =>{
     if(!url.includes('http')){
-      return 'http://54.193.134.135/media/' + url
+    //   return 'http://54.193.134.135/media/' + url
+      return 'media/' + url // for production
+    }
+    return url
+  }
+
+  export const coverImgUrl = (url) =>{
+    if(!url.includes('http')){
+    //   return 'http://54.193.134.135/media/' + url
+      return 'https://www.civictechhub.org/media/' + url
     }
     return url
   }

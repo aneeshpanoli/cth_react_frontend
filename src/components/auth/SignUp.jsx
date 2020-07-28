@@ -115,12 +115,9 @@ export default function SignUp(props) {
   return (
     <Container component="main" maxWidth="xs">
       
-      <CssBaseline />
       {!open? 
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+      <React.Fragment>
+
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
@@ -241,7 +238,7 @@ export default function SignUp(props) {
             </Grid>
           </Grid>
         </form>
-      </div>
+      </React.Fragment>
       :
         <div >
         <div style={{width:'100%', height:'3rem', textAlign:'center', backgroundColor:'#061F71', color:'white'}} >

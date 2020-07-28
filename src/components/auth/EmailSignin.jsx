@@ -81,13 +81,10 @@ const formik = useFormik({
 
   return (
     <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Please sign in with your email and password to continue.
-        </Typography>
+
+        <h5>
+          Sign in with email.
+        </h5>
         <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
         {formik.errors.email ? <sub className={classes.error}>{formik.errors.email}</sub> : null}
           <TextField
@@ -95,7 +92,7 @@ const formik = useFormik({
             margin="normal"
             required
             fullWidth
-            id="email"
+            id="emailpage"
             label="Email Address"
             name="email"
             autoComplete="email"
@@ -147,8 +144,6 @@ const formik = useFormik({
             </Grid>
           </Grid>
         </form>
-      </div>
-
     </Container>
   );
 }

@@ -76,7 +76,7 @@ export default function AvatarIcon() {
   }, []);
 
   const handleSubmit = () => {
-    console.log(values);
+    // console.log(values);
     if (authData && authData.user) {
       let currErrors = validate();
       if (Object.keys(currErrors).length === 0) {
@@ -105,7 +105,7 @@ export default function AvatarIcon() {
       q: {
         claimed: authData.user.id,
         claimedAt: new Date(),
-        proof: [values.proof, values.email, authData.user.firstName],
+        proof: [values.proof, values.email, authData._source.firstName],
       },
     };
     let formData = new FormData();
