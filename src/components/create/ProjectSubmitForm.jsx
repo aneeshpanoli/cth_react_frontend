@@ -14,9 +14,8 @@ import { postProject } from "../backend/AxiosRequest";
 import MUIRichTextEditor from "mui-rte";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries, categories, roles } from "../search/utils";
-import { convertToRaw, EditorState } from "draft-js";
 import ImageUpload from "./ImageUpload";
-import { convertToHTML, convertFromHTML } from "draft-convert";
+import { convertToHTML } from "draft-convert";
 import ChipInput from "material-ui-chip-input";
 import Chip from "@material-ui/core/Chip";
 
@@ -140,19 +139,20 @@ const validate = (values) => {
 
 export default function ProjectForm() {
   const [formErrors, setFormErrors] = React.useState({});
+  const history = useHistory();
   const classes = useStyles();
   const { authData } = useTrackedState();
   React.useEffect(() => {
-    if (!authData.user){
-        history.push('/');
+    if (!authData.user) {
+      history.push("/");
     }
-   });
+  });
 
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [embed, setEmbed] = React.useState(null);
   const [image, setImage] = React.useState(null);
-  const history = useHistory();
+  
   const [newChips, setNewChips] = React.useState(null);
   const [formValues, setFormValues] = React.useState({
     builtWith: [],
@@ -174,7 +174,7 @@ export default function ProjectForm() {
     crisis: "",
     language: "",
     approved: "no",
-    claimed:"yes"
+    claimed: "yes",
   });
 
   const handleDeleteChip = (chip, objProp) => {
@@ -196,8 +196,6 @@ export default function ProjectForm() {
     setFormErrors(validate({ ...formValues, image: embed ? true : false }));
     setNewChips(makeChips(formValues));
   }, [formValues, embed]);
-
-  
 
   const handleSubmit = () => {
     console.log(formErrors);
@@ -269,8 +267,7 @@ export default function ProjectForm() {
             noValidate
             onSubmit={(e) => {
               e.preventDefault();
-              return false
-              
+              return false;
             }}
           >
             {/* TITLE */}
@@ -308,7 +305,11 @@ export default function ProjectForm() {
                     <img
                       src={embed}
                       alt="title-image"
-                      style={{ maxHeight: "400px", marginTop: "1rem", maxWidth:'100%' }}
+                      style={{
+                        maxHeight: "400px",
+                        marginTop: "1rem",
+                        maxWidth: "100%",
+                      }}
                     />
                   </Grid>
                 ) : null}
@@ -385,26 +386,32 @@ export default function ProjectForm() {
                         "storyText",
                         convertToHTML({
                           styleToHTML: (style) => {
-                            if (style === 'BOLD') {
-                              return <span style={{color: 'blue'}} />;
+                            if (style === "BOLD") {
+                              return <span style={{ color: "blue" }} />;
                             }
                           },
                           blockToHTML: (block) => {
-                            if (block.type === 'code-block') {
+                            if (block.type === "code-block") {
                               return <code />;
                             }
                           },
                           entityToHTML: (entity, originalText) => {
                             try {
-                              new URL(entity.data.url)
+                              new URL(entity.data.url);
                             } catch (error) {
-                              return originalText+' ('+entity.data.url+')'
+                              return (
+                                originalText + " (" + entity.data.url + ")"
+                              );
                             }
-                            if (entity.type === 'LINK' ) {
-                              return <a href={entity.data.url} target={'_blank'}>{originalText}</a>;
+                            if (entity.type === "LINK") {
+                              return (
+                                <a href={entity.data.url} target={"_blank"}>
+                                  {originalText}
+                                </a>
+                              );
                             }
                             return originalText;
-                          }
+                          },
                         })(state.getCurrentContent())
                       )
                     }
@@ -437,9 +444,6 @@ export default function ProjectForm() {
                   )}
                 />
               </Grid>
-
-
-              
 
               {/* ROLES */}
               <Grid item xs={12}>
@@ -518,7 +522,6 @@ export default function ProjectForm() {
                 />
               </Grid>
 
-
               {/* BUITWITH */}
               <Grid item xs={12}>
                 {formErrors.builtWith ? (
@@ -539,7 +542,9 @@ export default function ProjectForm() {
                       [...formValues.builtWith].concat([chip])
                     );
                   }}
-                  onDelete={(chip, index) => handleDeleteChip(chip, "builtWith")}
+                  onDelete={(chip, index) =>
+                    handleDeleteChip(chip, "builtWith")
+                  }
                 />
               </Grid>
 

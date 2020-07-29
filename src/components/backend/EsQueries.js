@@ -193,22 +193,21 @@ export const FETCH_RANDOM_ON_SESSION = () => {
                     {
                       random_score: {
                         seed: getRandomInt(1000000000000, 200000000000),
-                      }
-                    }
-                  ]
-                }
-              }
+                      },
+                    },
+                  ],
+                },
+              },
             ],
             filter: {
-              term: { approved: "yes" }
-            }
-          }
-        }
-      }
-    }
-  }
+              term: { approved: "yes" },
+            },
+          },
+        },
+      },
+    },
+  };
 };
-
 
 export const ADD_TO_ARRAY = (field, value) => {
   return {
@@ -219,6 +218,5 @@ export const ADD_TO_ARRAY = (field, value) => {
         [field]: value,
       },
     },
-  
+  };
 };
-}

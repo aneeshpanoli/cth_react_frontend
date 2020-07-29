@@ -1,29 +1,29 @@
-import React from 'react';
-import Footer from '../footer/Footer'
-import TopNav from '../navigation/TopNav'
-import { useDispatch, useTrackedState } from 'reactive-react-redux';
-import Container from '@material-ui/core/Container';
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import Footer from "../footer/Footer";
+import TopNav from "../navigation/TopNav";
+import { useTrackedState } from "reactive-react-redux";
+import Container from "@material-ui/core/Container";
+import { useHistory } from "react-router-dom";
+import Box from "@material-ui/core/Box";
 
+export default function AboutUs() {
+  const history = useHistory();
+  const { authData } = useTrackedState();
+  React.useEffect(() => {
+    if (!authData.isAuthenticated) {
+      history.push("/");
+    }
+  });
 
-
-export default function AboutUs (){
-    const history = useHistory();
-    const { authData } = useTrackedState();
-    React.useEffect(() => {
-        if (!authData.isAuthenticated){
-            history.push('/');
-        }
-       });
-
-    return (
-        <Container style={{minHeight: '100vh'}}>
-        <TopNav />
+  return (
+    <Box>
+      <TopNav />
+      <Container>
         <div>
-            <h2>Page not found!</h2>
+          <h2>Page not found!</h2>
         </div>
-        <Footer />
-
-        </Container>
-    );
+      </Container>
+      <Footer />
+    </Box>
+  );
 }

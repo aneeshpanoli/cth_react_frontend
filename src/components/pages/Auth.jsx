@@ -6,7 +6,7 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import { useTrackedState } from "reactive-react-redux";
 import SignUp from "../auth/SignUp";
-import SignInOptions from "../auth/SignInIptions";
+import SigninOptions from "../auth/SigninOptions";
 
 export default function UserProfile() {
   const history = useHistory();
@@ -27,7 +27,7 @@ export default function UserProfile() {
       <TopNav />
       <Container>
         {signIn ? (
-          <SignInOptions signUp={() => setSignIn(false)} />
+          <SigninOptions signUp={() => setSignIn(false)} />
         ) : (
           <SignUp signIn={() => setSignIn(true)} />
         )}

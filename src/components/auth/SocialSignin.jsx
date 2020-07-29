@@ -45,7 +45,7 @@ export default function ContainedButtons() {
         onLoginSuccess={handleSocialLogin}
         onLoginFailure={handleSocialLoginFailure}
         startIcon={<FacebookIcon />}
-        key={'fb'}
+        key={"fb"}
       >
         Sign in with Facebook
       </SocialButton>
@@ -57,13 +57,10 @@ export default function ContainedButtons() {
         onLoginSuccess={handleSocialLogin}
         onLoginFailure={handleSocialLoginFailure}
         startIcon={<InstagramIcon />}
-        key={'instagram'}
+        key={"instagram"}
       >
         Sign in with instagram
       </SocialButton>
-
-
-     
     </div>
   );
 }

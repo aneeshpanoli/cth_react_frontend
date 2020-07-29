@@ -2,17 +2,13 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box'
 import Container from '@material-ui/core/Container';
-
-import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import PanToolIcon from '@material-ui/icons/PanTool';
 import SocialShare from './SocialShare'
 import { useHistory } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
-import SportsKabaddiIcon from '@material-ui/icons/SportsKabaddi';
 import { coverImgUrl } from '../js/utils'
 import EditIcon from '@material-ui/icons/Edit';
 import { useTrackedState, useDispatch } from 'reactive-react-redux'

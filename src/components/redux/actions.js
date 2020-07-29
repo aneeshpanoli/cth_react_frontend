@@ -1,59 +1,55 @@
-import * as actionType from './actionTypes';
+import * as actionType from "./actionTypes";
 
 // you never work with the rducer, the store directly contacts ther reducer
 // you use actions to tell the store what to do and then store contacts reducer
 // reducer sends the updated state back to the store
 
+export const updateProjectList = (newsearchProjectList) => ({
+  type: actionType.SEARCH_PROJECT,
+  searchProjectList: newsearchProjectList,
+});
 
-export const updateProjectList = newsearchProjectList => ({
-    type: actionType.SEARCH_PROJECT, 
-    searchProjectList: newsearchProjectList
-})
+export const updateSelectedProject = (newselectedProject) => ({
+  type: actionType.SELECTED_PROJECT,
+  selectedProject: newselectedProject,
+});
 
+export const updateAuthData = (newAuthData) => ({
+  type: actionType.AUTH_DATA,
+  authData: newAuthData,
+});
 
-export const updateSelectedProject = newselectedProject => ({
-    type: actionType.SELECTED_PROJECT, 
-    selectedProject: newselectedProject
-})
+export const updateCommentsData = (newCommentsData) => ({
+  type: actionType.UPDATE_COMMENTS,
+  commentsData: newCommentsData,
+});
 
+export const updateChallengeFormData = (newChallengeFormData) => ({
+  type: actionType.PROJECT_FORM,
+  challengeFormData: newChallengeFormData,
+});
 
-export const updateAuthData = newAuthData => ({
-    type: actionType.AUTH_DATA, 
-    authData: newAuthData
-})
+export const updateFilterProject = (newFilterProjectList) => ({
+  type: actionType.FILTER_PROJECT,
+  filterProjectList: newFilterProjectList,
+});
 
-export const updateCommentsData = newCommentsData => ({
-    type: actionType.UPDATE_COMMENTS, 
-    commentsData: newCommentsData
-})
+export const updateProgress = (newIsProgress) => ({
+  type: actionType.UPDATE_PROGRESS,
+  isProgress: newIsProgress,
+});
 
+export const updateEditProject = (newEditProject) => ({
+  type: actionType.UPDATE_EDIT_PROJECT,
+  editProject: newEditProject,
+});
 
-export const updateChallengeFormData = newChallengeFormData => ({
-    type: actionType.PROJECT_FORM, 
-    challengeFormData: newChallengeFormData
-})
+export const updateUserOwnChallenge = (newUserOwnChallenge) => ({
+  type: actionType.USER_OWN_CHALLENGE,
+  userOwnChallenge: newUserOwnChallenge,
+});
 
-export const updateFilterProject = newFilterProjectList => ({
-    type: actionType.FILTER_PROJECT, 
-    filterProjectList: newFilterProjectList
-})
-
-export const updateProgress = newIsProgress => ({
-    type: actionType.UPDATE_PROGRESS, 
-    isProgress: newIsProgress
-})
-
-export const updateEditProject = newEditProject => ({
-    type: actionType.UPDATE_EDIT_PROJECT, 
-    editProject: newEditProject
-})
-
-export const updateUserOwnChallenge = newUserOwnChallenge => ({
-    type: actionType.USER_OWN_CHALLENGE, 
-    userOwnChallenge: newUserOwnChallenge
-})
-
-export const updateOtherUserData = newOtherUserData => ({
-    type: actionType.OTHER_USER_DATA, 
-    otherUserData: newOtherUserData
-})
+export const updateOtherUserData = (newOtherUserData) => ({
+  type: actionType.OTHER_USER_DATA,
+  otherUserData: newOtherUserData,
+});

@@ -10,9 +10,10 @@ import ProgressBar from "./ProgressBar";
 
 export default function searchBar(props) {
   const dispatch = useDispatch();
-  const { filterProjectList } = useTrackedState();
   const { isProgress } = useTrackedState();
   const [progress, setProgress] = React.useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [newSearchValue, setNewSearchValue] = useState("");
   const queryDatabase = (searchValue) => {
     if (searchValue.length > 1) {
       dispatch(updateProgress(true));
@@ -22,9 +23,6 @@ export default function searchBar(props) {
       setSearchValue("");
     }
   };
-
-  const [searchValue, setSearchValue] = useState("");
-  const [newSearchValue, setNewSearchValue] = useState("");
 
   const throttled = useRef(
     throttle((newValue) => queryDatabase(newValue), 1500)
@@ -49,6 +47,7 @@ export default function searchBar(props) {
     <MuiThemeProvider>
       <React.Fragment>
         <SearchBar
+          autoFocus
           onChange={(value) => setSearchValue(value)}
           onRequestSearch={() => setNewSearchValue(searchValue)}
           onKeyDown={(e) => enterKeyPressedHandler(e)}
@@ -58,7 +57,8 @@ export default function searchBar(props) {
             margin: "0 auto",
             maxWidth: 800,
             width: "100%",
-            border:'1px solid #061F71',
+            border: "1px solid #061F71",
+            borderRadius: 15,
             marginTop: props.marginTop,
           }}
         />

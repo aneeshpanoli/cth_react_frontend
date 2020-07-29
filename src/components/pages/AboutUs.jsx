@@ -1,20 +1,15 @@
-import React from 'react';
-import Footer from '../footer/Footer'
-import TopNav from '../navigation/TopNav'
-import { FETCH_RANDOM_ON_SESSION } from '../backend/EsQueries'
-import { useDispatch, useTrackedState } from 'reactive-react-redux';
-import Container from '@material-ui/core/Container';
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import Footer from "../footer/Footer";
+import TopNav from "../navigation/TopNav";
+import Box from '@material-ui/core/Box';
+import Container from "@material-ui/core/Container";
 
-
-
-export default function AboutUs (){
-
-    return (
-        <Container style={{minHeight: '100vh'}}>
-        <TopNav />
-        <Footer />
-
-        </Container>
-    );
+export default function AboutUs() {
+  return (
+    <Box>
+      <TopNav />
+      <Container></Container>
+      <Footer />
+    </Box>
+  );
 }

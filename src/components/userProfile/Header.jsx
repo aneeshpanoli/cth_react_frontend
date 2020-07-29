@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -8,8 +8,7 @@ import StarsIcon from "@material-ui/icons/Stars";
 import EditIcon from "@material-ui/icons/Edit";
 import { updateOtherUserData } from "../redux/actions";
 import { getAnotherUserInfoElastic, updateUser } from "../backend/AxiosRequest";
-import { ADD_TO_ARRAY } from '../backend/EsQueries'
-import { useHistory } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,40 +37,24 @@ export default function Header(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const { authData, otherUserData, selectedProject } = useTrackedState();
+  const { authData, otherUserData } = useTrackedState();
   const [personal, setPersonal] = React.useState(true);
   // console.log(authData);
   React.useEffect(() => {
     setPersonal(
       authData.user &&
         otherUserData &&
-        authData.user.id == otherUserData._source.id
+        authData.user.id === otherUserData._source.id
     );
   }, [otherUserData, authData]);
-
-  const handleFollow = () => {
-    if(!authData || !authData._source){
-      history.push('/sign-in')
-      return
-    }
-    updateFollow(otherUserData, authData, "followers", "add");
-    updateFollow(authData, otherUserData, "following", "add");
-    
-  };
-
-  const handleUnfollow = () => {
-    updateUnFollow(authData, otherUserData, "following", "remove");
-    updateUnFollow(otherUserData, authData, "followers", "remove");
-  };
-
-  const updateFollow= (userData, otherUser, field, op) => {
+  const updateFollow = (userData, otherUser, field, op) => {
     let data = {
       status: "followerupdates",
       index: "user_data",
       id: userData._id,
       q: {
         script: {
-          source: "ctx._source." + field + "."+op+"(params." + field + ")",
+          source: "ctx._source." + field + "." + op + "(params." + field + ")",
           lang: "painless",
           params: {
             [field]: otherUser._source.email,
@@ -96,7 +79,7 @@ export default function Header(props) {
       authData.key,
       history,
       otherUserData._source.username,
-      otherUserData===userData?updateData:null
+      otherUserData === userData ? updateData : null
     );
   };
 
@@ -107,7 +90,16 @@ export default function Header(props) {
       id: userData._id,
       q: {
         script: {
-          source: "ctx._source." + field + "."+op+"(ctx._source."+ field + ".indexOf(params." + field + "))",
+          source:
+            "ctx._source." +
+            field +
+            "." +
+            op +
+            "(ctx._source." +
+            field +
+            ".indexOf(params." +
+            field +
+            "))",
           lang: "painless",
           params: {
             [field]: otherUser._source.email,
@@ -132,10 +124,25 @@ export default function Header(props) {
       authData.key,
       history,
       otherUserData._source.username,
-      otherUserData===userData?updateData:null
+      otherUserData === userData ? updateData : null
     );
   };
 
+  const handleFollow = () => {
+    if (!authData || !authData._source) {
+      history.push("/sign-in");
+      return;
+    }
+    updateFollow(otherUserData, authData, "followers", "add");
+    updateFollow(authData, otherUserData, "following", "add");
+  };
+
+  const handleUnfollow = () => {
+    updateUnFollow(authData, otherUserData, "following", "remove");
+    updateUnFollow(otherUserData, authData, "followers", "remove");
+  };
+
+  
   return (
     <React.Fragment>
       <Grid container spacing={2} alignItems="center">

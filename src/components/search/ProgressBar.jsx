@@ -10,7 +10,7 @@ export default function ProgresBar() {
       <LinearProgress
         style={{
           margin: "0 auto",
-          maxWidth: 800,
+          maxWidth: 775,
           width: "100%",
         }}
       />

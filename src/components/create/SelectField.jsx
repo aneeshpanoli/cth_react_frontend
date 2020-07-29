@@ -1,11 +1,11 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import { updateChallengeFormData } from '../redux/actions'
-import { useDispatch, useTrackedState } from 'reactive-react-redux';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import { updateChallengeFormData } from "../redux/actions";
+import { useDispatch, useTrackedState } from "reactive-react-redux";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -22,7 +22,7 @@ export default function SimpleSelect() {
   const dispatch = useDispatch();
   const { challengeFormData } = useTrackedState();
   const handleChange = (event) => {
-    challengeFormData.primeArea = event.target.value
+    challengeFormData.primeArea = event.target.value;
     dispatch(updateChallengeFormData(challengeFormData));
   };
 
@@ -35,11 +35,10 @@ export default function SimpleSelect() {
           id="demo-simple-select"
           defaultValue={challengeFormData.primeArea}
           onChange={handleChange}
-          
         >
-          <MenuItem value={'Web development'}>Web development</MenuItem>
-          <MenuItem value={'Art'}>Art</MenuItem>
-          <MenuItem value={'Text'}>Text</MenuItem>
+          <MenuItem value={"Web development"}>Web development</MenuItem>
+          <MenuItem value={"Art"}>Art</MenuItem>
+          <MenuItem value={"Text"}>Text</MenuItem>
         </Select>
       </FormControl>
     </div>

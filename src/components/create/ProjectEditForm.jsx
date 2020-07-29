@@ -19,11 +19,10 @@ import ImageUpload from "./ImageUpload";
 import { convertToHTML } from "draft-convert";
 import ChipInput from "material-ui-chip-input";
 import Chip from "@material-ui/core/Chip";
-import { getImgUrl } from '../js/utils'
-import { queryEsById } from '../backend/AxiosRequest'
-import { updateSelectedProject} from '../redux/actions'
-import { MATCH_ID_TITLE } from '../backend/EsQueries'
-
+import { getImgUrl } from "../js/utils";
+import { queryEsById } from "../backend/AxiosRequest";
+import { updateSelectedProject } from "../redux/actions";
+import { MATCH_ID_TITLE } from "../backend/EsQueries";
 
 const useStyles = makeStyles((theme) => ({
   chipRoot: {
@@ -148,27 +147,8 @@ export default function ProjectEditForm() {
   const classes = useStyles();
   const history = useHistory();
   const [embed, setEmbed] = React.useState(null);
-  const [defaultDesc, setDefaultDesc] = React.useState(null)
+  const [defaultDesc, setDefaultDesc] = React.useState(null);
   const { authData, selectedProject } = useTrackedState();
-  React.useEffect(() =>{
-    if((selectedProject && selectedProject._source.owners 
-      && selectedProject._source.owners === authData.user.id) ||
-      (authData&&authData.user&&authData.user.staff==='yes')
-      ){
-    setFormValues(Object.assign({}, formValues, selectedProject._source));
-    setEmbed(getImgUrl(selectedProject._source.image)) //dosent affect formvalue jus the embed
-    setDefaultDesc(getDescription());
-    }else{
-    history.push('/page-not-found');
-    }
-    
-  },[])
-  const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(false);
- 
-  const [image, setImage] = React.useState(null);
-  
-  const [newChips, setNewChips] = React.useState(null);
   const [formValues, setFormValues] = React.useState({
     builtWith: [],
     category: "",
@@ -187,7 +167,57 @@ export default function ProjectEditForm() {
     crisis: "",
     language: "",
   });
+  React.useEffect(() => {
+    if (
+      (selectedProject &&
+        selectedProject._source.owners &&
+        selectedProject._source.owners === authData.user.id) ||
+      (authData && authData.user && authData.user.staff === "yes")
+    ) {
+      setFormValues(Object.assign({}, formValues, selectedProject._source));
+      setEmbed(getImgUrl(selectedProject._source.image)); //dosent affect formvalue jus the embed
+      setDefaultDesc(getDescription());
+    } else {
+      history.push("/page-not-found");
+    }
+  }, []);
+  const dispatch = useDispatch();
+  const [open, setOpen] = React.useState(false);
 
+  const [image, setImage] = React.useState(null);
+
+  const [newChips, setNewChips] = React.useState(null);
+  
+  const getDescription = () => {
+    if (selectedProject) {
+      const contentHTML = convertFromHTML(selectedProject._source.storyText);
+      const state = ContentState.createFromBlockArray(
+        contentHTML.contentBlocks,
+        contentHTML.entityMap
+      );
+      return JSON.stringify(convertToRaw(state));
+    }
+    return null;
+  };
+
+  const makeChips = (values) => {
+    return (
+      <div className={classes.chipRoot}>
+        {values.roles.map((role, i) => {
+          return (
+            <li key={i}>
+              <Chip
+                label={role}
+                onDelete={() => handleDeleteChipRoles(role)}
+                onClick={() => handleDeleteChipRoles(role)}
+                className={classes.chip}
+              />
+            </li>
+          );
+        })}
+      </div>
+    );
+  };
   const handleDeleteChip = (chip, objProp) => {
     let newArr = [...formValues[objProp]].filter((item) => item !== chip);
     setFormValues(Object.assign({}, formValues, { [objProp]: newArr }));
@@ -230,9 +260,19 @@ export default function ProjectEditForm() {
     } catch (error) {
       formData.append("image", "");
     }
-    let query = MATCH_ID_TITLE(selectedProject._id, formValues.title.replace(/-/g, " "));
-    const updateData = () => queryEsById(query, dispatch, updateSelectedProject, history);
-    updateProject(formData, authData.key, history, formValues.title, updateData);
+    let query = MATCH_ID_TITLE(
+      selectedProject._id,
+      formValues.title.replace(/-/g, " ")
+    );
+    const updateData = () =>
+      queryEsById(query, dispatch, updateSelectedProject, history);
+    updateProject(
+      formData,
+      authData.key,
+      history,
+      formValues.title,
+      updateData
+    );
     setOpen(true);
   };
 
@@ -248,33 +288,7 @@ export default function ProjectEditForm() {
     reader.readAsDataURL(url[0].file);
   };
 
-  const getDescription=() =>{
-    if(selectedProject){
-    const contentHTML = convertFromHTML(selectedProject._source.storyText)
-  const state = ContentState.createFromBlockArray(contentHTML.contentBlocks, contentHTML.entityMap)
-  return JSON.stringify(convertToRaw(state))
-    }
-    return null
-  }
 
-  const makeChips = (values) => {
-    return (
-      <div className={classes.chipRoot}>
-        {values.roles.map((role, i) => {
-          return (
-            <li key={i}>
-              <Chip
-                label={role}
-                onDelete={() => handleDeleteChipRoles(role)}
-                onClick={() => handleDeleteChipRoles(role)}
-                className={classes.chip}
-              />
-            </li>
-          );
-        })}
-      </div>
-    );
-  };
 
   return (
     <Container component="main" maxWidth="md">
@@ -293,8 +307,7 @@ export default function ProjectEditForm() {
             noValidate
             onSubmit={(e) => {
               e.preventDefault();
-              return false
-              
+              return false;
             }}
           >
             {/* TITLE */}
@@ -331,8 +344,12 @@ export default function ProjectEditForm() {
                   <Grid item xs={12}>
                     <img
                       src={embed}
-                      alt="title-image"
-                      style={{ maxHeight: "400px", marginTop: "1rem", maxWidth:'100%' }}
+                      alt="title"
+                      style={{
+                        maxHeight: "400px",
+                        marginTop: "1rem",
+                        maxWidth: "100%",
+                      }}
                     />
                   </Grid>
                 ) : null}
@@ -391,7 +408,7 @@ export default function ProjectEditForm() {
                   style={{ borderBottom: "1px solid grey", minHeight: "4rem" }}
                 >
                   <MUIRichTextEditor
-                  defaultValue={defaultDesc}
+                    defaultValue={defaultDesc}
                     label="Description *"
                     id="storyText"
                     name="storyText"
@@ -410,26 +427,32 @@ export default function ProjectEditForm() {
                         "storyText",
                         convertToHTML({
                           styleToHTML: (style) => {
-                            if (style === 'BOLD') {
-                              return <span style={{color: 'blue'}} />;
+                            if (style === "BOLD") {
+                              return <span style={{ color: "blue" }} />;
                             }
                           },
                           blockToHTML: (block) => {
-                            if (block.type === 'code-block') {
+                            if (block.type === "code-block") {
                               return <code />;
                             }
                           },
                           entityToHTML: (entity, originalText) => {
                             try {
-                              new URL(entity.data.url)
+                              new URL(entity.data.url);
                             } catch (error) {
-                              return originalText+' ('+entity.data.url+')'
+                              return (
+                                originalText + " (" + entity.data.url + ")"
+                              );
                             }
-                            if (entity.type === 'LINK' ) {
-                              return <a href={entity.data.url} target={'_blank'}>{originalText}</a>;
+                            if (entity.type === "LINK") {
+                              return (
+                                <a href={entity.data.url} target={"_blank"}>
+                                  {originalText}
+                                </a>
+                              );
                             }
                             return originalText;
-                          }
+                          },
                         })(state.getCurrentContent())
                       )
                     }
@@ -462,9 +485,6 @@ export default function ProjectEditForm() {
                   )}
                 />
               </Grid>
-
-
-              
 
               {/* ROLES */}
               <Grid item xs={12}>
@@ -543,7 +563,6 @@ export default function ProjectEditForm() {
                 />
               </Grid>
 
-
               {/* BUITWITH */}
               <Grid item xs={12}>
                 {formErrors.builtWith ? (
@@ -564,7 +583,9 @@ export default function ProjectEditForm() {
                       [...formValues.builtWith].concat([chip])
                     );
                   }}
-                  onDelete={(chip, index) => handleDeleteChip(chip, "builtWith")}
+                  onDelete={(chip, index) =>
+                    handleDeleteChip(chip, "builtWith")
+                  }
                 />
               </Grid>
 
@@ -637,7 +658,7 @@ export default function ProjectEditForm() {
               </Grid>
             </Grid>
             <Button
-            onClick={() =>history.goBack()}
+              onClick={() => history.goBack()}
               type="submit"
               fullWidth
               variant="contained"

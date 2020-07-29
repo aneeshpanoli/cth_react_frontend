@@ -53,7 +53,7 @@ export const reducer = (state = initialState, action) => {
       return { ...state, editProject: action.editProject };
     case actionType.USER_OWN_CHALLENGE:
       return { ...state, userOwnChallenge: action.userOwnChallenge };
-      case actionType.OTHER_USER_DATA:
+    case actionType.OTHER_USER_DATA:
       return { ...state, otherUserData: action.otherUserData };
     default:
       return state;

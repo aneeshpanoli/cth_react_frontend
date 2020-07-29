@@ -4,7 +4,7 @@ import RedeemIcon from "@material-ui/icons/Redeem";
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory, useParams, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
 import { getAnotherUserInfoElastic } from "../backend/AxiosRequest";
 import { updateOtherUserData } from "../redux/actions";
@@ -50,36 +50,6 @@ export default function AvatarIcon() {
       dispatch(updateOtherUserData(null));
     }
   }, []);
-
-  const handleProfile = (event) => {
-    history.push("/" + "@" + otherUserData._source.username);
-  };
-
-  const handleClaim = () => {
-    if (authData && authData.user) {
-      history.push("/claim-project");
-    } else {
-      history.push("/sign-in");
-    }
-  };
-
-  const rejectClaim = () => {
-    claimProject('projectclaimreject',{
-      claimed: "no",
-      owners: "",
-    });
-  };
-
-  const approveClaim = () => {
-    claimProject('projectclaimapprove', {
-      claimed: "yes",
-      owners: selectedProject._source.claimed,
-      claimApprovedAt: new Date(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-  };
-
   const claimProject = (action, es_data) => {
     let data = {
       email:selectedProject._source.proof[1],
@@ -107,6 +77,36 @@ export default function AvatarIcon() {
       updateData
     );
   };
+  const handleProfile = (event) => {
+    history.push("/@" + otherUserData._source.username);
+  };
+
+  const handleClaim = () => {
+    if (authData && authData.user) {
+      history.push("/claim-project");
+    } else {
+      history.push("/sign-in");
+    }
+  };
+
+  const rejectClaim = () => {
+    claimProject('projectclaimreject',{
+      claimed: "no",
+      owners: "",
+    });
+  };
+
+  const approveClaim = () => {
+    claimProject('projectclaimapprove', {
+      claimed: "yes",
+      owners: selectedProject._source.claimed,
+      claimApprovedAt: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+  };
+
+  
 
   return (
     <Grid container alignItems="center">

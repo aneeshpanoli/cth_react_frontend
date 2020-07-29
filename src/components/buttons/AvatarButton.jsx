@@ -1,19 +1,17 @@
+import Avatar from "@material-ui/core/Avatar";
 
-import Avatar from '@material-ui/core/Avatar';
-
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import { makeStyles } from '@material-ui/core/styles';
-import { useHistory, useParams, Link} from "react-router-dom";
-import { useTrackedState, useDispatch } from 'reactive-react-redux';
-import { logout } from '../auth/auth'
-
+import React from "react";
+import Button from "@material-ui/core/Button";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
+import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
+import { useTrackedState, useDispatch } from "reactive-react-redux";
+import { logout } from "../auth/auth";
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -28,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AvatarButton() {
   const history = useHistory();
-const dispatch = useDispatch();
-const { authData } = useTrackedState();
+  const dispatch = useDispatch();
+  const { authData } = useTrackedState();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -50,17 +48,17 @@ const { authData } = useTrackedState();
       return;
     }
     setOpen(false);
-    history.push('/'+'@'+authData.user.username);
+    history.push("/@" + authData.user.username);
   };
-    const handleLogout = (event) => {
-      logout(dispatch);
-      // logout tabs
-  localStorage.setItem('CREDENTIALS_FLUSH', Date.now().toString())
-  localStorage.removeItem('CREDENTIALS_FLUSH')
+  const handleLogout = (event) => {
+    logout(dispatch);
+    // logout tabs
+    localStorage.setItem("CREDENTIALS_FLUSH", Date.now().toString());
+    localStorage.removeItem("CREDENTIALS_FLUSH");
   };
 
   function handleListKeyDown(event) {
-    if (event.key === 'Tab') {
+    if (event.key === "Tab") {
       event.preventDefault();
       setOpen(false);
     }
@@ -77,39 +75,51 @@ const { authData } = useTrackedState();
   }, [open]);
 
   return (
-  
     <React.Fragment>
-        <Button
-          ref={anchorRef}
-          aria-controls={open ? 'menu-list-grow' : undefined}
-          aria-haspopup="true"
-          onClick={handleToggle}
-        >
-         <Avatar variant="circle" 
-         color="secondary"
-         className={classes.small}
-         alt={authData&&authData.user? authData.user.first_name:null} 
-         src="/static/images/avatar/1.jpg"/>
-        </Button>
-        <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-            >
-              <Paper>
-                <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleProfile}>Profile</MenuItem>
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
-      </React.Fragment>
+      <Button
+        ref={anchorRef}
+        aria-controls={open ? "menu-list-grow" : undefined}
+        aria-haspopup="true"
+        onClick={handleToggle}
+      >
+        <Avatar
+          variant="circle"
+          color="secondary"
+          className={classes.small}
+          alt={authData && authData.user ? authData.user.first_name : null}
+          src="/static/images/avatar/1.jpg"
+        />
+      </Button>
+      <Popper
+        open={open}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        transition
+        disablePortal
+      >
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin:
+                placement === "bottom" ? "center top" : "center bottom",
+            }}
+          >
+            <Paper>
+              <ClickAwayListener onClickAway={handleClose}>
+                <MenuList
+                  autoFocusItem={open}
+                  id="menu-list-grow"
+                  onKeyDown={handleListKeyDown}
+                >
+                  <MenuItem onClick={handleProfile}>Profile</MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+    </React.Fragment>
   );
 }
-
-

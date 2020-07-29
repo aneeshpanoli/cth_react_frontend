@@ -37,7 +37,7 @@ export default function NestedList() {
   const { searchProjectList, filterProjectList } = useTrackedState();
 
   const [collapseStates, setCollapseStates] = React.useState({
-    open: true,
+    open: false,
     open1: false,
     open2: false,
   });
@@ -46,7 +46,11 @@ export default function NestedList() {
   const [selectedBuiltWith, setSelectedBuiltWith] = React.useState([]);
   const [availableCategories, setAvailableCategories] = React.useState([]);
   const [selectedCategories, setSelectedCategories] = React.useState([]);
-
+  const handleClick = (c_state) => {
+    let newDict = { ...collapseStates };
+    newDict[c_state] = !newDict[c_state];
+    setCollapseStates(newDict);
+  };
   useEffect(() => {
     const builtWith = makeCountDictArr(filterProjectList, "builtWith");
     const categories = makeCountDictStr(filterProjectList, "category");
@@ -57,10 +61,11 @@ export default function NestedList() {
     setAvailableBuiltWith(sortStringObjArr(builtWith));
     setAvailableCategories(sortStringObjArr(categories));
 
-    setTimeout(() => {  dispatch(updateProgress(false)); }, 2000);
+    setTimeout(() => {
+      dispatch(updateProgress(false));
+    }, 2000);
     // setAvailableCategories(categories.sort((a, b) => b.value - a.value));
   }, [filterProjectList]);
-  
 
   const handleDeleteSelected = (chipToDelete) => () => {
     setSelectedBuiltWith((chips) =>
@@ -111,12 +116,6 @@ export default function NestedList() {
     //   window.scrollTo(0, resultDiv.current.offsetTop);
   }, [selectedBuiltWith, selectedCategories]);
 
-  const handleClick = (c_state) => {
-    let newDict = { ...collapseStates };
-    newDict[c_state] = !newDict[c_state];
-    setCollapseStates(newDict);
-  };
-
   return (
     <List
       component="nav"
@@ -129,13 +128,12 @@ export default function NestedList() {
           <FilterListIcon />
         </ListItemIcon>
         <ListItemText primary="Filter results" />
-        
+
         {collapseStates.open ? <CancelIcon /> : <ExpandMore />}
       </ListItem>
 
       <Collapse in={collapseStates.open} timeout="auto" unmountOnExit>
-
-      <Divider variant="inset" />
+        <Divider variant="inset" />
         <ListItem button onClick={() => handleClick("open2")}>
           <ListItemText primary="Categories" />
 
@@ -176,8 +174,6 @@ export default function NestedList() {
             />
           </List>
         </Collapse>
-
-        
       </Collapse>
       <div ref={resultDiv}></div>
     </List>

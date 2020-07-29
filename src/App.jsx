@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { themeDict } from "./components/theme/Colors";
 import { createMuiTheme } from "@material-ui/core/styles";
@@ -8,7 +8,7 @@ import HomePage from "./components/pages/Home";
 import SearchProjects from "./components/pages/SearchProjects";
 import ExploreProjects from "./components/pages/ExploreProjects";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import { authCheck, quickAuthCheck } from "./components/auth/auth";
+import { authCheck } from "./components/auth/auth";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import UserProfile from "./components/pages/UserProfile";
 import TermsAndConditions from "./components/pages/TermsAndCond";

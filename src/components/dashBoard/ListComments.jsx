@@ -1,7 +1,7 @@
 import React from "react";
 import "react-quill/dist/quill.snow.css";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
-import { createDoc, simpleQueryElasticsearch } from "../backend/AxiosRequest";
+import { simpleQueryElasticsearch } from "../backend/AxiosRequest";
 import { MATCH_PROJ_ID } from "../backend/EsQueries";
 import { updateCommentsData } from "../redux/actions";
 import { Link } from "react-router-dom";
@@ -16,7 +16,7 @@ import Button from "@material-ui/core/Button";
 
 
 export default function ListComments(props) {
-  const { authData, commentsData } = useTrackedState();
+  const { commentsData } = useTrackedState();
   const dispatch = useDispatch();
   const [comments, setComments] = React.useState([]);
 

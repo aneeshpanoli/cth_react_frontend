@@ -6,7 +6,6 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
-import Paper from "@material-ui/core/Paper";
 import EmailIcon from "@material-ui/icons/Email";
 import YouTubeIcon from "@material-ui/icons/YouTube";
 import AppsIcon from "@material-ui/icons/Apps";
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 15,
   },
   icon: {
-    height: "1.3rem"
+    height: "1.3rem",
   },
   control: {
     padding: theme.spacing(2),
@@ -45,12 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FooterGrid() {
-  const [spacing, setSpacing] = React.useState(2);
   const classes = useStyles();
-
-  const handleChange = (event) => {
-    setSpacing(Number(event.target.value));
-  };
 
   return (
     <Grid container className={classes.root} spacing={1}>
@@ -118,7 +112,7 @@ export default function FooterGrid() {
       </Grid>
       <Grid item xs={6} sm={6} md={6}>
         <Button
-          startIcon={<img style={{ height: "1.3rem" }} src={CthIcon}></img>}
+          startIcon={<img alt='cthicon' style={{ height: "1.3rem" }} src={CthIcon}></img>}
           size="small"
           color="secondary"
           className={classes.button}

@@ -1,9 +1,7 @@
 import Grid from "@material-ui/core/Grid";
-import RedeemIcon from "@material-ui/icons/Redeem";
 import React from "react";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import { useHistory, useParams, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
 import { getAnotherUserInfoElastic } from "../backend/AxiosRequest";
 import { updateOtherUserData } from "../redux/actions";
@@ -11,19 +9,8 @@ import { queryEsById, updateProject } from "../backend/AxiosRequest";
 import { updateSelectedProject } from "../redux/actions";
 import { MATCH_ID_TITLE } from "../backend/EsQueries";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from '@material-ui/icons/Cancel';
+import CancelIcon from "@material-ui/icons/Cancel";
 import TextField from "@material-ui/core/TextField";
-
-const useStyles = makeStyles((theme) => ({
-  small: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    fontWeight: 700,
-  },
-  paper: {
-    marginRight: theme.spacing(3),
-  },
-}));
 
 export default function AvatarIcon() {
   const history = useHistory();
@@ -33,7 +20,6 @@ export default function AvatarIcon() {
     proof: "",
     email: "",
   });
-  const classes = useStyles();
   const [values, setValues] = React.useState({
     proof: "",
     email: "",
@@ -81,7 +67,7 @@ export default function AvatarIcon() {
       let currErrors = validate();
       if (Object.keys(currErrors).length === 0) {
         claimProject();
-        
+
         return;
       }
       console.log("errors");
@@ -100,8 +86,8 @@ export default function AvatarIcon() {
       index: selectedProject._index,
       id: selectedProject._id,
       title: selectedProject._source.title,
-      email:authData.user.email,
-      firstName:authData.user.firstName,
+      email: authData.user.email,
+      firstName: authData.user.firstName,
       q: {
         claimed: authData.user.id,
         claimedAt: new Date(),
@@ -183,7 +169,11 @@ export default function AvatarIcon() {
           size="small"
           color="default"
           variant="contained"
-          style={{ textTransform: "none", borderRadius: 25, marginLeft:'1rem' }}
+          style={{
+            textTransform: "none",
+            borderRadius: 25,
+            marginLeft: "1rem",
+          }}
           onClick={handleSubmit}
         >
           {" "}

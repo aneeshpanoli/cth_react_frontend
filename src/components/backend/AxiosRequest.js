@@ -1,17 +1,13 @@
 import axios from "axios";
-import {
-  updateUserInfo,
-  updateProgress,
-  updateFilterProject,
-} from "../redux/actions";
+import { updateProgress, updateFilterProject } from "../redux/actions";
 import { saveSessionStore, retriveSessionStore } from "../localStore/session";
 import { MATCH_USER } from "./EsQueries";
 
 // switch API url based on environment
 let development = process.env.NODE_ENV !== "production";
-// const BASE_URL = development?'http://54.193.134.135':'https://www.civictechhub.org';
+// const BASE_URL = development?'http://3.101.59.160':'https://www.civictechhub.org';
 
-const BASE_URL = "http://3.101.59.160";
+const BASE_URL = "http://13.52.80.115";
 // const BASE_URL = "https://www.civictechhub.org";
 
 // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -55,7 +51,6 @@ const postAuthAxios = (token) =>
     },
   });
 
-
 // use for POST request that require user authentication
 const postPostAuthAxios = (token) =>
   axios.create({
@@ -63,7 +58,7 @@ const postPostAuthAxios = (token) =>
     headers: {
       "X-CSRFTOKEN": document.cookie.split("=")[1],
       "X-Requested-With": "XMLHttpRequest",
-      "Content-type": 'multipart/form-data',
+      "Content-type": "multipart/form-data",
       Authorization: token,
     },
   });
@@ -103,15 +98,9 @@ export const queryElasticsearch = (
     });
 };
 
-
-export const simpleQueryElasticsearch = (
-  query,
-  dispatch,
-  actionCallback
-) => {
+export const simpleQueryElasticsearch = (query, dispatch, actionCallback) => {
   dispatch(updateProgress(true));
   // update the search project list
-
 
   esAxios
     .get(`/q/`, query)
@@ -121,7 +110,6 @@ export const simpleQueryElasticsearch = (
       // this.setState({results: response});
       // console.log(response.data.hits);
       dispatch(actionCallback(response.data.hits));
-
     })
     .catch((error) => {
       // catch errors.
@@ -129,7 +117,6 @@ export const simpleQueryElasticsearch = (
       return error;
     });
 };
-
 
 export const queryEsById = (query, dispatch, actionCallback, history) => {
   esAxios
@@ -152,22 +139,6 @@ export const queryEsById = (query, dispatch, actionCallback, history) => {
     });
 };
 
-//  export const getUserInfo = (dispatch) => {
-//    const userInfoAxios = postAuthAxios(`Token ${localStorage.getItem("token")}`);
-//    userInfoAxios
-//      .get(`/rest-auth/user/`)
-//      .then((response) => {
-
-//        saveSessionStore("userInfo", response.data);
-//        console.log(response.data);
-//        dispatch(updateUserInfo(response.data));
-//      })
-//      .catch((error) => {
-//        // catch errors.
-//        console.log(error.response.data);
-//      });
-//  };
-
 export const createDoc = (doc, token, getUpdatedData) => {
   const userInfoAxios = postAuthAxios(`Token ${token}`);
   console.log(doc);
@@ -177,9 +148,11 @@ export const createDoc = (doc, token, getUpdatedData) => {
       console.log(response.data);
       setTimeout(() => {
         // get updated data back from server after a second
-        getUpdatedData? getUpdatedData():null;
-      }, 1000)
-      
+        if(getUpdatedData){
+          getUpdatedData()
+        }
+      }, 1000);
+
       return true;
     })
     .catch((error) => {
@@ -189,7 +162,6 @@ export const createDoc = (doc, token, getUpdatedData) => {
     });
 };
 
-
 export const postProject = (formData, token, history, title) => {
   const postpostAuthAxios = postPostAuthAxios(`Token ${token}`);
   postpostAuthAxios
@@ -197,8 +169,10 @@ export const postProject = (formData, token, history, title) => {
     .then((response) => {
       console.log(response.data);
       setTimeout(() => {
-      history.push("/"+title.replace(/\s+/g, '-')+"/"+response.data._id);
-    }, 1000)
+        history.push(
+          "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
+        );
+      }, 1000);
     })
     .catch((error) => {
       // catch errors.
@@ -206,15 +180,23 @@ export const postProject = (formData, token, history, title) => {
     });
 };
 
-export const updateProject = (formData, token, history, title, getUpdatedData) => {
+export const updateProject = (
+  formData,
+  token,
+  history,
+  title,
+  getUpdatedData
+) => {
   const postpostAuthAxios = postPostAuthAxios(`Token ${token}`);
   postpostAuthAxios
     .post(`/post/`, formData)
     .then((response) => {
       setTimeout(() => {
-      getUpdatedData();
-      history.push("/"+title.replace(/\s+/g, '-')+"/"+response.data._id);
-    }, 2000)
+        getUpdatedData();
+        history.push(
+          "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
+        );
+      }, 2000);
     })
     .catch((error) => {
       // catch errors.
@@ -222,15 +204,23 @@ export const updateProject = (formData, token, history, title, getUpdatedData) =
     });
 };
 
-export const updateUser = (formData, token, history, username, getUpdatedData) => {
+export const updateUser = (
+  formData,
+  token,
+  history,
+  username,
+  getUpdatedData
+) => {
   const postpostAuthAxios = postPostAuthAxios(`Token ${token}`);
   postpostAuthAxios
     .post(`/post/`, formData)
     .then((response) => {
       setTimeout(() => {
-        getUpdatedData?getUpdatedData():null;
-      history.push("/@"+username);
-    }, 1000)
+        if(getUpdatedData){
+          getUpdatedData()
+        }
+        history.push("/@" + username);
+      }, 1000);
     })
     .catch((error) => {
       // catch errors.
@@ -269,15 +259,14 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
             },
           },
           loginData.key
-          );
-          getUserInfoElastic(loginData, dispatch, actionCallback)
-
+        );
+        getUserInfoElastic(loginData, dispatch, actionCallback);
       } else {
         // console.log(response.data.hits[0]._source);
         const authData = {
           ...loginData,
           ...response.data.hits[0],
-          isAuthenticated: true
+          isAuthenticated: true,
         };
         dispatch(actionCallback(authData));
         sessionStorage.setItem("authData", JSON.stringify(authData));
@@ -289,21 +278,23 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
     });
 };
 
-
-export const getAnotherUserInfoElastic = (loginData, field, otherUserId, dispatch, actionCallback) => {
+export const getAnotherUserInfoElastic = (
+  loginData,
+  field,
+  otherUserId,
+  dispatch,
+  actionCallback
+) => {
   const userInfoAxios = postAuthAxios(`Token ${loginData.key}`);
   let query = MATCH_USER(otherUserId, field);
   // console.log(query)
   userInfoAxios
     .get(`/q/`, query)
     .then((response) => {
-     
-        // console.log(response.data);
+      // console.log(response.data);
 
-        dispatch(actionCallback(response.data.hits[0]));
-       
-      }
-    )
+      dispatch(actionCallback(response.data.hits[0]));
+    })
     .catch((error) => {
       // catch errors.
       console.log(error.response.data);
@@ -336,7 +327,6 @@ export const authSignIn = (
       password: password,
     })
     .then((res) => {
-      const token = res.data.key;
       // console.log(res.data);
       getUserInfoElastic(res.data, dispatch, actionCallback);
     })

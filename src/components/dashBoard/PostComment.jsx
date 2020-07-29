@@ -1,16 +1,14 @@
 import React from "react";
-import ReactQuill, {Quill} from "react-quill";
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Button from "@material-ui/core/Button";
-import { useTrackedState, useDispatch } from 'reactive-react-redux'
-import { createDoc, simpleQueryElasticsearch } from '../backend/AxiosRequest'
-import { MATCH_PROJ_ID } from '../backend/EsQueries'
-import { updateCommentsData} from '../redux/actions'
-import ProgressBar from "../search/ProgressBar";
-
+import { useTrackedState, useDispatch } from "reactive-react-redux";
+import { createDoc, simpleQueryElasticsearch } from "../backend/AxiosRequest";
+import { MATCH_PROJ_ID } from "../backend/EsQueries";
+import { updateCommentsData } from "../redux/actions";
 
 export default function PostComment(props) {
-  const {authData, commentsData} = useTrackedState();
+  const { authData } = useTrackedState();
   const dispatch = useDispatch();
   const [text, setText] = React.useState("");
   const handleChange = (value) => {
@@ -23,8 +21,8 @@ export default function PostComment(props) {
   };
 
   const handlePost = () => {
-    if(!text || text.length < 25){
-      return
+    if (!text || text.length < 25) {
+      return;
     }
     // console.log(props.projectId);
     let data = {
@@ -35,19 +33,17 @@ export default function PostComment(props) {
           userId: authData.user.id,
           username: authData.user.username,
           comments: text,
-          createdAt: new Date()
-          
+          createdAt: new Date(),
         },
       },
     };
-    const query = MATCH_PROJ_ID(props.projectId, 'comments');
-    const updateComments = () => simpleQueryElasticsearch( query, dispatch, updateCommentsData)
-    createDoc(data, authData.key, updateComments)
-   
+    const query = MATCH_PROJ_ID(props.projectId, "comments");
+    const updateComments = () =>
+      simpleQueryElasticsearch(query, dispatch, updateCommentsData);
+    createDoc(data, authData.key, updateComments);
 
     setText("");
   };
-
 
   return (
     <React.Fragment>

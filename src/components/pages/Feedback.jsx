@@ -1,18 +1,18 @@
-import React from 'react';
-import Footer from '../footer/Footer'
-import TopNav from '../navigation/TopNav'
-import Container from '@material-ui/core/Container';
-import FeedbackForm from '../footer/FeedbackForm'
+import React from "react";
+import Footer from "../footer/Footer";
+import TopNav from "../navigation/TopNav";
+import Container from "@material-ui/core/Container";
+import FeedbackForm from "../footer/FeedbackForm";
+import Box from "@material-ui/core/Box";
 
-
-export default function AboutUs (){
-
-    return (
-        <Container style={{minHeight: '100vh'}}>
-        <TopNav />
+export default function Feedback() {
+  return (
+    <Box>
+      <TopNav />
+      <Container>
         <FeedbackForm />
-        <Footer />
-
-        </Container>
-    );
+      </Container>
+      <Footer />
+    </Box>
+  );
 }

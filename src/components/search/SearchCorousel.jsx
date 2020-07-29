@@ -1,14 +1,14 @@
-import Container from '@material-ui/core/Container';
+import React from "react";
 import "@brainhubeu/react-carousel/lib/style.css";
 import ProjectCard from "./ProjectCard";
 import Box from "@material-ui/core/Box";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import React, { Component } from "react";
+
 import Slider from "react-slick";
+import Grid from "@material-ui/core/Grid";
+
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -42,10 +42,10 @@ export default function SwipeToSlide({categoryList}) {
     const settings = {
       className: "center",
       infinite: true,
-      centerPadding: "60px",
       slidesToShow: 3,
       swipeToSlide: true,
       lazyLoad: true,
+      margin: '1rem',
 
       autoplay: true,
       autoplaySpeed: getRandomInt(2800, 3000),
@@ -82,6 +82,7 @@ export default function SwipeToSlide({categoryList}) {
             slidesToShow: 1,
             slidesToScroll: 1,
             infinite: true,
+            arrows: false,
           },
         },
       ],
@@ -90,13 +91,15 @@ export default function SwipeToSlide({categoryList}) {
       
       <Box style={{marginBottom:'2rem'}}>
         {categoryList&&categoryList[0]?
-      <Container maxwidth="lg">  
         <Slider {...settings}>
+          
           {categoryList.map((r, i) => (
-            <ProjectCard key={i} r={r} />
+            <Grid item key={i} container spacing={1}>
+            <ProjectCard  r={r} />
+            </Grid>
           ))}
+          
         </Slider>
-        </Container>
          :
          null}
         </Box>

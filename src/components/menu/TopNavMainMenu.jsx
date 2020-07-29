@@ -5,9 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import MenuOpenIcon from "@material-ui/icons/MenuOpen";
-import { useHistory, useParams, Link } from "react-router-dom";
-
-import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import MenuButton from "../buttons/TopNavMenuBttn";
 import AddIcon from "@material-ui/icons/Add";
 import SearchIcon from "@material-ui/icons/Search";
@@ -19,16 +17,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    height: "3rem",
-    width: "15rem",
-  },
-}));
-
 export default function AlertDialogSlide() {
   const [open, setOpen] = React.useState(false);
-  const classes = useStyles();
   const history = useHistory();
 
   const { authData } = useTrackedState();
