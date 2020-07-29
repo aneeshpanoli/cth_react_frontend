@@ -54,7 +54,8 @@ export default function CarouselHolder() {
             <Box key={i}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                <Divider />
+                <Divider style={{height:'3px'}}/>
+                <Container>
                 <sup>Category</sup>
                 <h4>
                   {r[0]
@@ -62,7 +63,9 @@ export default function CarouselHolder() {
                       r[0]._source.category.slice(1)
                     : null}
                 </h4>
-                {/* <Divider light /> */}
+                
+                </Container>
+                <Divider light />
                 </Grid>
                 <Grid item xs={12}>
                 <SearchCorousel categoryList={r} />

@@ -60,4 +60,24 @@ html {
     list-style: none;
     text-align: center;
     }
-  
+    .slick-prev {
+      left: -18px;
+    }
+    .slick-next {
+      right: -18px;
+    }
+    .slick-prev:before {
+      content: '<';
+      margin-top: 1rem;
+      font-size: 25px;
+      font-weight: 700;
+      color: #061F71;
+  }
+
+  .slick-next::before {
+    content: '>';
+    margin-top: 1rem;
+    font-size: 25px;
+    font-weight: 700;
+    color: #061F71;
+}

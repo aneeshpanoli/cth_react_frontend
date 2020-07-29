@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     minHeight: "28rem",
-    border: "1px solid #061F71",
+    border: "1px solid #E8E8E8",
     borderRadius: 15,
   },
   media: {
