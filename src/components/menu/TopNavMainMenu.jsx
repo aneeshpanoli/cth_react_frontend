@@ -4,7 +4,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-import MenuOpenIcon from "@material-ui/icons/MenuOpen";
+import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from "react-router-dom";
 import MenuButton from "../buttons/TopNavMenuBttn";
 import AddIcon from "@material-ui/icons/Add";
@@ -48,7 +48,7 @@ export default function AlertDialogSlide() {
   return (
     <div>
       <Button color="secondary" onClick={handleClickOpen}>
-        <MenuOpenIcon />
+        <MenuIcon />
       </Button>
 
       <Dialog
@@ -62,7 +62,7 @@ export default function AlertDialogSlide() {
         <DialogTitle id="alert-dialog-slide-title">
           <Button
             disabled
-            startIcon={<MenuOpenIcon />}
+            startIcon={<MenuIcon />}
             style={{ color: "black" }}
           >
             Menu
