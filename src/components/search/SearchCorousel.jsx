@@ -1,7 +1,6 @@
 import React from "react";
-import "@brainhubeu/react-carousel/lib/style.css";
 import ProjectCard from "./ProjectCard";
-import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -41,18 +40,20 @@ function getRandomInt(min, max) {
 export default function SwipeToSlide({categoryList}) {
     const settings = {
       className: "center",
+
       infinite: true,
+      cssEase: 'linear',
       slidesToShow: 3,
+      dots:true,
       swipeToSlide: true,
       lazyLoad: true,
-      margin: '1rem',
-
       autoplay: true,
       autoplaySpeed: getRandomInt(2800, 3000),
-      cssEase: "linear",
       pauseOnHover: true,
-      nextArrow: <SampleNextArrow />,
-      prevArrow: <SamplePrevArrow />,
+      arrows:false,
+      // nextArrow: <SampleNextArrow />,
+      // prevArrow: <SamplePrevArrow />,
+
       afterChange: function (index) {
         // console.log(
         //   `Slider Changed to: ${index + 1}, background: #222; color: #bada55`
@@ -65,6 +66,8 @@ export default function SwipeToSlide({categoryList}) {
             slidesToShow: 3,
             slidesToScroll: 1,
             infinite: true,
+            dots:true,
+            centerMode: false,
           },
         },
         {
@@ -74,6 +77,8 @@ export default function SwipeToSlide({categoryList}) {
             slidesToScroll: 1,
             initialSlide: 2,
             infinite: true,
+            centerPadding: "1.2rem",
+            centerMode: true,
           },
         },
         {
@@ -82,27 +87,26 @@ export default function SwipeToSlide({categoryList}) {
             slidesToShow: 1,
             slidesToScroll: 1,
             infinite: true,
-            arrows: false,
+            centerPadding: "1.2rem",
+            centerMode: true,
           },
         },
       ],
     };
     return (
       
-      <Box style={{marginBottom:'2rem'}}>
+      <Container>
         {categoryList&&categoryList[0]?
         <Slider {...settings}>
           
           {categoryList.map((r, i) => (
-            <Grid item key={i} container spacing={1}>
-            <ProjectCard  r={r} />
-            </Grid>
+            <ProjectCard key={i}  r={r} />
           ))}
           
         </Slider>
          :
          null}
-        </Box>
+        </Container>
        
     );
   }

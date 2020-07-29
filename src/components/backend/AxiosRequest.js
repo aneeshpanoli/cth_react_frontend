@@ -67,7 +67,8 @@ export const queryElasticsearch = (
   userInput,
   query,
   dispatch,
-  actionCallback
+  actionCallback,
+history
 ) => {
   dispatch(updateProgress(true));
   // update the search project list
@@ -77,6 +78,9 @@ export const queryElasticsearch = (
   if (proceed) {
     // update filter project list
     retriveSessionStore(userInput + "query", dispatch, updateFilterProject);
+    if(history){
+      history()
+    }
     return;
   }
 
@@ -90,6 +94,9 @@ export const queryElasticsearch = (
       dispatch(actionCallback(response.data.hits));
       dispatch(updateFilterProject(response.data.hits));
       proceed && saveSessionStore(userInput + "query", response.data.hits);
+      if(history){
+        history()
+      }
     })
     .catch((error) => {
       // catch errors.

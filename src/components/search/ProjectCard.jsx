@@ -14,6 +14,7 @@ import { updateSelectedProject } from "../redux/actions";
 import { useHistory } from "react-router-dom";
 import Flag from "react-world-flags";
 import { getImgUrl } from "../js/utils";
+import CardActions from "@material-ui/core/CardActions";
 
 import { countries } from "./utils";
 
@@ -25,7 +26,9 @@ function countryToIso(country) {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    height: "100%",
+    minHeight: "28rem",
+    border: "1px solid #061F71",
+    borderRadius: 15,
   },
   media: {
     height: 0,
@@ -77,18 +80,12 @@ export default function ProjectCard({ r }) {
     >
       <Card className={classes.root}>
         <CardHeader
-          title={r._source.title}
-          subheader={r._source.hackathons[0] ? r._source.hackathons[0] : null}
-          avatar={
-            <Avatar
-              title={r._source.country}
-              aria-label="project"
-              className={classes.avatar}
-            >
-              <Flag code={countryToIso(r._source.country)} height="35" />
-            </Avatar>
-          }
           action={<LongMenu r={r} />}
+          style={{
+            backgroundColor: "#3D3B63",
+            color: "white",
+            height: "0.2rem",
+          }}
         />
 
         <CardMedia
@@ -99,26 +96,43 @@ export default function ProjectCard({ r }) {
           {" "}
         </CardMedia>
         <div className={classes.overlay}></div>
+        <CardHeader
+          title={<span style={{fontWeight:700, fontSize:14}}>{r._source.title}</span>}
+          subheader={r._source.hackathons[0] ? r._source.hackathons[0] : null}
+          avatar={
+            <Avatar
+              title={r._source.country}
+              aria-label="project"
+              className={classes.avatar}
+            >
+              <Flag code={countryToIso(r._source.country)} height="35" />
+            </Avatar>
+          }
+        />
 
         <CardContent title="Short description">
           <Typography
             variant="body2"
-            color="textSecondary"
+            color="primary"
             component="div"
             style={{ overflow: "hidden" }}
           >
             {r._source.subtitle.substring(0, 125) + "..."}
             <br></br>
-            <Button size="small" onClick={() => handleExpandClick(r)}>
-              Learn More
-            </Button>
           </Typography>
         </CardContent>
-        {/* <CardActionArea onClick={() => handleExpandClick(r)}>
-      </CardActionArea>
-      <CardActions>
-      <Button size="small" onClick={() => handleExpandClick(r)}>Learn More</Button>
-        <IconButton>
+
+        <CardActions>
+          <Button
+            size='small'
+            variant="contained"
+            onClick={() => handleExpandClick(r)}
+            style={{ borderRadius: 20, backgroundColor:'#A8D9DC', textTransform:'none', left:'60%'}}
+            disableElevation
+          >
+            Learn more
+          </Button>
+          {/* <IconButton>
          <a href={r._source.url}><OpenInNewIcon aria-label="open new" title="Open Link"/></a> 
         </IconButton>
         <IconButton
@@ -127,8 +141,8 @@ export default function ProjectCard({ r }) {
         >
           <DashboardIcon />
         </IconButton>
-        
-      </CardActions> */}
+         */}
+        </CardActions>
       </Card>
     </Fade>
   );

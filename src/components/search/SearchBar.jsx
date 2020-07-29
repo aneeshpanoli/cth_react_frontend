@@ -19,7 +19,7 @@ export default function searchBar(props) {
       dispatch(updateProgress(true));
       // send to axios
       let query = MATCH(searchValue, "storyText");
-      queryElasticsearch(searchValue, query, dispatch, updateProjectList);
+      queryElasticsearch(searchValue, query, dispatch, updateProjectList, null);
       setSearchValue("");
     }
   };

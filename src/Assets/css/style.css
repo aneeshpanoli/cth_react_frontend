@@ -42,3 +42,22 @@ html {
     -o-background-size: cover;
     background-size: cover;
   }
+
+  .slick-slide {
+    padding: 1rem 1rem;
+  }
+  
+  .slick-list {
+    margin: 0 1rem;
+  }
+  .slick-dots{
+    position: absolute;
+    bottom: -8px;
+    display: block;
+    width: 100%;
+    padding: 10;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+    }
+  

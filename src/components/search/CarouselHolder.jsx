@@ -6,7 +6,9 @@ import Divider from "@material-ui/core/Divider";
 import { useHistory } from "react-router";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import Grid from "@material-ui/core/Grid";
+
 
 function filterProjectList(projList) {
   let categs = [];
@@ -41,7 +43,6 @@ export default function CarouselHolder() {
     }
   }, [searchProjectList]);
 
-
   return (
     <React.Fragment>
       {filteredProjList && filteredProjList[0] ? (
@@ -50,23 +51,27 @@ export default function CarouselHolder() {
             <h3 style={{ fontWeight: 700 }}>FEATURED PROJECTS</h3>
           </Container>
           {filteredProjList.map((r, i) => (
-              <Box key={i}> 
-                <Container maxwidth="lg">
-                  <Divider />
-                  <sup>Category</sup>
-                  <h4>
-                    {r[0]
-                      ? r[0]._source.category.charAt(0).toUpperCase() +
-                        r[0]._source.category.slice(1)
-                      : null}
-                  </h4>
-                  <Divider light />
-                  <SearchCorousel categoryList={r} />
-                </Container>
-              </Box>
+            <Box key={i}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                <Divider />
+                <sup>Category</sup>
+                <h4>
+                  {r[0]
+                    ? r[0]._source.category.charAt(0).toUpperCase() +
+                      r[0]._source.category.slice(1)
+                    : null}
+                </h4>
+                {/* <Divider light /> */}
+                </Grid>
+                <Grid item xs={12}>
+                <SearchCorousel categoryList={r} />
+                </Grid>
+              </Grid>
+            </Box>
           ))}
           <Button
-          endIcon={<ArrowDownwardIcon />}
+            endIcon={<ArrowForwardIcon />}
             size="small"
             variant="contained"
             color="secondary"
@@ -78,12 +83,10 @@ export default function CarouselHolder() {
             }}
             onClick={handleMore}
           >
-            Load more
+            View all
           </Button>
         </Box>
-      ) : (null
-      )}
+      ) : null}
     </React.Fragment>
   );
 }
-

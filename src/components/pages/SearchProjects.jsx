@@ -17,7 +17,7 @@ export default function SearchProjects() {
   React.useEffect(() => {
     if (!searchProjectList) {
       let query = FETCH_RANDOM_ON_SESSION("1477072619038");
-      queryElasticsearch("1477072619038", query, dispatch, updateProjectList);
+      queryElasticsearch("1477072619038", query, dispatch, updateProjectList, null);
     }
     window.scrollTo(0, resultDiv.current.offsetTop);
   }, []);

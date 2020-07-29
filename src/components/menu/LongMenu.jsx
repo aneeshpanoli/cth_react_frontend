@@ -8,6 +8,7 @@ import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import { updateProjectList } from '../redux/actions'
 import PagesIcon from '@material-ui/icons/Pages';
 import { CircularProgress } from '@material-ui/core';
+import { useHistory} from 'react-router-dom'
 
 
 
@@ -20,7 +21,7 @@ export default function LongMenu(props) {
   const dispatch = useDispatch()
   const { filterProjectList } = useTrackedState()
   const [progress, setProgress] = React.useState(false);
-
+  const history = useHistory()
   React.useEffect(() => {
     setTimeout(() => {  setProgress(false); }, 2000);
     
@@ -37,10 +38,13 @@ export default function LongMenu(props) {
   const handleSimilarity = (column) => {
     setAnchorEl(null);
     setProgress(true);
+    const goTo = () =>{
+      history.push('/search')
+    }
     let query = MORE_LIKE_THIS(
         props.r._id, [column]
         );
-    queryElasticsearch("", query, dispatch, updateProjectList);
+    queryElasticsearch("", query, dispatch, updateProjectList, goTo);
   };
 
 
@@ -48,11 +52,14 @@ export default function LongMenu(props) {
     <div>
       <IconButton
         aria-label="more"
+        size='small'
+        color="secondary"
         aria-controls="long-menu"
         aria-haspopup="true"
+        style={{backgroundColor:'#3D3B63'}}
         onClick={handleClick}
       >
-       {progress?  <CircularProgress size={30} color='primary'/> : <PagesIcon /> } 
+       {progress?  <CircularProgress size={30} color='secondary'/> : <PagesIcon /> } 
       </IconButton>
       <Menu
         id="long-menu"
