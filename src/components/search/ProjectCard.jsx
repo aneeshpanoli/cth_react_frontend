@@ -26,7 +26,6 @@ function countryToIso(country) {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    minHeight: "28rem",
     border: "1px solid #E8E8E8",
     borderRadius: 15,
   },
@@ -36,6 +35,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: "transparent",
+    width:'2rem',
+    height:'2rem'
   },
   overlay: {
     position: "absolute",
@@ -53,7 +54,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
     backgroundColor: theme.palette.secondary.main,
     textTransform: "none",
-    left: "60%",
+    left: "55%",
+    transform: `translateX(-5%)`,
+    bottom:'0'
   },
 }));
 
@@ -105,10 +108,10 @@ export default function ProjectCard({ r }) {
             >
               <Flag code={countryToIso(r._source.country)} height="35" />
             </Avatar>
-          }
+          }style={{height:'5rem'}}
         />
 
-        <CardContent title="Short description">
+        <CardContent title="Short description" style={{height:'7rem'}}>
           <Typography
             variant="body2"
             color="primary"
@@ -122,7 +125,6 @@ export default function ProjectCard({ r }) {
 
         <CardActions>
           <Button
-            size="small"
             variant="contained"
             onClick={() => handleExpandClick(r)}
             className={classes.button}
