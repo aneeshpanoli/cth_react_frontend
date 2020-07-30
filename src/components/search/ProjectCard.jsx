@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 import Flag from "react-world-flags";
 import { getImgUrl } from "../js/utils";
 import CardActions from "@material-ui/core/CardActions";
+import Link from "@material-ui/core/Link";
 
 import { countries } from "./utils";
 
@@ -35,8 +36,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: "transparent",
-    width:'2rem',
-    height:'2rem'
+    width: "2rem",
+    height: "2rem",
   },
   overlay: {
     position: "absolute",
@@ -56,8 +57,8 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "none",
     left: "55%",
     transform: `translateX(-5%)`,
-    bottom:'0.8rem',
-    width:'9rem',
+    bottom: "0.8rem",
+    width: "9rem",
   },
 }));
 
@@ -66,16 +67,23 @@ export default function ProjectCard({ r }) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [checked] = useState(true);
+  const [mouseMoved, setMouseMoved] = useState(false);
   // console.log(r)
-  const handleExpandClick = (selectedProject) => {
-    dispatch(updateSelectedProject(selectedProject));
-    history.push(
-      "/" +
-        selectedProject._source.title.replace(/\s+/g, "-") +
+  const handleLearnmore = (selectedProject) => {
+    if (selectedProject && !mouseMoved) {
+      dispatch(updateSelectedProject(selectedProject));
+
+      history.push(
         "/" +
-        selectedProject._id
-    );
+          selectedProject._source.title.replace(/\s+/g, "-") +
+          "/" +
+          selectedProject._id
+      );
+    }
   };
+
+
+
 
   return (
     <Fade
@@ -85,55 +93,61 @@ export default function ProjectCard({ r }) {
     >
       <Card className={classes.root}>
         <CardHeader action={<LongMenu r={r} />} className={classes.header} />
-
-        <CardMedia
-          className={classes.media}
-          image={getImgUrl(r._source.image)}
-          title=""
+        <Link
+          onMouseMove={() => setMouseMoved(true)}
+          onMouseDown={() => setMouseMoved(false)}
+          onMouseUp={() => handleLearnmore(r)}
+          style={{ textDecoration: "none", cursor: "pointer" }}
         >
-          {" "}
-        </CardMedia>
-        <div className={classes.overlay}></div>
-        <CardHeader
-          title={
-            <span style={{ fontWeight: 700, fontSize: 14 }}>
-              {r._source.title}
-            </span>
-          }
-          subheader={r._source.hackathons[0] ? r._source.hackathons[0] : null}
-          avatar={
-            <Avatar
-              title={r._source.country}
-              aria-label="project"
-              className={classes.avatar}
+          <CardMedia
+            className={classes.media}
+            image={getImgUrl(r._source.image)}
+            title=""
+          >
+            {" "}
+          </CardMedia>
+          <div className={classes.overlay}></div>
+          <CardHeader
+            title={
+              <span style={{ fontWeight: 700, fontSize: 14 }}>
+                {r._source.title}
+              </span>
+            }
+            subheader={r._source.hackathons[0] ? r._source.hackathons[0] : null}
+            avatar={
+              <Avatar
+                title={r._source.country}
+                aria-label="project"
+                className={classes.avatar}
+              >
+                <Flag code={countryToIso(r._source.country)} height="35" />
+              </Avatar>
+            }
+            style={{ height: "5rem" }}
+          />
+
+          <CardContent title="Short description" style={{ height: "7rem" }}>
+            <Typography
+              variant="body2"
+              color="primary"
+              component="div"
+              style={{ overflow: "hidden" }}
             >
-              <Flag code={countryToIso(r._source.country)} height="35" />
-            </Avatar>
-          }style={{height:'5rem'}}
-        />
+              {r._source.subtitle.substring(0, 125) + "..."}
+              <br></br>
+            </Typography>
+          </CardContent>
 
-        <CardContent title="Short description" style={{height:'7rem'}}>
-          <Typography
-            variant="body2"
-            color="primary"
-            component="div"
-            style={{ overflow: "hidden" }}
-          >
-            {r._source.subtitle.substring(0, 125) + "..."}
-            <br></br>
-          </Typography>
-        </CardContent>
-
-        <CardActions>
-          <Button
-            variant="contained"
-            onClick={() => handleExpandClick(r)}
-            className={classes.button}
-            disableElevation
-          >
-            Learn more
-          </Button>
-          {/* <IconButton>
+          <CardActions>
+            <Button
+              variant="contained"
+              onClick={() => handleLearnmore(r)}
+              className={classes.button}
+              disableElevation
+            >
+              Learn more
+            </Button>
+            {/* <IconButton>
          <a href={r._source.url}><OpenInNewIcon aria-label="open new" title="Open Link"/></a> 
         </IconButton>
         <IconButton
@@ -143,7 +157,8 @@ export default function ProjectCard({ r }) {
           <DashboardIcon />
         </IconButton>
          */}
-        </CardActions>
+          </CardActions>
+        </Link>
       </Card>
     </Fade>
   );
