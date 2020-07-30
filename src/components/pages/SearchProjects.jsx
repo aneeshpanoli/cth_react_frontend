@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import Footer from "../footer/Footer";
-import SearchPageResults from "../search/SearchPageResults";
+import SearchPageResults from "../search/SearchResults";
 import TopNav from "../navigation/TopNav";
 import { queryElasticsearch } from "../backend/AxiosRequest";
 import { FETCH_RANDOM_ON_SESSION } from "../backend/EsQueries";

@@ -6,7 +6,7 @@ import { queryElasticsearch } from "../backend/AxiosRequest";
 import { FETCH_RANDOM_ON_SESSION } from "../backend/EsQueries";
 import { updateProjectList } from "../redux/actions";
 import { useDispatch } from "reactive-react-redux";
-import CarouselHolder from "../search/CarouselHolder";
+import CarouselHolder from "../home/FeaturedProjects";
 import { useTrackedState } from "reactive-react-redux";
 
 export default function homePage() {

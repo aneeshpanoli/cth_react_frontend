@@ -51,7 +51,7 @@ export default function Hero() {
             </Grid>
             <Grid item xs={12}>
               <Button
-                color="primary"
+                color="secondary"
                 variant="contained"
                 disableElevation
                 style={{

@@ -7,6 +7,7 @@ import footerLogo from "../../Assets/img/cth_footer.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TopContent from "./TopContent";
+import FooterGrid from './FooterGrid'
 
 function Copyright(props) {
   return (
@@ -21,7 +22,7 @@ function Copyright(props) {
 const useStyles = makeStyles((theme) => ({
   logobox: {
     backgroundColor: theme.palette.primary.main,
-    height: "6rem",
+    minHeight: "6rem",
   },
   mainbox: {
     backgroundColor: theme.palette.secondary.dark,
@@ -53,7 +54,7 @@ export default function Footer() {
       </Box>
       <Box className={classes.logobox}>
         <Container>
-          <Grid container>
+          <Grid container justify='space-between'>
             <Grid item md={4} sm={12} xs={12}>
               <img
                 alt="footer-logo"
@@ -61,6 +62,9 @@ export default function Footer() {
                 className={classes.footerlogo}
               />
             </Grid>
+            <Grid item md={8} sm={12} xs={12} align='right' style={{marginTop:'1rem'}}>
+             <FooterGrid />
+             </Grid>
           </Grid>
         </Container>
       </Box>
