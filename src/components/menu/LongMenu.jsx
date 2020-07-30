@@ -56,7 +56,7 @@ export default function LongMenu(props) {
         color="secondary"
         aria-controls="long-menu"
         aria-haspopup="true"
-        style={{backgroundColor:'#3D3B63'}}
+        style={{backgroundColor:'#1C3557'}}
         onClick={handleClick}
       >
        {progress?  <CircularProgress size={30} color='secondary'/> : <PagesIcon /> } 

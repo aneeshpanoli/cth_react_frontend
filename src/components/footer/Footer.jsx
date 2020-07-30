@@ -1,12 +1,13 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import FooterGrid from "./FooterGrid";
 import Box from "@material-ui/core/Box";
-import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import footerLogo from "../../Assets/img/cth_footer.svg";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import TopContent from './TopContent'
 
 function Copyright(props) {
   return (
@@ -17,28 +18,47 @@ function Copyright(props) {
     </Typography>
   );
 }
-
+const useStyles = makeStyles((theme) => ({
+  logobox: {
+    backgroundColor: theme.palette.primary.main,
+    height: '6rem',
+    
+  },
+  mainbox: {
+    backgroundColor: theme.palette.secondary.dark,
+  },
+  footerlogo: { 
+   width:'100%',
+   marginTop: '1rem'
+  },
+}));
 export default function Footer() {
   const history = useHistory();
-
+  const classes = useStyles();
   const handleClick = (page) => {
     history.push(page);
   };
 
   return (
-    <Box style={{ backgroundColor: "silver", borderTop: "5px solid #061F71" }}>
-      <Container>
-        {/* 
-          <h1 style={{color:'black', fontWeight:700}}>Civic Tech Hub</h1>
-          <h6 style={{color:'grey', fontWeight:700}}>Together we can survive this crisis</h6> */}
-        <img
-          alt="footer-logo"
-          src={footerLogo}
-          style={{ height: "3rem", marginTop: "1rem", color: "red" }}
-        />
-        <Divider light />
-        <FooterGrid />
-        <Divider variant="middle" />
+    <Box className={classes.mainbox}>
+      <Box>
+        <TopContent/>
+      </Box>
+      <Box className={classes.logobox}>
+        <Container>
+          <Grid container >
+            <Grid item md={4} sm={12} xs={12}>
+          <img
+            alt="footer-logo"
+            src={footerLogo}
+            className={classes.footerlogo}
+          />
+          </Grid>
+          </Grid>
+        </Container>
+      </Box>
+      <Container style={{height:'3rem', verticalAlign:'center'}}>
+
         <Copyright>
           |{" "}
           <Button

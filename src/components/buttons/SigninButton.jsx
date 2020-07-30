@@ -18,10 +18,9 @@ export default function AlertDialogSlide() {
         variant="outlined"
         style={{
           borderRadius: 10,
-          fontWeight: 700,
-          fontSize: "0.9rem",
+          fontSize: "1rem",
           verticalAlign: "center",
-          height: "2rem",
+          height: "1.9rem",
           width:'6.5rem'
         }}
       >

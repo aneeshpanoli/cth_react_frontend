@@ -82,9 +82,9 @@ export default function BackToTop(props) {
                     allowTaint: true
                 }}
                 > */}
-          <Toolbar variant="dense">
+          <Toolbar>
             <Link to={(location) => ({ ...location, pathname: "/" })}>
-              <img alt='logo' src={Logo} style={{ height: "2rem", marginRight: "1rem" }} />
+              <img alt='logo' src={Logo} style={{ height: "3rem", marginRight: "1rem" }} />
             </Link>
             <AvatarMenu />
             <TopNavMenu />

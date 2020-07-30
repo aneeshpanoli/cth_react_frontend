@@ -34,16 +34,6 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: "50%", // 16:9
   },
-  expand: {
-    transform: "rotate(-90deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.short,
-    }),
-  },
-  expandOpen: {
-    transform: "rotate(-90deg)",
-  },
   avatar: {
     backgroundColor: "transparent",
   },
@@ -53,6 +43,17 @@ const useStyles = makeStyles((theme) => ({
     left: "1.2rem",
     color: "black",
     backgroundColor: "transparent",
+  },
+  header: {
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
+    height: "0.2rem",
+  },
+  button: {
+    borderRadius: 20,
+    backgroundColor: theme.palette.secondary.main,
+    textTransform: "none",
+    left: "60%",
   },
 }));
 
@@ -79,14 +80,7 @@ export default function ProjectCard({ r }) {
       style={{ transitionDelay: checked ? "300ms" : "0ms" }}
     >
       <Card className={classes.root}>
-        <CardHeader
-          action={<LongMenu r={r} />}
-          style={{
-            backgroundColor: "#3D3B63",
-            color: "white",
-            height: "0.2rem",
-          }}
-        />
+        <CardHeader action={<LongMenu r={r} />} className={classes.header} />
 
         <CardMedia
           className={classes.media}
@@ -97,7 +91,11 @@ export default function ProjectCard({ r }) {
         </CardMedia>
         <div className={classes.overlay}></div>
         <CardHeader
-          title={<span style={{fontWeight:700, fontSize:14}}>{r._source.title}</span>}
+          title={
+            <span style={{ fontWeight: 700, fontSize: 14 }}>
+              {r._source.title}
+            </span>
+          }
           subheader={r._source.hackathons[0] ? r._source.hackathons[0] : null}
           avatar={
             <Avatar
@@ -124,10 +122,10 @@ export default function ProjectCard({ r }) {
 
         <CardActions>
           <Button
-            size='small'
+            size="small"
             variant="contained"
             onClick={() => handleExpandClick(r)}
-            style={{ borderRadius: 20, backgroundColor:'#A8D9DC', textTransform:'none', left:'60%'}}
+            className={classes.button}
             disableElevation
           >
             Learn more

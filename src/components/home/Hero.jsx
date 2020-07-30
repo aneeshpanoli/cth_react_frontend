@@ -3,7 +3,7 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
-import heroimg from "../../Assets/img/hero.svg";
+import heroimg from "../../Assets/img/cth_hero_k.svg";
 import Grid from "@material-ui/core/Grid";
 import SearchIcon from "@material-ui/icons/Search";
 
@@ -19,7 +19,7 @@ export default function Hero() {
 
   return (
     <Box>
-      <Grid container spacing={2}>
+      <Grid container spacing={0}>
         <Grid item xs={12} sm={6} md={6}>
           <Container style={{ paddingLeft: "12%", paddingTop: "5%" }}>
             <Grid item xs={12}>
@@ -92,8 +92,8 @@ export default function Hero() {
             minHeight: "30rem",
           }}
         > */}
-        <Grid item xs={12} sm={6} md={6} container justify="center">
-          <img alt="hero-img" src={heroimg} style={{ width: "90%" }}></img>
+        <Grid item xs={12} sm={6} md={6} container justify="flex-end">
+          <img alt="hero-img" src={heroimg} style={{ width: "95%" }}></img>
         </Grid>
       </Grid>
     </Box>
