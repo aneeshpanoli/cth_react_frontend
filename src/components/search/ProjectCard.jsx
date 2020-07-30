@@ -56,7 +56,8 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "none",
     left: "55%",
     transform: `translateX(-5%)`,
-    bottom:'0'
+    bottom:'0.8rem',
+    width:'9rem',
   },
 }));
 

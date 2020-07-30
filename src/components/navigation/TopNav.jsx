@@ -10,8 +10,11 @@ import Zoom from "@material-ui/core/Zoom";
 import AvatarMenu from "../menu/TopNavAvatarLogin";
 import { Link } from "react-router-dom";
 import TopNavMenu from "../menu/TopNavMainMenu";
-import BackdropFilter from "react-backdrop-filter";
-import Logo from "../../Assets/img/cth.svg";
+import Grid from "@material-ui/core/Grid";
+import Hidden from '@material-ui/core/Hidden';
+
+import Logo from "../../Assets/img/cth_logo.svg";
+import TextLogo from "../../Assets/img/cth_text.svg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,22 +77,27 @@ export default function BackToTop(props) {
     <React.Fragment>
       <HideOnScroll {...props}>
         <AppBar color="primary" elevation={1}>
-          {/* <BackdropFilter
-                className="bluredForm"
-                filter={"blur(2px) sepia(0%)"}
-                canvasFallback={true}
-                html2canvasOpts={{
-                    allowTaint: true
-                }}
-                > */}
           <Toolbar>
+            <Grid container spacing={1} justify='flex-start' alignItems='center'>
+            <Hidden smDown>
+            
+            
+            <Grid item md={1} >
             <Link to={(location) => ({ ...location, pathname: "/" })}>
-              <img alt='logo' src={Logo} style={{ height: "3rem", marginRight: "1rem" }} />
+            <img alt="logo" src={Logo} style={{ width: "100%"}} />
             </Link>
+            </Grid>
+            </Hidden>
+              <Grid item md={5}>
+                <Link to={(location) => ({ ...location, pathname: "/" })}>
+                  <img alt="textlogo" src={TextLogo} style={{ width: "100%" }} />
+                </Link>
+              </Grid>
+            </Grid>
+
             <AvatarMenu />
             <TopNavMenu />
           </Toolbar>
-          {/* </BackdropFilter> */}
         </AppBar>
       </HideOnScroll>
       <Toolbar id="back-to-top-anchor" />
@@ -106,4 +114,17 @@ export default function BackToTop(props) {
       </ScrollTop>
     </React.Fragment>
   );
+}
+
+{
+  /* 
+            import BackdropFilter from "react-backdrop-filter";
+            <BackdropFilter
+                className="bluredForm"
+                filter={"blur(2px) sepia(0%)"}
+                canvasFallback={true}
+                html2canvasOpts={{
+                    allowTaint: true
+                }}
+                >  </BackdropFilter> */
 }
