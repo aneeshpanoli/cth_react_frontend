@@ -4,8 +4,10 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import heroimg from "../../Assets/img/cth_hero_k.svg";
+import heroMobile from "../../Assets/img/hero_mobile.svg";
 import Grid from "@material-ui/core/Grid";
 import SearchIcon from "@material-ui/icons/Search";
+import Hidden from '@material-ui/core/Hidden';
 
 export default function Hero() {
   const history = useHistory();
@@ -20,14 +22,28 @@ export default function Hero() {
   return (
     <Box>
       <Grid container spacing={0}>
-        <Grid item xs={12} sm={6} md={6}>
-          <Container style={{ paddingLeft: "12%", paddingTop: "5%" }}>
-            <Grid item xs={12}>
+        <Grid item xs={12} sm={6} md={6} style={{paddingLeft:'5%', paddingTop:'3%'}}>
+            <Hidden smDown>
+            <Grid item md={12}>
               <h1 style={{ fontWeight: 700, wordWrap: "break-word" }}>
                 THE LARGEST NETWORK OF COVID SOLUTIONS
               </h1>
-
-              <h3 style={{ marginTop: "1rem", color: "grey" }}>
+              </Grid>
+              </Hidden>
+              <Hidden mdUp>
+            <Grid item xs={12} className="hero-div"
+          style={{
+            backgroundImage: "url(" + heroMobile + ")",
+            width:'100%',
+            minHeight: "27rem",
+          }}>
+              <h1 style={{ fontWeight: 700}}>
+                THE LARGEST NETWORK OF COVID SOLUTIONS
+              </h1>
+              </Grid>
+              </Hidden>
+              <Grid item xs={12}>
+              <h3 style={{ color: "grey" }}>
                 CivicTechHub offers the largest database of projects dedicated
                 to fighting the current crises. <br /> Join now to browse
                 projects, find support and help humanity defeat COVID-19.
@@ -79,22 +95,13 @@ export default function Hero() {
                 </Button>
               </h3>
             </Grid>
-          </Container>
+          
         </Grid>
-        {/* <Grid
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          className="hero-div"
-          style={{
-            backgroundImage: "url(" + heroimg + ")",
-            minHeight: "30rem",
-          }}
-        > */}
+        <Hidden smDown>
         <Grid item xs={12} sm={6} md={6} container justify="flex-end">
           <img alt="hero-img" src={heroimg} style={{ width: "95%" }}></img>
         </Grid>
+        </Hidden>
       </Grid>
     </Box>
   );
