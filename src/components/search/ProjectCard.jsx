@@ -37,8 +37,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: "transparent",
-    width: "2rem",
-    height: "2rem",
+    width: "1.4rem",
+    height: "1.4rem",
   },
   overlay: {
     position: "absolute",
@@ -112,7 +112,7 @@ export default function ProjectCard({ r }) {
           <div className={classes.overlay}></div>
           <CardHeader
             title={
-              <span style={{ fontWeight: 700, fontSize: 14 }}>
+              <span style={{ fontWeight: 700, fontSize: 14, wordBreak: "break-word", hyphens: 'auto'}}>
                 {r._source.title}
               </span>
             }
@@ -126,10 +126,10 @@ export default function ProjectCard({ r }) {
                 <Flag code={countryToIso(r._source.country)} height="35" />
               </Avatar>
             }
-            style={{ height: "5rem" }}
+            style={{ height: "5rem", textAlign:'left'}}
           />
 
-          <CardContent title="Short description" style={{ height: "8rem" }}>
+          <CardContent title="Short description" style={{ height: "8rem", textAlign:'left'}}>
             <Typography
               variant="body2"
               color="primary"

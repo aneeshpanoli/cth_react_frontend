@@ -59,10 +59,10 @@ export default function Header({ selectedProject }) {
   
   React.useEffect(() => {
     window.scrollTo(0, 0)
-    setEditPermission((authData&&authData.user&&authData.user.staff==='yes')
+    setEditPermission((authData&&authData.user&&authData._source.staff==='yes')
     || (selectedProject && selectedProject._source.owners 
       && (authData.user&&selectedProject._source.owners === authData.user.id)));
-    setApprovePermission(authData&&authData.user&&authData.user.staff==='yes')
+    setApprovePermission(authData&&authData.user&&authData._source.staff==='yes')
     setApproved(selectedProject&&selectedProject._source.approved==='yes')
   }, [authData])
   return (

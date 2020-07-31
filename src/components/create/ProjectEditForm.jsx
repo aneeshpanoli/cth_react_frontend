@@ -172,7 +172,7 @@ export default function ProjectEditForm() {
       (selectedProject &&
         selectedProject._source.owners &&
         selectedProject._source.owners === authData.user.id) ||
-      (authData && authData.user && authData.user.staff === "yes")
+      (authData && authData.user && authData._source.staff === "yes")
     ) {
       setFormValues(Object.assign({}, formValues, selectedProject._source));
       setEmbed(getImgUrl(selectedProject._source.image)); //dosent affect formvalue jus the embed

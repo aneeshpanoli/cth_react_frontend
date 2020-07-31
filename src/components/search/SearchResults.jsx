@@ -9,11 +9,10 @@ import SearchFilter from "./SearchFilter";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 250,
     maxWidth: "100%",
     margin: "0.3rem",
     borderRadius:12,
-    overflowX:'hidden'
+    overflowX:'hidden',
   },
   paper: {},
 }));
