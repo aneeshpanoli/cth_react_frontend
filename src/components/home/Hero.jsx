@@ -23,14 +23,14 @@ export default function Hero() {
     <Box>
       <Grid container spacing={0}>
         <Grid item xs={12} sm={6} md={6} style={{paddingLeft:'5%', paddingTop:'3%'}}>
-            <Hidden smDown>
+            <Hidden xsDown>
             <Grid item md={12}>
               <h1 style={{ fontWeight: 700, wordWrap: "break-word" }}>
                 THE LARGEST NETWORK OF COVID SOLUTIONS
               </h1>
               </Grid>
               </Hidden>
-              <Hidden mdUp>
+              <Hidden smUp>
             <Grid item xs={12} className="hero-div"
           style={{
             backgroundImage: "url(" + heroMobile + ")",
@@ -43,11 +43,11 @@ export default function Hero() {
               </Grid>
               </Hidden>
               <Grid item xs={12}>
-              <h3 style={{ color: "grey" }}>
+              <h4 >
                 CivicTechHub offers the largest database of projects dedicated
                 to fighting the current crises. <br /> Join now to browse
                 projects, find support and help humanity defeat COVID-19.
-              </h3>
+              </h4>
             </Grid>
             <Grid item xs={12}>
               <Button
@@ -78,7 +78,8 @@ export default function Hero() {
                   disableElevation
                   style={{
                     height: "2.5rem",
-                    width: "18rem",
+                    width:"75%",
+                    minWidth: "20rem",
                     marginTop: "1rem",
                     marginBottom: "1rem",
                     borderRadius: 15,
@@ -97,9 +98,9 @@ export default function Hero() {
             </Grid>
           
         </Grid>
-        <Hidden smDown>
+        <Hidden xsDown>
         <Grid item xs={12} sm={6} md={6} container justify="flex-end">
-          <img alt="hero-img" src={heroimg} style={{ width: "95%" }}></img>
+          <img alt="hero-img" src={heroimg} style={{ width: "100%" }}></img>
         </Grid>
         </Hidden>
       </Grid>

@@ -16,6 +16,7 @@ import Flag from "react-world-flags";
 import { getImgUrl } from "../js/utils";
 import CardActions from "@material-ui/core/CardActions";
 import Link from "@material-ui/core/Link";
+import ButtonBase from '@material-ui/core/ButtonBase';
 
 import { countries } from "./utils";
 
@@ -26,12 +27,12 @@ function countryToIso(country) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    minWidth: "16rem",
     border: "1px solid #E8E8E8",
     borderRadius: 15,
   },
   media: {
-    height: 0,
+    height: '8rem',
     paddingTop: "50%", // 16:9
   },
   avatar: {
@@ -50,16 +51,17 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     color: "white",
     height: "0.2rem",
+   
   },
   button: {
     borderRadius: 20,
     backgroundColor: theme.palette.secondary.main,
     textTransform: "none",
-    left: "55%",
-    transform: `translateX(-5%)`,
+    left: "50%",
+    transform: `translateX(-50%)`,
     bottom: "0.8rem",
-    width: "9rem",
-  },
+    width: "9rem"
+    },
 }));
 
 export default function ProjectCard({ r }) {
@@ -93,11 +95,12 @@ export default function ProjectCard({ r }) {
     >
       <Card className={classes.root}>
         <CardHeader action={<LongMenu r={r} />} className={classes.header} />
-        <Link
+        <ButtonBase>
+        <Link 
           onMouseMove={() => setMouseMoved(true)}
           onMouseDown={() => setMouseMoved(false)}
           onMouseUp={() => handleLearnmore(r)}
-          style={{ textDecoration: "none", cursor: "pointer" }}
+          style={{ textDecoration: "none"}}
         >
           <CardMedia
             className={classes.media}
@@ -126,7 +129,7 @@ export default function ProjectCard({ r }) {
             style={{ height: "5rem" }}
           />
 
-          <CardContent title="Short description" style={{ height: "7rem" }}>
+          <CardContent title="Short description" style={{ height: "8rem" }}>
             <Typography
               variant="body2"
               color="primary"
@@ -134,7 +137,6 @@ export default function ProjectCard({ r }) {
               style={{ overflow: "hidden" }}
             >
               {r._source.subtitle.substring(0, 125) + "..."}
-              <br></br>
             </Typography>
           </CardContent>
 
@@ -147,18 +149,9 @@ export default function ProjectCard({ r }) {
             >
               Learn more
             </Button>
-            {/* <IconButton>
-         <a href={r._source.url}><OpenInNewIcon aria-label="open new" title="Open Link"/></a> 
-        </IconButton>
-        <IconButton
-          onClick={() => handleExpandClick(r)}
-          aria-label="show more" title="Project details"
-        >
-          <DashboardIcon />
-        </IconButton>
-         */}
           </CardActions>
         </Link>
+        </ButtonBase>
       </Card>
     </Fade>
   );

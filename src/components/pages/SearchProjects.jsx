@@ -25,7 +25,7 @@ export default function SearchProjects() {
   return (
     <Box width={1} display="flex" flexDirection="column" ref={resultDiv}>
       <TopNav />
-      <Searchbar marginTop="0%" />
+      <Searchbar marginTop="0.5rem" />
       <SearchPageResults />
       <Footer />
     </Box>

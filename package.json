@@ -45,7 +45,8 @@
     "react-world-flags": "^1.3.0",
     "reactive-react-redux": "^4.9.0",
     "redux": "^4.0.5",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "swiper": "^6.0.4"
   },
   "devDependencies": {},
   "scripts": {

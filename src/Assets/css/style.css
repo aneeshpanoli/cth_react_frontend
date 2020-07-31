@@ -44,7 +44,9 @@ html {
   }
 
   .slick-slide {
-    padding: 1rem 1rem;
+    padding: 1rem 0.4rem;
+    width: 16.5rem;
+    height: 100%;
   }
   
   .slick-list {
@@ -81,3 +83,4 @@ html {
     font-weight: 700;
     color: #061F71;
 }
+

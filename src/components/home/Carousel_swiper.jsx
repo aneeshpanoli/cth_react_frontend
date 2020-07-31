@@ -1,4 +1,3 @@
-import React from "react";
 import ProjectCard from "../search/ProjectCard";
 import Container from "@material-ui/core/Container";
 import "slick-carousel/slick/slick.css";
@@ -8,7 +7,13 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Slider from "react-slick";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
+import React,{useEffect,useRef} from 'react';
 
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/swiper.scss';
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -59,9 +64,10 @@ export default function SwipeToSlide({ categoryList }) {
     className: "center",
     infinite: true,
     cssEase: "linear",
+    slidesToShow: 3,
     dots: true,
     swipeToSlide: true,
-    lazyLoad: 'progressive',
+    lazyLoad: true,
     autoplay: true,
     autoplaySpeed: getRandomInt(10000, 12000),
     pauseOnDotsHover: true,
@@ -71,8 +77,7 @@ export default function SwipeToSlide({ categoryList }) {
     mobileFirst: true,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
-    variableWidth: true,
-    adaptiveHeight: true,
+
     afterChange: function (index) {
       // console.log(
       //   `Slider Changed to: ${index + 1}, background: #222; color: #bada55`
@@ -83,6 +88,7 @@ export default function SwipeToSlide({ categoryList }) {
         breakpoint: 1024,
         settings: {
           arrows: true,
+          slidesToShow: 3,
           infinite: true,
           dots: true,
           centerPadding: "4rem",
@@ -92,6 +98,8 @@ export default function SwipeToSlide({ categoryList }) {
       {
         breakpoint: 800,
         settings: {
+          slidesToShow: 2,
+          initialSlide: 2,
           infinite: true,
           centerPadding: "1.2rem",
           centerMode: true,
@@ -103,8 +111,9 @@ export default function SwipeToSlide({ categoryList }) {
       {
         breakpoint: 480,
         settings: {
+          slidesToShow: 1,
           infinite: true,
-          centerPadding: "1.2rem",
+          centerPadding: "1.1rem",
           centerMode: true,
           autoplay: false,
           arrows: false,
@@ -113,15 +122,21 @@ export default function SwipeToSlide({ categoryList }) {
       },
     ],
   };
+  const swiper = useRef(null)
+  useEffect(()=>{
+      swiper.current=new Swiper('.swiper-container',{...})
+//add necessary parameters required by checking the offical docs of swiper
+},[])
   return (
     <React.Fragment>
       {categoryList && categoryList[0] ? (
-        <Container>
-        <Slider {...settings}>
+        <Container className="swiper-container"> 
+
           {categoryList.map((r, i) => (
+            <SwiperSlide>
             <ProjectCard key={i} r={r} />
+            </SwiperSlide>
           ))}
-        </Slider>
         </Container>
       ) : null}
     </React.Fragment>

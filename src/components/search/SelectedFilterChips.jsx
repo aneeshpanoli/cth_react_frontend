@@ -11,6 +11,8 @@ const useStyles = makeStyles((theme) => ({
     listStyle: 'none',
     padding: theme.spacing(0.5),
     margin: 0,
+    maxHeight: '65vh',
+    overflowY: 'auto'
   },
   chip: {
     margin: theme.spacing(0.5),
