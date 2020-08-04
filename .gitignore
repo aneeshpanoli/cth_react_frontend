@@ -19,3 +19,4 @@ deploy.sh
 .env.production
 .env.development
 index_template.html
+SocialSignin.jsx
