@@ -7,11 +7,11 @@ import { FETCH_RANDOM_ON_SESSION } from "../backend/EsQueries";
 import { updateProjectList } from "../redux/actions";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import Box from "@material-ui/core/Box";
-import Searchbar from "../search/SearchBar";
+import SearchField from "../search/SearchField";
 
 export default function SearchProjects() {
   const dispatch = useDispatch();
-  const { searchProjectList } = useTrackedState();
+  const { searchProjectList} = useTrackedState();
   const resultDiv = useRef(null);
 
   React.useEffect(() => {
@@ -25,7 +25,7 @@ export default function SearchProjects() {
   return (
     <Box width={1} display="flex" flexDirection="column" ref={resultDiv}>
       <TopNav />
-      <Searchbar marginTop="0.5rem" />
+      <SearchField marginTop="0.5rem" />
       <SearchPageResults />
       <Footer />
     </Box>

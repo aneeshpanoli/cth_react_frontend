@@ -5,10 +5,10 @@ import { MATCH_USER } from "./EsQueries";
 
 // switch API url based on environment
 let development = process.env.NODE_ENV !== "production";
-// const BASE_URL = development?'http://3.101.59.160':'https://www.civictechhub.org';
+// const BASE_URL = development?'http://13.52.80.115':'https://www.civictechhub.org';
 
-const BASE_URL = "http://13.52.80.115";
-// const BASE_URL = "https://www.civictechhub.org";
+// const BASE_URL = "http://13.52.80.115";
+const BASE_URL = "https://www.civictechhub.org";
 
 // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 // axios.defaults.xsrfCookieName = 'csrftoken';
@@ -63,6 +63,16 @@ const postPostAuthAxios = (token) =>
     },
   });
 
+  const postPreAuthAxios = () =>
+  axios.create({
+    baseURL: BASE_URL,
+    headers: {
+      "X-CSRFTOKEN": document.cookie.split("=")[1],
+      "X-Requested-With": "XMLHttpRequest",
+      "Content-type": "application/json",  
+    },
+  });
+
 export const queryElasticsearch = (
   userInput,
   query,
@@ -70,7 +80,10 @@ export const queryElasticsearch = (
   actionCallback,
 history
 ) => {
-  dispatch(updateProgress(true));
+  if (history && history==='home'){
+  dispatch(updateProgress(false));}else{
+    dispatch(updateProgress(true));
+  }
   // update the search project list
   let proceed =
     userInput &&
@@ -78,7 +91,7 @@ history
   if (proceed) {
     // update filter project list
     retriveSessionStore(userInput + "query", dispatch, updateFilterProject);
-    if(history){
+    if(history && history !== 'home'){
       history()
     }
     return;
@@ -94,7 +107,7 @@ history
       dispatch(actionCallback(response.data.hits));
       dispatch(updateFilterProject(response.data.hits));
       proceed && saveSessionStore(userInput + "query", response.data.hits);
-      if(history){
+      if(history && history !== 'home'){
         history()
       }
     })
@@ -148,11 +161,11 @@ export const queryEsById = (query, dispatch, actionCallback, history) => {
 
 export const createDoc = (doc, token, getUpdatedData) => {
   const userInfoAxios = postAuthAxios(`Token ${token}`);
-  console.log(doc);
+  // console.log(doc);
   userInfoAxios
     .get(`/create/`, doc)
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setTimeout(() => {
         // get updated data back from server after a second
         if(getUpdatedData){
@@ -174,7 +187,7 @@ export const postProject = (formData, token, history, title) => {
   postpostAuthAxios
     .post(`/post/`, formData)
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setTimeout(() => {
         history.push(
           "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
@@ -236,11 +249,11 @@ export const updateUser = (
 };
 
 export const createDocFeedback = (doc) => {
-  console.log(doc);
+  // console.log(doc);
   preAuthAxios
     .get(`/create/`, doc)
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       return true;
     })
     .catch((error) => {
@@ -250,6 +263,33 @@ export const createDocFeedback = (doc) => {
     });
 };
 
+export const fbSignin = (fbData,authData,
+  dispatch,
+  actionCallback) => {
+  const postpreAuthAxios =  postPreAuthAxios();
+  postpreAuthAxios
+    .post(`/rest-auth/facebook/`, 
+    {
+      access_token: fbData._token.accessToken}
+    )
+    .then((response) => {
+      // console.log(response.data);
+      response.data.user.image = "https://graph.facebook.com/"+fbData._profile.id+"/picture"
+      getUserInfoElastic(response.data, dispatch, actionCallback);
+    })
+    .catch((error) => {
+      // catch errors.
+      dispatch(
+        actionCallback({
+          ...authData,
+          error: error.response.data.non_field_errors[0],
+        })
+      );
+      console.log(error.response.data);
+    });
+};
+
+
 export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
   const userInfoAxios = postAuthAxios(`Token ${loginData.key}`);
   let query = MATCH_USER(loginData.user.id, "id");
@@ -258,6 +298,10 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
     .then((response) => {
       if (!response.data.hits[0]) {
         // create a new entry in the elasticsearch db
+        const updateData = () =>{
+          setTimeout(() => {
+            getUserInfoElastic(loginData, dispatch, actionCallback)}, 2000)
+        }
         createDoc(
           {
             params: {
@@ -265,9 +309,9 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
               q: loginData.user,
             },
           },
-          loginData.key
+          loginData.key, updateData
         );
-        getUserInfoElastic(loginData, dispatch, actionCallback);
+       
       } else {
         // console.log(response.data.hits[0]._source);
         const authData = {

@@ -6,20 +6,23 @@ import { queryElasticsearch } from "../backend/AxiosRequest";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { MATCH } from "../backend/EsQueries";
 import { updateProjectList, updateProgress } from "../redux/actions";
-import ProgressBar from "./ProgressBar";
+import ProgressBar from "../search/ProgressBar";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
-export default function searchBar(props) {
+
+export default function SearchField(props) {
   const dispatch = useDispatch();
   const { isProgress } = useTrackedState();
   const [progress, setProgress] = React.useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [newSearchValue, setNewSearchValue] = useState("");
   const queryDatabase = (searchValue) => {
-    if (searchValue.length > 1) {
+
+    if (searchValue&&searchValue.length > 1) {
       dispatch(updateProgress(true));
       // send to axios
       let query = MATCH(searchValue, "storyText");
-      queryElasticsearch(searchValue, query, dispatch, updateProjectList, null);
+      queryElasticsearch(searchValue, query, dispatch, updateProjectList, props.redirect);
       setSearchValue("");
     }
   };
@@ -32,6 +35,7 @@ export default function searchBar(props) {
   // control the queryDatabase callback as the newSearchValue changes
   useEffect(() => throttled.current(newSearchValue), [newSearchValue]);
   useEffect(() => setProgress(isProgress), [isProgress]);
+  useEffect(() => setProgress(false), []);
 
   const enterKeyPressedHandler = (event) => {
     if (
@@ -47,22 +51,26 @@ export default function searchBar(props) {
     <MuiThemeProvider>
       <React.Fragment>
         <SearchBar
-          autoFocus
           onChange={(value) => setSearchValue(value)}
           onRequestSearch={() => setNewSearchValue(searchValue)}
           onKeyDown={(e) => enterKeyPressedHandler(e)}
-          hintText="Search projects"
+          hintText="Search projects..."
           spellCheck={true}
           style={{
-            margin: "0 auto",
-            maxWidth: 800,
-            width: "100%",
+            maxWidth: 500,
+            width: "95%",
             border: "1px solid #061F71",
             borderRadius: 15,
-            marginTop: props.marginTop,
           }}
         />
-        {progress ? <ProgressBar /> : null}
+        {progress ?<LinearProgress
+        style={{
+          marginLeft:9 ,
+          maxWidth: 480,
+          width: "90%",
+          marginBottom: '2rem'
+        }}
+      /> : null}
       </React.Fragment>
     </MuiThemeProvider>
   );

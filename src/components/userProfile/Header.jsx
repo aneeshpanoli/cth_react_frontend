@@ -152,7 +152,7 @@ export default function Header(props) {
             color="secondary"
             className={classes.project}
             // alt={authData.user ? authData.user.first_name : null}
-            src="/static/images/avatar/1.jpg"
+            src={authData&&authData._source&&authData._source.image?authData._source.image:null}
           />
         </Grid>
 
@@ -174,9 +174,9 @@ export default function Header(props) {
               <br />
             </React.Fragment>
           ) : null}
-          {otherUserData ? otherUserData._source.followers.length : 0} Followers
+          {otherUserData&&otherUserData._source.followers ? otherUserData._source.followers.length : 0} Followers
           <br />
-          {otherUserData ? otherUserData._source.following.length : 0} Following
+          {otherUserData&&otherUserData._source.following ? otherUserData._source.following.length : 0} Following
         </Grid>
         {personal ? (
           <Grid item md={12} sm={12} xs={12}>
@@ -204,6 +204,7 @@ export default function Header(props) {
               onClick={
                 otherUserData &&
                 authData._source &&
+                otherUserData._source.followers &&
                 otherUserData._source.followers.includes(authData._source.email)
                   ? handleUnfollow
                   : handleFollow
@@ -212,6 +213,7 @@ export default function Header(props) {
               {" "}
               {otherUserData &&
               authData._source &&
+              otherUserData._source.followers &&
               otherUserData._source.followers.includes(authData._source.email)
                 ? "Unfollow"
                 : "Follow"}

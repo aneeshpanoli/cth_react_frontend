@@ -7,16 +7,16 @@ import CardContent from "@material-ui/core/CardContent";
 import Fade from "@material-ui/core/Fade";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import LongMenu from "../menu/LongMenu";
 import { useDispatch } from "reactive-react-redux";
 import { updateSelectedProject } from "../redux/actions";
 import { useHistory } from "react-router-dom";
 import Flag from "react-world-flags";
 import { getImgUrl } from "../js/utils";
-import CardActions from "@material-ui/core/CardActions";
 import Link from "@material-ui/core/Link";
-import ButtonBase from '@material-ui/core/ButtonBase';
+import ButtonBase from "@material-ui/core/ButtonBase";
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
 
 import { countries } from "./utils";
 
@@ -27,12 +27,13 @@ function countryToIso(country) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: "16rem",
+    minWidth: "100%",
     border: "1px solid #E8E8E8",
     borderRadius: 15,
   },
   media: {
-    height: '8rem',
+    height: "8rem",
+    width: '100%',
     paddingTop: "50%", // 16:9
   },
   avatar: {
@@ -51,17 +52,19 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     color: "white",
     height: "0.2rem",
-   
   },
   button: {
     borderRadius: 20,
     backgroundColor: theme.palette.secondary.main,
     textTransform: "none",
+    position: "absolute",
     left: "50%",
+    textAlign: "middle",
     transform: `translateX(-50%)`,
     bottom: "0.8rem",
-    width: "9rem"
-    },
+    width: "9rem",
+    height: "2.5rem",
+  },
 }));
 
 export default function ProjectCard({ r }) {
@@ -84,9 +87,6 @@ export default function ProjectCard({ r }) {
     }
   };
 
-
-
-
   return (
     <Fade
       in={checked}
@@ -95,62 +95,85 @@ export default function ProjectCard({ r }) {
     >
       <Card className={classes.root}>
         <CardHeader action={<LongMenu r={r} />} className={classes.header} />
-        <ButtonBase>
-        <Link 
-          onMouseMove={() => setMouseMoved(true)}
-          onMouseDown={() => setMouseMoved(false)}
-          onMouseUp={() => handleLearnmore(r)}
-          style={{ textDecoration: "none"}}
-        >
-          <CardMedia
-            className={classes.media}
-            image={getImgUrl(r._source.image)}
-            title=""
+        <ButtonBase >
+          <Link
+            onMouseMove={() => setMouseMoved(true)}
+            onMouseDown={() => setMouseMoved(false)}
+            onMouseUp={() => handleLearnmore(r)}
+            style={{ textDecoration: "none" }}
           >
-            {" "}
-          </CardMedia>
-          <div className={classes.overlay}></div>
-          <CardHeader
-            title={
-              <span style={{ fontWeight: 700, fontSize: 14, wordBreak: "break-word", hyphens: 'auto'}}>
-                {r._source.title}
-              </span>
-            }
-            subheader={r._source.hackathons[0] ? r._source.hackathons[0] : null}
-            avatar={
-              <Avatar
-                title={r._source.country}
-                aria-label="project"
-                className={classes.avatar}
-              >
-                <Flag code={countryToIso(r._source.country)} height="35" />
-              </Avatar>
-            }
-            style={{ height: "5rem", textAlign:'left'}}
-          />
-
-          <CardContent title="Short description" style={{ height: "8rem", textAlign:'left'}}>
-            <Typography
-              variant="body2"
-              color="primary"
-              component="div"
-              style={{ overflow: "hidden" }}
+            <CardMedia
+              className={classes.media}
+              image={getImgUrl(r._source.image)}
+              title=""
             >
-              {r._source.subtitle.substring(0, 125) + "..."}
-            </Typography>
-          </CardContent>
+              {" "}
+            </CardMedia>
+            <div className={classes.overlay}></div>
+            <CardHeader
+              title={
+                <span
+                  style={{
+                    fontWeight: 700,
+                    fontSize: 15,
+                    wordBreak: "break-word",
+                    hyphens: "auto",
+                    lineHeight:'1rem',
+                    display: 'inline-block',
+                  }}
+                >
+                  {r._source.title}
+                </span>
+              }
+              subheader={
+                <span
+                  style={{
+                    wordBreak: "break-word",
+                    hyphens: "auto",
+                    lineHeight:'1rem',
+                    display: 'inline-block',
+                  }}
+                >
+                {r._source.hackathons[0] ? r._source.hackathons[0] : null}
+                </span>
+              }
+              avatar={
+                <Avatar
+                  title={r._source.country}
+                  aria-label="project"
+                  className={classes.avatar}
+                >
+                  <Flag code={countryToIso(r._source.country)} height="35" />
+                </Avatar>
+              }
+              style={{ height: "5rem", textAlign: "left"}}
+            />
 
-          <CardActions>
+            <CardContent
+              title="Short description"
+              style={{ height: "10rem", textAlign: "left" }}
+            >
+              <Typography
+                variant="body2"
+                color="primary"
+                component="div"
+                style={{ overflow: "hidden" }}
+              >
+                {r._source.subtitle.substring(0, 125) + "..."}
+              </Typography>
+            </CardContent>
+            <CardActions>
             <Button
               variant="contained"
               onClick={() => handleLearnmore(r)}
               className={classes.button}
               disableElevation
+              component='div'
             >
               Learn more
             </Button>
           </CardActions>
-        </Link>
+          </Link>
         </ButtonBase>
       </Card>
     </Fade>

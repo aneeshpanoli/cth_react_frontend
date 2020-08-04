@@ -6,16 +6,19 @@ import { useHistory } from "react-router-dom";
 import heroimg from "../../Assets/img/cth_hero_k.svg";
 import heroMobile from "../../Assets/img/hero_mobile.svg";
 import Grid from "@material-ui/core/Grid";
-import SearchIcon from "@material-ui/icons/Search";
+import SearchField from "./SearchFieldHome";
 import Hidden from '@material-ui/core/Hidden';
 
 export default function Hero() {
   const history = useHistory();
-  const handleClick = (selectedProject) => {
-    history.push("/search");
+  const handleClick = () => {
+    setTimeout(() => {
+      history.push("/search");
+    },1000);
+   
   };
 
-  const handleJoin = (selectedProject) => {
+  const handleJoin = () => {
     history.push("/sign-in");
   };
 
@@ -70,8 +73,9 @@ export default function Hero() {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <h3 style={{ color: "grey" }}>
-                <Button
+            <SearchField redirect={handleClick} />
+
+                {/* <Button
                   endIcon={<SearchIcon style={{ transform: `scale(-1, 1)` }} />}
                   color="primary"
                   variant="outlined"
@@ -93,8 +97,7 @@ export default function Hero() {
                 >
                   {"Search projects...     "}
                   {"         "}
-                </Button>
-              </h3>
+                </Button> */}
             </Grid>
           
         </Grid>

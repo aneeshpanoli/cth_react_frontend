@@ -1,5 +1,5 @@
 import React from "react";
-import Drawer from '@material-ui/core/Drawer';
+import Container from '@material-ui/core/Container';
 import { useTrackedState } from "reactive-react-redux";
 import ProjectCard from "./ProjectCard";
 import Grid from "@material-ui/core/Grid";
@@ -22,9 +22,11 @@ export default function SearchResults() {
   const classes = useStyles();
 
   return (
-    // <Container maxwidth="lg" ref={resultDiv}>
+    <Container>
     <Grid container spacing={1} >
        {filterProjectList && filterProjectList[0] ? (
+
+
           <Grid item xs={12} sm={12} align='center'>
         <span>
           1 - {filterProjectList.length}/{filterProjectList.length}
@@ -35,22 +37,25 @@ export default function SearchResults() {
         <span>Sorry, No projects found!</span>
         </Grid>
       )}
-      <Grid item xs={12} sm={3}>
+
+{/* filter and results */}
+      <Grid item xs={12} sm={4} md={3}>
 
           <Card className={classes.root} variant="outlined" >
             {filterProjectList ? <SearchFilter /> : null}
           </Card>
       </Grid>
      
-      <Grid item xs={12} sm={9} container wrap="wrap" spacing={1}>
+      <Grid item xs={12} sm={8} md={9} container wrap='wrap' spacing={1} justify='center'>
           {filterProjectList && filterProjectList[0]
             ? filterProjectList.map((r, i) => (
-                <Grid item key={i} xs={12} sm={6} md={3}>
+                <Grid item key={i} xs={12} sm={6} md={4}>
                   <ProjectCard r={r} />
                 </Grid>
               ))
             : null}
       </Grid>
     </Grid>
+    </Container>
   );
 }

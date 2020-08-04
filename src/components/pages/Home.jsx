@@ -16,7 +16,7 @@ export default function homePage() {
   React.useEffect(() => {
     if (!searchProjectList) {
       let query = FETCH_RANDOM_ON_SESSION();
-      queryElasticsearch("", query, dispatch, updateProjectList, null);
+      queryElasticsearch("", query, dispatch, updateProjectList, 'home');
     }
   }, []);
 

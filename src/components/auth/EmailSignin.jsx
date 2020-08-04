@@ -78,8 +78,9 @@ export default function SignIn(props) {
   });
 
   return (
-    <Container component="main" maxWidth="xs">
-      <h5>Sign in with email.</h5>
+    <Container maxWidth="xs">
+      <h5>OR </h5>
+      <h5 style={{margin:'0 auto'}}>Sign in with email.</h5>
       <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
         {formik.errors.email ? (
           <sub className={classes.error}>{formik.errors.email}</sub>

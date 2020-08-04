@@ -87,7 +87,7 @@ export default function AvatarButton() {
           color="secondary"
           className={classes.small}
           alt={authData && authData.user ? authData.user.first_name : null}
-          src="/static/images/avatar/1.jpg"
+          src= {authData&&authData._source&&authData._source.image?authData._source.image:null}
         />
       </Button>
       <Popper

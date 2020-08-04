@@ -26,10 +26,10 @@ export default function UserProfile() {
     <Box>
       <TopNav />
       <Container>
-        {signIn ? (
-          <SigninOptions signUp={() => setSignIn(false)} />
+        {!signIn ? (
+          <SigninOptions signUp={() => setSignIn(true)} />
         ) : (
-          <SignUp signIn={() => setSignIn(true)} />
+          <SignUp signIn={() => setSignIn(false)} />
         )}
       </Container>
       <Footer />
