@@ -9,6 +9,9 @@ import EditIcon from "@material-ui/icons/Edit";
 import { updateOtherUserData } from "../redux/actions";
 import { getAnotherUserInfoElastic, updateUser } from "../backend/AxiosRequest";
 import { useHistory } from "react-router-dom";
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+import { avatarImgs } from './AvatarImgs'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +42,11 @@ export default function Header(props) {
   const history = useHistory();
   const { authData, otherUserData } = useTrackedState();
   const [personal, setPersonal] = React.useState(true);
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
   // console.log(authData);
   React.useEffect(() => {
     setPersonal(
@@ -142,21 +150,24 @@ export default function Header(props) {
     updateUnFollow(otherUserData, authData, "followers", "remove");
   };
 
-  
   return (
     <React.Fragment>
       <Grid container spacing={2} alignItems="center">
-        <Grid item md={2} sm={4} xs={3} container justify="flex-end">
+        <Grid item md={12} sm={12} xs={12} align="left">
+          <IconButton onClick={handleExpandClick}>
           <Avatar
             variant="circle"
             color="secondary"
             className={classes.project}
             // alt={authData.user ? authData.user.first_name : null}
-            src={authData&&authData._source&&authData._source.image?authData._source.image:null}
+            src={
+              authData && authData._source && authData._source.image
+                ? authData._source.image
+                : null
+            }
           />
-        </Grid>
-
-        <Grid item md={10} sm={8} xs={9} container justify="flex-start">
+       
+          </IconButton>
           <h4>
             {otherUserData
               ? otherUserData._source.first_name +
@@ -164,7 +175,21 @@ export default function Header(props) {
                 otherUserData._source.last_name
               : null}
           </h4>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+         {avatarImgs.map((avImg)=> (
+           <IconButton>
+             <img src={avImg} />
+           </IconButton>
+         )
+         )}
+          
+          
+            
+          </Collapse>
         </Grid>
+        <Grid item md={12} sm={12} xs={12} align="left">
+        
+          </Grid>
         <Grid item md={12} sm={12} xs={12}>
           {personal ? (
             <React.Fragment>
@@ -174,9 +199,15 @@ export default function Header(props) {
               <br />
             </React.Fragment>
           ) : null}
-          {otherUserData&&otherUserData._source.followers ? otherUserData._source.followers.length : 0} Followers
-          <br />
-          {otherUserData&&otherUserData._source.following ? otherUserData._source.following.length : 0} Following
+          {otherUserData && otherUserData._source.followers
+            ? otherUserData._source.followers.length
+            : 0}{" "}
+          Followers
+          {" . "}
+          {otherUserData && otherUserData._source.following
+            ? otherUserData._source.following.length
+            : 0}{" "}
+          Following
         </Grid>
         {personal ? (
           <Grid item md={12} sm={12} xs={12}>

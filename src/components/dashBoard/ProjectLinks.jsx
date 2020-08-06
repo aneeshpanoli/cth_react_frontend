@@ -9,13 +9,14 @@ import Button from "@material-ui/core/Button";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-  },
-  paper: {
     padding: theme.spacing(2),
     textAlign: "left",
     color: theme.palette.text.secondary,
     wordWrap: "break-word",
+    backgroundColor:theme.palette.secondary.main,
+    borderRadius:10,
   },
+
 }));
 
 export default function Header({ selectedProject }) {
@@ -50,13 +51,10 @@ export default function Header({ selectedProject }) {
   };
 
   return (
-    <Grid item xs={12} sm={12}>
-      <Paper className={classes.paper}>
-        <HeaderAppBar>Links</HeaderAppBar>
+    <Grid item xs={12} sm={12} className={classes.root}>
         {selectedProject && selectedProject._source.links
           ? renderLinks()
           : "This project has no links"}
-      </Paper>
     </Grid>
   );
 }

@@ -7,8 +7,8 @@ import { MATCH_USER } from "./EsQueries";
 let development = process.env.NODE_ENV !== "production";
 // const BASE_URL = development?'http://13.52.80.115':'https://www.civictechhub.org';
 
-// const BASE_URL = "http://13.52.80.115";
-const BASE_URL = "https://www.civictechhub.org";
+const BASE_URL = "http://13.52.80.115";
+// const BASE_URL = "https://www.civictechhub.org";
 
 // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 // axios.defaults.xsrfCookieName = 'csrftoken';

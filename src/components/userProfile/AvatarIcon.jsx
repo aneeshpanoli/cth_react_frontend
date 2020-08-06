@@ -14,6 +14,7 @@ import { MATCH_ID_TITLE } from "../backend/EsQueries";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import ThumbDownAltIcon from "@material-ui/icons/ThumbDownAlt";
 import { parseToDays } from "../js/datePrase";
+import { Container } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   project: {
@@ -109,12 +110,12 @@ export default function AvatarIcon() {
   
 
   return (
-    <Grid container alignItems="center">
-      <Grid item xs={3} sm={2} md={1} container justify="flex-end">
+    <Grid container alignItems="center" style={{marginBottom:'10%'}} >
+      <Grid item xs={3} sm={2} md={2} align='right'>
         <Button
           disabled={otherUserData ? false : true}
           onClick={handleProfile}
-          style={{ borderRadius: 50 }}
+          style={{ borderRadius: 50}}
         >
           <Avatar
             variant="circle"
@@ -126,7 +127,7 @@ export default function AvatarIcon() {
         </Button>
       </Grid>
       {selectedProject && otherUserData ? (
-        <Grid item xs={9} sm={10} md={11}>
+        <Grid item xs={9} sm={10} md={10} align='left'>
           <div style={{ fontWeight: 400 }}>
             {otherUserData
               ? otherUserData._source.first_name + " " + otherUserData._source.last_name
@@ -139,7 +140,7 @@ export default function AvatarIcon() {
         </Grid>
       ) : null}
       {selectedProject && !otherUserData ? (
-        <Grid item xs={9} sm={10} md={11}>
+        <Grid item xs={9} sm={10} md={10} align='left'>
           <Button
             disabled={
               selectedProject._source.claimed !== "no"
@@ -169,7 +170,7 @@ export default function AvatarIcon() {
       authData._source.staff === "yes" &&
       !otherUserData &&
       selectedProject._source.claimed !== "no" ? (
-        <Grid item xs={9} sm={10} md={11}>
+        <Grid item xs={9} sm={10} md={10} align='left'>
           <Button
             startIcon={<CheckCircleIcon />}
             disableElevation

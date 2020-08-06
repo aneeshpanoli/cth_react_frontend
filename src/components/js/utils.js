@@ -61,3 +61,20 @@ export const getImgUrl = (url) =>{
   export const getRandomInt = (max) => {
     return Math.floor(Math.random() * Math.floor(max));
   }
+
+
+  export const getProjectUrlFromTitleId = (title, id) =>{
+    const cleaned = title.replace(/[\W_]+/g," ");
+    return   "/" + cleaned.replace(/\s+/g, "-") + "/" + id
+  }
+
+  export const getProjectTitleFromUrl = (title, id) =>{
+    const cleaned = title.replace(/[\W_]+/g," ");
+    return   "/" + cleaned.replace(/\s+/g, "-") + "/" + id
+  }
+
+  export const goBack = (history) =>{
+    history && document.referrer.includes(window.location.hostname)
+    ? history.goBack()
+    : history.push("/");
+  }

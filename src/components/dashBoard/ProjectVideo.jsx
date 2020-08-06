@@ -23,15 +23,11 @@ export default function Header({selectedProject}) {
   return (
 
         <Grid item xs={12} sm={12}>
-          <Paper className={classes.paper}
-          >
-            <HeaderAppBar >
-            Video 
-            </HeaderAppBar>
+
             {selectedProject && selectedProject._source.video? 
             <ReactPlayer width="100%" url={selectedProject._source.video} />
             :
-            "This project has no videos"}</Paper>
+            "This project has no videos"}
         </Grid>
   );
 }

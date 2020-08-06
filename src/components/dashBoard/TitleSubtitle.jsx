@@ -1,8 +1,11 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import AvatarIcon from '../userProfile/AvatarIcon'
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import AvatarIcon from "../userProfile/AvatarIcon";
+import Box from "@material-ui/core/Box";
+import ProjHero from "../../Assets/img/project_hero.svg";
+import { coverImgUrl } from "../js/utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,26 +13,47 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
+    textAlign: "center",
     color: theme.palette.text.secondary,
   },
 }));
 
-export default function TitleSubtitle({selectedProject}) {
+export default function TitleSubtitle({ selectedProject }) {
   const classes = useStyles();
 
   return (
-
-    <Grid item xs={12}>
-    <Container>
-    <div 
-    style={{ backgroundColor: "rgba(255,255,255, 0.8)" 
-    , borderRadius:5, padding:10, fontWeight:700, color:'black'}}>
-    <h1 style={{wordWrap: 'break-word' }}>{selectedProject? selectedProject._source.title:null}</h1>
-      <h5 style={{color:'grey'}}>{selectedProject? selectedProject._source.subtitle:null}</h5>
-      <AvatarIcon />
-    </div>
-    </Container>
-  </Grid>
+    <Box>
+      <Grid container >
+        <Grid item xs={12} sm={6} md={6}>
+          <Container maxWidth="sm" style={{marginTop:'5%'}}>
+            <h1 style={{ wordWrap: "break-word" }}>
+              {selectedProject ? selectedProject._source.title : null}
+            </h1>
+            <h5 style={{ color: "grey" }}>
+              {selectedProject ? selectedProject._source.subtitle : null}
+            </h5>
+            <AvatarIcon />
+          </Container>
+         
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={6}
+          className="project-grid"
+          style={{
+            backgroundImage: "url(" + ProjHero + ")"          }}
+        >
+          <Container >
+            <img
+              alt="hero-img"
+              src={coverImgUrl(selectedProject._source.image)}
+              style={{ height: "40vh", margin: "5%", boxShadow:'0px 0px 5px grey'}}
+            ></img>
+          </Container>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }

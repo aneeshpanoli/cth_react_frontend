@@ -11,7 +11,8 @@ import { useFormik } from "formik";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { authSignup } from "../backend/AxiosRequest";
 import { updateAuthData } from "../redux/actions";
-
+import { useHistory } from 'react-router-dom'
+import { goBack }  from '../js/utils'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -82,6 +83,7 @@ export default function SignUp(props) {
   const classes = useStyles();
   const { authData } = useTrackedState();
   const dispatch = useDispatch();
+  const history = useHistory()
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -256,24 +258,30 @@ export default function SignUp(props) {
           </form>
         </React.Fragment>
       ) : (
-        <div>
-          <div
+        <Grid container spacing={1} justify="center">
+          <Grid item
             style={{
               width: "100%",
               height: "3rem",
               textAlign: "center",
               backgroundColor: "#061F71",
               color: "white",
+              marginTop: '5rem'
             }}
           >
             <h3>Confirm email</h3>
-          </div>
-          <h5 style={{ fontWeight: 400 }}>
+          </Grid>
+          <Grid item>
+          <h5 style={{ fontWeight: 400, marginBottom: '3rem' }}>
             We have sent an e-mail to you for verification. Follow the link
             provided to finalize the signup process. Please contact us if you do
             not receive it within a few minutes.
           </h5>
-        </div>
+          </Grid>
+          <Grid item>
+            <Button variant='contained'  color="secondary" onClick={() => goBack(history)}>OK</Button>
+          </Grid>
+        </Grid>
       )}
     </Container>
   );

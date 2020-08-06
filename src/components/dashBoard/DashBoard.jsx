@@ -4,14 +4,13 @@ import { MATCH_ID_TITLE } from "../backend/EsQueries";
 import { useParams, useHistory } from "react-router-dom";
 import { queryEsById } from "../backend/AxiosRequest";
 import { updateSelectedProject } from "../redux/actions";
-import TitleSubtitle from './TitleSubtitle';
-import Container from '@material-ui/core/Container';
-
+import TitleSubtitle from "./TitleSubtitle";
+import Container from "@material-ui/core/Container";
+import ChallengeCarousel from './ChallengeCarousel'
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import ImageMain from "./ImageMain";
-import Divider from '@material-ui/core/Divider';
+import Divider from "@material-ui/core/Divider";
 import StoyText from "./StoryText";
 import ProjectLinks from "./ProjectLinks";
 import ProjectVideo from "./ProjectVideo";
@@ -42,60 +41,59 @@ export default function CenteredGrid() {
       let query = MATCH_ID_TITLE(params.id, params.name.replace(/-/g, " "));
       queryEsById(query, dispatch, updateSelectedProject, history);
     }
-    setCurrProject(selectedProject)
+    setCurrProject(selectedProject);
   }, [selectedProject]);
 
   return (
-    <div className={classes.root}>
+    <React.Fragment>
       {currProject ? (
         <React.Fragment>
-        <Grid container spacing={3}>
-           <TitleSubtitle selectedProject={currProject} />
-           </Grid>
-          <ImageMain selectedProject={currProject} />
-          <Container>
-          <Grid container spacing={3}>
-           
+          <TitleSubtitle selectedProject={currProject} />
           <StoyText selectedProject={currProject} />
-          
-          <Grid
-            container
-            spacing={1}
-            alignItems="flex-start"
-            item
-            sm={12}
-            md={3}
-            xs={12}
-          >
-            <ProjectLinks selectedProject={currProject} />
-            <ProjectVideo selectedProject={currProject} />
-            <ProjectTech selectedProject={currProject} />
-          </Grid>
+          <Container>
+            <Grid container spacing={2}>
+            <Grid item sm={12} md={12} xs={12}>
+                <h2>Microtasks</h2>
+              </Grid>
+            <Grid item sm={12} md={12} xs={12}>
+                <ChallengeCarousel categoryList={[]}/>
+              </Grid>
+              <Grid item sm={12} md={12} xs={12}>
+                <h2>Resources</h2>
+              </Grid>
+              <Grid item sm={12} md={6} xs={12}>
+                <ProjectVideo selectedProject={currProject} />
+              </Grid>
+              <Grid item sm={12} md={6} xs={12}>
+                <ProjectLinks selectedProject={currProject} />
+                <ProjectTech selectedProject={currProject} />
+              </Grid>
 
-          <Grid item sm={12} xs={12}>
-            <Paper className={classes.paper}>
-              <h4>Comments</h4>
-              <Divider />
-              {params.id ? 
-              <React.Fragment>
-                <ListComments projectId={params.id} />
-                <Divider />
-                </React.Fragment>
-               : null}
+              <Grid item sm={12} xs={12}>
+                <Paper className={classes.paper}>
+                  <h4>Comments</h4>
+                  <Divider />
+                  {params.id ? (
+                    <React.Fragment>
+                      <ListComments projectId={params.id} />
+                      <Divider />
+                    </React.Fragment>
+                  ) : null}
 
-
-              {authData.isAuthenticated && params.id ? (
-                <PostComment projectId={params.id} />
-              ) : (
-                <h5>Please <Button href='/sign-in'>sign in </Button> to post comments</h5>
-              )}
-            </Paper>
-          </Grid>
-          
-        </Grid>
-        </Container>
+                  {authData.isAuthenticated && params.id ? (
+                    <PostComment projectId={params.id} />
+                  ) : (
+                    <h5>
+                      Please <Button href="/sign-in">sign in </Button> to post
+                      comments
+                    </h5>
+                  )}
+                </Paper>
+              </Grid>
+            </Grid>
+          </Container>
         </React.Fragment>
       ) : null}
-    </div>
+    </React.Fragment>
   );
 }

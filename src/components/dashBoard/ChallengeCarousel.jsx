@@ -3,12 +3,10 @@ import ProjectCard from "../search/ProjectCard";
 import Container from "@material-ui/core/Container";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Slider from "react-slick";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
-
+import AddMicrotask from './AddMicrotask'
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -115,15 +113,16 @@ export default function SwipeToSlide({ categoryList }) {
   };
   return (
     <React.Fragment>
-      {categoryList && categoryList[0] ? (
+      
         <Container>
         <Slider {...settings}>
-          {categoryList.map((r, i) => (
+        {categoryList && categoryList[0] ? categoryList.map((r, i) => (
             <ProjectCard key={i} r={r} />
-          ))}
+          )) : null}
+          <AddMicrotask />
         </Slider>
         </Container>
-      ) : null}
+      
     </React.Fragment>
   );
 }

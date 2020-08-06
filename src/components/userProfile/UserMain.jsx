@@ -10,21 +10,22 @@ import UserActivity from "./UserActivity";
 import { useParams } from "react-router-dom";
 import { getAnotherUserInfoElastic } from "../backend/AxiosRequest";
 import { updateOtherUserData } from "../redux/actions";
-import { socialSignIn, fbSignin } from "../backend/AxiosRequest";
+import { fbSignin } from "../backend/AxiosRequest";
 import Button from "@material-ui/core/Button";
 import { updateAuthData } from "../redux/actions";
 
 
 export default function UserMain() {
-  const token = "EAAcfvKwoe9kBAMcLnkPYfSFE1jvHRczhPkINg4wFuO8N9yfeDLEYqo4ZCRcWBhbirEraYzjmGgsfDboLBJy4CF2UndMPSGGaQ7mafZBU8ZC6QNmxvvpEMl2eUfRE4Le19237yWEkc5GM4nsOtVWDNKfC0634yE46DkBisDuMgXFq1WqvZBq7ZAiprat3a7FosvET8OqT1zAZDZD"
+  const token =
+    "EAAcfvKwoe9kBAMcLnkPYfSFE1jvHRczhPkINg4wFuO8N9yfeDLEYqo4ZCRcWBhbirEraYzjmGgsfDboLBJy4CF2UndMPSGGaQ7mafZBU8ZC6QNmxvvpEMl2eUfRE4Le19237yWEkc5GM4nsOtVWDNKfC0634yE46DkBisDuMgXFq1WqvZBq7ZAiprat3a7FosvET8OqT1zAZDZD";
   const dispatch = useDispatch();
   const params = useParams();
   // console.log(params.user);
   const { authData, otherUserData } = useTrackedState();
 
   const sSignIn = () => {
-    fbSignin(token,authData,dispatch,updateAuthData)
-  }
+    fbSignin(token, authData, dispatch, updateAuthData);
+  };
   React.useEffect(() => {
     getAnotherUserInfoElastic(
       authData,
@@ -42,24 +43,36 @@ export default function UserMain() {
     }
   };
 
-  React.useEffect(() => getUserOwnChallenges(), [otherUserData]);
+  React.useEffect(() => {
+    getUserOwnChallenges();
+  }, [otherUserData]);
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12} sm={12} md={3}>
-        <Header onClick={null} username={params.user} />
-        {authData && authData.user && authData._source.staff === "yes" &&params.user==="aneesh"?
-      <Button onClick={sSignIn}>
-        Siginin Test
-      </Button>:null}
-      </Grid>
-      <Grid item xs={12} sm={12} md={9}>
-        <Grid container spacing={2}>
-          <UserOwnChallenges />
-        </Grid>
+    <React.Fragment>
+      {otherUserData ? (
+        <Grid container spacing={3} style={{ marginTop: "1rem" }}>
+          <Grid item xs={12} sm={12} md={3}>
+            <Header username={params.user} />
+            {authData &&
+            authData.user &&
+            authData._source.staff === "yes" &&
+            params.user === "aneesh" ? (
+              <Button onClick={sSignIn}>Siginin Test</Button>
+            ) : null}
+          </Grid>
+          <Grid item xs={12} sm={12} md={9}>
+            <Grid container spacing={2}>
+              <UserOwnChallenges />
+            </Grid>
 
-        <UserActivity />
-      </Grid>
-    </Grid>
+            <UserActivity />
+          </Grid>
+        </Grid>
+      ) : (
+        <Grid item xs={12} sm={12} md={3}>
+          <h3> User doesnt exist</h3>
+        </Grid>
+      )}
+    </React.Fragment>
   );
 }

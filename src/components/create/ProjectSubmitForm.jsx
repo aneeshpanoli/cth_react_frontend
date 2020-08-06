@@ -72,7 +72,7 @@ const validate = (values) => {
     errors.title = "The title should be atleast 4 characters long";
   } else if (values.title.length > 60) {
     errors.title = "The title should be less than 60 characters";
-  } else if (/[*._%+-]+/i.test(values.title)) {
+  } else if (/[*._%+-?]+/i.test(values.title)) {
     errors.title = "Invalid characters in the title*";
   }
 

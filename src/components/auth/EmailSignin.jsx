@@ -122,7 +122,9 @@ export default function SignIn(props) {
         />
         <br />
         {authData.error ? (
-          <sub className={classes.error}>{"Wrong Email or Password!"}</sub>
+          <sub className={classes.error}>{authData && authData.error ? (	
+            authData.error
+          ) : null}	</sub>
         ) : null}
         <Button
           type="submit"
