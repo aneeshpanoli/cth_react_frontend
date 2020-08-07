@@ -6,7 +6,7 @@ import { queryEsById } from "../backend/AxiosRequest";
 import { updateSelectedProject } from "../redux/actions";
 import TitleSubtitle from "./TitleSubtitle";
 import Container from "@material-ui/core/Container";
-import ChallengeCarousel from './ChallengeCarousel'
+import MTCarousel from './MTCarousel'
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -18,6 +18,10 @@ import ProjectTech from "./ProjectTech";
 import PostComment from "./PostComment";
 import ListComments from "./ListComments";
 import { Button } from "@material-ui/core";
+import MTSubmitForm from './MTSubmitForm'
+import Collapse from "@material-ui/core/Collapse";
+import Box from "@material-ui/core/Box";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +38,7 @@ export default function CenteredGrid() {
   const history = useHistory();
   const [currProject, setCurrProject] = React.useState();
   const { selectedProject, authData } = useTrackedState();
+  const [openForm, setOpenForm] = React.useState(false);
   let params = useParams();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -44,8 +49,12 @@ export default function CenteredGrid() {
     setCurrProject(selectedProject);
   }, [selectedProject]);
 
+  const handleOpenForm = () => {
+    setOpenForm(!openForm)
+  }
+
   return (
-    <React.Fragment>
+    <Box>
       {currProject ? (
         <React.Fragment>
           <TitleSubtitle selectedProject={currProject} />
@@ -56,8 +65,13 @@ export default function CenteredGrid() {
                 <h2>Microtasks</h2>
               </Grid>
             <Grid item sm={12} md={12} xs={12}>
-                <ChallengeCarousel categoryList={[]}/>
+                <MTCarousel categoryList={[]} openForm={handleOpenForm}/>
               </Grid>
+              <Collapse in={openForm} timeout="auto" unmountOnExit>
+              <Grid item sm={12} md={12} xs={12}>
+              <MTSubmitForm openForm={handleOpenForm}/>
+            </Grid>
+            </Collapse>
               <Grid item sm={12} md={12} xs={12}>
                 <h2>Resources</h2>
               </Grid>
@@ -94,6 +108,6 @@ export default function CenteredGrid() {
           </Container>
         </React.Fragment>
       ) : null}
-    </React.Fragment>
+    </Box>
   );
 }

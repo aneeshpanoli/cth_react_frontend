@@ -122,7 +122,7 @@ export default function AvatarIcon() {
             color="secondary"
             className={classes.project}
             alt={otherUserData ? otherUserData._source.first_name : null}
-            src={otherUserData&&otherUserData._source&&otherUserData._source.image?otherUserData._source.image:null}
+            src={otherUserData&&otherUserData._source&&otherUserData._source.avatar?otherUserData._source.avatar:null}
           />
         </Button>
       </Grid>

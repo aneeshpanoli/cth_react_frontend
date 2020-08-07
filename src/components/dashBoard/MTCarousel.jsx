@@ -5,8 +5,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import AddMicrotask from './AddMicrotask'
+import Box from "@material-ui/core/Box";
+import MTPlaceHolder from './MTPlaceHolder'
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -52,7 +52,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-export default function SwipeToSlide({ categoryList }) {
+export default function SwipeToSlide(props) {
   const settings = {
     className: "center",
     infinite: true,
@@ -112,17 +112,17 @@ export default function SwipeToSlide({ categoryList }) {
     ],
   };
   return (
-    <React.Fragment>
+    <Box>
       
         <Container>
         <Slider {...settings}>
-        {categoryList && categoryList[0] ? categoryList.map((r, i) => (
+        {props.categoryList && props.categoryList[0] ? props.categoryList.map((r, i) => (
             <ProjectCard key={i} r={r} />
           )) : null}
-          <AddMicrotask />
+          <MTPlaceHolder openForm={props.openForm}/>
         </Slider>
         </Container>
       
-    </React.Fragment>
+    </Box>
   );
 }

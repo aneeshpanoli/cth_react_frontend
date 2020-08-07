@@ -6,12 +6,16 @@ import { useTrackedState, useDispatch } from "reactive-react-redux";
 import Avatar from "@material-ui/core/Avatar";
 import StarsIcon from "@material-ui/icons/Stars";
 import EditIcon from "@material-ui/icons/Edit";
-import { updateOtherUserData } from "../redux/actions";
-import { getAnotherUserInfoElastic, updateUser } from "../backend/AxiosRequest";
+import { updateOtherUserData, updateAuthData } from "../redux/actions";
+import {
+  getAnotherUserInfoElastic,
+  updateUser,
+  getUserInfoElastic,
+} from "../backend/AxiosRequest";
 import { useHistory } from "react-router-dom";
-import IconButton from '@material-ui/core/IconButton';
-import Collapse from '@material-ui/core/Collapse';
-import { avatarImgs } from './AvatarImgs'
+import IconButton from "@material-ui/core/IconButton";
+import Collapse from "@material-ui/core/Collapse";
+import { avatarImgs } from "./AvatarImgs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,11 +32,10 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 100,
     backgroundColor: "grey",
   },
-  project: {
-    width: theme.spacing(8),
-    height: theme.spacing(8),
-    fontWeight: 700,
-    fontSize: "3rem",
+  avatar: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+    backgroundColor: "Gainsboro",
   },
 }));
 
@@ -43,18 +46,32 @@ export default function Header(props) {
   const { authData, otherUserData } = useTrackedState();
   const [personal, setPersonal] = React.useState(true);
   const [expanded, setExpanded] = React.useState(false);
+  const [avatar, setAvatar] = React.useState(null);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  // console.log(authData);
+  console.log(authData);
   React.useEffect(() => {
+    setExpanded(!authData._source?false:false);
+
+    if(authData._id === otherUserData._id){
+      dispatch(updateOtherUserData({...otherUserData, _source:authData._source}))
+    }
+  }, [authData])
+  React.useEffect(() => {
+   
     setPersonal(
       authData.user &&
         otherUserData &&
         authData.user.id === otherUserData._source.id
     );
-  }, [otherUserData, authData]);
+    setAvatar(
+      otherUserData && otherUserData._source && otherUserData._source.avatar
+        ? otherUserData._source.avatar
+        : null
+    );
+  }, [otherUserData]);
   const updateFollow = (userData, otherUser, field, op) => {
     let data = {
       status: "followerupdates",
@@ -90,6 +107,7 @@ export default function Header(props) {
       otherUserData === userData ? updateData : null
     );
   };
+
 
   const updateUnFollow = (userData, otherUser, field, op) => {
     let data = {
@@ -136,6 +154,32 @@ export default function Header(props) {
     );
   };
 
+  const updateAvatar = (newAvatar) => {
+    setAvatar(newAvatar);
+    let data = {
+      status: "userupdates",
+      index: "user_data",
+      id: authData._id,
+      q: {
+        avatar: newAvatar,
+        lastUpdatedAt: new Date(),
+      },
+    };
+    let formData = new FormData();
+
+    formData.append("params", JSON.stringify(data));
+
+    const updateData = () =>
+      getUserInfoElastic(authData, dispatch, updateAuthData);
+    updateUser(
+      formData,
+      authData.key,
+      history,
+      authData._source.username,
+      updateData
+    );
+  };
+
   const handleFollow = () => {
     if (!authData || !authData._source) {
       history.push("/sign-in");
@@ -153,20 +197,16 @@ export default function Header(props) {
   return (
     <React.Fragment>
       <Grid container spacing={2} alignItems="center">
-        <Grid item md={12} sm={12} xs={12} align="left">
-          <IconButton onClick={handleExpandClick}>
-          <Avatar
-            variant="circle"
-            color="secondary"
-            className={classes.project}
-            // alt={authData.user ? authData.user.first_name : null}
-            src={
-              authData && authData._source && authData._source.image
-                ? authData._source.image
-                : null
-            }
-          />
-       
+        <Grid item md={12} sm={12} xs={12} align="center">
+          <IconButton  onClick={personal ? handleExpandClick : null}>
+            <Avatar
+              variant="circle"
+              color="secondary"
+              sizes="5px"
+              className={classes.avatar}
+              // alt={authData.user ? authData.user.first_name : null}
+              src={avatar}
+            />
           </IconButton>
           <h4>
             {otherUserData
@@ -176,21 +216,20 @@ export default function Header(props) {
               : null}
           </h4>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
-         {avatarImgs.map((avImg)=> (
-           <IconButton>
-             <img src={avImg} />
-           </IconButton>
-         )
-         )}
-          
-          
-            
+            {avatarImgs.map((avImg, i) => (
+              <IconButton
+                onMouseOver={()=>setAvatar(avImg)}
+                onMouseLeave={()=>setAvatar(otherUserData._source.avatar)}
+                key={i}
+                onClick={() => updateAvatar(avImg, otherUserData)}
+              >
+                <img src={avImg} style={{ width: "2rem", height: "2rem" }} />
+              </IconButton>
+            ))}
           </Collapse>
         </Grid>
-        <Grid item md={12} sm={12} xs={12} align="left">
-        
-          </Grid>
-        <Grid item md={12} sm={12} xs={12}>
+
+        <Grid item md={12} sm={12} xs={12} align="center">
           {personal ? (
             <React.Fragment>
               <span style={{ color: "grey" }}>
@@ -210,7 +249,7 @@ export default function Header(props) {
           Following
         </Grid>
         {personal ? (
-          <Grid item md={12} sm={12} xs={12}>
+          <Grid item md={12} sm={12} xs={12} align="center">
             <Button
               startIcon={<EditIcon />}
               disableElevation
@@ -224,7 +263,7 @@ export default function Header(props) {
             </Button>
           </Grid>
         ) : (
-          <Grid item md={12} sm={12} xs={12}>
+          <Grid item md={12} sm={12} xs={12} align="center">
             <Button
               startIcon={<StarsIcon />}
               disableElevation
@@ -252,44 +291,6 @@ export default function Header(props) {
           </Grid>
         )}
       </Grid>
-
-      {/* <Paper className={classes.paper} elevation={2}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item>
-                <Typography
-                  variant="body2"
-                  style={{ cursor: "pointer" }}
-                ></Typography>
-              </Grid>
-              <Grid item>
-                <Typography
-                  variant="body2"
-                  style={{ cursor: "pointer" }}
-                ></Typography>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Typography variant="subtitle1">--</Typography>
-            </Grid>
-            <Grid container justify="space-between">
-              <Grid item>Followers, following, Projects, solving</Grid>
-            </Grid>
-            <hr />
-            <Grid container alignItems="flex-end">
-              <Grid item>
-                <UserProfileMenu />
-              </Grid>
-              <Grid>
-                <GreyRoundButton onClick={props.onClick}>
-                  My Projects
-                </GreyRoundButton>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Paper> */}
     </React.Fragment>
   );
 }

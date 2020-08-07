@@ -1,7 +1,7 @@
 import Avatar from "@material-ui/core/Avatar";
 
 import React from "react";
-import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
@@ -15,9 +15,10 @@ import { logout } from "../auth/auth";
 
 const useStyles = makeStyles((theme) => ({
   small: {
-    width: theme.spacing(4),
-    height: theme.spacing(4),
+    width: theme.spacing(5),
+    height: theme.spacing(5),
     fontWeight: 700,
+    backgroundColor:'Gainsboro'
   },
   paper: {
     marginRight: theme.spacing(3),
@@ -76,20 +77,20 @@ export default function AvatarButton() {
 
   return (
     <React.Fragment>
-      <Button
+      <IconButton
         ref={anchorRef}
         aria-controls={open ? "menu-list-grow" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
+        style={{borderRadius:20}}
       >
         <Avatar
           variant="circle"
-          color="secondary"
           className={classes.small}
           alt={authData && authData.user ? authData.user.first_name : null}
-          src= {authData&&authData._source&&authData._source.image?authData._source.image:null}
+          src= {authData&&authData._source&&authData._source.avatar?authData._source.avatar:undefined}
         />
-      </Button>
+      </IconButton>
       <Popper
         open={open}
         anchorEl={anchorRef.current}
