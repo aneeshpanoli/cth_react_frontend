@@ -75,7 +75,7 @@ export default function CenteredGrid() {
                 <h2>Microtasks</h2>
               </Grid>
             <Grid item sm={12} md={12} xs={12}>
-                <MTCarousel microtaskList={microtaskList} openForm={handleOpenForm}/>
+                <MTCarousel microtaskList={microtaskList} openForm={handleOpenForm} userAvatar={authData._source.avatar}/>
               </Grid>
               <Collapse in={openForm} timeout="auto" unmountOnExit>
               <Grid item sm={12} md={12} xs={12}>

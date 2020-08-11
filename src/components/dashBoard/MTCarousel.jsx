@@ -1,5 +1,5 @@
 import React from "react";
-import ProjectCard from "../search/ProjectCard";
+import MicrotaskCard from "./MicrotaskCard";
 import Container from "@material-ui/core/Container";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -117,7 +117,7 @@ export default function SwipeToSlide(props) {
         <Container>
         <Slider {...settings}>
         {props.microtaskList && props.microtaskList[0] ? props.microtaskList.map((r, i) => (
-            <ProjectCard key={i} r={r} />
+            <MicrotaskCard key={i} r={r} userAvatar={props.userAvatar}/>
           )) : null}
           <MTPlaceHolder openForm={props.openForm}/>
         </Slider>
