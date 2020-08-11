@@ -30,7 +30,8 @@ const initialState = {
   userInfo: null,
   userOwnChallenge: null,
   commentsData: [],
-  otherUserData: null,
+  otherUserData: null, // user the current user is looking
+  microtaskList: null,
 };
 
 export const reducer = (state = initialState, action) => {
@@ -55,6 +56,8 @@ export const reducer = (state = initialState, action) => {
       return { ...state, userOwnChallenge: action.userOwnChallenge };
     case actionType.OTHER_USER_DATA:
       return { ...state, otherUserData: action.otherUserData };
+      case actionType.UPDATE_MICROTASK_LIST:
+        return { ...state, microtaskList: action.microtaskList };
     default:
       return state;
   }

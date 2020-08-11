@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { MATCH_ID_TITLE } from "../backend/EsQueries";
 import { useParams, useHistory } from "react-router-dom";
 import { queryEsById } from "../backend/AxiosRequest";
-import { updateSelectedProject } from "../redux/actions";
+import { updateSelectedProject, updateMicrotaskList } from "../redux/actions";
 import TitleSubtitle from "./TitleSubtitle";
 import Container from "@material-ui/core/Container";
 import MTCarousel from './MTCarousel'
@@ -21,7 +21,8 @@ import { Button } from "@material-ui/core";
 import MTSubmitForm from './MTSubmitForm'
 import Collapse from "@material-ui/core/Collapse";
 import Box from "@material-ui/core/Box";
-
+import { simpleQueryElasticsearch } from "../backend/AxiosRequest";
+import { MATCH_PROJ_ID } from "../backend/EsQueries";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,7 +38,8 @@ export default function CenteredGrid() {
   const classes = useStyles();
   const history = useHistory();
   const [currProject, setCurrProject] = React.useState();
-  const { selectedProject, authData } = useTrackedState();
+  const [microtasks, setMicrotasks] = React.useState();
+  const { selectedProject, authData, microtaskList } = useTrackedState();
   const [openForm, setOpenForm] = React.useState(false);
   let params = useParams();
   const dispatch = useDispatch();
@@ -45,9 +47,17 @@ export default function CenteredGrid() {
     if (!selectedProject) {
       let query = MATCH_ID_TITLE(params.id, params.name.replace(/-/g, " "));
       queryEsById(query, dispatch, updateSelectedProject, history);
+    }else{
+      const query = MATCH_PROJ_ID(selectedProject._id, "microtasks");
+      simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
     }
     setCurrProject(selectedProject);
+    
   }, [selectedProject]);
+
+  useEffect(()=>{
+    setMicrotasks(microtaskList);
+  }, [microtaskList])
 
   const handleOpenForm = () => {
     setOpenForm(!openForm)
@@ -65,11 +75,11 @@ export default function CenteredGrid() {
                 <h2>Microtasks</h2>
               </Grid>
             <Grid item sm={12} md={12} xs={12}>
-                <MTCarousel categoryList={[]} openForm={handleOpenForm}/>
+                <MTCarousel microtaskList={microtaskList} openForm={handleOpenForm}/>
               </Grid>
               <Collapse in={openForm} timeout="auto" unmountOnExit>
               <Grid item sm={12} md={12} xs={12}>
-              <MTSubmitForm openForm={handleOpenForm}/>
+              <MTSubmitForm openForm={handleOpenForm} selectedProject={selectedProject}/>
             </Grid>
             </Collapse>
               <Grid item sm={12} md={12} xs={12}>

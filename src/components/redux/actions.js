@@ -53,3 +53,8 @@ export const updateOtherUserData = (newOtherUserData) => ({
   type: actionType.OTHER_USER_DATA,
   otherUserData: newOtherUserData,
 });
+
+export const updateMicrotaskList = (newMicrotaskList) => ({
+  type: actionType.UPDATE_MICROTASK_LIST,
+  microtaskList: newMicrotaskList,
+});

@@ -5,6 +5,8 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import { useTrackedState } from 'reactive-react-redux'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
   root: {
@@ -26,7 +28,8 @@ const useStyles = makeStyles({
 export default function MTPlaceholder(props) {
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
-
+  const { authData } = useTrackedState();
+  const history = useHistory();
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -48,7 +51,7 @@ export default function MTPlaceholder(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={props.openForm} variant="contained" fullWidth color="secondary">
+        <Button onClick={authData.isAuthenticated?props.openForm: ()=>history.push('/sign-in')} variant="contained" fullWidth color="secondary">
           Add a microtask
         </Button>
       </CardActions>

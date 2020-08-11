@@ -116,7 +116,7 @@ export default function SwipeToSlide(props) {
       
         <Container>
         <Slider {...settings}>
-        {props.categoryList && props.categoryList[0] ? props.categoryList.map((r, i) => (
+        {props.microtaskList && props.microtaskList[0] ? props.microtaskList.map((r, i) => (
             <ProjectCard key={i} r={r} />
           )) : null}
           <MTPlaceHolder openForm={props.openForm}/>

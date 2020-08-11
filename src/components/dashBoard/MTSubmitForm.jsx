@@ -1,14 +1,10 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { postProject } from "../backend/AxiosRequest";
 import MUIRichTextEditor from "mui-rte";
@@ -82,11 +78,11 @@ const validate = (values) => {
     errors.subtitle = "The description should be atleast 60 characters long";
   }
 
-  if (!values.motivation) {
-    errors.motivation = "Required";
-  } else if (values.motivation.length < 60) {
-    errors.motivation = "The description should be atleast 60 characters long";
-  }
+  // if (!values.motivation) {
+  //   errors.motivation = "Required";
+  // } else if (values.motivation.length < 60) {
+  //   errors.motivation = "The description should be atleast 60 characters long";
+  // }
 
   if (!values.storyText) {
     errors.storyText = "Required";
@@ -110,13 +106,13 @@ const validate = (values) => {
     }
   }
 
-  if (values.video) {
-    try {
-      new URL(values.video);
-    } catch (error) {
-      errors.video = "Not a valid url";
-    }
-  }
+  // if (values.video) {
+  //   try {
+  //     new URL(values.video);
+  //   } catch (error) {
+  //     errors.video = "Not a valid url";
+  //   }
+  // }
 
   if (values.keywords.length === 0 || !values.keywords) {
     errors.keywords = "Required";
@@ -126,9 +122,9 @@ const validate = (values) => {
     errors.builtWith = "Required";
   }
 
-  if (!values.country) {
-    errors.country = "Required";
-  }
+  // if (!values.country) {
+  //   errors.country = "Required";
+  // }
 
   if (!values.image) {
     errors.image = "Required";
@@ -169,7 +165,7 @@ export default function MTSubmitForm(props) {
     keywords: [],
     title: "",
     roles: [],
-    motivation: "",
+    projectId: props.selectedProject._id,
     rewards: "",
     crisis: "",
     language: "",
@@ -206,7 +202,7 @@ export default function MTSubmitForm(props) {
     //   alert(JSON.stringify(values, null, 2));
     console.log("submitting data");
     let data = {
-      status: "microtask",
+      status: "microtasknew",
       index: "microtasks",
       q: formValues,
     };
@@ -332,7 +328,7 @@ export default function MTSubmitForm(props) {
               </Grid>
 
               {/* MOTIVATION               */}
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 {formErrors.motivation ? (
                   <sup className={classes.error}>{formErrors.motivation}</sup>
                 ) : (
@@ -350,7 +346,7 @@ export default function MTSubmitForm(props) {
                   }
                   value={formValues.motivation}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* DESCRIPTION */}
 
@@ -465,7 +461,7 @@ export default function MTSubmitForm(props) {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Roles needed*"
+                      label="Skills needed*"
                       variant="standard"
                     />
                   )}
@@ -474,7 +470,7 @@ export default function MTSubmitForm(props) {
 
               {/* COUNTRY */}
 
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 {formErrors.country ? (
                   <sup className={classes.error}>{formErrors.country}</sup>
                 ) : (
@@ -496,7 +492,7 @@ export default function MTSubmitForm(props) {
                     />
                   )}
                 />
-              </Grid>
+              </Grid> */}
               {/* LINKS */}
               <Grid item xs={12}>
                 {formErrors.links ? (
@@ -587,7 +583,7 @@ export default function MTSubmitForm(props) {
                 />
               </Grid>
               {/* EVENTS/HACKATHONS */}
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 {formErrors.hackathons ? (
                   <sup className={classes.error}>{formErrors.hackathons}</sup>
                 ) : (
@@ -610,7 +606,7 @@ export default function MTSubmitForm(props) {
                     handleDeleteChip(chip, "hackathons")
                   }
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Button
               type="submit"

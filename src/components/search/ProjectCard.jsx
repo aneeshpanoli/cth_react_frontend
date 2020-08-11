@@ -22,7 +22,10 @@ import { countries } from "./utils";
 
 function countryToIso(country) {
   let filteredData = countries.filter((d) => d.label === country);
-  return filteredData[0].code;
+  if (filteredData[0]){
+    return filteredData[0].code
+  };
+  return "US"
 }
 
 const useStyles = makeStyles((theme) => ({

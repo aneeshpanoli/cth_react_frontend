@@ -53,6 +53,7 @@ export default function FeaturedProjects() {
       setFilteredProjList(filterProjectList(searchProjectList));
     }
   }, [searchProjectList]);
+  
 
   return (
     <React.Fragment>
