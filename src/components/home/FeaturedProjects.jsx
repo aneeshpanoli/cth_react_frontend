@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 export default function FeaturedProjects() {
   const classes = useStyles();
   const [pageNum, setPageNum] = React.useState(3);
-
+  const topDiv = React.useRef(null)
   const categories = [
     "Masks",
     "Telehealth",
@@ -61,10 +61,11 @@ export default function FeaturedProjects() {
     "Home Delivery",
     "Distance Learning",
     "Bioinformatics",
-    "Databases"
+    "Databases",
   ];
   const handleMore = () => {
-    setPageNum(pageNum+3);
+    setPageNum(pageNum + 3);
+    window.scrollTo(0, topDiv.current.offsetTop);
   };
 
   return (
@@ -73,16 +74,15 @@ export default function FeaturedProjects() {
         <h3 style={{ fontWeight: 700 }}>FEATURED PROJECTS</h3>
       </Container>
       {categories.slice(0, pageNum).map((r, i) => (
-        <Box key={i}>
+        <Box key={i}  ref={topDiv}>
           <Grid container spacing={2}>
-          
             <HomeCorousel term={r} />
           </Grid>
         </Box>
       ))}
       <Grid container justify="center">
         {pageNum >= categories.length ? null : (
-          <Grid item xs={12} align="center">
+          <Grid item xs={12} align="center" >
             Load more
             <IconButton
               size="small"
