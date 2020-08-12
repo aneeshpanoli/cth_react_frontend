@@ -65,7 +65,7 @@ export default function FeaturedProjects() {
   ];
   const handleMore = () => {
     setPageNum(pageNum + 3);
-    window.scrollTo(0, topDiv.current.offsetTop);
+    window.scrollTo(0, topDiv.current.offsetTop+topDiv.current.clientHeight);
   };
 
   return (

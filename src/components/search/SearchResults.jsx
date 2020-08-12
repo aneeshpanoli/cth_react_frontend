@@ -30,16 +30,16 @@ export default function SearchResults() {
   const topDiv = React.useRef(null)
   const handleMore = () => {
     setPageNum(pageNum+12);
-    window.scrollTo(0, topDiv.current.offsetTop);
+    window.scrollTo(0, topDiv.current.offsetTop+topDiv.current.clientHeight);
 
   };
   return (
     <Container>
       <Grid container spacing={1}>
-        {filterProjectList && filterProjectList[0] ? (
+        {searchProjectList&&filterProjectList && filterProjectList[0] ? (
           <Grid item xs={12} sm={12} align="center">
             <span>
-              We found {searchProjectList&&searchProjectList.length >= 1000?"1000+":searchProjectList.length}{" "} projects!
+              We found {searchProjectList.length >= 1000?"1000+":searchProjectList.length}{" "} projects!
             </span>
           </Grid>
         ) : (
