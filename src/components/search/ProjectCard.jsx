@@ -22,10 +22,10 @@ import { countries } from "./utils";
 
 function countryToIso(country) {
   let filteredData = countries.filter((d) => d.label === country);
-  if (filteredData[0]){
-    return filteredData[0].code
-  };
-  return "US"
+  if (filteredData[0]) {
+    return filteredData[0].code;
+  }
+  return "US";
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: "8rem",
-    width: '100%',
+    width: "100%",
     paddingTop: "50%", // 16:9
   },
   avatar: {
@@ -97,8 +97,11 @@ export default function ProjectCard({ r }) {
       style={{ transitionDelay: checked ? "300ms" : "0ms" }}
     >
       <Card className={classes.root}>
-        <CardHeader action={<LongMenu r={r} esIndex="projects"/>} className={classes.header} />
-        <ButtonBase >
+        <CardHeader
+          action={<LongMenu r={r} esIndex="projects" />}
+          className={classes.header}
+        />
+        <ButtonBase>
           <Link
             onMouseMove={() => setMouseMoved(true)}
             onMouseDown={() => setMouseMoved(false)}
@@ -121,8 +124,8 @@ export default function ProjectCard({ r }) {
                     fontSize: 15,
                     wordBreak: "break-word",
                     hyphens: "auto",
-                    lineHeight:'1rem',
-                    display: 'inline-block',
+                    lineHeight: "1rem",
+                    display: "inline-block",
                   }}
                 >
                   {r._source.title}
@@ -133,11 +136,11 @@ export default function ProjectCard({ r }) {
                   style={{
                     wordBreak: "break-word",
                     hyphens: "auto",
-                    lineHeight:'1rem',
-                    display: 'inline-block',
+                    lineHeight: "1rem",
+                    display: "inline-block",
                   }}
                 >
-                {r._source.hackathons[0] ? r._source.hackathons[0] : null}
+                  {r._source.hackathons[0] ? r._source.hackathons[0] : null}
                 </span>
               }
               avatar={
@@ -149,7 +152,7 @@ export default function ProjectCard({ r }) {
                   <Flag code={countryToIso(r._source.country)} height="35" />
                 </Avatar>
               }
-              style={{ height: "5rem", textAlign: "left"}}
+              style={{ height: "5rem", textAlign: "left" }}
             />
 
             <CardContent
@@ -166,16 +169,16 @@ export default function ProjectCard({ r }) {
               </Typography>
             </CardContent>
             <CardActions>
-            <Button
-              variant="contained"
-              onClick={() => handleLearnmore(r)}
-              className={classes.button}
-              disableElevation
-              component='div'
-            >
-              Learn more
-            </Button>
-          </CardActions>
+              <Button
+                variant="contained"
+                onClick={() => handleLearnmore(r)}
+                className={classes.button}
+                disableElevation
+                component="div"
+              >
+                Learn more
+              </Button>
+            </CardActions>
           </Link>
         </ButtonBase>
       </Card>

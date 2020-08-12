@@ -7,13 +7,16 @@ import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { MATCH } from "../backend/EsQueries";
 import { updateProjectList, updateProgress } from "../redux/actions";
 import ProgressBar from "./ProgressBar";
+import { useParams, useHistory } from 'react-router-dom'
 
 export default function SearchField(props) {
   const dispatch = useDispatch();
+  const params = useParams();
+  const history = useHistory();
   const { isProgress } = useTrackedState();
   const [progress, setProgress] = React.useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [newSearchValue, setNewSearchValue] = useState("");
+  const [newSearchValue, setNewSearchValue] = useState(params.query);
   const queryDatabase = (searchValue) => {
     if (searchValue.length > 1) {
       dispatch(updateProgress(true));
@@ -39,7 +42,8 @@ export default function SearchField(props) {
       event.key === "Enter" ||
       event.charCode === 13
     ) {
-      setNewSearchValue(searchValue);
+      // setNewSearchValue(searchValue);
+      history.push("/search/"+searchValue)
     }
   };
 

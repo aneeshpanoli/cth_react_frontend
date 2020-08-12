@@ -1,38 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import SearchBar from "material-ui-search-bar";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import throttle from "lodash.throttle";
-import { queryElasticsearch } from "../backend/AxiosRequest";
-import { useDispatch, useTrackedState } from "reactive-react-redux";
-import { MATCH } from "../backend/EsQueries";
-import { updateProjectList, updateProgress } from "../redux/actions";
+import { useTrackedState } from "reactive-react-redux";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { useHistory } from 'react-router-dom'
 
 
 export default function SearchField(props) {
-  const dispatch = useDispatch();
+  const history = useHistory()
   const { isProgress } = useTrackedState();
   const [progress, setProgress] = React.useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [newSearchValue, setNewSearchValue] = useState("");
-  const queryDatabase = (searchValue) => {
-
-    if (searchValue&&searchValue.length > 1) {
-      dispatch(updateProgress(true));
-      // send to axios
-      let query = MATCH(searchValue, "storyText", 100);
-      queryElasticsearch(searchValue, query, dispatch, updateProjectList, props.redirect);
-      setSearchValue("");
-    }
-  };
-
-  const throttled = useRef(
-    throttle((newValue) => queryDatabase(newValue), 1500)
-  );
-
-  // use setNewSearchValue to update the searchstring when the enter is pressed
-  // control the queryDatabase callback as the newSearchValue changes
-  useEffect(() => throttled.current(newSearchValue), [newSearchValue]);
+ 
   useEffect(() => setProgress(isProgress), [isProgress]);
   useEffect(() => setProgress(false), []);
 
@@ -42,7 +21,7 @@ export default function SearchField(props) {
       event.key === "Enter" ||
       event.charCode === 13
     ) {
-      setNewSearchValue(searchValue);
+      history.push("/search/"+searchValue)
     }
   };
 
@@ -51,7 +30,6 @@ export default function SearchField(props) {
       <React.Fragment>
         <SearchBar
           onChange={(value) => setSearchValue(value)}
-          onRequestSearch={() => setNewSearchValue(searchValue)}
           onKeyDown={(e) => enterKeyPressedHandler(e)}
           hintText="Search projects..."
           spellCheck={true}

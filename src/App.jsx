@@ -82,7 +82,7 @@ const App = () => {
               <ClaimProject />
             </Route>
 
-            <Route exact path="/search">
+            <Route exact path="/search/:query">
               <SearchProjects />
             </Route>
 

@@ -88,7 +88,7 @@ export default function AlertDialogSlide() {
         <DialogActions>
           <MenuButton
             startIcon={<SearchIcon />}
-            onClick={() => handleOnClick("/search")}
+            onClick={() => handleOnClick("/search/covid")}
           >
             Search Projects
           </MenuButton>

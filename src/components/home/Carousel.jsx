@@ -13,6 +13,10 @@ import Divider from "@material-ui/core/Divider";
 import ProgressBar from "../search/ProgressBar";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Box from "@material-ui/core/Box";
+import { Link } from "react-router-dom";
+import { queryElasticsearch } from "../backend/AxiosRequest";
+import { useDispatch, useTrackedState } from "reactive-react-redux";
+import { updateProjectList, updateProgress } from "../redux/actions";
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -117,6 +121,11 @@ export default function SwipeToSlide(props) {
       },
     ],
   };
+  
+
+  const dispatch = useDispatch();
+  const { isProgress } = useTrackedState();
+  const [progress, setProgress] = React.useState(false);
   const [categoryList, setCategoryList] = React.useState();
   const queryDatabase = (searchValue) => {
     let query = MATCH(searchValue, "storyText", 10);
@@ -138,18 +147,41 @@ export default function SwipeToSlide(props) {
     }
   }, []);
 
+  const queryEsDatabase = (searchValue) => {
+
+    if (searchValue&&searchValue.length > 1) {
+      dispatch(updateProgress(true));
+      // send to axios
+      let query = MATCH(searchValue, "storyText", 100);
+      queryElasticsearch(searchValue, query, dispatch, updateProjectList, props.redirect);
+    }
+  };
+
   return (
     <React.Fragment>
       {categoryList && categoryList[0] ? (
         <React.Fragment>
-          <Grid item xs={12}>
-            <Divider style={{ height: "3px" }} />
-            <Container>
-              {/* <sup>Category</sup> */}
+          <Divider style={{ height: "3px" }} />
+          <Container>
+          <Grid container >
+            
+              <Grid item sm={6} xs={6} md={6} align="left">
               <h4>{props.term}</h4>
-            </Container>
+              </Grid>
+              <Grid item sm={6} xs={6} md={6} align="right">
+               <Link
+                to={(location) => ({ ...location, pathname: "/search/"+props.term})}
+                style={{
+                  textDecoration: "none",
+                  fontSize: "1.2rem",
+                  color: "black",
+                }}
+              >View more {">"}</Link>
+              </Grid>
+              </Grid>
+              </Container>
             <Divider light />
-          </Grid>
+          
           <Grid item xs={12}>
             <Container>
               <Slider {...settings}>
@@ -159,6 +191,7 @@ export default function SwipeToSlide(props) {
               </Slider>
             </Container>
           </Grid>
+          
         </React.Fragment>
       ) : (
         <React.Fragment>
@@ -171,7 +204,7 @@ export default function SwipeToSlide(props) {
         <Slider {...settings}>
           {Array.from(new Array(6)).map((item, index) => (
             <Box key={index} width={210} marginRight={0.5} my={5}>
-              <Skeleton variant="rect" width="100%" height={300} />
+              <Skeleton variant="rect" width="100%" height={50} />
               <Skeleton />
             <Skeleton width="60%" />
             </Box>

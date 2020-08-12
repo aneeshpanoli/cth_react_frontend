@@ -4,7 +4,7 @@ import SearchCorousel from "./Carousel";
 import Divider from "@material-ui/core/Divider";
 import { useHistory } from "react-router";
 import Box from "@material-ui/core/Box";
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
@@ -38,12 +38,21 @@ function filterProjectList(projList) {
   return cat_list.sort((a, b) => b.length - a.length).slice(0, 4);
 }
 
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+
 export default function FeaturedProjects() {
   const classes = useStyles();
   const [filteredProjList, setFilteredProjList] = React.useState([]);
 
   const history = useHistory();
-  const categories = [
+  const allCategories = shuffle([
     "Masks",
     "Vaccine",
     "Personal Protective Equipment",
@@ -52,34 +61,12 @@ export default function FeaturedProjects() {
     "Symptoms",
     "Home Delivery",
     "Distance Learning"
-  ];
+  ]);
   const handleMore = () => {
-    history.push("/search");
+    setCategories(allCategories.slice(0, categories.length+3))
   };
+  const [categories, setCategories] = React.useState(allCategories.slice(0, 3))
 
-  const queryDatabase = (searchValue) => {
-    let query = MATCH(searchValue, "storyText", 10);
-    esAxios
-      .get(`/q/`, query)
-      .then((response) => {
-        filteredProjList.push({term:searchValue, res:response.data.hits});
-        setFilteredProjList(filteredProjList);
-      })
-      .catch((error) => {
-        // catch errors.
-        console.log(error);
-        return error;
-      });
-  };
-
-  // useEffect(() => {
-  //   if (filteredProjList === undefined || filteredProjList.length === 0) {
-  //     queryDatabase(categories[0]);
-  //     queryDatabase(categories[1]);
-  //     queryDatabase(categories[2]);
-  //     queryDatabase(categories[3]);
-  //   }
-  // }, []);
 
   return (
 
@@ -97,21 +84,14 @@ export default function FeaturedProjects() {
             </Box>
           ))}
           <Grid container justify="center">
+            {categories.length === allCategories.length?null:
             <Grid item xs={12} align="center">
-              <Link
-                to={(location) => ({ ...location, pathname: "/search" })}
-                style={{
-                  textDecoration: "none",
-                  fontSize: "1.2rem",
-                  color: "black",
-                }}
-              >
-                View all
-                <IconButton size="small" className={classes.arrowBtn}>
-                  <ArrowForwardIcon />
+                Load more
+                <IconButton size="small" className={classes.arrowBtn} onClick={handleMore}>
+                  <ArrowDownwardIcon />
                 </IconButton>
-              </Link>
-            </Grid>
+              
+            </Grid>}
           </Grid>
         </Box>
   );
