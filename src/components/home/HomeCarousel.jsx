@@ -121,18 +121,24 @@ export default function SwipeToSlide(props) {
       },
     ],
   };
-  
 
   const dispatch = useDispatch();
-  const { isProgress } = useTrackedState();
-  const [progress, setProgress] = React.useState(false);
+
   const [categoryList, setCategoryList] = React.useState();
   const queryDatabase = (searchValue) => {
+    // localStorage.removeItem(searchValue)
+    const localData = JSON.parse(localStorage.getItem(searchValue));
+    if(localData){
+      console.log('from local store')
+      setCategoryList(localData);
+      return
+    }
     let query = MATCH(searchValue, "storyText", 10);
     esAxios
       .get(`/q/`, query)
       .then((response) => {
         setCategoryList(response.data.hits);
+        localStorage.setItem(searchValue, JSON.stringify(response.data.hits))
       })
       .catch((error) => {
         // catch errors.
@@ -148,12 +154,17 @@ export default function SwipeToSlide(props) {
   }, []);
 
   const queryEsDatabase = (searchValue) => {
-
-    if (searchValue&&searchValue.length > 1) {
+    if (searchValue && searchValue.length > 1) {
       dispatch(updateProgress(true));
       // send to axios
       let query = MATCH(searchValue, "storyText", 100);
-      queryElasticsearch(searchValue, query, dispatch, updateProjectList, props.redirect);
+      queryElasticsearch(
+        searchValue,
+        query,
+        dispatch,
+        updateProjectList,
+        props.redirect
+      );
     }
   };
 
@@ -163,25 +174,39 @@ export default function SwipeToSlide(props) {
         <React.Fragment>
           <Divider style={{ height: "3px" }} />
           <Container>
-          <Grid container >
-            
-              <Grid item sm={6} xs={6} md={6} align="left">
-              <h4>{props.term}</h4>
+            <Grid container>
+              <Grid item xs={12}>
+                <Divider
+                  style={{
+                    height: "3px",
+                    marginTop: "1rem",
+                    marginBottom: "1rem",
+                  }}
+                />
               </Grid>
-              <Grid item sm={6} xs={6} md={6} align="right">
-               <Link
-                to={(location) => ({ ...location, pathname: "/search/"+props.term})}
-                style={{
-                  textDecoration: "none",
-                  fontSize: "1.2rem",
-                  color: "black",
-                }}
-              >View more {">"}</Link>
+
+              <Grid item sm={8} xs={8} md={8} align="left">
+                <h4>{props.term}</h4>
               </Grid>
+              <Grid item sm={4} xs={4} md={4} align="right">
+                <Link
+                  to={(location) => ({
+                    ...location,
+                    pathname: "/search/" + props.term,
+                  })}
+                  style={{
+                    textDecoration: "none",
+                    fontSize: "1.2rem",
+                    color: "black",
+                  }}
+                >
+                  View more {">"}
+                </Link>
               </Grid>
-              </Container>
-            <Divider light />
-          
+            </Grid>
+          </Container>
+          <Divider light />
+
           <Grid item xs={12}>
             <Container>
               <Slider {...settings}>
@@ -191,28 +216,26 @@ export default function SwipeToSlide(props) {
               </Slider>
             </Container>
           </Grid>
-          
         </React.Fragment>
       ) : (
         <React.Fragment>
-        <Container>
-              {/* <sup>Category</sup> */}
-              <h4>{props.term}</h4>
-            </Container>
-            <Grid item xs={12}>
+          <Container>
+            {/* <sup>Category</sup> */}
+            <h4>{props.term}</h4>
+          </Container>
+          <Grid item xs={12}>
             <Container>
-        <Slider {...settings}>
-          {Array.from(new Array(6)).map((item, index) => (
-            <Box key={index} width={210} marginRight={0.5} my={5}>
-              <Skeleton variant="rect" width="100%" height={50} />
-              <Skeleton />
-            <Skeleton width="60%" />
-            </Box>
-
-          ))}
-        </Slider>
-        </Container>
-        </Grid>
+              <Slider {...settings}>
+                {Array.from(new Array(6)).map((item, index) => (
+                  <Box key={index} width={210} marginRight={0.5} my={5}>
+                    <Skeleton variant="rect" width="100%" height={50} />
+                    <Skeleton />
+                    <Skeleton width="60%" />
+                  </Box>
+                ))}
+              </Slider>
+            </Container>
+          </Grid>
         </React.Fragment>
       )}
     </React.Fragment>

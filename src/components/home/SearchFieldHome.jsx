@@ -30,6 +30,7 @@ export default function SearchField(props) {
       <React.Fragment>
         <SearchBar
           onChange={(value) => setSearchValue(value)}
+          onRequestSearch={(e) => enterKeyPressedHandler(e)}
           onKeyDown={(e) => enterKeyPressedHandler(e)}
           hintText="Search projects..."
           spellCheck={true}

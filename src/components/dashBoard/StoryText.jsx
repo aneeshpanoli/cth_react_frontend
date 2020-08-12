@@ -79,7 +79,7 @@ export default function Header({ selectedProject }) {
             }}
             >
               <IconButton
-                aria-label="add to favorites"
+                aria-label="back"
                 className={classes.buttonRound}
                 onClick={() => history.goBack()}
               >

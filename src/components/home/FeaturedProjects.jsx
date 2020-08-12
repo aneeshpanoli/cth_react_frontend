@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Container from "@material-ui/core/Container";
-import SearchCorousel from "./Carousel";
+import HomeCorousel from "./HomeCarousel";
 import Divider from "@material-ui/core/Divider";
 import { useHistory } from "react-router";
 import Box from "@material-ui/core/Box";
@@ -20,79 +20,80 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function filterProjectList(projList) {
-  let categs = [];
-  let cat_list = [];
-  projList.forEach((element) => {
-    if (!categs.includes(element._source.category)) {
-      // get all the unique categories
-      categs.push(element._source.category);
+// function filterProjectList(projList) {
+//   let categs = [];
+//   let cat_list = [];
+//   projList.forEach((element) => {
+//     if (!categs.includes(element._source.category)) {
+//       // get all the unique categories
+//       categs.push(element._source.category);
 
-      // filter the es search json and add to list
-      cat_list.push(
-        projList.filter((d) => d._source.category === element._source.category)
-      );
-    }
-  });
+//       // filter the es search json and add to list
+//       cat_list.push(
+//         projList.filter((d) => d._source.category === element._source.category)
+//       );
+//     }
+//   });
 
-  return cat_list.sort((a, b) => b.length - a.length).slice(0, 4);
-}
+//   return cat_list.sort((a, b) => b.length - a.length).slice(0, 4);
+// }
 
-function shuffle(a) {
-  for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
+// function shuffle(a) {
+//   for (let i = a.length - 1; i > 0; i--) {
+//     const j = Math.floor(Math.random() * (i + 1));
+//     [a[i], a[j]] = [a[j], a[i]];
+//   }
+//   return a;
+// }
 
 export default function FeaturedProjects() {
   const classes = useStyles();
-  const [filteredProjList, setFilteredProjList] = React.useState([]);
+  const [pageNum, setPageNum] = React.useState(3);
 
-  const history = useHistory();
-  const allCategories = shuffle([
+  const categories = [
     "Masks",
+    "Telehealth",
     "Vaccine",
     "Personal Protective Equipment",
     "Contact Tracing",
     "Drug Discovery",
     "Symptoms",
     "Home Delivery",
-    "Distance Learning"
-  ]);
+    "Distance Learning",
+    "Bioinformatics",
+    "Databases"
+  ];
   const handleMore = () => {
-    setCategories(allCategories.slice(0, categories.length+3))
+    setPageNum(pageNum+3);
   };
-  const [categories, setCategories] = React.useState(allCategories.slice(0, 3))
-
 
   return (
-
-        <Box>
-          <Container>
-            <h3 style={{ fontWeight: 700 }}>FEATURED PROJECTS</h3>
-          </Container>
-          {categories.map((r, i) => (
-            <Box key={i}>
-              <Grid container spacing={2}>
-
-                  <SearchCorousel term={r} />
-                
-              </Grid>
-            </Box>
-          ))}
-          <Grid container justify="center">
-            {categories.length === allCategories.length?null:
-            <Grid item xs={12} align="center">
-                Load more
-                <IconButton size="small" className={classes.arrowBtn} onClick={handleMore}>
-                  <ArrowDownwardIcon />
-                </IconButton>
-              
-            </Grid>}
+    <Box>
+      <Container>
+        <h3 style={{ fontWeight: 700 }}>FEATURED PROJECTS</h3>
+      </Container>
+      {categories.slice(0, pageNum).map((r, i) => (
+        <Box key={i}>
+          <Grid container spacing={2}>
+          
+            <HomeCorousel term={r} />
           </Grid>
         </Box>
+      ))}
+      <Grid container justify="center">
+        {pageNum >= categories.length ? null : (
+          <Grid item xs={12} align="center">
+            Load more
+            <IconButton
+              size="small"
+              className={classes.arrowBtn}
+              onClick={handleMore}
+            >
+              <ArrowDownwardIcon />
+            </IconButton>
+          </Grid>
+        )}
+      </Grid>
+    </Box>
   );
 }
