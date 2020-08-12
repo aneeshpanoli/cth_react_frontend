@@ -11,12 +11,13 @@ import LongMenu from "../menu/LongMenu";
 import { useDispatch } from "reactive-react-redux";
 import { updateSelectedProject } from "../redux/actions";
 import { useHistory } from "react-router-dom";
-import Flag from "react-world-flags";
+import { MATCH_USER } from "../backend/EsQueries";
 import { getImgUrl } from "../js/utils";
 import Link from "@material-ui/core/Link";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
+import { esAxios } from '../backend/AxiosRequest'
 
 import { countries } from "../search/utils";
 
@@ -41,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: "transparent",
-    width: "1.4rem",
-    height: "1.4rem",
+    width: "3rem",
+    height: "3rem",
   },
   overlay: {
     position: "absolute",
@@ -70,12 +71,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProjectCard({ r, userAvatar }) {
+export default function MicrotaskCard({ r }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
   const [checked] = useState(true);
   const [mouseMoved, setMouseMoved] = useState(false);
+  let query = MATCH_USER(r._source.owners, "id");
+  const [currUser, setCurrUser] = React.useState();
+
+  React.useEffect(()=>{
+    esAxios
+    .get(`/q/`, query)
+    .then((response) => {
+      // process response.
+
+      // this.setState({results: response});
+      console.log(response.data.hits);
+      setCurrUser(response.data.hits[0])
+    })
+    .catch((error) => {
+      // catch errors.
+      console.log(error);
+      return error;
+    });
+  }, [])
   // console.log(r)
   const handleLearnmore = (selectedProject) => {
     if (selectedProject && !mouseMoved) {
@@ -97,7 +117,7 @@ export default function ProjectCard({ r, userAvatar }) {
       style={{ transitionDelay: checked ? "300ms" : "0ms" }}
     >
       <Card className={classes.root}>
-        <CardHeader action={<LongMenu r={r} />} className={classes.header} />
+        <CardHeader action={<LongMenu r={r} esIndex="microtasks"/>} className={classes.header} />
         <ButtonBase >
           <Link
             onMouseMove={() => setMouseMoved(true)}
@@ -145,7 +165,7 @@ export default function ProjectCard({ r, userAvatar }) {
                   title={r._source.country}
                   aria-label="project"
                   className={classes.avatar}
-                  src={userAvatar}
+                  src={currUser?currUser._source.avatar:null}
                 >
                  
                 </Avatar>

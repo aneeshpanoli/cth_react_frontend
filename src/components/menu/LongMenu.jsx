@@ -42,7 +42,7 @@ export default function LongMenu(props) {
       history.push('/search')
     }
     let query = MORE_LIKE_THIS(
-        props.r._id, [column]
+        props.esIndex, props.r._id, [column]
         );
     queryElasticsearch("", query, dispatch, updateProjectList, goTo);
   };

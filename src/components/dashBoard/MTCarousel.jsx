@@ -4,7 +4,6 @@ import Container from "@material-ui/core/Container";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import MTPlaceHolder from './MTPlaceHolder'
 
@@ -119,6 +118,7 @@ export default function SwipeToSlide(props) {
         {props.microtaskList && props.microtaskList[0] ? props.microtaskList.map((r, i) => (
             <MicrotaskCard key={i} r={r} userAvatar={props.userAvatar}/>
           )) : null}
+          <MTPlaceHolder openForm={props.openForm}/>
           <MTPlaceHolder openForm={props.openForm}/>
         </Slider>
         </Container>

@@ -20,7 +20,7 @@ const BASE_URL = "http://13.52.80.115";
 //   { maxContentLength: 2000 }
 // )
 
-const esAxios = axios.create({
+export const esAxios = axios.create({
   baseURL: BASE_URL,
   headers: {
     "X-CSRFTOKEN": document.cookie.split("=")[1],

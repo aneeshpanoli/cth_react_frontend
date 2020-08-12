@@ -97,7 +97,7 @@ export default function ProjectCard({ r }) {
       style={{ transitionDelay: checked ? "300ms" : "0ms" }}
     >
       <Card className={classes.root}>
-        <CardHeader action={<LongMenu r={r} />} className={classes.header} />
+        <CardHeader action={<LongMenu r={r} esIndex="projects"/>} className={classes.header} />
         <ButtonBase >
           <Link
             onMouseMove={() => setMouseMoved(true)}

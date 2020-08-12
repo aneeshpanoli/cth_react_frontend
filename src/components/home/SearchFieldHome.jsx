@@ -6,7 +6,6 @@ import { queryElasticsearch } from "../backend/AxiosRequest";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { MATCH } from "../backend/EsQueries";
 import { updateProjectList, updateProgress } from "../redux/actions";
-import ProgressBar from "../search/ProgressBar";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 
@@ -21,7 +20,7 @@ export default function SearchField(props) {
     if (searchValue&&searchValue.length > 1) {
       dispatch(updateProgress(true));
       // send to axios
-      let query = MATCH(searchValue, "storyText");
+      let query = MATCH(searchValue, "storyText", 100);
       queryElasticsearch(searchValue, query, dispatch, updateProjectList, props.redirect);
       setSearchValue("");
     }

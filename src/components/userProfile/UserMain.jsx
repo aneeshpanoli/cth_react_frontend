@@ -38,7 +38,7 @@ export default function UserMain() {
 
   const getUserOwnChallenges = () => {
     if (otherUserData && otherUserData._source.id) {
-      let query = MATCH(otherUserData._source.id, "owners");
+      let query = MATCH(otherUserData._source.id, "owners", 100);
       simpleQueryElasticsearch(query, dispatch, updateUserOwnChallenge);
     }
   };

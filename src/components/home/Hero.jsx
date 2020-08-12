@@ -25,7 +25,7 @@ export default function Hero() {
   return (
     <Box>
       <Grid container spacing={0}>
-        <Grid item xs={12} sm={6} md={6} style={{paddingLeft:'5%', paddingTop:'3%'}}>
+        <Grid item xs={12} sm={8} md={8} style={{paddingLeft:'5%', paddingTop:'3%'}}>
             <Hidden xsDown>
             <Grid item md={12}>
               <h1 style={{ fontWeight: 700, wordWrap: "break-word" }}>
@@ -60,7 +60,7 @@ export default function Hero() {
                 style={{
                   height: "2.5rem",
                   width: "10rem",
-                  marginTop: "1rem",
+                  marginTop: "2rem",
                   marginBottom: "1rem",
                   borderRadius: 50,
                   fontSize: 20,
@@ -102,7 +102,7 @@ export default function Hero() {
           
         </Grid>
         <Hidden xsDown>
-        <Grid item xs={12} sm={6} md={6} container justify="flex-end">
+        <Grid item xs={12} sm={4} md={4} container justify="flex-end">
           <img alt="hero-img" src={heroimg} style={{ width: "100%" }}></img>
         </Grid>
         </Hidden>

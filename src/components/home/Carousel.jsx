@@ -7,8 +7,12 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Slider from "react-slick";
 import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-
+import { MATCH } from "../backend/EsQueries";
+import { esAxios } from "../backend/AxiosRequest";
+import Divider from "@material-ui/core/Divider";
+import ProgressBar from "../search/ProgressBar";
+import Skeleton from "@material-ui/lab/Skeleton";
+import Box from "@material-ui/core/Box";
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -20,9 +24,9 @@ function SampleNextArrow(props) {
         display: "block",
         background: "#E8E8E8",
         borderRadius: 15,
-        width:'2rem',
-        height:'2rem',
-        textAlign:'center',
+        width: "2rem",
+        height: "2rem",
+        textAlign: "center",
       }}
       onClick={onClick}
     />
@@ -39,9 +43,9 @@ function SamplePrevArrow(props) {
         display: "block",
         background: "#E8E8E8",
         borderRadius: 15,
-        width:'2rem',
-        height:'2rem',
-        textAlign:'center',
+        width: "2rem",
+        height: "2rem",
+        textAlign: "center",
       }}
       onClick={onClick}
     />
@@ -54,7 +58,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-export default function SwipeToSlide({ categoryList }) {
+export default function SwipeToSlide(props) {
   const settings = {
     className: "center",
     infinite: true,
@@ -67,7 +71,7 @@ export default function SwipeToSlide({ categoryList }) {
     autoplaySpeed: getRandomInt(10000, 12000),
     pauseOnDotsHover: true,
     pauseOnHover: true,
-    swipe:true,
+    swipe: true,
     touchThreshold: 100,
     mobileFirst: true,
     nextArrow: <SampleNextArrow />,
@@ -95,7 +99,7 @@ export default function SwipeToSlide({ categoryList }) {
           centerPadding: "1.2rem",
           centerMode: true,
           autoplay: false,
-          arrows: false, 
+          arrows: false,
           dots: true,
           slidesToShow: 4,
         },
@@ -113,17 +117,71 @@ export default function SwipeToSlide({ categoryList }) {
       },
     ],
   };
+  const [categoryList, setCategoryList] = React.useState();
+  const queryDatabase = (searchValue) => {
+    let query = MATCH(searchValue, "storyText", 10);
+    esAxios
+      .get(`/q/`, query)
+      .then((response) => {
+        setCategoryList(response.data.hits);
+      })
+      .catch((error) => {
+        // catch errors.
+        console.log(error);
+        return error;
+      });
+  };
+
+  React.useEffect(() => {
+    if (categoryList === undefined || categoryList.length === 0) {
+      queryDatabase(props.term);
+    }
+  }, []);
+
   return (
     <React.Fragment>
       {categoryList && categoryList[0] ? (
+        <React.Fragment>
+          <Grid item xs={12}>
+            <Divider style={{ height: "3px" }} />
+            <Container>
+              {/* <sup>Category</sup> */}
+              <h4>{props.term}</h4>
+            </Container>
+            <Divider light />
+          </Grid>
+          <Grid item xs={12}>
+            <Container>
+              <Slider {...settings}>
+                {categoryList.map((r, i) => (
+                  <ProjectCard key={i} r={r} />
+                ))}
+              </Slider>
+            </Container>
+          </Grid>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
         <Container>
+              {/* <sup>Category</sup> */}
+              <h4>{props.term}</h4>
+            </Container>
+            <Grid item xs={12}>
+            <Container>
         <Slider {...settings}>
-          {categoryList.map((r, i) => (
-            <ProjectCard key={i} r={r} />
+          {Array.from(new Array(6)).map((item, index) => (
+            <Box key={index} width={210} marginRight={0.5} my={5}>
+              <Skeleton variant="rect" width="100%" height={300} />
+              <Skeleton />
+            <Skeleton width="60%" />
+            </Box>
+
           ))}
         </Slider>
         </Container>
-      ) : null}
+        </Grid>
+        </React.Fragment>
+      )}
     </React.Fragment>
   );
 }

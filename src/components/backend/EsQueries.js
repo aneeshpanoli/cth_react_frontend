@@ -34,12 +34,12 @@ export const MATCH_PHRASE = (userInput, column) => {
   };
 };
 
-export const MATCH = (userInput, column) => {
+export const MATCH = (userInput, column, numResults) => {
   return {
     params: {
       index: "projects",
       q: {
-        size: 100,
+        size: numResults,
         query: {
           match: {
             [column]: userInput,
@@ -89,10 +89,10 @@ export const MORE_LIKE_THIS_old = (userInput, columns) => {
   };
 };
 
-export const MORE_LIKE_THIS = (id, columns) => {
+export const MORE_LIKE_THIS = (esIndex, id, columns) => {
   return {
     params: {
-      index: "projects",
+      index: esIndex,
       q: {
         size: 100,
         query: {
