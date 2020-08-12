@@ -33,7 +33,10 @@ export default function SearchField(props) {
 
   // use setNewSearchValue to update the searchstring when the enter is pressed
   // control the queryDatabase callback as the newSearchValue changes
-  useEffect(() => throttled.current(newSearchValue), [newSearchValue]);
+  useEffect(() => {
+    if(newSearchValue != '@')
+    throttled.current(newSearchValue)
+  }, [newSearchValue]);
   useEffect(() => setProgress(isProgress), [isProgress]);
 
   const enterKeyPressedHandler = (event) => {

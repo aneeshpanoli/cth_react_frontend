@@ -39,7 +39,7 @@ export default function LongMenu(props) {
     setAnchorEl(null);
     setProgress(true);
     const goTo = () =>{
-      history.push('/search')
+      history.push('/search/@')
     }
     let query = MORE_LIKE_THIS(
         props.esIndex, props.r._id, [column]
