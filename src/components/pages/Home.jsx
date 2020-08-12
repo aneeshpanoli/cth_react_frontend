@@ -13,12 +13,12 @@ export default function homePage() {
   const dispatch = useDispatch();
   const { searchProjectList } = useTrackedState();
 
-  React.useEffect(() => {
-    if (!searchProjectList) {
-      let query = FETCH_RANDOM_ON_SESSION();
-      queryElasticsearch("", query, dispatch, updateProjectList, 'home');
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (!searchProjectList) {
+  //     let query = FETCH_RANDOM_ON_SESSION();
+  //     queryElasticsearch("", query, dispatch, updateProjectList, 'home');
+  //   }
+  // }, []);
 
   return (
     <React.Fragment>

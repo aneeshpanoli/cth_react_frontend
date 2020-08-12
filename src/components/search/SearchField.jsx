@@ -21,7 +21,7 @@ export default function SearchField(props) {
     if (searchValue.length > 1) {
       dispatch(updateProgress(true));
       // send to axios
-      let query = MATCH(searchValue, "storyText", 100);
+      let query = MATCH(searchValue, "storyText", 1000);
       queryElasticsearch(searchValue, query, dispatch, updateProjectList, props.redirect);
       setSearchValue("");
     }

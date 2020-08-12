@@ -24,20 +24,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SearchResults() {
-  const { filterProjectList } = useTrackedState();
+  const { filterProjectList, searchProjectList } = useTrackedState();
   const classes = useStyles();
   const [pageNum, setPageNum] = React.useState(12);
+  const topDiv = React.useRef(null)
   const handleMore = () => {
-    setPageNum(pageNum+3);
+    setPageNum(pageNum+12);
+    window.scrollTo(0, topDiv.current.offsetTop);
+
   };
   return (
     <Container>
       <Grid container spacing={1}>
         {filterProjectList && filterProjectList[0] ? (
           <Grid item xs={12} sm={12} align="center">
-            {/* <span>
-              1 - {filterProjectList.length}/{filterProjectList.length}
-            </span> */}
+            <span>
+              We found {searchProjectList&&searchProjectList.length >= 1000?"1000+":searchProjectList.length}{" "} projects!
+            </span>
           </Grid>
         ) : (
           <Grid item xs={12} sm={12} align="center">
@@ -64,7 +67,7 @@ export default function SearchResults() {
         >
           {filterProjectList && filterProjectList[0]
             ? filterProjectList.slice(0, pageNum).map((r, i) => (
-                <Grid item key={i} xs={12} sm={6} md={4}>
+                <Grid item key={i} xs={12} sm={6} md={4} ref={topDiv}>
                   <ProjectCard r={r} />
                 </Grid>
               ))
