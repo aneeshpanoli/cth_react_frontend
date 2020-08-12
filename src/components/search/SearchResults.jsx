@@ -12,9 +12,20 @@ import SearchFilter from "./SearchFilter";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "100%",
-    margin: "0.3rem",
     borderRadius: 12,
     overflowX: "hidden",
+    position: "-webkit-sticky",
+    position: 'sticky',
+    top:"4rem",
+    overflow:'visible',
+  },
+  filterGrid:{
+    position: "-webkit-sticky",
+    position: 'sticky',
+    top:"0rem",
+    overflow:'visible',
+    zIndex:5,
+
   },
   arrowBtn: {
     backgroundColor: theme.palette.secondary.main,
@@ -28,10 +39,15 @@ export default function SearchResults() {
   const classes = useStyles();
   const [pageNum, setPageNum] = React.useState(12);
   const topDiv = React.useRef(null);
-  const [timeOut, setTimeOut] = React.useState()
 
-React.useEffect(()=> setTimeOut(<span>Sorry, No projects found!</span>), [searchProjectList])
 
+
+  // React.useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [filterTop]);
 
   const handleMore = () => {
     setPageNum(pageNum + 12);
@@ -43,23 +59,24 @@ React.useEffect(()=> setTimeOut(<span>Sorry, No projects found!</span>), [search
         {searchProjectList && filterProjectList && filterProjectList[0] ? (
           <Grid item xs={12} sm={12} align="center">
             <span>
-              We found{" "}
+              We found about{" "}
               {searchProjectList.length >= 1000
                 ? "1000+"
                 : searchProjectList.length}{" "}
-              projects!
+              projects !
             </span>
           </Grid>
         ) : (
-          <Grid item xs={12} sm={12} align="center">
-          </Grid>
+          <Grid item xs={12} sm={12} align="center"></Grid>
         )}
 
         {/* filter and results */}
-        <Grid item xs={12} sm={4} md={3}>
-          <Card className={classes.root} variant="outlined">
-            {filterProjectList ? <SearchFilter /> : null}
-          </Card>
+        <Grid item xs={12} sm={4} md={3} className={classes.filterGrid}>
+          {filterProjectList ? (
+            <Card className={classes.root} variant="outlined">
+              <SearchFilter />
+            </Card>
+          ) : null}
         </Grid>
 
         <Grid

@@ -4,7 +4,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { MORE_LIKE_THIS } from "../backend/EsQueries";
 import { queryElasticsearch } from "../backend/AxiosRequest";
-import { useDispatch, useTrackedState } from "reactive-react-redux";
+import { useDispatch } from "reactive-react-redux";
 import { updateProjectList } from "../redux/actions";
 import PagesIcon from "@material-ui/icons/Pages";
 import { CircularProgress } from "@material-ui/core";
@@ -16,14 +16,8 @@ export default function LongMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
-  const { filterProjectList } = useTrackedState();
   const [progress, setProgress] = React.useState(false);
   const history = useHistory();
-  React.useEffect(() => {
-    setTimeout(() => {
-      setProgress(false);
-    }, 2000);
-  }, [filterProjectList]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
