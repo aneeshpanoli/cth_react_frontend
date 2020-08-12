@@ -27,24 +27,31 @@ export default function SearchResults() {
   const { filterProjectList, searchProjectList } = useTrackedState();
   const classes = useStyles();
   const [pageNum, setPageNum] = React.useState(12);
-  const topDiv = React.useRef(null)
-  const handleMore = () => {
-    setPageNum(pageNum+12);
-    window.scrollTo(0, topDiv.current.offsetTop+topDiv.current.clientHeight);
+  const topDiv = React.useRef(null);
+  const [timeOut, setTimeOut] = React.useState()
 
+React.useEffect(()=> setTimeOut(<span>Sorry, No projects found!</span>), [searchProjectList])
+
+
+  const handleMore = () => {
+    setPageNum(pageNum + 12);
+    window.scrollTo(0, topDiv.current.offsetTop + topDiv.current.clientHeight);
   };
   return (
     <Container>
       <Grid container spacing={1}>
-        {searchProjectList&&filterProjectList && filterProjectList[0] ? (
+        {searchProjectList && filterProjectList && filterProjectList[0] ? (
           <Grid item xs={12} sm={12} align="center">
             <span>
-              We found {searchProjectList.length >= 1000?"1000+":searchProjectList.length}{" "} projects!
+              We found{" "}
+              {searchProjectList.length >= 1000
+                ? "1000+"
+                : searchProjectList.length}{" "}
+              projects!
             </span>
           </Grid>
         ) : (
           <Grid item xs={12} sm={12} align="center">
-            <span>Sorry, No projects found!</span>
           </Grid>
         )}
 
@@ -71,22 +78,22 @@ export default function SearchResults() {
                   <ProjectCard r={r} />
                 </Grid>
               ))
-            : 
-           null}
-            <Grid container justify="center">
-        {!filterProjectList || pageNum >= filterProjectList.length ? null : (
-          <Grid item xs={12} align="center">
-            Load more
-            <IconButton
-              size="small"
-              className={classes.arrowBtn}
-              onClick={handleMore}
-            >
-              <ArrowDownwardIcon />
-            </IconButton>
+            : null}
+          <Grid container justify="center">
+            {!filterProjectList ||
+            pageNum >= filterProjectList.length ? null : (
+              <Grid item xs={12} align="center">
+                Load more
+                <IconButton
+                  size="small"
+                  className={classes.arrowBtn}
+                  onClick={handleMore}
+                >
+                  <ArrowDownwardIcon />
+                </IconButton>
+              </Grid>
+            )}
           </Grid>
-        )}
-      </Grid>
         </Grid>
       </Grid>
     </Container>

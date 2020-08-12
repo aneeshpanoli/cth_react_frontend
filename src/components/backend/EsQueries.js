@@ -89,12 +89,12 @@ export const MORE_LIKE_THIS_old = (userInput, columns) => {
   };
 };
 
-export const MORE_LIKE_THIS = (esIndex, id, columns) => {
+export const MORE_LIKE_THIS = (esIndex, id, columns, resSize) => {
   return {
     params: {
       index: esIndex,
       q: {
-        size: 100,
+        size: resSize,
         query: {
           bool: {
             must: [
