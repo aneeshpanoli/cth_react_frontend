@@ -1,17 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Container from "@material-ui/core/Container";
 import HomeCorousel from "./HomeCarousel";
-import Divider from "@material-ui/core/Divider";
-import { useHistory } from "react-router";
 import Box from "@material-ui/core/Box";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
-import { esAxios } from "../backend/AxiosRequest";
-import { MATCH } from "../backend/EsQueries";
-import ProgressBar from "../search/ProgressBar";
+
 
 const useStyles = makeStyles((theme) => ({
   arrowBtn: {

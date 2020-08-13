@@ -15,17 +15,16 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 12,
     overflowX: "hidden",
     position: "-webkit-sticky",
-    position: 'sticky',
-    top:"4rem",
-    overflow:'visible',
+    position: "sticky",
+    top: "4.5rem",
+    overflow: "visible",
   },
-  filterGrid:{
+  filterGrid: {
     position: "-webkit-sticky",
-    position: 'sticky',
-    top:"0rem",
-    overflow:'visible',
-    zIndex:5,
-
+    position: "sticky",
+    top: "0rem",
+    overflow: "visible",
+    zIndex: 5,
   },
   arrowBtn: {
     backgroundColor: theme.palette.secondary.main,
@@ -39,8 +38,6 @@ export default function SearchResults() {
   const classes = useStyles();
   const [pageNum, setPageNum] = React.useState(12);
   const topDiv = React.useRef(null);
-
-
 
   // React.useEffect(() => {
   //   window.addEventListener("scroll", handleScroll);
@@ -56,24 +53,18 @@ export default function SearchResults() {
   return (
     <Container>
       <Grid container spacing={1}>
-        {searchProjectList && filterProjectList && filterProjectList[0] ? (
-          <Grid item xs={12} sm={12} align="center">
-            <span>
-              We found about{" "}
-              {searchProjectList.length >= 1000
-                ? "1000+"
-                : searchProjectList.length}{" "}
-              projects !
-            </span>
-          </Grid>
-        ) : (
-          <Grid item xs={12} sm={12} align="center"></Grid>
-        )}
 
         {/* filter and results */}
         <Grid item xs={12} sm={4} md={3} className={classes.filterGrid}>
-          {filterProjectList ? (
+          {searchProjectList&&filterProjectList ? (
             <Card className={classes.root} variant="outlined">
+               <Grid item xs={12} sm={12} align="center">
+                We found {" "}
+                {searchProjectList.length >= 1000
+                  ? "1000+"
+                  : searchProjectList.length}{" "}
+                projects.
+              </Grid>
               <SearchFilter />
             </Card>
           ) : null}

@@ -3,19 +3,16 @@ import ProjectCard from "../search/ProjectCard";
 import Container from "@material-ui/core/Container";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Slider from "react-slick";
 import Grid from "@material-ui/core/Grid";
 import { MATCH } from "../backend/EsQueries";
 import { esAxios } from "../backend/AxiosRequest";
 import Divider from "@material-ui/core/Divider";
-import ProgressBar from "../search/ProgressBar";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
 import { queryElasticsearch } from "../backend/AxiosRequest";
-import { useDispatch, useTrackedState } from "reactive-react-redux";
+import { useDispatch } from "reactive-react-redux";
 import { updateProjectList, updateProgress } from "../redux/actions";
 
 function SampleNextArrow(props) {
@@ -68,8 +65,6 @@ export default function SwipeToSlide(props) {
     infinite: true,
     cssEase: "linear",
     dots: true,
-    lazyLoad: "ondemand",
-    slidesToShow: 5,
     swipeToSlide: true,
     autoplay: true,
     autoplaySpeed: getRandomInt(10000, 12000),
@@ -105,7 +100,6 @@ export default function SwipeToSlide(props) {
           autoplay: false,
           arrows: false,
           dots: true,
-          slidesToShow: 4,
         },
       },
       {
@@ -116,7 +110,6 @@ export default function SwipeToSlide(props) {
           autoplay: false,
           arrows: false,
           dots: true,
-          slidesToShow: 1,
         },
       },
     ],

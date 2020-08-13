@@ -69,6 +69,7 @@ export default function SearchField(props) {
           }}
         />
         {progress ? <ProgressBar /> : null}
+        <br/>
       </React.Fragment>
     </MuiThemeProvider>
   );
