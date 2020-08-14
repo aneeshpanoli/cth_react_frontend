@@ -5,15 +5,13 @@ import TopNav from "../navigation/TopNav";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import { useTrackedState } from "reactive-react-redux";
-import SignUp from "../auth/SignUp";
-import SigninOptions from "../auth/SigninOptions";
-import EmailPwdReset from "../auth/EmailPwdReset";
+import PwdResetForm from "../auth/PwdResetForm";
+
 
 export default function UserProfile() {
   const history = useHistory();
   const { authData } = useTrackedState();
-  const [signIn, setSignIn] = React.useState(false);
-  const [resetPwd, setResetPwd] = React.useState(false);
+
 
   React.useEffect(() => {
     if (authData.isAuthenticated) {
@@ -28,14 +26,7 @@ export default function UserProfile() {
     <Box>
       <TopNav />
       <Container>
-      {!resetPwd?
-        !signIn ? (
-          <SigninOptions reset={()=>setResetPwd(true)} signUp={() => setSignIn(true)} />
-        ) : (
-          <SignUp signIn={() => setSignIn(false)} />
-        ):
-        <EmailPwdReset signIn={() => setResetPwd(false)} />
-        }
+      <PwdResetForm />
       </Container>
       <Footer />
     </Box>

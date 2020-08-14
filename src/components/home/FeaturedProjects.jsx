@@ -48,10 +48,12 @@ export default function FeaturedProjects() {
   const categories = [
     "Masks",
     "Telehealth",
+    "Artificial Intelligence",
     "Vaccine",
     "Personal Protective Equipment",
     "Contact Tracing",
     "Drug Discovery",
+    "Robotics",
     "Symptoms",
     "Home Delivery",
     "Distance Learning",

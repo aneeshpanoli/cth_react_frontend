@@ -21,6 +21,7 @@ import CreateProject from "./components/pages/CreateProject";
 import EditProject from "./components/pages/EditProject";
 import ClaimProject from "./components/pages/ClaimProject";
 import { logout, tabLogin } from './components/auth/auth'
+import PwdResetForm from './components/pages/PwdReset'
 
 
 //stylesheet
@@ -92,6 +93,10 @@ const App = () => {
 
             <Route exact path="/terms-and-conditions">
               <TermsAndConditions />
+            </Route>
+
+            <Route exact path="/rest-auth/password/reset/confirm/:uid/:token">
+              <PwdResetForm />
             </Route>
 
             <Route exact path="/privacy-policy">

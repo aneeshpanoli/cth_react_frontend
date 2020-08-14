@@ -393,6 +393,64 @@ export const authSignIn = (
     });
 };
 
+export const resetPwdEmail = (
+  email,
+  authData,
+  dispatch,
+  actionCallback
+) => {
+  preAuthAxios
+    .post(`/rest-auth/password/reset/`, {
+      email: email,
+    })
+    .then((res) => {
+      
+      console.log(res.data);
+    })
+    .catch((err) => {
+      // catch errors.
+      dispatch(
+        actionCallback({
+          ...authData,
+          error: err.response.data.non_field_errors[0],
+        })
+      );
+      console.log(err.response.data);
+    });
+};
+
+export const resetPwdForm = (
+  data,
+  authData,
+  dispatch,
+  actionCallback
+) => {
+  console.log(data)
+  preAuthAxios
+    .post(`/rest-auth/password/confirm/reset/`, data)
+    .then((res) => {
+      
+      console.log(res.data);
+      dispatch(
+        actionCallback({
+          ...authData,
+          resetPwd: true,
+        })
+      );
+    })
+    .catch((err) => {
+      // catch errors.
+      console.log(err.response.data);
+      dispatch(
+        actionCallback({
+          ...authData,
+          resetPwd: false,
+        })
+      );
+      
+    });
+};
+
 export const authSignup = (
   firstName,
   lastName,

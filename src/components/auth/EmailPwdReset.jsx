@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useFormik } from "formik";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import { authSignIn } from "../backend/AxiosRequest";
+import { resetPwdEmail } from "../backend/AxiosRequest";
 import { updateAuthData } from "../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,12 +39,6 @@ const useStyles = makeStyles((theme) => ({
 const validate = (values) => {
   const errors = {};
 
-  if (!values.password) {
-    errors.password = "Required*";
-  } else if (values.password.length < 8) {
-    errors.password = "Must be atleast 8 characters long*";
-  }
-
   if (!values.email) {
     errors.email = "Required*";
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
@@ -54,34 +48,35 @@ const validate = (values) => {
   return errors;
 };
 
-export default function SignIn(props) {
+export default function EmailPwdReset(props) {
   const classes = useStyles();
   const disaptch = useDispatch();
   const { authData } = useTrackedState();
+  const [message, setMessage] = React.useState(false);
 
   const formik = useFormik({
     initialValues: {
       email: "",
-      password: "",
     },
     validate,
     onSubmit: (values) => {
       //   alert(JSON.stringify(values, null, 2));
-      authSignIn(
-        values.email,
-        values.password,
-        authData,
-        disaptch,
-        updateAuthData
-      );
+      setMessage(true)
+      resetPwdEmail(values.email, authData, disaptch, updateAuthData);
     },
   });
 
   return (
     <Container maxWidth="xs">
-      <h5>OR </h5>
-      <h5 style={{margin:'0 auto'}}>Sign in with email.</h5>
+      {message? 
+      <h5 style={{marginTop:'3rem', textAlign:'center'}}>
+        If an account exists for this email address, you will receive an email from us shortly.
+      </h5>
+      :
+      <React.Fragment>
       <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
+       <h5 style={{marginTop:'3rem', textAlign:'center'}}>Reset Password</h5>
+      <h5 style={{ margin: "0 auto" }}>Please enter your account email.</h5>
         {formik.errors.email ? (
           <sub className={classes.error}>{formik.errors.email}</sub>
         ) : null}
@@ -98,33 +93,11 @@ export default function SignIn(props) {
           onChange={formik.handleChange}
           value={formik.values.email}
         />
-
-        {formik.errors.password ? (
-          <sub className={classes.error}>{formik.errors.password}</sub>
-        ) : null}
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          onChange={formik.handleChange}
-          value={formik.values.password}
-        />
-
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
-        />
         <br />
         {authData.error ? (
-          <sub className={classes.error}>{authData && authData.error ? (	
-            authData.error
-          ) : null}	</sub>
+          <sub className={classes.error}>
+            {authData && authData.error ? authData.error : null}{" "}
+          </sub>
         ) : null}
         <Button
           type="submit"
@@ -133,21 +106,23 @@ export default function SignIn(props) {
           color="primary"
           className={classes.submit}
         >
-          Sign In
+          Reset password
         </Button>
+        </form>
+
         <Grid container>
           <Grid item xs>
-          <Button size="small" color="primary" onClick={props.reset}>
-              {"Reset password"}
+            <Button size="small" color="primary" onClick={props.signIn}>
+              {"Sign In"}
             </Button>
           </Grid>
-          <Grid item>
-            <Button size="small" color="primary" onClick={props.signUp}>
-              {"Sign Up"}
-            </Button>
-          </Grid>
+          <Grid item></Grid>
         </Grid>
-      </form>
+        </React.Fragment>
+      }
+       
+      
+      
     </Container>
   );
 }
