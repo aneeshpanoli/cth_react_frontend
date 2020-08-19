@@ -22,38 +22,39 @@ export default function TitleSubtitle({ selectedProject }) {
   const classes = useStyles();
 
   return (
-    <Box>
-      <Grid container >
-        <Grid item xs={12} sm={6} md={6}>
-          <Container maxWidth="sm" style={{marginTop:'5%'}}>
-            <h1 style={{ wordWrap: "break-word" }}>
+    <Box
+      className="project-grid"
+      style={{
+        backgroundImage: "url(" + ProjHero + ")",
+      }}
+    >
+      <Container>
+        <Grid container>
+          <Grid item xs={12} sm={7} md={7}>
+            <h1 style={{ wordWrap: "break-word", marginTop:"2%"}}>
               {selectedProject ? selectedProject._source.title : null}
             </h1>
             <h5 style={{ color: "grey" }}>
               {selectedProject ? selectedProject._source.subtitle : null}
             </h5>
             <AvatarIcon />
-          </Container>
-         
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          className="project-grid"
-          style={{
-            backgroundImage: "url(" + ProjHero + ")"          }}
-        >
-          <Container >
+          </Grid>
+
+          <Grid item xs={12} sm={5} md={5} align="right">
             <img
               alt="hero-img"
               src={coverImgUrl(selectedProject._source.image)}
-              style={{ height: "40vh", margin: "5%", boxShadow:'0px 0px 5px grey'}}
+              style={{
+                height: "40vh",
+                marginTop: "5%",
+                marginLeft: "5%",
+                marginBottom: "5%",
+                boxShadow: "0px 0px 5px grey",
+              }}
             ></img>
-          </Container>
+          </Grid>
         </Grid>
-      </Grid>
+      </Container>
     </Box>
   );
 }

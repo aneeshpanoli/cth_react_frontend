@@ -12,8 +12,8 @@ import IconButton from "@material-ui/core/IconButton";
 import EmailIcon from "@material-ui/icons/Email";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import Container from "@material-ui/core/Container";
-import Badge from '@material-ui/core/Badge';
-import ToolTips from '../menu/ToolTips'
+import Badge from "@material-ui/core/Badge";
+import ToolTips from "../menu/ToolTips";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import {
@@ -34,13 +34,14 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
     borderRadius: 10,
-    width:'12rem'
+    width: "12rem",
   },
   buttonRound: {
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.primary.main,
-    width: theme.spacing(7),
-    height: theme.spacing(7),
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+    margin: theme.spacing(2),
     "&:hover": {
       backgroundColor: theme.palette.secondary.light,
       color: "#000",
@@ -51,8 +52,6 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(5),
   },
 }));
-
-
 
 export default function MenuListComposition(props) {
   const classes = useStyles();
@@ -97,10 +96,10 @@ export default function MenuListComposition(props) {
         onClick={handleToggle}
         className={classes.buttonRound}
       >
-         <Badge color="secondary" badgeContent={500}>
-           <ToolTips title="Share with friends">
-        <ShareIcon className={classes.buttonIcon} />
-        </ToolTips>
+        <Badge color="secondary" badgeContent={0}>
+          <ToolTips title="Share with friends">
+            <ShareIcon className={classes.buttonIcon} />
+          </ToolTips>
         </Badge>
       </IconButton>
       <Popper
@@ -118,33 +117,47 @@ export default function MenuListComposition(props) {
                 placement === "bottom" ? "center top" : "center bottom",
             }}
           >
-           
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList
-                  autoFocusItem={open}
-                  id="menu-list-grow"
-                  onKeyDown={handleListKeyDown}
-                >
-                  <MenuItem onClick={handleClose} dense>
+            <ClickAwayListener onClickAway={handleClose}>
+              <MenuList
+                autoFocusItem={open}
+                id="menu-list-grow"
+                onKeyDown={handleListKeyDown}
+              >
+                <MenuItem onClick={handleClose} dense>
                   <Container className={classes.popShare}>
                     <EmailShareButton
                       url={window.location.href}
                       className={classes.buttonIcon}
+                      subject={props.selectedProject._source.title}
+                      body={"Hi, \nPlease check out this project from civictechhub.org"}
+                      separator={". "}
                     >
                       <EmailIcon color="primary" />
                     </EmailShareButton>
 
                     <FacebookShareButton
                       url={window.location.href}
-                      quote={"CivicTechHub"}
                       className={classes.buttonIcon}
+                      quote={
+                        props.selectedProject._source.title +
+                        ". " +
+                        props.selectedProject._source.subtitle
+                      }
                     >
                       <FacebookIcon />
                     </FacebookShareButton>
 
                     <TwitterShareButton
+                      title={props.selectedProject._source.title}
+                      hashtags={[
+                        "civictechhub",
+                        "openscience",
+                        "openinnovation",
+                        "FAIR",
+                      ]}
                       url={window.location.href}
                       className={classes.buttonIcon}
+                      related={["civictechhub"]}
                     >
                       <TwitterIcon />
                     </TwitterShareButton>
@@ -152,14 +165,16 @@ export default function MenuListComposition(props) {
                     <LinkedinShareButton
                       url={window.location.href}
                       className={classes.buttonIcon}
+                      title={props.selectedProject._source.title}
+                      summary={props.selectedProject._source.subtitle}
+                      source={"CivicTechHub"}
                     >
                       <LinkedInIcon />
                     </LinkedinShareButton>
-                    </Container>
-                  </MenuItem>
-                </MenuList>
-              </ClickAwayListener>
-           
+                  </Container>
+                </MenuItem>
+              </MenuList>
+            </ClickAwayListener>
           </Grow>
         )}
       </Popper>

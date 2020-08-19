@@ -11,18 +11,24 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-import StoyText from "./StoryText";
+import StoryText from "./StoryText";
 import ProjectLinks from "./ProjectLinks";
 import ProjectVideo from "./ProjectVideo";
 import ProjectTech from "./ProjectTech";
 import PostComment from "./PostComment";
 import ListComments from "./ListComments";
-import { Button } from "@material-ui/core";
+import { Button, IconButton } from "@material-ui/core";
 import MTSubmitForm from './MTSubmitForm'
 import Collapse from "@material-ui/core/Collapse";
 import Box from "@material-ui/core/Box";
 import { simpleQueryElasticsearch } from "../backend/AxiosRequest";
 import { MATCH_PROJ_ID } from "../backend/EsQueries";
+import throttle from "lodash.throttle";
+import AppBar from '@material-ui/core/AppBar';
+import Slide from '@material-ui/core/Slide';
+import Toolbar from '@material-ui/core/Toolbar';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,21 +38,34 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
   },
+  appBar:{
+    top: 'auto',
+    bottom: 0,
+  }
 }));
 
-export default function CenteredGrid() {
+export default function DashBoard() {
   const classes = useStyles();
   const history = useHistory();
+  const resourceRef = useRef(null)
+  const [slide, setSlide] = React.useState(false)
   const [currProject, setCurrProject] = React.useState();
   const [microtasks, setMicrotasks] = React.useState();
   const { selectedProject, authData, microtaskList } = useTrackedState();
   const [openForm, setOpenForm] = React.useState(false);
   let params = useParams();
   const dispatch = useDispatch();
+  const handleClose = () =>{
+    setSlide(false);
+  }
+  const fetchProj = (id, title) =>{
+    let query = MATCH_ID_TITLE(id, title);
+      queryEsById(query, dispatch, updateSelectedProject, history);
+  }
+
   useEffect(() => {
     if (!selectedProject) {
-      let query = MATCH_ID_TITLE(params.id, params.name.replace(/-/g, " "));
-      queryEsById(query, dispatch, updateSelectedProject, history);
+      fetchProj(params.id, params.name.replace(/-/g, " "))
     }else{
       const query = MATCH_PROJ_ID(selectedProject._id, "microtasks");
       simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
@@ -54,6 +73,21 @@ export default function CenteredGrid() {
     setCurrProject(selectedProject);
     
   }, [selectedProject]);
+  const handleScroll = throttle(() =>{
+    if (resourceRef){
+      if(resourceRef.current.getBoundingClientRect().top < window.innerHeight*1/2){
+        setSlide(true)
+      }else{
+        // setSlide(false)
+      }
+    }
+  }, 100)
+   React.useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(()=>{
     setMicrotasks(microtaskList);
@@ -68,7 +102,7 @@ export default function CenteredGrid() {
       {currProject ? (
         <React.Fragment>
           <TitleSubtitle selectedProject={currProject} />
-          <StoyText selectedProject={currProject} />
+          <StoryText selectedProject={currProject} fetchProj={fetchProj}/>
           <Container>
             <Grid container spacing={2}>
             <Grid item sm={12} md={12} xs={12}>
@@ -82,7 +116,7 @@ export default function CenteredGrid() {
               <MTSubmitForm openForm={handleOpenForm} selectedProject={selectedProject}/>
             </Grid>
             </Collapse>
-              <Grid item sm={12} md={12} xs={12}>
+              <Grid item sm={12} md={12} xs={12} ref={resourceRef}>
                 <h2>Resources</h2>
               </Grid>
               <Grid item sm={12} md={6} xs={12}>
@@ -118,6 +152,16 @@ export default function CenteredGrid() {
           </Container>
         </React.Fragment>
       ) : null}
+      <Slide in={slide} direction="up">
+     <AppBar position="fixed" color="secondary" className={classes.appBar}>
+     <Toolbar>
+       <h3>Do you like this project? </h3>
+       <br/>
+       <h6 style={{display:"none"}}>Your feedback will help us to identify the most promising projects. Thank you!</h6>
+      <IconButton onClick={handleClose}><CloseIcon /></IconButton> 
+     </Toolbar>
+     </AppBar>
+     </Slide>
     </Box>
   );
 }

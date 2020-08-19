@@ -17,6 +17,8 @@ import Link from "@material-ui/core/Link";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import Chip from "@material-ui/core/Chip";
 
 import { countries } from "./utils";
 
@@ -61,12 +63,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
     textTransform: "none",
     position: "absolute",
-    left: "50%",
+    left: "62%",
     textAlign: "middle",
     transform: `translateX(-50%)`,
-    bottom: "0.8rem",
-    width: "9rem",
-    height: "2.5rem",
+    // bottom: "0.8rem",
+    width: "8rem",
+    // height: "2.5rem",
   },
 }));
 
@@ -76,6 +78,19 @@ export default function ProjectCard({ r }) {
   const classes = useStyles();
   const [checked] = useState(true);
   const [mouseMoved, setMouseMoved] = useState(false);
+
+  const percentLikes = () => {
+    if (r._source.upvotes&&r._source.upvotes.length && r._source.downvotes&&r._source.downvotes.length) {
+      return (
+        r._source.upvotes.length /
+        (r._source.upvotes.length + r._source.downvotes.length)
+      )*100+"%";
+    } else if (r._source.upvotes&&r._source.upvotes.length || r._source.downvotes&&r._source.downvotes.length) {
+      return "100%";
+    }
+    return "0%";
+  };
+
   // console.log(r)
   const handleLearnmore = (selectedProject) => {
     if (selectedProject && !mouseMoved) {
@@ -169,6 +184,8 @@ export default function ProjectCard({ r }) {
               </Typography>
             </CardContent>
             <CardActions>
+              <Chip icon={<ThumbUpIcon />} label={percentLikes()} />
+
               <Button
                 variant="contained"
                 onClick={() => handleLearnmore(r)}

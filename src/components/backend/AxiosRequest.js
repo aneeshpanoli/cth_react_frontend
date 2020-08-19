@@ -212,7 +212,9 @@ export const updateProject = (
     .post(`/post/`, formData)
     .then((response) => {
       setTimeout(() => {
-        getUpdatedData();
+        if(getUpdatedData){
+        getUpdatedData()
+      }
         history.push(
           "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
         );
@@ -470,10 +472,11 @@ export const authSignup = (
       password2: password2,
     })
     .then((res) => {
+      dispatch(actionCallback({...authData, signUp:true}));
       return res;
     })
     .catch((err) => {
-      // console.log(err.response.data);
+      console.log(err.response.data);
       authData.error = err.response.data.email
         ? err.response.data.email[0]
         : err.response.data.password1[0];

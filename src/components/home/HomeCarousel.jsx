@@ -120,18 +120,18 @@ export default function SwipeToSlide(props) {
   const [categoryList, setCategoryList] = React.useState();
   const queryDatabase = (searchValue) => {
     // localStorage.removeItem(searchValue)
-    const localData = JSON.parse(localStorage.getItem(searchValue));
-    if(localData){
-      console.log('from local store')
-      setCategoryList(localData);
-      return
-    }
+    // const localData = JSON.parse(localStorage.getItem(searchValue));
+    // if(localData){
+    //   console.log('from local store')
+    //   setCategoryList(localData);
+    //   return
+    // }
     let query = MATCH(searchValue, "storyText", 10);
     esAxios
       .get(`/q/`, query)
       .then((response) => {
         setCategoryList(response.data.hits);
-        localStorage.setItem(searchValue, JSON.stringify(response.data.hits))
+        // localStorage.setItem(searchValue, JSON.stringify(response.data.hits))
       })
       .catch((error) => {
         // catch errors.

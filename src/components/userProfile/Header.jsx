@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(10),
     height: theme.spacing(10),
     backgroundColor: "Gainsboro",
+    position:'relative'
   },
 }));
 
@@ -51,7 +52,6 @@ export default function Header(props) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log(authData);
   React.useEffect(() => {
     setExpanded(!authData._source?false:false);
 
@@ -205,8 +205,9 @@ export default function Header(props) {
               sizes="5px"
               className={classes.avatar}
               // alt={authData.user ? authData.user.first_name : null}
-              src={avatar}
-            />
+            >
+               <img src={avatar} style={{position:'absolute', width: "5rem", height: "5rem", left:-4, top:5 }} />
+            </Avatar>
           </IconButton>
           <h4>
             {otherUserData

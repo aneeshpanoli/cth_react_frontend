@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(5),
     height: theme.spacing(5),
     fontWeight: 700,
-    backgroundColor:'Gainsboro'
+    backgroundColor: "Gainsboro",
   },
   paper: {
     marginRight: theme.spacing(3),
@@ -82,14 +82,28 @@ export default function AvatarButton() {
         aria-controls={open ? "menu-list-grow" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        style={{borderRadius:20}}
+        style={{ borderRadius: 20 }}
       >
         <Avatar
           variant="circle"
           className={classes.small}
           alt={authData && authData.user ? authData.user.first_name : null}
-          src= {authData&&authData._source&&authData._source.avatar?authData._source.avatar:undefined}
-        />
+        >
+          <img
+            src={
+              authData && authData._source && authData._source.avatar
+                ? authData._source.avatar
+                : undefined
+            }
+            style={{
+              position: "absolute",
+              width: "2.5rem",
+              height: "2.5rem",
+              left: -3,
+              top: 3,
+            }}
+          />
+        </Avatar>
       </IconButton>
       <Popper
         open={open}

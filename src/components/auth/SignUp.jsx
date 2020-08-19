@@ -112,7 +112,32 @@ export default function SignUp(props) {
 
   return (
     <Container component="main" maxWidth="xs">
-      {!open ? (
+      {authData&&authData.signUp&&authData.signUp === true ? (
+        <Grid container spacing={1} justify="center">
+          <Grid item
+            style={{
+              width: "100%",
+              height: "3rem",
+              textAlign: "center",
+              backgroundColor: "#061F71",
+              color: "white",
+              marginTop: '5rem'
+            }}
+          >
+            <h3>Confirm email</h3>
+          </Grid>
+          <Grid item>
+          <h5 style={{ fontWeight: 400, marginBottom: '3rem' }}>
+            We have sent an e-mail to you for verification. Follow the link
+            provided to finalize the signup process. Please contact us if you do
+            not receive it within a few minutes.
+          </h5>
+          </Grid>
+          <Grid item>
+            <Button variant='contained'  color="secondary" onClick={() => goBack(history)}>OK</Button>
+          </Grid>
+        </Grid>
+      ):(
         <React.Fragment>
           <Typography component="h1" variant="h5">
             Sign up
@@ -257,31 +282,6 @@ export default function SignUp(props) {
             </Grid>
           </form>
         </React.Fragment>
-      ) : (
-        <Grid container spacing={1} justify="center">
-          <Grid item
-            style={{
-              width: "100%",
-              height: "3rem",
-              textAlign: "center",
-              backgroundColor: "#061F71",
-              color: "white",
-              marginTop: '5rem'
-            }}
-          >
-            <h3>Confirm email</h3>
-          </Grid>
-          <Grid item>
-          <h5 style={{ fontWeight: 400, marginBottom: '3rem' }}>
-            We have sent an e-mail to you for verification. Follow the link
-            provided to finalize the signup process. Please contact us if you do
-            not receive it within a few minutes.
-          </h5>
-          </Grid>
-          <Grid item>
-            <Button variant='contained'  color="secondary" onClick={() => goBack(history)}>OK</Button>
-          </Grid>
-        </Grid>
       )}
     </Container>
   );

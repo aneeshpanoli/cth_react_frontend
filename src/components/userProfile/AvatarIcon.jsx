@@ -31,15 +31,14 @@ export default function AvatarIcon() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { selectedProject, otherUserData, authData } = useTrackedState();
-  
+
   const classes = useStyles();
 
   React.useEffect(() => {
-  //   console.log(otherUserData)
-  // console.log(authData)
-  // console.log(selectedProject)
+    //   console.log(otherUserData)
+    // console.log(authData)
+    // console.log(selectedProject)
     if (selectedProject && selectedProject._source.owners) {
-      
       getAnotherUserInfoElastic(
         authData,
         "id",
@@ -53,8 +52,8 @@ export default function AvatarIcon() {
   }, []);
   const claimProject = (action, es_data) => {
     let data = {
-      email:selectedProject._source.proof[1],
-      firstName:selectedProject._source.proof[2],
+      email: selectedProject._source.proof[1],
+      firstName: selectedProject._source.proof[2],
       status: action,
       index: selectedProject._index,
       id: selectedProject._id,
@@ -91,14 +90,14 @@ export default function AvatarIcon() {
   };
 
   const rejectClaim = () => {
-    claimProject('projectclaimreject',{
+    claimProject("projectclaimreject", {
       claimed: "no",
       owners: "",
     });
   };
 
   const approveClaim = () => {
-    claimProject('projectclaimapprove', {
+    claimProject("projectclaimapprove", {
       claimed: "yes",
       owners: selectedProject._source.claimed,
       claimApprovedAt: new Date(),
@@ -107,46 +106,56 @@ export default function AvatarIcon() {
     });
   };
 
-  
-
   return (
-    <Grid container alignItems="center" style={{marginBottom:'10%'}} >
-      <Grid item xs={3} sm={2} md={2} align='right'>
+    <Grid container alignItems="center" style={{ marginBottom: "10%" }}>
+      <Grid item xs={3} sm={2} md={2} align="right">
         <Button
           disabled={otherUserData ? false : true}
           onClick={handleProfile}
-          style={{ borderRadius: 50}}
+          style={{ borderRadius: 50 }}
         >
           <Avatar
             variant="circle"
             color="secondary"
             className={classes.project}
             alt={otherUserData ? otherUserData._source.first_name : null}
-            src={otherUserData&&otherUserData._source&&otherUserData._source.avatar?otherUserData._source.avatar:null}
-          />
+          >
+            {otherUserData &&
+            otherUserData._source &&
+            otherUserData._source.avatar ? (
+              <img
+                src={otherUserData._source.avatar}
+                style={{
+                  position: "absolute",
+                  width: "3rem",
+                  height: "3rem",
+                  left: -4,
+                  top: 5,
+                }}
+              />
+            ) : null}
+          </Avatar>
         </Button>
       </Grid>
       {selectedProject && otherUserData ? (
-        <Grid item xs={9} sm={10} md={10} align='left'>
+        <Grid item xs={9} sm={10} md={10} align="left">
           <div style={{ fontWeight: 400 }}>
             {otherUserData
-              ? otherUserData._source.first_name + " " + otherUserData._source.last_name
+              ? otherUserData._source.first_name +
+                " " +
+                otherUserData._source.last_name
               : "claim this project"}
           </div>
 
           <div style={{ fontWeight: 400, color: "grey" }}>
-            {"Last updated: "+parseToDays(selectedProject._source.updatedAt)}
+            {"Last updated: " + parseToDays(selectedProject._source.updatedAt)}
           </div>
         </Grid>
       ) : null}
       {selectedProject && !otherUserData ? (
-        <Grid item xs={9} sm={10} md={10} align='left'>
+        <Grid item xs={9} sm={10} md={10} align="left">
           <Button
-            disabled={
-              selectedProject._source.claimed !== "no"
-                ? true
-                : false
-            }
+            disabled={selectedProject._source.claimed !== "no" ? true : false}
             startIcon={<RedeemIcon />}
             disableElevation
             size="small"
@@ -156,11 +165,9 @@ export default function AvatarIcon() {
             onClick={handleClaim}
           >
             {" "}
-            {
-              selectedProject._source.claimed !== "no"
-                ? "Claim pending"
-                : "Claim this project"
-            }
+            {selectedProject._source.claimed !== "no"
+              ? "Claim pending"
+              : "Claim this project"}
           </Button>
         </Grid>
       ) : null}
@@ -170,7 +177,7 @@ export default function AvatarIcon() {
       authData._source.staff === "yes" &&
       !otherUserData &&
       selectedProject._source.claimed !== "no" ? (
-        <Grid item xs={9} sm={10} md={10} align='left'>
+        <Grid item xs={9} sm={10} md={10} align="left">
           <Button
             startIcon={<CheckCircleIcon />}
             disableElevation
@@ -178,7 +185,7 @@ export default function AvatarIcon() {
             color="primary"
             variant="outlined"
             style={{ textTransform: "none", borderRadius: 25 }}
-            onClick={() =>approveClaim()}
+            onClick={() => approveClaim()}
           >
             {" "}
             Approve claim

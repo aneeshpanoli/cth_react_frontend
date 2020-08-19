@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
   buttonRound: {
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.primary.main,
-    width: theme.spacing(7),
-    height: theme.spacing(7),
+    width: theme.spacing(6),
+    height: theme.spacing(6),
     "&:hover": {
       backgroundColor: theme.palette.secondary.light,
       color: "#000",
