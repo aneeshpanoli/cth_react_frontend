@@ -152,7 +152,7 @@ export default function ProjectForm() {
   const [open, setOpen] = React.useState(false);
   const [embed, setEmbed] = React.useState(null);
   const [image, setImage] = React.useState(null);
-  
+
   const [newChips, setNewChips] = React.useState(null);
   const [formValues, setFormValues] = React.useState({
     builtWith: [],

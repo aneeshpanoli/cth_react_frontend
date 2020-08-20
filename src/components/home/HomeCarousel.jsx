@@ -141,10 +141,8 @@ export default function SwipeToSlide(props) {
   };
 
   React.useEffect(() => {
-    if (categoryList === undefined || categoryList.length === 0) {
       queryDatabase(props.term);
-    }
-  }, []);
+  }, [props.term]);
 
   const queryEsDatabase = (searchValue) => {
     if (searchValue && searchValue.length > 1) {

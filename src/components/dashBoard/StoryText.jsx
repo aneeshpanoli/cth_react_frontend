@@ -99,7 +99,10 @@ export default function Header(props) {
     formData.append("params", JSON.stringify(data));
 
     const updateData = () =>
-      props.fetchProj(props.selectedProject._id, props.selectedProject._source.title);
+      props.fetchProj(
+        props.selectedProject._id,
+        props.selectedProject._source.title
+      );
     updateProject(
       formData,
       authData.key,
@@ -116,12 +119,7 @@ export default function Header(props) {
       id: props.selectedProject._id,
       q: {
         script: {
-          source:
-            "ctx._source." +
-            field1 +
-            ".add(params." +
-            field1 +
-            ")",
+          source: "ctx._source." + field1 + ".add(params." + field1 + ")",
           lang: "painless",
           params: {
             [field1]: authData._source.id,
@@ -142,12 +140,32 @@ export default function Header(props) {
   };
 
   const handleUpvote = () => {
-    removeVotes("downvotes");
+    if (!authData.isAuthenticated) {
+      history.push("/sign-in");
+      return;
+    }
+    if (
+      props.selectedProject._source.downvotes &&
+      props.selectedProject._source.downvotes.includes(authData._source.id)
+    ) {
+      removeVotes("downvotes");
+    }
+
     addVotes("upvotes");
   };
 
   const handleDownvote = () => {
-    removeVotes("upvotes");
+    if (!authData.isAuthenticated) {
+      history.push("/sign-in");
+      return;
+    }
+    if (
+      props.selectedProject._source.upvotes &&
+      props.selectedProject._source.upvotes.includes(authData._source.id)
+    ) {
+      removeVotes("upvotes");
+    }
+
     addVotes("downvotes");
   };
   // console.log(props.selectedProject)
@@ -185,15 +203,17 @@ export default function Header(props) {
                 <ArrowBackIcon className={classes.buttonIcon} />
               </IconButton>
 
-              <Badge color="secondary" badgeContent={0}>
+              <Badge
+                color="secondary"
+                badgeContent={0}
+                anchorOrigin={{ horizontal: "left", vertical: "top" }}
+              >
                 <ButtonGroup
                   disableElevation
                   variant="contained"
                   color="primary"
                 >
-                  <ToolTips
-                    title={"Upvote"}
-                  >
+                  <ToolTips title={"Upvote"}>
                     <IconButton
                       aria-label="Upvote"
                       className={classes.buttonTup}
@@ -220,7 +240,9 @@ export default function Header(props) {
             </Grid>
             <Grid item md={12} sm={12} xs={12}>
               {parseHtml(
-                props.selectedProject ? props.selectedProject._source.storyText : null
+                props.selectedProject
+                  ? props.selectedProject._source.storyText
+                  : null
               )}
             </Grid>
           </Grid>

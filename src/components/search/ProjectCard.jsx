@@ -80,12 +80,23 @@ export default function ProjectCard({ r }) {
   const [mouseMoved, setMouseMoved] = useState(false);
 
   const percentLikes = () => {
-    if (r._source.upvotes&&r._source.upvotes.length && r._source.downvotes&&r._source.downvotes.length) {
+    if (
+      r._source.upvotes &&
+      r._source.upvotes.length &&
+      r._source.downvotes &&
+      r._source.downvotes.length
+    ) {
       return (
-        r._source.upvotes.length /
-        (r._source.upvotes.length + r._source.downvotes.length)
-      )*100+"%";
-    } else if (r._source.upvotes&&r._source.upvotes.length || r._source.downvotes&&r._source.downvotes.length) {
+       Math.round((r._source.upvotes.length /
+          (r._source.upvotes.length + r._source.downvotes.length)) *
+          100) +
+        "%"
+      );
+    } else if (
+      r._source.upvotes &&
+      r._source.upvotes.length &&
+      (!r._source.downvotes || !r._source.downvotes.length)
+    ) {
       return "100%";
     }
     return "0%";

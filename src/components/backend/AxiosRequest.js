@@ -250,6 +250,26 @@ export const updateUser = (
     });
 };
 
+export const updateUserInterests = (
+  formData,
+  token,
+  getUpdatedData
+) => {
+  const postpostAuthAxios = postPostAuthAxios(`Token ${token}`);
+  postpostAuthAxios
+    .post(`/post/`, formData)
+    .then((response) => {
+      setTimeout(() => {
+        if(getUpdatedData){
+          getUpdatedData()
+        }}, 1000);
+    })
+    .catch((error) => {
+      // catch errors.
+      console.log(error);
+    });
+};
+
 export const createDocFeedback = (doc) => {
   // console.log(doc);
   preAuthAxios
@@ -324,6 +344,7 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
         dispatch(actionCallback(authData));
         sessionStorage.setItem("authData", JSON.stringify(authData));
       }
+      dispatch(updateProgress(false))
     })
     .catch((error) => {
       // catch errors.
