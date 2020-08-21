@@ -13,6 +13,8 @@ export const themeDict = {
         dark: '#8DAEC2',
         contrastText: '#000',
       },
+      danger: "#AD2A1A",
+      safe:"#829356"
     },
 
   }

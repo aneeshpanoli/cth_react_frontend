@@ -7,7 +7,6 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import TuneIcon from "@material-ui/icons/Tune";
 import { Button, IconButton } from "@material-ui/core";
-import SettingsIcon from "@material-ui/icons/Settings";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
 import { useHistory } from "react-router-dom";
 import Collapse from "@material-ui/core/Collapse";
@@ -15,9 +14,11 @@ import CloseIcon from "@material-ui/icons/Close";
 import ChipInput from "material-ui-chip-input";
 import { toTitleCase } from "../js/utils";
 import ProgressBar from "../search/ProgressBar";
-import { updateOtherUserData, updateAuthData, updateProgress } from "../redux/actions";
 import {
-  getAnotherUserInfoElastic,
+  updateAuthData,
+  updateProgress,
+} from "../redux/actions";
+import {
   updateUserInterests,
   getUserInfoElastic,
 } from "../backend/AxiosRequest";
@@ -76,7 +77,7 @@ export default function FeaturedProjects() {
     tags: [],
     disabled: true,
   });
-  const baseCats =[
+  const baseCats = [
     "Masks",
     "Telehealth",
     "Artificial Intelligence",
@@ -90,7 +91,7 @@ export default function FeaturedProjects() {
     "Distance Learning",
     "Bioinformatics",
     "Databases",
-  ]
+  ];
   const [categories, setCategories] = React.useState(baseCats);
   const handleMore = () => {
     setPageNum(pageNum + 3);
@@ -102,18 +103,20 @@ export default function FeaturedProjects() {
       history.push("/sign-in");
       return;
     }
-    setFormValues({tags:authData._source.interests, disabled:true})
+    setFormValues({ tags: authData._source.interests, disabled: true });
     setGrow(true);
   };
 
   const handleDeleteChip = (chip, objProp) => {
     let newArr = [...formValues[objProp]].filter((item) => item !== chip);
-    setFormValues(Object.assign({}, formValues, { [objProp]: newArr , disabled:false}));
+    setFormValues(
+      Object.assign({}, formValues, { [objProp]: newArr, disabled: false })
+    );
   };
 
   const handleChange = (field, values) => {
     // copy new values to formValues
-    setFormValues({ ...formValues, [field]: values, disabled:false});
+    setFormValues({ ...formValues, [field]: values, disabled: false });
   };
 
   const saveInterests = () => {
@@ -142,20 +145,17 @@ export default function FeaturedProjects() {
     setGrow(false);
   };
 
-  React.useEffect(
-    () =>{
-    if(authData._source&&authData._source.interests.length>0){
-    
-    //  setFormValues({tags:authData._source.interests, disabled:true})
-     setCategories(authData._source.interests)
-    }else{
-      setCategories(baseCats)
+  React.useEffect(() => {
+    if (authData._source && authData._source.interests.length > 0) {
+      //  setFormValues({tags:authData._source.interests, disabled:true})
+      setCategories(authData._source.interests);
+    } else {
+      setCategories(baseCats);
     }
-    if(!authData.isAuthenticated){
+    if (!authData.isAuthenticated) {
       setGrow(false);
     }
-    },[authData]
-  );
+  }, [authData]);
 
   return (
     <Box>
@@ -164,7 +164,7 @@ export default function FeaturedProjects() {
           <Grid item xs={12} sm={6} md={9}>
             <h3 style={{ fontWeight: 700 }}>FEATURED PROJECTS</h3>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={3} align="right">
             <Button
               onClick={handlePersonalize}
               startIcon={<TuneIcon />}
@@ -178,7 +178,7 @@ export default function FeaturedProjects() {
         <Collapse in={grow}>
           <Grid container>
             <Grid item xs={6} sm={6} md={9}>
-              Enter your interests.
+              Enter your interests to personalize the homepage feed.
             </Grid>
             <Grid item xs={6} sm={6} md={3} align="right">
               <IconButton onClick={() => setGrow(false)} color="primary">
@@ -192,7 +192,7 @@ export default function FeaturedProjects() {
                   chip: classes.chip,
                 }}
                 fullWidth
-                label="Press enter to add more"
+                label="Tap enter to add more"
                 onAdd={(chip) => {
                   handleChange(
                     "tags",
@@ -203,8 +203,15 @@ export default function FeaturedProjects() {
               />
             </Grid>
             <Grid item xs={12} sm={12} md={12} align="right">
-            <Button disabled={formValues.disabled} onClick={handlePersonalize}>Cancel</Button>
-              <Button disabled={formValues.disabled} onClick={handleSave}>Save</Button>
+              <Button
+                disabled={formValues.disabled}
+                onClick={handlePersonalize}
+              >
+                Cancel
+              </Button>
+              <Button disabled={formValues.disabled} onClick={handleSave}>
+                Save
+              </Button>
             </Grid>
           </Grid>
         </Collapse>

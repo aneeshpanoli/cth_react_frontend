@@ -119,7 +119,6 @@ history
 };
 
 export const simpleQueryElasticsearch = (query, dispatch, actionCallback) => {
-  dispatch(updateProgress(true));
   // update the search project list
 
   esAxios
@@ -215,9 +214,10 @@ export const updateProject = (
         if(getUpdatedData){
         getUpdatedData()
       }
+      if(history){
         history.push(
           "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
-        );
+        );}
       }, 2000);
     })
     .catch((error) => {

@@ -11,9 +11,7 @@ import Divider from "@material-ui/core/Divider";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
-import { queryElasticsearch } from "../backend/AxiosRequest";
-import { useDispatch } from "reactive-react-redux";
-import { updateProjectList, updateProgress } from "../redux/actions";
+
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -59,7 +57,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-export default function SwipeToSlide(props) {
+export default function HomeCarousel(props) {
   const settings = {
     className: "center",
     infinite: true,
@@ -115,53 +113,27 @@ export default function SwipeToSlide(props) {
     ],
   };
 
-  const dispatch = useDispatch();
 
-  const [categoryList, setCategoryList] = React.useState();
+  const [projList, setProjList] = React.useState();
+  React.useEffect(() => {
+    queryDatabase(props.term);
+  }, [props]);
   const queryDatabase = (searchValue) => {
-    // localStorage.removeItem(searchValue)
-    // const localData = JSON.parse(localStorage.getItem(searchValue));
-    // if(localData){
-    //   console.log('from local store')
-    //   setCategoryList(localData);
-    //   return
-    // }
     let query = MATCH(searchValue, "storyText", 10);
     esAxios
       .get(`/q/`, query)
       .then((response) => {
-        setCategoryList(response.data.hits);
-        // localStorage.setItem(searchValue, JSON.stringify(response.data.hits))
+        setProjList(response.data.hits);
       })
       .catch((error) => {
         // catch errors.
         console.log(error);
-        return error;
       });
-  };
-
-  React.useEffect(() => {
-      queryDatabase(props.term);
-  }, [props.term]);
-
-  const queryEsDatabase = (searchValue) => {
-    if (searchValue && searchValue.length > 1) {
-      dispatch(updateProgress(true));
-      // send to axios
-      let query = MATCH(searchValue, "storyText", 100);
-      queryElasticsearch(
-        searchValue,
-        query,
-        dispatch,
-        updateProjectList,
-        props.redirect
-      );
-    }
   };
 
   return (
     <React.Fragment>
-      {categoryList && categoryList[0] ? (
+      {projList && projList[0] ? (
         <React.Fragment>
           <Divider style={{ height: "3px" }} />
           <Container>
@@ -201,7 +173,7 @@ export default function SwipeToSlide(props) {
           <Grid item xs={12}>
             <Container>
               <Slider {...settings}>
-                {categoryList.map((r, i) => (
+                {projList.map((r, i) => (
                   <ProjectCard key={i} r={r} />
                 ))}
               </Slider>

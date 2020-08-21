@@ -18,6 +18,7 @@ import Grid from "@material-ui/core/Grid";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { queryEsById, updateProject } from "../backend/AxiosRequest";
 import { updateSelectedProject } from "../redux/actions";
+import { red, green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +41,22 @@ const useStyles = makeStyles((theme) => ({
       color: "#000",
     },
   },
+  redButton: {
+   
+    color: theme.palette.danger,
+    backgroundColor: theme.palette.secondary.light,
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.light,
+    },
+  },
+  greenButton: {
+   
+    color: theme.palette.safe,
+    backgroundColor: theme.palette.secondary.light,
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.light,
+    },
+  },
   buttonTup: {
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.primary.main,
@@ -47,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(6),
     "&:hover": {
       backgroundColor: theme.palette.secondary.light,
-      color: "green",
+      color: theme.palette.safe,
     },
   },
   buttonTdown: {
@@ -57,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(6),
     "&:hover": {
       backgroundColor: theme.palette.secondary.light,
-      color: "red",
+      color: theme.palette.danger,
     },
   },
 
@@ -106,7 +123,7 @@ export default function Header(props) {
     updateProject(
       formData,
       authData.key,
-      history,
+      null,
       props.selectedProject._source.title,
       updateData
     );
@@ -133,7 +150,7 @@ export default function Header(props) {
     updateProject(
       formData,
       authData.key,
-      history,
+      null,
       props.selectedProject._source.title,
       null
     );
@@ -151,7 +168,12 @@ export default function Header(props) {
       removeVotes("downvotes");
     }
 
-    addVotes("upvotes");
+    if (
+      props.selectedProject._source.upvotes &&
+      !props.selectedProject._source.upvotes.includes(authData._source.id)
+    ) {
+      addVotes("upvotes");
+    }
   };
 
   const handleDownvote = () => {
@@ -165,8 +187,12 @@ export default function Header(props) {
     ) {
       removeVotes("upvotes");
     }
-
-    addVotes("downvotes");
+    if (
+      props.selectedProject._source.downvotes &&
+      !props.selectedProject._source.downvotes.includes(authData._source.id)
+    ) {
+      addVotes("downvotes");
+    }
   };
   // console.log(props.selectedProject)
 
@@ -212,20 +238,39 @@ export default function Header(props) {
                   disableElevation
                   variant="contained"
                   color="primary"
+                  disabled={
+                    authData._source.id === props.selectedProject._source.owners
+                  }
                 >
-                  <ToolTips title={"Upvote"}>
+                  <ToolTips title={props.selectedProject._source.upvotes&&props.selectedProject._source.upvotes.includes(
+                          authData._source.id
+                        )?"You upvoted this":"Upvote"}>
                     <IconButton
                       aria-label="Upvote"
-                      className={classes.buttonTup}
+                      className={
+                        props.selectedProject._source.upvotes&&!props.selectedProject._source.upvotes.includes(
+                          authData._source.id
+                        )
+                          ? `${classes.buttonTup}`
+                          : `${classes.greenButton}`
+                      }
                       onClick={handleUpvote}
                     >
                       <ThumbUpIcon />
                     </IconButton>
                   </ToolTips>
-                  <ToolTips title={"Downvote"}>
+                  <ToolTips title={props.selectedProject._source.downvotes&&props.selectedProject._source.downvotes.includes(
+                          authData._source.id
+                        )?"You downvoted this":"Downvote"}>
                     <IconButton
                       aria-label="add to favorites"
-                      className={classes.buttonTdown}
+                      className={
+                        props.selectedProject._source.downvotes&&!props.selectedProject._source.downvotes.includes(
+                          authData._source.id
+                        )
+                          ? `${classes.buttonTdown}`
+                          : `${classes.redButton}`
+                      }
                       onClick={handleDownvote}
                     >
                       <ThumbDownIcon />
