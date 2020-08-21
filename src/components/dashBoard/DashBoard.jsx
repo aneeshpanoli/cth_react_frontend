@@ -6,7 +6,7 @@ import { queryEsById } from "../backend/AxiosRequest";
 import { updateSelectedProject, updateMicrotaskList } from "../redux/actions";
 import TitleSubtitle from "./TitleSubtitle";
 import Container from "@material-ui/core/Container";
-import MTCarousel from './MTCarousel'
+import MTCarousel from "./MTCarousel";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -18,17 +18,16 @@ import ProjectTech from "./ProjectTech";
 import PostComment from "./PostComment";
 import ListComments from "./ListComments";
 import { Button, IconButton } from "@material-ui/core";
-import MTSubmitForm from './MTSubmitForm'
+import MTSubmitForm from "./MTSubmitForm";
 import Collapse from "@material-ui/core/Collapse";
 import Box from "@material-ui/core/Box";
 import { simpleQueryElasticsearch } from "../backend/AxiosRequest";
 import { MATCH_PROJ_ID } from "../backend/EsQueries";
 import throttle from "lodash.throttle";
-import AppBar from '@material-ui/core/AppBar';
-import Slide from '@material-ui/core/Slide';
-import Toolbar from '@material-ui/core/Toolbar';
-import CloseIcon from '@material-ui/icons/Close';
-
+import AppBar from "@material-ui/core/AppBar";
+import Slide from "@material-ui/core/Slide";
+import Toolbar from "@material-ui/core/Toolbar";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,84 +37,97 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
   },
-  appBar:{
-    top: 'auto',
+  appBar: {
+    top: "auto",
     bottom: 0,
-  }
+  },
 }));
 
 export default function DashBoard() {
   const classes = useStyles();
   const history = useHistory();
-  const resourceRef = useRef(null)
-  const [slide, setSlide] = React.useState(false)
+  const resourceRef = useRef(null);
+  const [slide, setSlide] = React.useState(false);
   const [currProject, setCurrProject] = React.useState();
   const [microtasks, setMicrotasks] = React.useState();
   const { selectedProject, authData, microtaskList } = useTrackedState();
   const [openForm, setOpenForm] = React.useState(false);
+  const [isFeedback, setIsFeedback] = React.useState(true)
   let params = useParams();
   const dispatch = useDispatch();
-  const handleClose = () =>{
+  const handleClose = () => {
     setSlide(false);
-  }
-  const fetchProj = (id, title) =>{
+  };
+  const fetchProj = (id, title) => {
     let query = MATCH_ID_TITLE(id, title);
-      queryEsById(query, dispatch, updateSelectedProject, history);
-  }
+    queryEsById(query, dispatch, updateSelectedProject, history);
+  };
 
   useEffect(() => {
     if (!selectedProject) {
-      fetchProj(params.id, params.name.replace(/-/g, " "))
-    }else{
+      fetchProj(params.id, params.name.replace(/-/g, " "));
+    } else {
       const query = MATCH_PROJ_ID(selectedProject._id, "microtasks");
       simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
     }
     setCurrProject(selectedProject);
-    
+    setIsFeedback(selectedProject?
+      !selectedProject._source.upvotes.includes(authData._source.id) &&
+      !selectedProject._source.downvotes.includes(authData._source.id):null);
   }, [selectedProject]);
-  const handleScroll = throttle(() =>{
-    if (resourceRef){
-      if(resourceRef.current.getBoundingClientRect().top < window.innerHeight*1/2){
-        setSlide(true)
-      }else{
+  const handleScroll = throttle(() => {
+    
+    if (resourceRef && isFeedback) {
+      if (
+        resourceRef.current.getBoundingClientRect().top <
+        (window.innerHeight * 1) / 2
+      ) {
+        setSlide(true);
+      } else {
         // setSlide(false)
       }
     }
-  }, 100)
-   React.useEffect(() => {
+  }, 100);
+  React.useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     setMicrotasks(microtaskList);
-  }, [microtaskList])
+  }, [microtaskList]);
 
   const handleOpenForm = () => {
-    setOpenForm(!openForm)
-  }
+    setOpenForm(!openForm);
+  };
 
   return (
     <Box>
       {currProject ? (
         <React.Fragment>
           <TitleSubtitle selectedProject={currProject} />
-          <StoryText selectedProject={currProject} fetchProj={fetchProj}/>
+          <StoryText selectedProject={currProject} fetchProj={fetchProj} />
           <Container>
             <Grid container spacing={2}>
-            <Grid item sm={12} md={12} xs={12}>
+              <Grid item sm={12} md={12} xs={12}>
                 <h2>Microtasks</h2>
               </Grid>
-            <Grid item sm={12} md={12} xs={12}>
-                <MTCarousel microtaskList={microtaskList} openForm={handleOpenForm} />
+              <Grid item sm={12} md={12} xs={12}>
+                <MTCarousel
+                  microtaskList={microtaskList}
+                  openForm={handleOpenForm}
+                />
               </Grid>
               <Collapse in={openForm} timeout="auto" unmountOnExit>
-              <Grid item sm={12} md={12} xs={12}>
-              <MTSubmitForm openForm={handleOpenForm} selectedProject={selectedProject}/>
-            </Grid>
-            </Collapse>
+                <Grid item sm={12} md={12} xs={12}>
+                  <MTSubmitForm
+                    openForm={handleOpenForm}
+                    selectedProject={selectedProject}
+                  />
+                </Grid>
+              </Collapse>
               <Grid item sm={12} md={12} xs={12} ref={resourceRef}>
                 <h2>Resources</h2>
               </Grid>
@@ -152,16 +164,27 @@ export default function DashBoard() {
           </Container>
         </React.Fragment>
       ) : null}
+      {isFeedback?
       <Slide in={slide} direction="up">
-     <AppBar position="fixed" color="secondary" className={classes.appBar}>
-     <Toolbar>
-       <h3>Do you like this project? </h3>
-       <br/>
-       <h6 style={{display:"none"}}>Your feedback will help us to identify the most promising projects. Thank you!</h6>
-      <IconButton onClick={handleClose}><CloseIcon /></IconButton> 
-     </Toolbar>
-     </AppBar>
-     </Slide>
+        <AppBar position="fixed" color="secondary" className={classes.appBar}>
+          <Toolbar>
+            <Container>
+              <Grid container spacing={2}>
+                <Grid item sm={6} md={6} xs={12}>
+                  <h3>Do you like this project? </h3>
+                </Grid>
+                <Grid item sm={6} md={6} xs={12}>
+                  Your feedback will help us to identify the most promising
+                  projects. Thank you!
+                </Grid>
+              </Grid>
+            </Container>
+            <IconButton onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      </Slide>:null}
     </Box>
   );
 }

@@ -147,12 +147,17 @@ export default function Header(props) {
     let formData = new FormData();
 
     formData.append("params", JSON.stringify(data));
+    const updateData = () =>
+    props.fetchProj(
+      props.selectedProject._id,
+      props.selectedProject._source.title
+    );
     updateProject(
       formData,
       authData.key,
       null,
       props.selectedProject._source.title,
-      null
+      updateData
     );
   };
 
