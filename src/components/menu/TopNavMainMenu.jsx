@@ -28,10 +28,12 @@ export default function AlertDialogSlide() {
     if (authData.isAuthenticated) {
       history.push(path);
       return;
+    }else{
+      history.push("/sign-in")
     }
-    enqueueSnackbar("Please Sign in to create project!", {
-      variant: "error",
-    });
+    // enqueueSnackbar("Please Sign in to create project!", {
+    //   variant: "error",
+    // });
   };
   const handleOnClick = (path) => {
     history.push(path);
@@ -69,14 +71,14 @@ export default function AlertDialogSlide() {
           </Button>
         </DialogTitle>
 
-        <DialogActions>
+        {/* <DialogActions>
           <MenuButton
             startIcon={<HomeIcon />}
             onClick={() => handleOnClick("/")}
           >
             Home
           </MenuButton>
-        </DialogActions>
+        </DialogActions> */}
         <DialogActions>
           <MenuButton
             startIcon={<AddIcon />}

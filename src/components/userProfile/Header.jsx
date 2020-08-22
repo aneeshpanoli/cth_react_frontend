@@ -160,10 +160,10 @@ export default function Header(props) {
       status: "userupdates",
       index: "user_data",
       id: authData._id,
-      q: {
+      q: {doc:{
         avatar: newAvatar,
         lastUpdatedAt: new Date(),
-      },
+      }},
     };
     let formData = new FormData();
 

@@ -57,7 +57,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-export default function HomeCarousel(props) {
+export default function HomeCarousel({term}) {
   const settings = {
     className: "center",
     infinite: true,
@@ -116,8 +116,8 @@ export default function HomeCarousel(props) {
 
   const [projList, setProjList] = React.useState();
   React.useEffect(() => {
-    queryDatabase(props.term);
-  }, [props]);
+    queryDatabase(term);
+  }, [term]);
   const queryDatabase = (searchValue) => {
     let query = MATCH(searchValue, "storyText", 10);
     esAxios
@@ -149,13 +149,13 @@ export default function HomeCarousel(props) {
               </Grid>
 
               <Grid item sm={8} xs={8} md={8} align="left">
-                <h4>{props.term}</h4>
+                <h4>{term}</h4>
               </Grid>
               <Grid item sm={4} xs={4} md={4} align="right">
                 <Link
                   to={(location) => ({
                     ...location,
-                    pathname: "/search/" + props.term,
+                    pathname: "/search/" + term,
                   })}
                   style={{
                     textDecoration: "none",
@@ -184,7 +184,7 @@ export default function HomeCarousel(props) {
         <React.Fragment>
           <Container>
             {/* <sup>Category</sup> */}
-            <h4>{props.term}</h4>
+            <h4>{term}</h4>
           </Container>
           <Grid item xs={12}>
             <Container>

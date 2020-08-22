@@ -89,9 +89,11 @@ export default function AvatarIcon() {
       email: authData.user.email,
       firstName: authData.user.firstName,
       q: {
+        doc:{
         claimed: authData.user.id,
         claimedAt: new Date(),
         proof: [values.proof, values.email, authData._source.firstName],
+        }
       },
     };
     let formData = new FormData();

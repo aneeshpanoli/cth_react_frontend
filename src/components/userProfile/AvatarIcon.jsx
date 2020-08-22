@@ -90,20 +90,20 @@ export default function AvatarIcon() {
   };
 
   const rejectClaim = () => {
-    claimProject("projectclaimreject", {
+    claimProject("projectclaimreject", {doc:{
       claimed: "no",
       owners: "",
-    });
+    }});
   };
 
   const approveClaim = () => {
-    claimProject("projectclaimapprove", {
+    claimProject("projectclaimapprove", {doc:{
       claimed: "yes",
       owners: selectedProject._source.claimed,
       claimApprovedAt: new Date(),
       createdAt: new Date(),
       updatedAt: new Date(),
-    });
+    }});
   };
 
   return (

@@ -244,16 +244,16 @@ export default function Header(props) {
                   variant="contained"
                   color="primary"
                   disabled={
-                    authData._source.id === props.selectedProject._source.owners
+                    authData._source&&authData._source.id === props.selectedProject._source.owners
                   }
                 >
-                  <ToolTips title={props.selectedProject._source.upvotes&&props.selectedProject._source.upvotes.includes(
+                  <ToolTips title={authData._source&&props.selectedProject._source.upvotes&&props.selectedProject._source.upvotes.includes(
                           authData._source.id
                         )?"You upvoted this":"Upvote"}>
                     <IconButton
                       aria-label="Upvote"
                       className={
-                        props.selectedProject._source.upvotes&&!props.selectedProject._source.upvotes.includes(
+                        authData._source&&props.selectedProject._source.upvotes&&!props.selectedProject._source.upvotes.includes(
                           authData._source.id
                         )
                           ? `${classes.buttonTup}`
@@ -264,13 +264,13 @@ export default function Header(props) {
                       <ThumbUpIcon />
                     </IconButton>
                   </ToolTips>
-                  <ToolTips title={props.selectedProject._source.downvotes&&props.selectedProject._source.downvotes.includes(
+                  <ToolTips title={authData._source&&props.selectedProject._source.downvotes&&props.selectedProject._source.downvotes.includes(
                           authData._source.id
                         )?"You downvoted this":"Downvote"}>
                     <IconButton
                       aria-label="add to favorites"
                       className={
-                        props.selectedProject._source.downvotes&&!props.selectedProject._source.downvotes.includes(
+                        authData._source&&props.selectedProject._source.downvotes&&!props.selectedProject._source.downvotes.includes(
                           authData._source.id
                         )
                           ? `${classes.buttonTdown}`

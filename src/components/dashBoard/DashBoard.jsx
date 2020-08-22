@@ -71,7 +71,7 @@ export default function DashBoard() {
       simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
     }
     setCurrProject(selectedProject);
-    setIsFeedback(selectedProject?
+    setIsFeedback(authData._source&&selectedProject&&selectedProject._source.upvotes?
       !selectedProject._source.upvotes.includes(authData._source.id) &&
       !selectedProject._source.downvotes.includes(authData._source.id):null);
   }, [selectedProject]);

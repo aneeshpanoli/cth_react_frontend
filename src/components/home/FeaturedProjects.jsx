@@ -74,7 +74,7 @@ export default function FeaturedProjects() {
   const history = useHistory();
   const [grow, setGrow] = React.useState(false);
   const [formValues, setFormValues] = React.useState({
-    tags: [],
+    interests: [],
     disabled: true,
   });
   const baseCats = [
@@ -99,12 +99,13 @@ export default function FeaturedProjects() {
   };
   React.useEffect(() => setProgress(isProgress), [isProgress]);
   const handlePersonalize = () => {
-    if (!authData.isAuthenticated) {
+    if (!authData._source&&!authData.isAuthenticated) {
       history.push("/sign-in");
       return;
-    }
-    setFormValues({ tags: authData._source.interests, disabled: true });
+    }else if(authData._source && authData._source.interests.length > 0){
+    setFormValues({ interests: authData._source.interests, disabled: true });
     setGrow(true);
+    }
   };
 
   const handleDeleteChip = (chip, objProp) => {
@@ -114,7 +115,7 @@ export default function FeaturedProjects() {
     );
   };
 
-  const handleChange = (field, values) => {
+  const handleAddChip = (field, values) => {
     // copy new values to formValues
     setFormValues({ ...formValues, [field]: values, disabled: false });
   };
@@ -124,10 +125,11 @@ export default function FeaturedProjects() {
       status: "userupdates",
       index: "user_data",
       id: authData._id,
-      q: {
-        interests: formValues.tags,
+      q: {doc:{
+        interests: formValues.interests,
         lastUpdatedAt: new Date(),
-      },
+      }
+    },
     };
     let formData = new FormData();
 
@@ -140,14 +142,14 @@ export default function FeaturedProjects() {
 
   const handleSave = () => {
     dispatch(updateProgress(true));
-    // setCategories(formValues.tags);
+    // setCategories(formValues.interests);
     saveInterests();
     setGrow(false);
   };
 
   React.useEffect(() => {
     if (authData._source && authData._source.interests.length > 0) {
-      //  setFormValues({tags:authData._source.interests, disabled:true})
+      //  setFormValues({interests:authData._source.interests, disabled:true})
       setCategories(authData._source.interests);
     } else {
       setCategories(baseCats);
@@ -187,19 +189,19 @@ export default function FeaturedProjects() {
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
               <ChipInput
-                value={formValues.tags}
+                value={formValues.interests}
                 classes={{
                   chip: classes.chip,
                 }}
                 fullWidth
                 label="Tap enter to add more"
                 onAdd={(chip) => {
-                  handleChange(
-                    "tags",
-                    [...formValues.tags].concat([toTitleCase(chip)])
+                  handleAddChip(
+                    "interests",
+                    [...formValues.interests].concat([toTitleCase(chip)])
                   );
                 }}
-                onDelete={(chip, index) => handleDeleteChip(chip, "tags")}
+                onDelete={(chip, index) => handleDeleteChip(chip, "interests")}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={12} align="right">
@@ -216,10 +218,10 @@ export default function FeaturedProjects() {
           </Grid>
         </Collapse>
       </Container>
-      {categories.slice(0, pageNum).map((r, i) => (
+      {categories.slice(0, pageNum).map((cat, i) => (
         <Box key={i} ref={topDiv}>
           <Grid container spacing={2}>
-            <HomeCorousel term={r} />
+            <HomeCorousel term={cat} />
           </Grid>
         </Box>
       ))}

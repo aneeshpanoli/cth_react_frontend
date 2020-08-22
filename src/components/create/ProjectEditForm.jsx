@@ -250,7 +250,7 @@ export default function ProjectEditForm() {
       status: "projectupdate",
       index: selectedProject._index,
       id: selectedProject._id,
-      q: formValues,
+      q: {doc:formValues},
     };
     let formData = new FormData();
 

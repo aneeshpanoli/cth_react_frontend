@@ -259,6 +259,7 @@ export const updateUserInterests = (
   postpostAuthAxios
     .post(`/post/`, formData)
     .then((response) => {
+      console.log(response)
       setTimeout(() => {
         if(getUpdatedData){
           getUpdatedData()
