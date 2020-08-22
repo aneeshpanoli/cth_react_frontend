@@ -22,6 +22,7 @@ export default function UserMain() {
   const params = useParams();
   // console.log(params.user);
   const { authData, otherUserData } = useTrackedState();
+  const [userExist, setUserExist] = React.useState(true)
 
   const sSignIn = () => {
     fbSignin(token, authData, dispatch, updateAuthData);
@@ -35,6 +36,13 @@ export default function UserMain() {
       updateOtherUserData
     );
   }, [params.user]);
+
+  React.useEffect(() =>{
+    const timer = setTimeout(() => {
+      setUserExist(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  })
 
   const getUserOwnChallenges = () => {
     if (otherUserData && otherUserData._source.id) {
@@ -70,7 +78,8 @@ export default function UserMain() {
         </Grid>
       ) : (
         <Grid item xs={12} sm={12} md={3}>
-          <h3> User doesnt exist</h3>
+          
+          {!userExist?<h3> User doesnt exist</h3>:null}
         </Grid>
       )}
     </React.Fragment>
