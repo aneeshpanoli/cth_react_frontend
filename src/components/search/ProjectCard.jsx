@@ -8,7 +8,7 @@ import Fade from "@material-ui/core/Fade";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import LongMenu from "../menu/LongMenu";
-import { useDispatch } from "reactive-react-redux";
+import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { updateSelectedProject } from "../redux/actions";
 import { useHistory } from "react-router-dom";
 import Flag from "react-world-flags";
@@ -21,6 +21,7 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Chip from "@material-ui/core/Chip";
 
 import { countries } from "./utils";
+import { AUTH_DATA } from "../redux/actionTypes";
 
 function countryToIso(country) {
   let filteredData = countries.filter((d) => d.label === country);
@@ -70,33 +71,44 @@ const useStyles = makeStyles((theme) => ({
     width: "8rem",
     // height: "2.5rem",
   },
+  chipGrey: {
+    backgroundColor: "silver",
+  },
+  chipGreen: {
+    backgroundColor: theme.palette.safe,
+  },
+  chipRed: {
+    backgroundColor: theme.palette.danger,
+  },
 }));
 
-export default function ProjectCard({ r }) {
+export default function ProjectCard(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
   const [checked] = useState(true);
   const [mouseMoved, setMouseMoved] = useState(false);
+  const [upvotes, setUpvotes] = React.useState([]);
+  const [downvotes, setDownvotes] = React.useState([]);
+  const { authData } = useTrackedState();
+
+  React.useEffect(() => {
+    if (props.r && props.r._source.downvotes) {
+      setDownvotes(props.r._source.downvotes);
+    }
+    if (props.r && props.r._source.upvotes) {
+      setUpvotes(props.r._source.upvotes);
+    }
+  }, [props]);
 
   const percentLikes = () => {
-    if (
-      r._source.upvotes &&
-      r._source.upvotes.length &&
-      r._source.downvotes &&
-      r._source.downvotes.length
-    ) {
+    if (upvotes.length && downvotes.length) {
       return (
-       Math.round((r._source.upvotes.length /
-          (r._source.upvotes.length + r._source.downvotes.length)) *
-          100) +
-        "%"
+        Math.round(
+          (upvotes.length / (upvotes.length + downvotes.length)) * 100
+        ) + "%"
       );
-    } else if (
-      r._source.upvotes &&
-      r._source.upvotes.length &&
-      (!r._source.downvotes || !r._source.downvotes.length)
-    ) {
+    } else if (upvotes.length && (!downvotes || !downvotes.length)) {
       return "100%";
     }
     return "0%";
@@ -116,27 +128,55 @@ export default function ProjectCard({ r }) {
     }
   };
 
+  const makeChip = () => {
+    if (authData._source && upvotes.includes(authData._source.id)) {
+      return (
+        <Chip
+          className={classes.chipGreen}
+          icon={<ThumbUpIcon />}
+          label={percentLikes()}
+        />
+      );
+    } else if (authData._source && downvotes.includes(authData._source.id)) {
+      return (
+        <Chip
+          className={classes.chipRed}
+          icon={<ThumbUpIcon />}
+          label={percentLikes()}
+        />
+      );
+    } else {
+      return (
+        <Chip
+          className={classes.chipGrey}
+          icon={<ThumbUpIcon />}
+          label={percentLikes()}
+        />
+      );
+    }
+  };
+
   return (
     <Fade
       in={checked}
-      key={r._id}
+      key={props.r._id}
       style={{ transitionDelay: checked ? "300ms" : "0ms" }}
     >
       <Card className={classes.root}>
         <CardHeader
-          action={<LongMenu r={r} esIndex="projects" />}
+          action={<LongMenu r={props.r} esIndex="projects" />}
           className={classes.header}
         />
         <ButtonBase>
           <Link
             onMouseMove={() => setMouseMoved(true)}
             onMouseDown={() => setMouseMoved(false)}
-            onMouseUp={() => handleLearnmore(r)}
+            onMouseUp={() => handleLearnmore(props.r)}
             style={{ textDecoration: "none" }}
           >
             <CardMedia
               className={classes.media}
-              image={getImgUrl(r._source.image)}
+              image={getImgUrl(props.r._source.image)}
               title=""
             >
               {" "}
@@ -154,7 +194,7 @@ export default function ProjectCard({ r }) {
                     display: "inline-block",
                   }}
                 >
-                  {r._source.title}
+                  {props.r._source.title}
                 </span>
               }
               subheader={
@@ -166,16 +206,21 @@ export default function ProjectCard({ r }) {
                     display: "inline-block",
                   }}
                 >
-                  {r._source.hackathons[0] ? r._source.hackathons[0] : null}
+                  {props.r._source.hackathons[0]
+                    ? props.r._source.hackathons[0]
+                    : null}
                 </span>
               }
               avatar={
                 <Avatar
-                  title={r._source.country}
+                  title={props.r._source.country}
                   aria-label="project"
                   className={classes.avatar}
                 >
-                  <Flag code={countryToIso(r._source.country)} height="35" />
+                  <Flag
+                    code={countryToIso(props.r._source.country)}
+                    height="35"
+                  />
                 </Avatar>
               }
               style={{ height: "5rem", textAlign: "left" }}
@@ -191,15 +236,15 @@ export default function ProjectCard({ r }) {
                 component="div"
                 style={{ overflow: "hidden" }}
               >
-                {r._source.subtitle.substring(0, 125) + "..."}
+                {props.r._source.subtitle.substring(0, 125) + "..."}
               </Typography>
             </CardContent>
             <CardActions>
-              <Chip icon={<ThumbUpIcon />} label={percentLikes()} />
+              {makeChip()}
 
               <Button
                 variant="contained"
-                onClick={() => handleLearnmore(r)}
+                onClick={() => handleLearnmore(props.r)}
                 className={classes.button}
                 disableElevation
                 component="div"

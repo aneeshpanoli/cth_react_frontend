@@ -98,7 +98,7 @@ export default function Header(props) {
       setUpvotes(props.selectedProject._source.upvotes);
     }
   }, [props]);
-  const removeVotes = (field1, field2) => {
+  const updateVotes = (field1, field2) => {
     let data = {
       status: "projectvote",
       index: props.selectedProject._index,
@@ -130,9 +130,14 @@ export default function Header(props) {
       return;
     }
     if (!upvotes.includes(authData._source.id)) {
-      removeVotes(
+      updateVotes(
         [...upvotes, authData._source.id],
         [...downvotes].filter((id) => id !== authData._source.id)
+      );
+    }else{
+      updateVotes(
+        [...upvotes].filter((id) => id !== authData._source.id),
+        [...downvotes]
       );
     }
   };
@@ -143,10 +148,13 @@ export default function Header(props) {
       return;
     }
     if (!downvotes.includes(authData._source.id)) {
-      removeVotes(
+      updateVotes(
         [...upvotes].filter((id) => id !== authData._source.id),
         [...downvotes, authData._source.id]
       );
+    }else{
+      updateVotes( [...upvotes],
+      [...downvotes].filter((id) => id !== authData._source.id))
     }
   };
   // console.log(props.selectedProject)

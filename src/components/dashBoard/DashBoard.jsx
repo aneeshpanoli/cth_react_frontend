@@ -109,7 +109,7 @@ export default function DashBoard() {
       {currProject ? (
         <React.Fragment>
           <TitleSubtitle selectedProject={currProject} />
-          <StoryText selectedProject={currProject} fetchProj={fetchProj} />
+          <StoryText selectedProject={currProject} />
           <Container>
             <Grid container spacing={2}>
               <Grid item sm={12} md={12} xs={12}>
