@@ -253,11 +253,11 @@ export default function Header(props) {
                     <IconButton
                       aria-label="Upvote"
                       className={
-                        authData._source&&props.selectedProject._source.upvotes&&!props.selectedProject._source.upvotes.includes(
+                        authData._source&&props.selectedProject._source.upvotes&&props.selectedProject._source.upvotes.includes(
                           authData._source.id
                         )
-                          ? `${classes.buttonTup}`
-                          : `${classes.greenButton}`
+                          ? `${classes.greenButton}`: `${classes.buttonTup}`
+                          
                       }
                       onClick={handleUpvote}
                     >
@@ -270,11 +270,11 @@ export default function Header(props) {
                     <IconButton
                       aria-label="add to favorites"
                       className={
-                        authData._source&&props.selectedProject._source.downvotes&&!props.selectedProject._source.downvotes.includes(
+                        authData._source&&props.selectedProject._source.downvotes&&props.selectedProject._source.downvotes.includes(
                           authData._source.id
                         )
-                          ? `${classes.buttonTdown}`
-                          : `${classes.redButton}`
+                          ? `${classes.redButton}` : `${classes.buttonTdown}`
+                          
                       }
                       onClick={handleDownvote}
                     >

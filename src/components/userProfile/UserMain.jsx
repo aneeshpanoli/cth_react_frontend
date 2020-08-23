@@ -2,6 +2,7 @@ import Header from "./Header";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import UserOwnChallenges from "./UserOwnChallenges";
+import UserLikedProjects from "./UserLikedProjects";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { updateUserOwnChallenge } from "../redux/actions";
 import { simpleQueryElasticsearch } from "../backend/AxiosRequest";
@@ -71,6 +72,7 @@ export default function UserMain() {
           <Grid item xs={12} sm={12} md={9}>
             <Grid container spacing={2}>
               <UserOwnChallenges />
+              <UserLikedProjects userId={authData._source.id}/>
             </Grid>
 
             <UserActivity />
