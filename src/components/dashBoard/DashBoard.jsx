@@ -63,6 +63,7 @@ export default function DashBoard() {
     queryEsById(query, dispatch, updateSelectedProject, history);
   };
 
+  
   useEffect(() => {
     if (!selectedProject) {
       fetchProj(params.id, params.name.replace(/-/g, " "));

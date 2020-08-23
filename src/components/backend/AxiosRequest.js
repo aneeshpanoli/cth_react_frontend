@@ -1,5 +1,9 @@
 import axios from "axios";
-import { updateProgress, updateFilterProject } from "../redux/actions";
+import {
+  updateProgress,
+  updateFilterProject,
+  updateSelectedProject,
+} from "../redux/actions";
 import { saveSessionStore, retriveSessionStore } from "../localStore/session";
 import { MATCH_USER } from "./EsQueries";
 
@@ -63,13 +67,13 @@ const postPostAuthAxios = (token) =>
     },
   });
 
-  const postPreAuthAxios = () =>
+const postPreAuthAxios = () =>
   axios.create({
     baseURL: BASE_URL,
     headers: {
       "X-CSRFTOKEN": document.cookie.split("=")[1],
       "X-Requested-With": "XMLHttpRequest",
-      "Content-type": "application/json",  
+      "Content-type": "application/json",
     },
   });
 
@@ -78,10 +82,11 @@ export const queryElasticsearch = (
   query,
   dispatch,
   actionCallback,
-history
+  history
 ) => {
-  if (history && history==='home'){
-  dispatch(updateProgress(false));}else{
+  if (history && history === "home") {
+    dispatch(updateProgress(false));
+  } else {
     dispatch(updateProgress(true));
   }
   // update the search project list
@@ -91,8 +96,8 @@ history
   if (proceed) {
     // update filter project list
     retriveSessionStore(userInput + "query", dispatch, updateFilterProject);
-    if(history && history !== 'home'){
-      history()
+    if (history && history !== "home") {
+      history();
     }
     return;
   }
@@ -107,8 +112,8 @@ history
       dispatch(actionCallback(response.data.hits));
       dispatch(updateFilterProject(response.data.hits));
       proceed && saveSessionStore(userInput + "query", response.data.hits);
-      if(history && history !== 'home'){
-        history()
+      if (history && history !== "home") {
+        history();
       }
     })
     .catch((error) => {
@@ -167,8 +172,8 @@ export const createDoc = (doc, token, getUpdatedData) => {
       // console.log(response.data);
       setTimeout(() => {
         // get updated data back from server after a second
-        if(getUpdatedData){
-          getUpdatedData()
+        if (getUpdatedData) {
+          getUpdatedData();
         }
       }, 1000);
 
@@ -210,15 +215,22 @@ export const updateProject = (
   postpostAuthAxios
     .post(`/post/`, formData)
     .then((response) => {
-      setTimeout(() => {
-        if(getUpdatedData){
-        getUpdatedData()
+      console.log(response.data);
+      if (getUpdatedData) {
+        getUpdatedData({
+          _index: response.data._index,
+          _type: response._type,
+          _id: response.data._id,
+          _source: response.data.get._source,
+        });
       }
-      if(history){
-        history.push(
-          "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
-        );}
-      }, 2000);
+      setTimeout(() => {
+        if (history) {
+          history.push(
+            "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
+          );
+        }
+      }, 1000);
     })
     .catch((error) => {
       // catch errors.
@@ -238,8 +250,8 @@ export const updateUser = (
     .post(`/post/`, formData)
     .then((response) => {
       setTimeout(() => {
-        if(getUpdatedData){
-          getUpdatedData()
+        if (getUpdatedData) {
+          getUpdatedData();
         }
         history.push("/@" + username);
       }, 1000);
@@ -250,20 +262,17 @@ export const updateUser = (
     });
 };
 
-export const updateUserInterests = (
-  formData,
-  token,
-  getUpdatedData
-) => {
+export const updateUserInterests = (formData, token, getUpdatedData) => {
   const postpostAuthAxios = postPostAuthAxios(`Token ${token}`);
   postpostAuthAxios
     .post(`/post/`, formData)
     .then((response) => {
-      console.log(response)
+      console.log(response);
       setTimeout(() => {
-        if(getUpdatedData){
-          getUpdatedData()
-        }}, 1000);
+        if (getUpdatedData) {
+          getUpdatedData();
+        }
+      }, 1000);
     })
     .catch((error) => {
       // catch errors.
@@ -286,18 +295,16 @@ export const createDocFeedback = (doc) => {
     });
 };
 
-export const fbSignin = (fbData,authData,
-  dispatch,
-  actionCallback) => {
-  const postpreAuthAxios =  postPreAuthAxios();
+export const fbSignin = (fbData, authData, dispatch, actionCallback) => {
+  const postpreAuthAxios = postPreAuthAxios();
   postpreAuthAxios
-    .post(`/rest-auth/facebook/`, 
-    {
-      access_token: fbData._token.accessToken}
-    )
+    .post(`/rest-auth/facebook/`, {
+      access_token: fbData._token.accessToken,
+    })
     .then((response) => {
       // console.log(response.data);
-      response.data.user.image = "https://graph.facebook.com/"+fbData._profile.id+"/picture"
+      response.data.user.image =
+        "https://graph.facebook.com/" + fbData._profile.id + "/picture";
       getUserInfoElastic(response.data, dispatch, actionCallback);
     })
     .catch((error) => {
@@ -312,7 +319,6 @@ export const fbSignin = (fbData,authData,
     });
 };
 
-
 export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
   const userInfoAxios = postAuthAxios(`Token ${loginData.key}`);
   let query = MATCH_USER(loginData.user.id, "id");
@@ -321,10 +327,11 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
     .then((response) => {
       if (!response.data.hits[0]) {
         // create a new entry in the elasticsearch db
-        const updateData = () =>{
+        const updateData = () => {
           setTimeout(() => {
-            getUserInfoElastic(loginData, dispatch, actionCallback)}, 2000)
-        }
+            getUserInfoElastic(loginData, dispatch, actionCallback);
+          }, 2000);
+        };
         createDoc(
           {
             params: {
@@ -332,9 +339,9 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
               q: loginData.user,
             },
           },
-          loginData.key, updateData
+          loginData.key,
+          updateData
         );
-       
       } else {
         // console.log(response.data.hits[0]._source);
         const authData = {
@@ -345,7 +352,7 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
         dispatch(actionCallback(authData));
         sessionStorage.setItem("authData", JSON.stringify(authData));
       }
-      dispatch(updateProgress(false))
+      dispatch(updateProgress(false));
     })
     .catch((error) => {
       // catch errors.
@@ -417,18 +424,12 @@ export const authSignIn = (
     });
 };
 
-export const resetPwdEmail = (
-  email,
-  authData,
-  dispatch,
-  actionCallback
-) => {
+export const resetPwdEmail = (email, authData, dispatch, actionCallback) => {
   preAuthAxios
     .post(`/rest-auth/password/reset/`, {
       email: email,
     })
     .then((res) => {
-      
       console.log(res.data);
     })
     .catch((err) => {
@@ -443,17 +444,11 @@ export const resetPwdEmail = (
     });
 };
 
-export const resetPwdForm = (
-  data,
-  authData,
-  dispatch,
-  actionCallback
-) => {
-  console.log(data)
+export const resetPwdForm = (data, authData, dispatch, actionCallback) => {
+  console.log(data);
   preAuthAxios
     .post(`/rest-auth/password/confirm/reset/`, data)
     .then((res) => {
-      
       console.log(res.data);
       dispatch(
         actionCallback({
@@ -471,7 +466,6 @@ export const resetPwdForm = (
           resetPwd: false,
         })
       );
-      
     });
 };
 
@@ -494,7 +488,7 @@ export const authSignup = (
       password2: password2,
     })
     .then((res) => {
-      dispatch(actionCallback({...authData, signUp:true}));
+      dispatch(actionCallback({ ...authData, signUp: true }));
       return res;
     })
     .catch((err) => {

@@ -87,26 +87,29 @@ export default function Header(props) {
   let history = useHistory();
   const dispatch = useDispatch();
   const { authData } = useTrackedState();
-  const [upvotes, setUpvotes] = React.useState([]);
-  const [downvotes, setDownvotes] = React.useState([]);
-
-  React.useEffect(() => {
-    if (props.selectedProject && props.selectedProject._source.downvotes) {
-      setDownvotes(props.selectedProject._source.downvotes);
-    }
-    if (props.selectedProject && props.selectedProject._source.upvotes) {
-      setUpvotes(props.selectedProject._source.upvotes);
-    }
-  }, [props]);
-  const removeVotes = (field1, field2) => {
+  const removeVotes = (field) => {
     let data = {
       status: "projectvote",
       index: props.selectedProject._index,
       id: props.selectedProject._id,
       q: {
-        doc: {
-          upvotes: field1,
-          downvotes: field2,
+        script: {
+          source:
+            "if (ctx._source." +
+            field +
+            ".contains(params." +
+            field +
+            ")) { ctx._source." +
+            field +
+            ".remove(ctx._source." +
+            field +
+            ".indexOf(params." +
+            field +
+            ")) }",
+          lang: "painless",
+          params: {
+            [field]: authData._source.id,
+          },
         },
       },
     };
@@ -114,7 +117,38 @@ export default function Header(props) {
 
     formData.append("params", JSON.stringify(data));
 
-    const updateData = (hits) => dispatch(updateSelectedProject(hits));
+    const updateData = (hits) =>
+      dispatch(updateSelectedProject(hits));
+    updateProject(
+      formData,
+      authData.key,
+      null,
+      props.selectedProject._source.title,
+      updateData
+    );
+  };
+
+  const addVotes = (field) => {
+    let data = {
+      status: "projectvote",
+      index: props.selectedProject._index,
+      id: props.selectedProject._id,
+      q: {
+        script: {
+          source: "if (!ctx._source."+field+".contains(params."+field+")) { ctx._source."+field+".add(params."+field+") } "
+          ,
+          lang: "painless",
+          params: {
+            [field]: authData._source.id,
+          },
+        },
+      },
+    };
+    let formData = new FormData();
+
+    formData.append("params", JSON.stringify(data));
+    const updateData = (hits) =>
+    dispatch(updateSelectedProject(hits));
     updateProject(
       formData,
       authData.key,
@@ -129,11 +163,18 @@ export default function Header(props) {
       history.push("/sign-in");
       return;
     }
-    if (!upvotes.includes(authData._source.id)) {
-      removeVotes(
-        [...upvotes, authData._source.id],
-        [...downvotes].filter((id) => id !== authData._source.id)
-      );
+    if (
+      props.selectedProject._source.downvotes &&
+      props.selectedProject._source.downvotes.includes(authData._source.id)
+    ) {
+      removeVotes("downvotes");
+    }
+
+    if (
+      props.selectedProject._source.upvotes &&
+      !props.selectedProject._source.upvotes.includes(authData._source.id)
+    ) {
+      addVotes("upvotes");
     }
   };
 
@@ -142,11 +183,17 @@ export default function Header(props) {
       history.push("/sign-in");
       return;
     }
-    if (!downvotes.includes(authData._source.id)) {
-      removeVotes(
-        [...upvotes].filter((id) => id !== authData._source.id),
-        [...downvotes, authData._source.id]
-      );
+    if (
+      props.selectedProject._source.upvotes &&
+      props.selectedProject._source.upvotes.includes(authData._source.id)
+    ) {
+      removeVotes("upvotes");
+    }
+    if (
+      props.selectedProject._source.downvotes &&
+      !props.selectedProject._source.downvotes.includes(authData._source.id)
+    ) {
+      addVotes("downvotes");
     }
   };
   // console.log(props.selectedProject)
@@ -200,7 +247,11 @@ export default function Header(props) {
                 >
                   <ToolTips
                     title={
-                      authData._source && upvotes.includes(authData._source.id)
+                      authData._source &&
+                      props.selectedProject._source.upvotes &&
+                      props.selectedProject._source.upvotes.includes(
+                        authData._source.id
+                      )
                         ? "You upvoted this"
                         : "Upvote"
                     }
@@ -209,7 +260,10 @@ export default function Header(props) {
                       aria-label="Upvote"
                       className={
                         authData._source &&
-                        upvotes.includes(authData._source.id)
+                        props.selectedProject._source.upvotes &&
+                        props.selectedProject._source.upvotes.includes(
+                          authData._source.id
+                        )
                           ? `${classes.greenButton}`
                           : `${classes.buttonTup}`
                       }
@@ -221,7 +275,10 @@ export default function Header(props) {
                   <ToolTips
                     title={
                       authData._source &&
-                      downvotes.includes(authData._source.id)
+                      props.selectedProject._source.downvotes &&
+                      props.selectedProject._source.downvotes.includes(
+                        authData._source.id
+                      )
                         ? "You downvoted this"
                         : "Downvote"
                     }
@@ -230,7 +287,10 @@ export default function Header(props) {
                       aria-label="add to favorites"
                       className={
                         authData._source &&
-                        downvotes.includes(authData._source.id)
+                        props.selectedProject._source.downvotes &&
+                        props.selectedProject._source.downvotes.includes(
+                          authData._source.id
+                        )
                           ? `${classes.redButton}`
                           : `${classes.buttonTdown}`
                       }
