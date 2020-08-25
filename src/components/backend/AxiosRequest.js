@@ -108,10 +108,10 @@ export const queryElasticsearch = (
       // process response.
 
       // this.setState({results: response});
-      // console.log(response.data.hits);
-      dispatch(actionCallback(response.data.hits));
-      dispatch(updateFilterProject(response.data.hits));
-      proceed && saveSessionStore(userInput + "query", response.data.hits);
+      console.log(response.data.hits.hits);
+      dispatch(actionCallback(response.data.hits.hits));
+      dispatch(updateFilterProject(response.data.hits.hits));
+      proceed && saveSessionStore(userInput + "query", response.data.hits.hits);
       if (history && history !== "home") {
         history();
       }
@@ -133,7 +133,7 @@ export const simpleQueryElasticsearch = (query, dispatch, actionCallback) => {
 
       // this.setState({results: response});
       // console.log(response.data.hits);
-      dispatch(actionCallback(response.data.hits));
+      dispatch(actionCallback(response.data.hits.hits));
     })
     .catch((error) => {
       // catch errors.
@@ -147,11 +147,9 @@ export const queryEsById = (query, dispatch, actionCallback, history) => {
     .get(`/q/`, query)
     .then((response) => {
       // process response.
-
-      // this.setState({results: response});
       // console.log(response.data.hits);
-      if (response.data.hits[0]) {
-        dispatch(actionCallback(response.data.hits[0]));
+      if (response.data.hits.hits[0]) {
+        dispatch(actionCallback(response.data.hits.hits[0]));
       } else {
         history.push("/page-not-found");
       }
@@ -169,7 +167,7 @@ export const createDoc = (doc, token, getUpdatedData) => {
   userInfoAxios
     .get(`/create/`, doc)
     .then((response) => {
-      // console.log(response.data);
+      console.log(response.data);
       setTimeout(() => {
         // get updated data back from server after a second
         if (getUpdatedData) {
@@ -224,13 +222,11 @@ export const updateProject = (
           _source: response.data.get._source,
         });
       }
-      setTimeout(() => {
         if (history) {
           history.push(
             "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
           );
         }
-      }, 1000);
     })
     .catch((error) => {
       // catch errors.
@@ -267,12 +263,9 @@ export const updateUserInterests = (formData, token, getUpdatedData) => {
   postpostAuthAxios
     .post(`/post/`, formData)
     .then((response) => {
-      console.log(response);
-      setTimeout(() => {
-        if (getUpdatedData) {
-          getUpdatedData();
-        }
-      }, 1000);
+      console.log(response.data.get);
+     getUpdatedData(response.data.get)
+
     })
     .catch((error) => {
       // catch errors.
@@ -325,7 +318,8 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
   userInfoAxios
     .get(`/q/`, query)
     .then((response) => {
-      if (!response.data.hits[0]) {
+      console.log(response.data)
+      if (!response.data.hits.hits[0]) {
         // create a new entry in the elasticsearch db
         const updateData = () => {
           setTimeout(() => {
@@ -346,11 +340,10 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
         // console.log(response.data.hits[0]._source);
         const authData = {
           ...loginData,
-          ...response.data.hits[0],
+          ...response.data.hits.hits[0],
           isAuthenticated: true,
         };
         dispatch(actionCallback(authData));
-        sessionStorage.setItem("authData", JSON.stringify(authData));
       }
       dispatch(updateProgress(false));
     })
@@ -375,7 +368,7 @@ export const getAnotherUserInfoElastic = (
     .then((response) => {
       // console.log(response.data);
 
-      dispatch(actionCallback(response.data.hits[0]));
+      dispatch(actionCallback(response.data.hits.hits[0]));
     })
     .catch((error) => {
       // catch errors.
@@ -409,6 +402,7 @@ export const authSignIn = (
       password: password,
     })
     .then((res) => {
+      // comes from rest-auth not elastic
       // console.log(res.data);
       getUserInfoElastic(res.data, dispatch, actionCallback);
     })
@@ -420,7 +414,7 @@ export const authSignIn = (
           error: err.response.data.non_field_errors[0],
         })
       );
-      console.log(err.response.data.non_field_errors);
+      // console.log(err.response.data.non_field_errors);
     });
 };
 

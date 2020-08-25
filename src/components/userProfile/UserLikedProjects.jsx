@@ -15,7 +15,7 @@ export default function UserLikedProjects(props) {
     esAxios
       .get(`/q/`, query)
       .then((response) => {
-        setProjList(response.data.hits);
+        setProjList(response.data.hits.hits);
       })
       .catch((error) => {
         // catch errors.

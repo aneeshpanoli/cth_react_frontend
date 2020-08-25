@@ -14,10 +14,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import ChipInput from "material-ui-chip-input";
 import { toTitleCase } from "../js/utils";
 import ProgressBar from "../search/ProgressBar";
-import {
-  updateAuthData,
-  updateProgress,
-} from "../redux/actions";
+import { updateAuthData, updateProgress } from "../redux/actions";
 import {
   updateUserInterests,
   getUserInfoElastic,
@@ -64,8 +61,10 @@ const useStyles = makeStyles((theme) => ({
 // }
 
 export default function FeaturedProjects() {
+  
   const classes = useStyles();
   const dispatch = useDispatch();
+  
   const [pageNum, setPageNum] = React.useState(3);
   const topDiv = React.useRef(null);
   const { authData } = useTrackedState();
@@ -92,19 +91,28 @@ export default function FeaturedProjects() {
     "Bioinformatics",
     "Databases",
   ];
-  const [categories, setCategories] = React.useState(baseCats);
+  const [categories, setCategories] = React.useState([]);
+
   const handleMore = () => {
     setPageNum(pageNum + 3);
     window.scrollTo(0, topDiv.current.offsetTop + topDiv.current.clientHeight);
   };
+
   React.useEffect(() => setProgress(isProgress), [isProgress]);
+
   const handlePersonalize = () => {
-    if (!authData._source&&!authData.isAuthenticated) {
+    if (!authData._source && !authData.isAuthenticated) {
       history.push("/sign-in");
       return;
-    }else if(authData._source && authData._source.interests.length > 0){
-    setFormValues({ interests: authData._source.interests, disabled: true });
-    setGrow(true);
+    } else if (
+      authData._source &&
+      authData._source.interests &&
+      authData._source.interests.length > 0
+    ) {
+      setFormValues({ interests: authData._source.interests, disabled: true });
+      setGrow(true);
+    } else {
+      setGrow(true);
     }
   };
 
@@ -120,36 +128,40 @@ export default function FeaturedProjects() {
     setFormValues({ ...formValues, [field]: values, disabled: false });
   };
 
+  const updateData = (hit) => {
+    dispatch(updateAuthData({ ...authData, _source: hit._source }));
+    dispatch(updateProgress(false));
+  };
+
   const saveInterests = () => {
     let data = {
       status: "userupdates",
       index: "user_data",
       id: authData._id,
-      q: {doc:{
-        interests: formValues.interests,
-        lastUpdatedAt: new Date(),
-      }
-    },
+      q: {
+        doc: {
+          interests: formValues.interests,
+          lastUpdatedAt: new Date(),
+        },
+      },
     };
     let formData = new FormData();
-
     formData.append("params", JSON.stringify(data));
-
-    const updateData = () =>
-      getUserInfoElastic(authData, dispatch, updateAuthData);
     updateUserInterests(formData, authData.key, updateData);
   };
 
   const handleSave = () => {
     dispatch(updateProgress(true));
-    // setCategories(formValues.interests);
     saveInterests();
     setGrow(false);
   };
 
-  React.useEffect(() => {
-    if (authData._source && authData._source.interests.length > 0) {
-      //  setFormValues({interests:authData._source.interests, disabled:true})
+  const setInterests = (authData) =>{
+    if (
+      authData._source &&
+      authData._source.interests &&
+      authData._source.interests.length > 0
+    ) {
       setCategories(authData._source.interests);
     } else {
       setCategories(baseCats);
@@ -157,6 +169,14 @@ export default function FeaturedProjects() {
     if (!authData.isAuthenticated) {
       setGrow(false);
     }
+  }
+
+  React.useEffect(() => {
+    
+    const timer = setTimeout(() => {
+      setInterests(authData);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [authData]);
 
   return (

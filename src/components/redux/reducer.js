@@ -43,6 +43,7 @@ export const reducer = (state = initialState, action) => {
     case actionType.SELECTED_PROJECT:
       return { ...state, selectedProject: action.selectedProject };
     case actionType.AUTH_DATA:
+      sessionStorage.setItem("authData", JSON.stringify(action.authData));
       return { ...state, authData: action.authData };
     case actionType.FILTER_PROJECT:
       return { ...state, filterProjectList: action.filterProjectList };

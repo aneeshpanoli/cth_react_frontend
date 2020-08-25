@@ -123,7 +123,8 @@ export default function HomeCarousel({term}) {
     esAxios
       .get(`/q/`, query)
       .then((response) => {
-        setProjList(response.data.hits);
+        console.log(response.data.hits)
+        setProjList(response.data.hits.hits);
       })
       .catch((error) => {
         // catch errors.

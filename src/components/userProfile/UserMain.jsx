@@ -72,7 +72,7 @@ export default function UserMain() {
           <Grid item xs={12} sm={12} md={9}>
             <Grid container spacing={2}>
               <UserOwnChallenges />
-              <UserLikedProjects userId={authData._source.id}/>
+              <UserLikedProjects userId={otherUserData._source.id}/>
             </Grid>
 
             <UserActivity />

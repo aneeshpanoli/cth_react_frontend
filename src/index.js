@@ -5,6 +5,7 @@ import { Provider } from 'reactive-react-redux';
 import store from './components/redux/store'
 import { SnackbarProvider } from 'notistack';
 
+
 function noop() {}
 
 if (process.env.NODE_ENV !== 'development') {

@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
 import { logout } from "../auth/auth";
+import { avatarImgs } from "../userProfile/AvatarImgs";
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -93,7 +94,7 @@ export default function AvatarButton() {
             src={
               authData && authData._source && authData._source.avatar
                 ? authData._source.avatar
-                : undefined
+                : avatarImgs[0]
             }
             style={{
               position: "absolute",

@@ -264,8 +264,7 @@ export default function ProjectEditForm() {
       selectedProject._id,
       formValues.title.replace(/-/g, " ")
     );
-    const updateData = () =>
-      queryEsById(query, dispatch, updateSelectedProject, history);
+    const updateData = (hits) => dispatch(updateSelectedProject(hits));
     updateProject(
       formData,
       authData.key,

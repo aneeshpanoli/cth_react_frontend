@@ -22,6 +22,7 @@ import EditProject from "./components/pages/EditProject";
 import ClaimProject from "./components/pages/ClaimProject";
 import { logout, tabLogin } from './components/auth/auth'
 import PwdResetForm from './components/pages/PwdReset'
+import { updateAuthData } from './components/redux/actions'
 
 
 //stylesheet
@@ -31,6 +32,10 @@ import "./Assets/css/style.css";
 const App = () => {
   const theme = createMuiTheme(themeDict);
   const dispatch = useDispatch();
+  const localAuth = JSON.parse(sessionStorage.getItem("authData"))
+  React.useEffect(()=>{
+    if(localAuth){
+      dispatch(updateAuthData(localAuth))}}, [])
   const {authData} = useTrackedState()
 
   window.addEventListener('storage', (event) => {

@@ -8,9 +8,11 @@ import heroMobile from "../../Assets/img/hero_mobile.svg";
 import Grid from "@material-ui/core/Grid";
 import SearchField from "./SearchFieldHome";
 import Hidden from '@material-ui/core/Hidden';
+import { useTrackedState } from 'reactive-react-redux'
 
 export default function Hero() {
   const history = useHistory();
+  const {authData} = useTrackedState();
   const handleClick = () => {
     setTimeout(() => {
       history.push("/search");
@@ -52,7 +54,8 @@ export default function Hero() {
                 projects, find support and help humanity defeat COVID-19.
               </h4>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ marginTop: "2rem"}}>
+              {authData&&authData.isAuthenticated?null:
               <Button
                 color="secondary"
                 variant="contained"
@@ -60,8 +63,6 @@ export default function Hero() {
                 style={{
                   height: "2.5rem",
                   width: "10rem",
-                  marginTop: "2rem",
-                  marginBottom: "1rem",
                   borderRadius: 50,
                   fontSize: 20,
                   fontWeight: 400,
@@ -71,8 +72,9 @@ export default function Hero() {
               >
                 Join now
               </Button>
+  }
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ marginTop: "2rem",  marginBottom: "2rem"}}>
             <SearchField redirect={handleClick} />
 
                 {/* <Button

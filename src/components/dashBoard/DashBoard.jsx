@@ -172,7 +172,7 @@ export default function DashBoard() {
             <Container>
               <Grid container spacing={2}>
                 <Grid item sm={6} md={6} xs={12}>
-                  <h3>Do you like this project? </h3>
+                  <h3>Do you like this project?  </h3>
                 </Grid>
                 <Grid item sm={6} md={6} xs={12}>
                   Your feedback will help us to identify the most promising

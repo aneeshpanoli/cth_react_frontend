@@ -69,7 +69,7 @@ export default function Header(props) {
     setAvatar(
       otherUserData && otherUserData._source && otherUserData._source.avatar
         ? otherUserData._source.avatar
-        : null
+        : avatarImgs[0]
     );
   }, [otherUserData]);
   const updateFollow = (userData, otherUser, field, op) => {
@@ -204,7 +204,7 @@ export default function Header(props) {
               color="secondary"
               sizes="5px"
               className={classes.avatar}
-              // alt={authData.user ? authData.user.first_name : null}
+              alt={authData.user ? authData.user.first_name : null}
             >
                <img src={avatar} style={{position:'absolute', width: "5rem", height: "5rem", left:-4, top:5 }} />
             </Avatar>
