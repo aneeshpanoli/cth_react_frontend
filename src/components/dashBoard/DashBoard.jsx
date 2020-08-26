@@ -28,6 +28,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Slide from "@material-ui/core/Slide";
 import Toolbar from "@material-ui/core/Toolbar";
 import CloseIcon from "@material-ui/icons/Close";
+import Head from "../meta/Head";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,7 +53,7 @@ export default function DashBoard() {
   const [microtasks, setMicrotasks] = React.useState();
   const { selectedProject, authData, microtaskList } = useTrackedState();
   const [openForm, setOpenForm] = React.useState(false);
-  const [isFeedback, setIsFeedback] = React.useState(true)
+  const [isFeedback, setIsFeedback] = React.useState(true);
   let params = useParams();
   const dispatch = useDispatch();
   const handleClose = () => {
@@ -63,7 +64,6 @@ export default function DashBoard() {
     queryEsById(query, dispatch, updateSelectedProject, history);
   };
 
-  
   useEffect(() => {
     if (!selectedProject) {
       fetchProj(params.id, params.name.replace(/-/g, " "));
@@ -72,12 +72,14 @@ export default function DashBoard() {
       simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
     }
     setCurrProject(selectedProject);
-    setIsFeedback(authData._source&&selectedProject&&selectedProject._source.upvotes?
-      !selectedProject._source.upvotes.includes(authData._source.id) &&
-      !selectedProject._source.downvotes.includes(authData._source.id):null);
+    setIsFeedback(
+      authData._source && selectedProject && selectedProject._source.upvotes
+        ? !selectedProject._source.upvotes.includes(authData._source.id) &&
+            !selectedProject._source.downvotes.includes(authData._source.id)
+        : null
+    );
   }, [selectedProject]);
   const handleScroll = throttle(() => {
-    
     if (resourceRef && isFeedback) {
       if (
         resourceRef.current.getBoundingClientRect().top <
@@ -106,6 +108,15 @@ export default function DashBoard() {
 
   return (
     <Box>
+      <Head
+        title={
+          currProject ? currProject._source.title + " - CivicTechHub" : null
+        }
+        description={
+          currProject ? currProject._source.subtitle:null
+        }
+        image={currProject ? currProject._source.image:null}
+      />
       {currProject ? (
         <React.Fragment>
           <TitleSubtitle selectedProject={currProject} />
@@ -165,27 +176,28 @@ export default function DashBoard() {
           </Container>
         </React.Fragment>
       ) : null}
-      {isFeedback?
-      <Slide in={slide} direction="up">
-        <AppBar position="fixed" color="secondary" className={classes.appBar}>
-          <Toolbar>
-            <Container>
-              <Grid container spacing={2}>
-                <Grid item sm={6} md={6} xs={12}>
-                  <h3>Do you like this project?  </h3>
+      {isFeedback ? (
+        <Slide in={slide} direction="up">
+          <AppBar position="fixed" color="secondary" className={classes.appBar}>
+            <Toolbar>
+              <Container>
+                <Grid container spacing={2}>
+                  <Grid item sm={6} md={6} xs={12}>
+                    <h3>Do you like this project? </h3>
+                  </Grid>
+                  <Grid item sm={6} md={6} xs={12}>
+                    Your feedback will help us to identify the most promising
+                    projects. Thank you!
+                  </Grid>
                 </Grid>
-                <Grid item sm={6} md={6} xs={12}>
-                  Your feedback will help us to identify the most promising
-                  projects. Thank you!
-                </Grid>
-              </Grid>
-            </Container>
-            <IconButton onClick={handleClose}>
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-      </Slide>:null}
+              </Container>
+              <IconButton onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+        </Slide>
+      ) : null}
     </Box>
   );
 }

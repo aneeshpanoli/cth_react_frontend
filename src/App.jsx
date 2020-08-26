@@ -23,7 +23,7 @@ import ClaimProject from "./components/pages/ClaimProject";
 import { logout, tabLogin } from './components/auth/auth'
 import PwdResetForm from './components/pages/PwdReset'
 import { updateAuthData } from './components/redux/actions'
-
+import Head from './components/meta/Head'
 
 //stylesheet
 import "bootstrap/dist/css/bootstrap.css";
@@ -65,7 +65,9 @@ const App = () => {
 
 
   return (
+
     <MuiThemeProvider theme={theme}>
+      <Head />
       <Router>
         <div className="App">
           <Switch>

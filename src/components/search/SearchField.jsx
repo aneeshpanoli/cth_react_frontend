@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import SearchBar from "material-ui-search-bar";
+import Head from "../meta/Head";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import throttle from "lodash.throttle";
 import { queryElasticsearch, esAxios } from "../backend/AxiosRequest";
@@ -118,7 +118,17 @@ export default function SearchField(props) {
   };
 
   return (
+
     <MuiThemeProvider>
+       <Head
+        title={
+          params.query?params.query+ " - Search results- CivicTechHub" : null
+        }
+        description={
+          "List of projects"
+        }
+        image={null}
+      />
       <React.Fragment>
         <Autocomplete
           style={{
