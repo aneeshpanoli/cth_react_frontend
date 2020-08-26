@@ -51,6 +51,7 @@ export default function SearchField(props) {
                   field: "storyText.trigram",
                   size: 5,
                   gram_size: 3,
+                  max_errors: 5,
                   direct_generator: [
                     {
                       field: "storyText.trigram",
@@ -68,54 +69,25 @@ export default function SearchField(props) {
                   field: "title.trigram",
                   size: 5,
                   gram_size: 3,
+                  max_errors: 5,
                   direct_generator: [
                     {
                       field: "title.trigram",
                       suggest_mode: "always",
                     },
                   ],
-                  highlight: {
-                    pre_tag: "<em>",
-                    post_tag: "</em>",
-                  },
+                  // highlight: {
+                  //   pre_tag: "<em>",
+                  //   post_tag: "</em>",
+                  // },
                 },
               },
             },
           },
-          // {
-          //   suggest: {
-          //     suggestA: {
-          //       prefix: searchValue,
-          //       completion: {
-          //         field: "storyText",
-          //         skip_duplicates: true,
-          //         size: 5,
-          //         fuzzy: {
-          //           fuzziness: 2,
-          //         },
-          //       },
-          //     },
-          //   },
-          // },
-          // {
-          //   suggest: {
-          //     text: searchValue,
-          //     suggestA: {
-          //       term: {
-          //         field: "subtitle",
-          //       },
-          //     },
-          //     suggestB: {
-          //       term: {
-          //         field: "storyText",
-          //       },
-          //     },
-          //   },
-          // },
         },
       })
       .then((response) => {
-        console.log(response.data.suggest.simple_phrase);
+        console.log(response.data.suggest.simple_phrase1);
         // console.log(response.data.suggest.suggestB[0].options);
         // console.log(response.data.suggest.suggestA[0].options);
         let suggestions = response.data.suggest.simple_phrase1[0].options.concat(
