@@ -20,8 +20,8 @@ export default function SearchField(props) {
   const { isProgress } = useTrackedState();
   const [progress, setProgress] = React.useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [newSearchValue, setNewSearchValue] = useState('@');
-  React.useEffect(()=>setNewSearchValue(params.query), [params])
+  const [newSearchValue, setNewSearchValue] = useState("@");
+  React.useEffect(() => setNewSearchValue(params.query), [params]);
   const queryDatabase = (searchValue) => {
     if (searchValue.length > 1) {
       dispatch(updateProgress(true));
@@ -40,38 +40,89 @@ export default function SearchField(props) {
 
   const querySuggest = (searchValue) => {
     esAxios
-      .get(
-        `/q/`,
-          {params: {
-            index: "projects",
-            q: {
-              suggest: {
-                text: searchValue,
-                suggestA: {
-                  term: {
-                    field: "subtitle",
+      .get(`/q/`, {
+        params: {
+          index: "suggest_completion",
+          q: {
+            suggest: {
+              text: searchValue,
+              simple_phrase1: {
+                phrase: {
+                  field: "storyText.trigram",
+                  size: 5,
+                  gram_size: 3,
+                  direct_generator: [
+                    {
+                      field: "storyText.trigram",
+                      suggest_mode: "always",
+                    },
+                  ],
+                  highlight: {
+                    pre_tag: "<em>",
+                    post_tag: "</em>",
                   },
                 },
-                suggestB: {
-                  term: {
-                    field: "storyText",
+              },
+              simple_phrase2: {
+                phrase: {
+                  field: "title.trigram",
+                  size: 5,
+                  gram_size: 3,
+                  direct_generator: [
+                    {
+                      field: "title.trigram",
+                      suggest_mode: "always",
+                    },
+                  ],
+                  highlight: {
+                    pre_tag: "<em>",
+                    post_tag: "</em>",
                   },
                 },
               },
             },
           },
-        }
-        
-      )
+          // {
+          //   suggest: {
+          //     suggestA: {
+          //       prefix: searchValue,
+          //       completion: {
+          //         field: "storyText",
+          //         skip_duplicates: true,
+          //         size: 5,
+          //         fuzzy: {
+          //           fuzziness: 2,
+          //         },
+          //       },
+          //     },
+          //   },
+          // },
+          // {
+          //   suggest: {
+          //     text: searchValue,
+          //     suggestA: {
+          //       term: {
+          //         field: "subtitle",
+          //       },
+          //     },
+          //     suggestB: {
+          //       term: {
+          //         field: "storyText",
+          //       },
+          //     },
+          //   },
+          // },
+        },
+      })
       .then((response) => {
-        console.log(response.data.suggest.suggestB);
-        console.log(response.data.suggest.suggestB[0].options);
-        console.log(response.data.suggest.suggestA[0].options);
-        let suggestions = response.data.suggest.suggestB[0].options.concat(
-          response.data.suggest.suggestA[0].options
+        console.log(response.data.suggest.simple_phrase);
+        // console.log(response.data.suggest.suggestB[0].options);
+        // console.log(response.data.suggest.suggestA[0].options);
+        let suggestions = response.data.suggest.simple_phrase1[0].options.concat(
+          response.data.suggest.simple_phrase2[0].options
         );
         if (suggestions.length > 0) {
-          setCategories(suggestions);
+          setCategories([...new Set(suggestions.map((a) => a.text))]);
         }
       })
       .catch((error) => {
@@ -95,10 +146,10 @@ export default function SearchField(props) {
   useEffect(() => setProgress(isProgress), [isProgress]);
 
   const enterKeyPressedHandler = (value) => {
-    if(value){
+    if (value) {
       history.push("/search/" + value);
     }
-    
+
     // if (
     //   event.keyCode === 13 ||
     //   event.key === "Enter" ||
@@ -110,26 +161,23 @@ export default function SearchField(props) {
   };
 
   const handleOnchange = (value) => {
-    if(value){
+    if (value) {
       throttledSuggest.current(value);
       setSearchValue(value);
     }
-    
   };
 
   return (
-
     <MuiThemeProvider>
-       <Head
-        title={
-          params.query?params.query+ " - Search results- CivicTechHub" : null
-        }
-        description={
-          "List of projects"
-        }
-        image={null}
-      />
       <React.Fragment>
+        <Head
+          title={
+            params.query
+              ? params.query + " - Search results- CivicTechHub"
+              : null
+          }
+          description={"List of projects"}
+        />
         <Autocomplete
           style={{
             margin: "0 auto",
@@ -141,14 +189,16 @@ export default function SearchField(props) {
           }}
           freeSolo
           autoComplete
+          autoHighlight
           id="combo-box-demo"
           forcePopupIcon={false}
           closeIcon={<SearchIcon />}
           options={categories}
-          getOptionLabel={option => option.text?option.text:option}
+          filterOptions={(options, state) => options}
+          getOptionLabel={(option) => (option.text ? option.text : option)}
           fullWidth
           onChange={(e, value) => {
-            enterKeyPressedHandler(value&&value.text?value.text:value);
+            enterKeyPressedHandler(value && value.text ? value.text : value);
           }}
           onInputChange={(e) => {
             handleOnchange(e.target.value);

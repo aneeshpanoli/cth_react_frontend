@@ -14,7 +14,7 @@ export default function Head(props) {
   React.useEffect(() => {
     let newValue = {}
     Object.keys(values).forEach(function (key, index) {
-      console.log(key);
+      // console.log(key);
       if (props[key]) {
        newValue[key] = props[key]
       }
