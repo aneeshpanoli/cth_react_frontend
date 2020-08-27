@@ -5,6 +5,8 @@ import throttle from "lodash.throttle";
 import { queryElasticsearch, esAxios } from "../backend/AxiosRequest";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { MATCH } from "../backend/EsQueries";
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 import { updateProjectList, updateProgress } from "../redux/actions";
 import ProgressBar from "./ProgressBar";
 import { useParams, useHistory } from "react-router-dom";
@@ -37,7 +39,7 @@ export default function SearchField(props) {
     };
   };
   const queryDatabase = (searchValue, numResults) => {
-    if (searchValue.length > 1) {
+    if (searchValue && searchValue.length > 1) {
       dispatch(updateProgress(true));
       // send to axios
 
@@ -58,27 +60,26 @@ export default function SearchField(props) {
 
   const querySuggest = (searchValue) => {
     esAxios
-      .get(`/q/`, 
-      {
+      .get(`/q/`, {
         params: {
           index: "search_as_you_type",
-          _source:["title"],
+          _source: ["title"],
           q: {
-            "query": {
-              "multi_match": {
-                "query": searchValue,
-                "type": "bool_prefix",
-                "fields": [
+            query: {
+              multi_match: {
+                query: searchValue,
+                type: "bool_prefix",
+                fields: [
                   "title",
                   "title._2gram",
                   "title._3gram",
                   "storyText",
                   "storyText._2gram",
-                  "storyText._3gram"
-                ]
-              }
-            }
-          } 
+                  "storyText._3gram",
+                ],
+              },
+            },
+          },
         },
       })
       .then((response) => {
@@ -87,8 +88,8 @@ export default function SearchField(props) {
         // console.log(response.data.suggest.suggestA[0].options);
         // let suggestions = response.data.suggest.simple_phrase1[0].options.concat(
         //   response.data.suggest.simple_phrase2[0].options);
-        let suggestions = response.data.hits.hits
-        
+        let suggestions = response.data.hits.hits;
+
         if (suggestions.length > 0) {
           setCategories([...new Set(suggestions.map((a) => a._source.title))]);
         }
@@ -151,23 +152,14 @@ export default function SearchField(props) {
           description={"List of projects"}
         />
         <Autocomplete
-          style={{
-            margin: "0 auto",
-            maxWidth: 800,
-            width: "100%",
-            // border: "1px solid #061F71",
-            borderRadius: 15,
-            marginTop: props.marginTop,
-          }}
+          style={props.style}
           freeSolo
           autoComplete
           id="combo-box-demo"
           forcePopupIcon={false}
-          closeIcon={<SearchIcon />}
           options={categories}
           filterOptions={(options, state) => options}
           getOptionLabel={(option) => (option.text ? option.text : option)}
-          fullWidth
           onChange={(e, value) => {
             enterKeyPressedHandler(value && value.text ? value.text : value);
           }}
@@ -175,27 +167,19 @@ export default function SearchField(props) {
             handleOnchange(e.target.value);
           }}
           renderInput={(params) => (
-            <TextField {...params} label="Search projects" variant="outlined" />
+            <TextField {...params} 
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon style={{color:'grey'}}/>
+                </InputAdornment>
+              )
+            }}
+            label="Search projects" variant="outlined" />
           )}
         />
-        {/* <SearchBar
-          onChange={(value) => handleOnchange(value)}
-          onRequestSearch={() => setNewSearchValue(searchValue)}
-          onKeyDown={(e) => enterKeyPressedHandler(e)}
-          hintText="Search projects"
-          spellCheck={true}
-          style={{
-            margin: "0 auto",
-            maxWidth: 800,
-            width: "100%",
-            border: "1px solid #061F71",
-            borderRadius: 15,
-            marginTop: props.marginTop,
-          }}
-        >
-          
-        </SearchBar>
-         */}
+
         {progress ? <ProgressBar /> : null}
         <br />
       </React.Fragment>

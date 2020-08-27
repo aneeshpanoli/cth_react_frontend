@@ -6,7 +6,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { useHistory } from 'react-router-dom'
 
 
-export default function SearchField(props) {
+export default function SearchField() {
   const history = useHistory()
   const { isProgress } = useTrackedState();
   const [progress, setProgress] = React.useState(false);

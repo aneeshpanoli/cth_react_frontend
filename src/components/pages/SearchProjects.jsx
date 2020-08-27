@@ -19,7 +19,14 @@ export default function SearchProjects() {
   return (
     <Box width={1} display="flex" flexDirection="column" ref={resultDiv}>
       <TopNav />
-      <SearchField marginTop="0.5rem" />
+      <SearchField style={{
+            margin: "0 auto",
+            maxWidth: 800,
+            width: "100%",
+            // border: "1px solid #061F71",
+            borderRadius: 15,
+            marginTop: "1rem",
+          }} />
       <SearchPageResults />
       <Footer />
     </Box>
