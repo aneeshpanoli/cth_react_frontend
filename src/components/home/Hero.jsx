@@ -95,6 +95,11 @@ export default function Hero() {
                 maxWidth: "30rem",
                 width: "100%",
               }}
+              progressStyle={{
+                margin: "auto 0",
+                maxWidth: "0rem",
+                width: "0%",
+              }}
             />
           </Grid>
         </Grid>

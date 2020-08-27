@@ -24,9 +24,14 @@ export default function SearchProjects() {
             maxWidth: 800,
             width: "100%",
             // border: "1px solid #061F71",
-            borderRadius: 15,
             marginTop: "1rem",
-          }} />
+          }} 
+          
+          progressStyle={{
+            margin: "0 auto",
+            maxWidth: 777,
+            width: "100%",
+          }}/>
       <SearchPageResults />
       <Footer />
     </Box>

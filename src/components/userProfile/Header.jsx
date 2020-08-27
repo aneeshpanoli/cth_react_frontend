@@ -16,6 +16,11 @@ import { useHistory } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import Collapse from "@material-ui/core/Collapse";
 import { avatarImgs } from "./AvatarImgs";
+import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
+import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
+import LanguageIcon from "@material-ui/icons/Language";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import TwitterIcon from "@material-ui/icons/Twitter";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(10),
     height: theme.spacing(10),
     backgroundColor: "Gainsboro",
-    position:'relative'
+    position: "relative",
   },
 }));
 
@@ -53,14 +58,15 @@ export default function Header(props) {
     setExpanded(!expanded);
   };
   React.useEffect(() => {
-    setExpanded(!authData._source?false:false);
+    setExpanded(!authData._source ? false : false);
 
-    if(authData._id === otherUserData._id){
-      dispatch(updateOtherUserData({...otherUserData, _source:authData._source}))
+    if (authData._id === otherUserData._id) {
+      dispatch(
+        updateOtherUserData({ ...otherUserData, _source: authData._source })
+      );
     }
-  }, [authData])
+  }, [authData]);
   React.useEffect(() => {
-   
     setPersonal(
       authData.user &&
         otherUserData &&
@@ -107,7 +113,6 @@ export default function Header(props) {
       otherUserData === userData ? updateData : null
     );
   };
-
 
   const updateUnFollow = (userData, otherUser, field, op) => {
     let data = {
@@ -160,10 +165,44 @@ export default function Header(props) {
       status: "userupdates",
       index: "user_data",
       id: authData._id,
-      q: {doc:{
-        avatar: newAvatar,
-        lastUpdatedAt: new Date(),
-      }},
+      q: {
+        doc: {
+          avatar: newAvatar,
+          lastUpdatedAt: new Date(),
+        },
+      },
+    };
+    let formData = new FormData();
+
+    formData.append("params", JSON.stringify(data));
+
+    const updateData = () =>
+      getUserInfoElastic(authData, dispatch, updateAuthData);
+    updateUser(
+      formData,
+      authData.key,
+      history,
+      authData._source.username,
+      updateData
+    );
+  };
+
+  const updateEditProfile = (newAvatar) => {
+    setAvatar(newAvatar);
+    let data = {
+      status: "userupdates",
+      index: "user_data",
+      id: authData._id,
+      q: {
+        doc: {
+          about: newAvatar,
+          work:"",
+          location:"",
+          website:"",
+          twitter:"",
+          lastUpdatedAt: new Date(),
+        },
+      },
     };
     let formData = new FormData();
 
@@ -198,7 +237,7 @@ export default function Header(props) {
     <React.Fragment>
       <Grid container spacing={2} alignItems="center">
         <Grid item md={12} sm={12} xs={12} align="center">
-          <IconButton  onClick={personal ? handleExpandClick : null}>
+          <IconButton onClick={personal ? handleExpandClick : null}>
             <Avatar
               variant="circle"
               color="secondary"
@@ -206,7 +245,16 @@ export default function Header(props) {
               className={classes.avatar}
               alt={authData.user ? authData.user.first_name : null}
             >
-               <img src={avatar} style={{position:'absolute', width: "5rem", height: "5rem", left:-4, top:5 }} />
+              <img
+                src={avatar}
+                style={{
+                  position: "absolute",
+                  width: "5rem",
+                  height: "5rem",
+                  left: -4,
+                  top: 5,
+                }}
+              />
             </Avatar>
           </IconButton>
           <h4>
@@ -219,8 +267,8 @@ export default function Header(props) {
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             {avatarImgs.map((avImg, i) => (
               <IconButton
-                onMouseOver={()=>setAvatar(avImg)}
-                onMouseLeave={()=>setAvatar(otherUserData._source.avatar)}
+                onMouseOver={() => setAvatar(avImg)}
+                onMouseLeave={() => setAvatar(otherUserData._source.avatar)}
                 key={i}
                 onClick={() => updateAvatar(avImg, otherUserData)}
               >
@@ -249,9 +297,39 @@ export default function Header(props) {
             : 0}{" "}
           Following
         </Grid>
+        {/* <Grid item md={12} sm={12} xs={12} align="center">
+          <hr></hr>
+          <span>
+            <InfoOutlinedIcon style={{ marginRight: "0.5rem" }}/>
+            CTO/Data Scientist/Engineer/Molecular Geneticist/Stock Trader
+          </span>
+          <hr></hr>
+          <span>
+            <WorkOutlineIcon style={{ marginRight: "0.5rem" }} />
+            CivicTechHub
+          </span>
+          <br />
+          <span>
+            {" "}
+            <LocationSearchingIcon /> San Francisco
+          </span>
+          <br />
+          <span>
+            {" "}
+            <a href="http://www.aneeshpanoli.com" target="_blank">
+              <LanguageIcon /> aneeshpanoli.com
+            </a>
+          </span>
+          <br />
+          <span>
+            <a href="https://twitter.com/aneeshpanoli" target="_blank">
+              <TwitterIcon /> aneeshpanoli
+            </a>
+          </span>
+        </Grid> */}
         {personal ? (
           <Grid item md={12} sm={12} xs={12} align="center">
-            <Button
+            {/* <Button
               startIcon={<EditIcon />}
               disableElevation
               size="small"
@@ -261,7 +339,7 @@ export default function Header(props) {
               onClick={handleFollow}
             >
               Edit profile
-            </Button>
+            </Button> */}
           </Grid>
         ) : (
           <Grid item md={12} sm={12} xs={12} align="center">

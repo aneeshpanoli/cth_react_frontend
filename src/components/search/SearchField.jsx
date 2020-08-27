@@ -6,6 +6,7 @@ import { queryElasticsearch, esAxios } from "../backend/AxiosRequest";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { MATCH } from "../backend/EsQueries";
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { updateProjectList, updateProgress } from "../redux/actions";
 import ProgressBar from "./ProgressBar";
@@ -14,7 +15,20 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import SearchIcon from "@material-ui/icons/Search";
 
+
+const useStyles = makeStyles({
+  inputRoot: {
+    borderRadius: 20,
+  },
+  listbox: {
+  }
+});
+
+
+
 export default function SearchField(props) {
+  const classes = useStyles();
+
   const dispatch = useDispatch();
   const params = useParams();
   const history = useHistory();
@@ -62,7 +76,7 @@ export default function SearchField(props) {
     esAxios
       .get(`/q/`, {
         params: {
-          index: "search_as_you_type",
+          index: "projects",
           _source: ["title"],
           q: {
             query: {
@@ -73,9 +87,9 @@ export default function SearchField(props) {
                   "title",
                   "title._2gram",
                   "title._3gram",
-                  "storyText",
-                  "storyText._2gram",
-                  "storyText._3gram",
+                  "storyText.prefix",
+                  "storyText.prefix._2gram",
+                  "storyText.prefix._3gram",
                 ],
               },
             },
@@ -141,7 +155,6 @@ export default function SearchField(props) {
   };
 
   return (
-    <MuiThemeProvider>
       <React.Fragment>
         <Head
           title={
@@ -153,6 +166,7 @@ export default function SearchField(props) {
         />
         <Autocomplete
           style={props.style}
+          classes={classes}
           freeSolo
           autoComplete
           id="combo-box-demo"
@@ -168,21 +182,28 @@ export default function SearchField(props) {
           }}
           renderInput={(params) => (
             <TextField {...params} 
+            
             InputProps={{
               ...params.InputProps,
+              // endAdornment: (
+              //   <InputAdornment position="start">
+              //      {progress ? <ProgressBar style={props.progressStyle}/> : null}
+              //   </InputAdornment>
+              // ),
+             
+
               endAdornment: (
                 <InputAdornment position="end">
-                  <SearchIcon style={{color:'grey'}}/>
+                  <SearchIcon style={{color:'silver'}}/>
                 </InputAdornment>
               )
             }}
-            label="Search projects" variant="outlined" />
+            label="Search 7000+ projects" variant="outlined" />
           )}
         />
 
-        {progress ? <ProgressBar /> : null}
+        {progress ? <ProgressBar style={props.progressStyle}/> : null}
         <br />
       </React.Fragment>
-    </MuiThemeProvider>
   );
 }

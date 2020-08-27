@@ -123,7 +123,7 @@ export default function DashBoard() {
           <StoryText selectedProject={currProject} />
           <Container>
             <Grid container spacing={2}>
-              <Grid item sm={12} md={12} xs={12}>
+              {/* <Grid item sm={12} md={12} xs={12}>
                 <h2>Microtasks</h2>
               </Grid>
               <Grid item sm={12} md={12} xs={12}>
@@ -139,7 +139,7 @@ export default function DashBoard() {
                     selectedProject={selectedProject}
                   />
                 </Grid>
-              </Collapse>
+              </Collapse> */}
               <Grid item sm={12} md={12} xs={12} ref={resourceRef}>
                 <h2>Resources</h2>
               </Grid>

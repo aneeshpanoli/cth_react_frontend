@@ -59,11 +59,10 @@ export default function SearchResults() {
           {searchProjectList&&filterProjectList ? (
             <Card className={classes.root} variant="outlined">
                <Grid item xs={12} sm={12} align="center">
-                We found {" "}
                 {searchProjectList.length >= 1000
-                  ? "1000+"
+                  ? "1,000+"
                   : searchProjectList.length}{" "}
-                projects.
+                project results.
               </Grid>
               <SearchFilter />
             </Card>
