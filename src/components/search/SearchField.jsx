@@ -22,14 +22,32 @@ export default function SearchField(props) {
   const [searchValue, setSearchValue] = useState("");
   const [newSearchValue, setNewSearchValue] = useState("@");
   React.useEffect(() => setNewSearchValue(params.query), [params]);
-  const queryDatabase = (searchValue) => {
+
+  const query = (numResults, match) => {
+    return {
+      params: {
+        index: "projects",
+        q: {
+          size: numResults,
+          query: {
+            multi_match: match,
+          },
+        },
+      },
+    };
+  };
+  const queryDatabase = (searchValue, numResults) => {
     if (searchValue.length > 1) {
       dispatch(updateProgress(true));
       // send to axios
-      let query = MATCH(searchValue, "storyText", 1000);
+
       queryElasticsearch(
         searchValue,
-        query,
+        query(numResults, {
+          query: searchValue,
+          // type: "phrase",
+          fields: ["title^4.0", "storyText"],
+        }),
         dispatch,
         updateProjectList,
         props.redirect
@@ -40,61 +58,39 @@ export default function SearchField(props) {
 
   const querySuggest = (searchValue) => {
     esAxios
-      .get(`/q/`, {
+      .get(`/q/`, 
+      {
         params: {
-          index: "suggest_completion",
+          index: "search_as_you_type",
+          _source:["title"],
           q: {
-            suggest: {
-              text: searchValue,
-              simple_phrase1: {
-                phrase: {
-                  field: "storyText.trigram",
-                  size: 5,
-                  gram_size: 3,
-                  max_errors: 5,
-                  direct_generator: [
-                    {
-                      field: "storyText.trigram",
-                      suggest_mode: "always",
-                    },
-                  ],
-                  highlight: {
-                    pre_tag: "<em>",
-                    post_tag: "</em>",
-                  },
-                },
-              },
-              simple_phrase2: {
-                phrase: {
-                  field: "title.trigram",
-                  size: 5,
-                  gram_size: 3,
-                  max_errors: 5,
-                  direct_generator: [
-                    {
-                      field: "title.trigram",
-                      suggest_mode: "always",
-                    },
-                  ],
-                  // highlight: {
-                  //   pre_tag: "<em>",
-                  //   post_tag: "</em>",
-                  // },
-                },
-              },
-            },
-          },
+            "query": {
+              "multi_match": {
+                "query": searchValue,
+                "type": "bool_prefix",
+                "fields": [
+                  "title",
+                  "title._2gram",
+                  "title._3gram",
+                  "storyText",
+                  "storyText._2gram",
+                  "storyText._3gram"
+                ]
+              }
+            }
+          } 
         },
       })
       .then((response) => {
-        console.log(response.data.suggest.simple_phrase1);
+        console.log(response.data.hits.hits);
         // console.log(response.data.suggest.suggestB[0].options);
         // console.log(response.data.suggest.suggestA[0].options);
-        let suggestions = response.data.suggest.simple_phrase1[0].options.concat(
-          response.data.suggest.simple_phrase2[0].options
-        );
+        // let suggestions = response.data.suggest.simple_phrase1[0].options.concat(
+        //   response.data.suggest.simple_phrase2[0].options);
+        let suggestions = response.data.hits.hits
+        
         if (suggestions.length > 0) {
-          setCategories([...new Set(suggestions.map((a) => a.text))]);
+          setCategories([...new Set(suggestions.map((a) => a._source.title))]);
         }
       })
       .catch((error) => {
@@ -103,11 +99,14 @@ export default function SearchField(props) {
   };
 
   const throttled = useRef(
-    throttle((newValue) => queryDatabase(newValue), 1000)
+    throttle((newValue) => queryDatabase(newValue, 1000), 1000)
   );
 
   const throttledSuggest = useRef(
-    throttle((newValue) => querySuggest(newValue), 1000)
+    throttle((newValue) => querySuggest(newValue), 500)
+  );
+  const throttledQuickQuery = useRef(
+    throttle((newValue) => queryDatabase(newValue, 1000), 500)
   );
 
   // use setNewSearchValue to update the searchstring when the enter is pressed
@@ -135,6 +134,7 @@ export default function SearchField(props) {
   const handleOnchange = (value) => {
     if (value) {
       throttledSuggest.current(value);
+      // throttledQuickQuery.current(value);
       setSearchValue(value);
     }
   };
@@ -161,7 +161,6 @@ export default function SearchField(props) {
           }}
           freeSolo
           autoComplete
-          autoHighlight
           id="combo-box-demo"
           forcePopupIcon={false}
           closeIcon={<SearchIcon />}

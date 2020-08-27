@@ -31,7 +31,6 @@ export default function Head(props) {
       <Helmet>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="shortcut icon" href={appIcon} />
         <title>{values.title}</title>
         <meta property="og:title" content={values.title} />
         <meta
