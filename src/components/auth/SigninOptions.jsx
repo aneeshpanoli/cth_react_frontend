@@ -6,8 +6,9 @@ import SocialSignin from "./SocialSignin";
 export default function SigninOptions(props) {
   return (
     <Container component="main" maxWidth="xs" style={{marginTop:'5%'}}>
-      <SocialSignin />
-      <EmailSignin signUp={props.signUp} reset={props.reset} />
+      
+      <EmailSignin  reset={props.reset} />
+      <SocialSignin signUp={props.signUp}/>
     </Container>
   );
 }

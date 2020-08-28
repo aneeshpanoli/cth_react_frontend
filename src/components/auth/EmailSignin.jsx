@@ -11,8 +11,14 @@ import { useFormik } from "formik";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { authSignIn } from "../backend/AxiosRequest";
 import { updateAuthData } from "../redux/actions";
+import EmailIcon from "@material-ui/icons/Email";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    margin: theme.spacing(1),
+  },
   paper: {
     marginTop: theme.spacing(3),
     display: "flex",
@@ -30,6 +36,8 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    textTransform: "none",
+    textAlign: "left",
   },
   error: {
     color: "red",
@@ -78,20 +86,19 @@ export default function SignIn(props) {
   });
 
   return (
-    <Container maxWidth="xs">
-      <h5>OR </h5>
-      <h5 style={{margin:'0 auto'}}>Sign in with email.</h5>
+    <div className={classes.root} align="center">
+      <h5 style={{ margin: "0 auto" }}>Welcome back!</h5>
       <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
         {formik.errors.email ? (
           <sub className={classes.error}>{formik.errors.email}</sub>
         ) : null}
         <TextField
-          variant="outlined"
+          variant="standard"
           margin="normal"
           required
           fullWidth
           id="emailpage"
-          label="Email Address"
+          label="Email"
           name="email"
           autoComplete="email"
           autoFocus
@@ -103,7 +110,7 @@ export default function SignIn(props) {
           <sub className={classes.error}>{formik.errors.password}</sub>
         ) : null}
         <TextField
-          variant="outlined"
+          variant="standard"
           margin="normal"
           required
           fullWidth
@@ -115,39 +122,41 @@ export default function SignIn(props) {
           onChange={formik.handleChange}
           value={formik.values.password}
         />
-
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
-        />
-        <br />
+        <Grid container>
+          <Grid item xs align="left">
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Keep me logged in"
+            />
+          </Grid>
+          <Grid item xs align="right">
+            <Button
+              size="small"
+              color="primary"
+              onClick={props.reset}
+              style={{ textTransform: "none" }}
+            >
+              {"Forgot password?"}
+            </Button>
+          </Grid>
+        </Grid>
         {authData.error ? (
-          <sub className={classes.error}>{authData && authData.error ? (	
-            authData.error
-          ) : null}	</sub>
+          <sub className={classes.error}>
+            {authData && authData.error ? authData.error : null}{" "}
+          </sub>
         ) : null}
         <Button
           type="submit"
           fullWidth
           variant="contained"
-          color="primary"
+          color="secondary"
           className={classes.submit}
+          startIcon={<EmailIcon />}
         >
-          Sign In
+          Sign in with email
         </Button>
-        <Grid container>
-          <Grid item xs>
-          <Button size="small" color="primary" onClick={props.reset}>
-              {"Reset password"}
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button size="small" color="primary" onClick={props.signUp}>
-              {"Sign Up"}
-            </Button>
-          </Grid>
-        </Grid>
       </form>
-    </Container>
+      <h5>OR </h5>
+    </div>
   );
 }
