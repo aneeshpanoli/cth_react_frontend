@@ -166,8 +166,8 @@ export default function SignIn(props) {
           fullWidth
           variant="contained"
           color="secondary"
-          className={classes.submit}
-          startIcon={<EmailIcon />}
+          className={props.bttnStyle}
+          startIcon={<EmailIcon style={{color:'blue'}}/>}
         >
           Sign in with email
         </Button>

@@ -10,7 +10,7 @@ class SocialLoginButton extends React.Component {
         {...this.props}
         variant="contained"
         color="secondary"
-        style={{ marginBottom: "0.5rem", textTransform:'none' }}
+        className={this.props.bttnStyle}
         fullWidth
         startIcon={this.props.startIcon}
       >
