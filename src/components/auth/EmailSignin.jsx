@@ -23,11 +23,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     margin: theme.spacing(1),
   },
-  paper: {
-    marginTop: theme.spacing(3),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+  label: {
+    fontSize:"0.9rem",
+    whiteSpace:'nowrap'
+  },
+  checked: {
+    
   },
   avatar: {
     margin: theme.spacing(1),
@@ -52,15 +53,15 @@ const validate = (values) => {
   const errors = {};
 
   if (!values.password) {
-    errors.password = "Required*";
+    errors.password = "Password";
   } else if (values.password.length < 8) {
-    errors.password = "Must be atleast 8 characters long*";
+    errors.password = "Must be atleast 8 characters long";
   }
 
   if (!values.email) {
-    errors.email = "Required*";
+    errors.email = "Email";
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = "Invalid email address*";
+    errors.email = "Invalid email address";
   }
 
   return errors;
@@ -93,16 +94,13 @@ export default function SignIn(props) {
     <div className={classes.root} align="center">
       <h5 style={{ margin: "0 auto" }}>Welcome back!</h5>
       <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
-        {formik.errors.email ? (
-          <sub className={classes.error}>{formik.errors.email}</sub>
-        ) : null}
         <TextField
           variant="standard"
           margin="normal"
           required
           fullWidth
           id="emailpage"
-          label="Email"
+          label={formik.errors.email ? formik.errors.email:"Email"}
           name="email"
           autoComplete="email"
           autoFocus
@@ -116,16 +114,13 @@ export default function SignIn(props) {
           )}}
         />
 
-        {formik.errors.password ? (
-          <sub className={classes.error}>{formik.errors.password}</sub>
-        ) : null}
         <TextField
           variant="standard"
           margin="normal"
           required
           fullWidth
           name="password"
-          label="Password"
+          label={formik.errors.password ? formik.errors.password:"Password"}
           type="password"
           id="password"
           autoComplete="current-password"
@@ -141,8 +136,15 @@ export default function SignIn(props) {
         <Grid container>
           <Grid item xs align="left">
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Keep me logged in"
+              control={<Checkbox size="small" value="remember" color="primary" 
+              classes={{
+                checked: classes.checked,
+              }}
+              />}
+              label="Remember me"
+              classes={{
+                label: classes.label,
+              }}
             />
           </Grid>
           <Grid item xs align="right">
@@ -150,7 +152,7 @@ export default function SignIn(props) {
               size="small"
               color="primary"
               onClick={props.reset}
-              style={{ textTransform: "none", fontSize:"0.9rem", color:'#2D7DC1' }}
+              style={{ textTransform: "none", fontSize:"0.9rem", color:'#2D7DC1', whiteSpace:'nowrap' }}
             >
               {"Forgot password?"}
             </Button>
@@ -172,7 +174,17 @@ export default function SignIn(props) {
           Sign in with email
         </Button>
       </form>
-      <h5>OR </h5>
+      <h5 style={{
+         width: '100%', 
+         textAlign: 'center',
+         borderBottom: '1px dashed silver',
+         lineHeight: '0.1em',
+         marginTop: '1.5rem',
+         marginBottom:'1.5rem'
+      }}><span style={{
+        background:'#fff',
+    padding:'0 10px'
+      }}>OR</span></h5>
     </div>
   );
 }
