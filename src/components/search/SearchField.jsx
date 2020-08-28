@@ -198,7 +198,7 @@ export default function SearchField(props) {
                 </InputAdornment>
               )
             }}
-            label="Search 7000+ projects" variant="outlined" />
+            label="Search 7,000+ projects" variant="outlined" />
           )}
         />
 

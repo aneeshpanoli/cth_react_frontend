@@ -25,9 +25,12 @@ export default function UserLikedProjects(props) {
 
   return (
     <React.Fragment>
+      
        <Grid item xs={12} sm={12} md={12}>
+       {projList&&projList.length
+        ?
            <h3>Liked Projects</h3> 
-          </Grid>
+          : <h3>No liked projects</h3>}</Grid>
       {projList
         ? projList.map((r, i) => (
          

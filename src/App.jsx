@@ -24,6 +24,7 @@ import { logout, tabLogin } from './components/auth/auth'
 import PwdResetForm from './components/pages/PwdReset'
 import { updateAuthData } from './components/redux/actions'
 import Head from './components/meta/Head'
+import Loading from "./components/pages/Loading";
 
 //stylesheet
 import "bootstrap/dist/css/bootstrap.css";
@@ -73,6 +74,10 @@ const App = () => {
           <Switch>
             <Route exact path="/">
               <HomePage />
+            </Route>
+
+            <Route exact path="/loading">
+              <Loading />
             </Route>
 
             <Route exact path="/create-challenge">

@@ -2077,6 +2077,11 @@ crypto-browserify@3.3.0:
     ripemd160 "0.2.0"
     sha.js "2.2.6"
 
+crypto-js@^3.1.9-1:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
+  integrity sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==
+
 css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
@@ -6942,6 +6947,13 @@ react-transition-group@^4.0.0, react-transition-group@^4.4.0:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-twitter-login@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-twitter-login/-/react-twitter-login-1.1.2.tgz#9da1c4a4347a7cd1e7ef9edad09b08a8b2935ed2"
+  integrity sha512-iQxYSGN6++k46emQNm0EUuvYQkkwmX0kjwBAQah4tNakJGYkf+AgDjC0/PjVwzlt4LCNsxNmGIQJtYluCwBAMQ==
+  dependencies:
+    crypto-js "^3.1.9-1"
 
 react-wordcloud@^1.2.3:
   version "1.2.3"

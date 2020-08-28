@@ -312,6 +312,56 @@ export const fbSignin = (fbData, authData, dispatch, actionCallback) => {
     });
 };
 
+export const googleSignin = (socialData, authData, dispatch, actionCallback) => {
+  const postpreAuthAxios = postPreAuthAxios();
+  postpreAuthAxios
+    .post(`/rest-auth/google/`, {
+      access_token: socialData._token.accessToken,
+    })
+    .then((response) => {
+      // console.log(response.data);
+      response.data.user.image =
+        socialData._profile.profilePicURL;
+      getUserInfoElastic(response.data, dispatch, actionCallback);
+    })
+    .catch((error) => {
+      // catch errors.
+      dispatch(
+        actionCallback({
+          ...authData,
+          error: error.response.data.non_field_errors[0],
+        })
+      );
+      console.log(error.response.data);
+    });
+};
+
+export const twitterSignin = (socialData, authData, dispatch, actionCallback) => {
+  const postpreAuthAxios = postPreAuthAxios();
+  postpreAuthAxios
+    .post(`/rest-auth/twitter/`, {
+      access_token: socialData.oauth_token,
+      token_secret: socialData.oauth_token_secret
+    })
+    .then((response) => {
+      // console.log(response.data);
+      // response.data.user.image =
+      //   "https://twitter.com/"+socialData.screen_name+"/profile_image?size=original";
+      getUserInfoElastic(response.data, dispatch, actionCallback);
+    })
+    .catch((error) => {
+      // catch errors.
+      console.log(error.response.data);
+      dispatch(
+        actionCallback({
+          ...authData,
+          error: error.response.data.non_field_errors[0],
+        })
+      );
+      
+    });
+};
+
 export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
   const userInfoAxios = postAuthAxios(`Token ${loginData.key}`);
   let query = MATCH_USER(loginData.user.id, "id");

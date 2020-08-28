@@ -115,8 +115,13 @@ export default function HomeCarousel({term}) {
 
 
   const [projList, setProjList] = React.useState();
+  const [searchTerm, setSearchTerm] = React.useState()
   React.useEffect(() => {
-    queryDatabase(term);
+    if (term&&term !== searchTerm){
+      queryDatabase(term);
+      setSearchTerm(term)
+    }
+    
   }, [term]);
   const queryDatabase = (searchValue) => {
     let query = MATCH(searchValue, "storyText", 10);

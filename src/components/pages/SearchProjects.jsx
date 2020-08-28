@@ -29,7 +29,7 @@ export default function SearchProjects() {
           
           progressStyle={{
             margin: "0 auto",
-            maxWidth: 777,
+            maxWidth: 760,
             width: "100%",
           }}/>
       <SearchPageResults />
