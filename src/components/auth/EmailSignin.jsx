@@ -12,6 +12,10 @@ import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { authSignIn } from "../backend/AxiosRequest";
 import { updateAuthData } from "../redux/actions";
 import EmailIcon from "@material-ui/icons/Email";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import CheckIcon from '@material-ui/icons/Check';
+import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -104,6 +108,12 @@ export default function SignIn(props) {
           autoFocus
           onChange={formik.handleChange}
           value={formik.values.email}
+          InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <CheckIcon style={{color:'#2F9055'}}/>
+            </InputAdornment>
+          )}}
         />
 
         {formik.errors.password ? (
@@ -121,6 +131,12 @@ export default function SignIn(props) {
           autoComplete="current-password"
           onChange={formik.handleChange}
           value={formik.values.password}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <VisibilityOutlinedIcon style={{color:'silver'}}/>
+              </InputAdornment>
+            )}}
         />
         <Grid container>
           <Grid item xs align="left">
@@ -134,7 +150,7 @@ export default function SignIn(props) {
               size="small"
               color="primary"
               onClick={props.reset}
-              style={{ textTransform: "none" }}
+              style={{ textTransform: "none", fontSize:"0.9rem", color:'#2D7DC1' }}
             >
               {"Forgot password?"}
             </Button>
