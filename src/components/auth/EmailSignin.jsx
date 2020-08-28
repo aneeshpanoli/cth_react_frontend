@@ -92,7 +92,9 @@ export default function SignIn(props) {
 
   return (
     <div className={classes.root} align="center">
-      <h5 style={{ margin: "0 auto" }}>Welcome back!</h5>
+      <h4 style={{ margin: "0 auto"}}>Welcome back!
+      <hr></hr>
+      </h4>
       <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
         <TextField
           variant="standard"

@@ -137,7 +137,7 @@ export default function SignIn(props) {
           fullWidth
           variant="contained"
           color="primary"
-          className={classes.submit}
+          className={props.bttnStyle}
         >
           Reset Password
         </Button>

@@ -40,7 +40,7 @@ const validate = (values) => {
   const errors = {};
 
   if (!values.email) {
-    errors.email = "Required*";
+    errors.email = "Email";
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
     errors.email = "Invalid email address*";
   }
@@ -67,26 +67,28 @@ export default function EmailPwdReset(props) {
   });
 
   return (
-    <Container maxWidth="xs">
+    <Container component="main" maxWidth="xs" style={{ marginTop: "5%" }}>
       {message? 
       <h5 style={{marginTop:'3rem', textAlign:'center'}}>
         If an account exists for this email address, you will receive an email from us shortly.
       </h5>
       :
       <React.Fragment>
+        <h4 style={{ margin: "0 auto", textAlign:'center'}}>Forgot your password?</h4>
+            <hr></hr>
+            <h6 style={{ margin: "0 auto" }}>
+             Don't worry! Just fill in the email you used to sign up and we'll send you a link to reset your password.
+            </h6>
+<hr></hr>
       <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
-       <h5 style={{marginTop:'3rem', textAlign:'center'}}>Reset Password</h5>
-      <h5 style={{ margin: "0 auto" }}>Please enter your account email.</h5>
-        {formik.errors.email ? (
-          <sub className={classes.error}>{formik.errors.email}</sub>
-        ) : null}
+       
         <TextField
-          variant="outlined"
+          variant="standard"
           margin="normal"
           required
           fullWidth
           id="emailpage"
-          label="Email Address"
+          label={formik.errors.email ?formik.errors.email :"Email"}
           name="email"
           autoComplete="email"
           autoFocus
@@ -103,18 +105,19 @@ export default function EmailPwdReset(props) {
           type="submit"
           fullWidth
           variant="contained"
-          color="primary"
-          className={classes.submit}
+          color="secondary"
+          className={props.bttnStyle}
         >
           Reset password
         </Button>
         </form>
 
-        <Grid container>
-          <Grid item xs>
-            <Button size="small" color="primary" onClick={props.signIn}>
-              {"Sign In"}
-            </Button>
+        <Grid container style={{marginTop:'1rem'}}>
+          <Grid item xs >
+          <p> No account? No problem.
+        <Button style={{textTransform:'none', fontSize:"0.9rem", color:'#2D7DC1'}} size="small" onClick={props.signUp}>
+              Sign up here
+            </Button></p>
           </Grid>
           <Grid item></Grid>
         </Grid>

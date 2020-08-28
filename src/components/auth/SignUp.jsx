@@ -14,13 +14,16 @@ import { updateAuthData } from "../redux/actions";
 import { useHistory } from "react-router-dom";
 import { goBack } from "../js/utils";
 import { disposableEmails } from "./disposableEmails";
+import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import CheckIcon from '@material-ui/icons/Check';
+import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
+  root: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    margin: theme.spacing(1),
   },
   avatar: {
     margin: theme.spacing(1),
@@ -47,36 +50,36 @@ const validate = (values) => {
   const errors = {};
 
   if (!values.password1) {
-    errors.password1 = "Required*";
+    errors.password1 = "Password";
   } else if (values.password1.length < 8) {
-    errors.password1 = "Must be atleast 8 characters long*";
+    errors.password1 = "Must be atleast 8 characters long";
   }
   if (!values.password2) {
-    errors.password2 = "Required*";
+    errors.password2 = "Retype password";
   } else if (values.password2 !== values.password1) {
     errors.password2 = "Passwords doesn't match";
   }
 
   if (!values.email) {
-    errors.email = "Required*";
+    errors.email = "Email";
   } else if (
     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email) ||
     disposableEmails.includes(values.email.split("@")[1])
   ) {
-    errors.email = "Invalid email address*";
+    errors.email = "Invalid email address";
   }
   if (!values.firstName) {
-    errors.firstName = "Required*";
+    errors.firstName = "First name";
   } else if (values.firstName.length > 15) {
-    errors.firstName = "Must be 15 characters or less*";
+    errors.firstName = "Must be 15 characters or less";
   }
   if (!values.lastName) {
-    errors.lastName = "Required*";
+    errors.lastName = "Last name";
   } else if (values.lastName.length > 20) {
-    errors.lastName = "Must be 20 characters or less*";
+    errors.lastName = "Must be 20 characters or less";
   }
   if (!values.tAndCond) {
-    errors.tAndCond = "Please accept terms and conditions*";
+    errors.tAndCond = "Please accept terms and conditions";
   }
 
   return errors;
@@ -115,185 +118,222 @@ export default function SignUp(props) {
   });
 
   return (
-    <Container component="main" maxWidth="xs">
-      {authData && authData.signUp && authData.signUp === true ? (
-        <Grid container spacing={1} justify="center">
-          <Grid
-            item
-            style={{
-              width: "100%",
-              height: "3rem",
-              textAlign: "center",
-              backgroundColor: "#061F71",
-              color: "white",
-              marginTop: "5rem",
-            }}
-          >
-            <h3>Confirm email</h3>
-          </Grid>
-          <Grid item>
-            <h5 style={{ fontWeight: 400, marginBottom: "3rem" }}>
-              We have sent an e-mail to you for verification. Follow the link
-              provided to finalize the signup process. Please contact us if you
-              do not receive it within a few minutes.
-            </h5>
-          </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => goBack(history)}
+    <Container component="main" maxWidth="xs" style={{ marginTop: "5%" }}>
+      <div className={classes.root} align="center">
+        {authData && authData.signUp && authData.signUp === true ? (
+          <Grid container spacing={1} justify="center">
+            <Grid
+              item
+              style={{
+                width: "100%",
+                height: "3rem",
+                textAlign: "center",
+                backgroundColor: "#061F71",
+                color: "white",
+                marginTop: "5rem",
+              }}
             >
-              OK
-            </Button>
+              <h3>Confirm email</h3>
+            </Grid>
+            <Grid item>
+              <h5 style={{ fontWeight: 400, marginBottom: "3rem" }}>
+                We have sent an e-mail to you for verification. Follow the link
+                provided to finalize the signup process. Please contact us if
+                you do not receive it within a few minutes.
+              </h5>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => goBack(history)}
+              >
+                OK
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      ) : (
-        <React.Fragment>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
+        ) : (
+          <React.Fragment>
+            <h4 style={{ margin: "0 auto" }}>Welcome to CivicTechHub!
+            <hr></hr>
+            </h4>
+            
+            <h6 style={{ margin: "0 auto" }}>
+              Sign up to access all the features we have to offer! We promise to
+              keep your information safe.
+              <hr></hr>
+            </h6>
 
-          <form
-            className={classes.form}
-            noValidate
-            onSubmit={formik.handleSubmit}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                {formik.errors.firstName ? (
-                  <sup className={classes.error}>{formik.errors.firstName}</sup>
-                ) : (
-                  <sup className={classes.error}>{"*"}</sup>
-                )}
-                <TextField
-                  autoComplete="fname"
-                  name="firstName"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  onChange={formik.handleChange}
-                  value={formik.values.firstName}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                {formik.errors.lastName ? (
-                  <sup className={classes.error}>{formik.errors.lastName}</sup>
-                ) : (
-                  <sup className={classes.error}>{"*"}</sup>
-                )}
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="lname"
-                  onChange={formik.handleChange}
-                  value={formik.values.lastName}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                {formik.errors.email ? (
-                  <sup className={classes.error}>{formik.errors.email}</sup>
-                ) : (
-                  <sup className={classes.error}>{"*"}</sup>
-                )}
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  onChange={formik.handleChange}
-                  value={formik.values.email}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                {formik.errors.password1 ? (
-                  <sup className={classes.error}>{formik.errors.password1}</sup>
-                ) : (
-                  <sup className={classes.error}>{"*"}</sup>
-                )}
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password1"
-                  label="Password"
-                  type="password"
-                  id="password1"
-                  autoComplete="current-password"
-                  onChange={formik.handleChange}
-                  value={formik.values.password1}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                {formik.errors.password2 ? (
-                  <sup className={classes.error}>{formik.errors.password2}</sup>
-                ) : (
-                  <sup className={classes.error}>{"*"}</sup>
-                )}
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password2"
-                  label="Retype the password"
-                  type="password"
-                  id="password2"
-                  autoComplete="current-password"
-                  onChange={formik.handleChange}
-                  value={formik.values.password2}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                {formik.errors.tAndCond ? (
-                  <sup className={classes.error}>{formik.errors.tAndCond}</sup>
-                ) : (
-                  <sup className={classes.error}>{"*"}</sup>
-                )}
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="primary"
-                      onChange={formik.handleChange}
-                      value={formik.values.tAndCond}
-                      id="tAndCond"
-                    />
-                  }
-                  label="I agree to the terms and conditions."
-                />
-              </Grid>
-            </Grid>
-            {authData && authData.error ? (
-              <sub className={classes.error}>{authData.error}</sub>
-            ) : null}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
+            <form
+              className={classes.form}
+              noValidate
+              onSubmit={formik.handleSubmit}
             >
-              Sign Up
-            </Button>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Button size="small" color="primary" onClick={props.signIn}>
-                  {"Sign In"}
-                </Button>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    autoComplete="fname"
+                    name="firstName"
+                    variant="standard"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label={
+                      formik.errors.firstName
+                        ? formik.errors.firstName
+                        : "First name"
+                    }
+                    autoFocus
+                    onChange={formik.handleChange}
+                    value={formik.values.firstName}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <CheckIcon style={{color:'#2F9055'}}/>
+                        </InputAdornment>
+                      )}}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    variant="standard"
+                    required
+                    fullWidth
+                    id="lastName"
+                    label={
+                      formik.errors.lastName
+                        ? formik.errors.lastName
+                        : "Last name"
+                    }
+                    name="lastName"
+                    autoComplete="lname"
+                    onChange={formik.handleChange}
+                    value={formik.values.lastName}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <CheckIcon style={{color:'#2F9055'}}/>
+                        </InputAdornment>
+                      )}}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="standard"
+                    required
+                    fullWidth
+                    id="email"
+                    label={formik.errors.email ? formik.errors.email : "Email"}
+                    name="email"
+                    autoComplete="email"
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <AlternateEmailIcon style={{color:'#2D7DC1'}}/>
+                        </InputAdornment>
+                      )}}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="standard"
+                    required
+                    fullWidth
+                    name="password1"
+                    label={
+                      formik.errors.password1
+                        ? formik.errors.password1
+                        : "Password"
+                    }
+                    type="password"
+                    id="password1"
+                    autoComplete="current-password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password1}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <VisibilityOutlinedIcon style={{color:'silver'}}/>
+                        </InputAdornment>
+                      )}}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="standard"
+                    required
+                    fullWidth
+                    name="password2"
+                    label={
+                      formik.errors.password2
+                        ? formik.errors.password2
+                        : "Retype the password"
+                    }
+                    type="password"
+                    id="password2"
+                    autoComplete="current-password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password2}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <VisibilityOutlinedIcon style={{color:'silver'}}/>
+                        </InputAdornment>
+                      )}}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  {formik.errors.tAndCond ? (
+                    <sup className={classes.error}>
+                      {formik.errors.tAndCond}
+                    </sup>
+                  ) : (
+                    <sup className={classes.error}>{"*"}</sup>
+                  )}
+                  <p style={{verticalAlign:'center'}}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="primary"
+                        onChange={formik.handleChange}
+                        value={formik.values.tAndCond}
+                        id="tAndCond"
+                        required
+                        size="small"
+                      />
+                    }
+                    
+                  />
+                  I agree to the <a href='/terms-and-conditions' target='_blank'>terms and conditions</a></p>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        </React.Fragment>
-      )}
+              {authData && authData.error ? (
+                <sub className={classes.error}>{authData.error}</sub>
+              ) : null}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="secondary"
+                className={props.bttnStyle}
+              >
+                Create account
+              </Button>
+              <Grid container justify="flex-start">
+                <Grid item>
+                <p> Have an account?  
+        <Button style={{textTransform:'none', fontSize:"0.9rem", color:'#2D7DC1'}} size="small" onClick={props.signIn}>
+              Sign in here
+            </Button></p>
+                  
+                </Grid>
+              </Grid>
+            </form>
+          </React.Fragment>
+        )}
+      </div>
     </Container>
   );
 }
