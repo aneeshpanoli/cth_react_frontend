@@ -172,7 +172,7 @@ export default function SignUp(props) {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={12}>
                   <TextField
-                    autoComplete="fname"
+                    autoComplete="given-name"
                     name="firstName"
                     variant="standard"
                     required
@@ -206,7 +206,7 @@ export default function SignUp(props) {
                         : "Last name"
                     }
                     name="lastName"
-                    autoComplete="lname"
+                    autoComplete="family-name"
                     onChange={formik.handleChange}
                     value={formik.values.lastName}
                     InputProps={{
@@ -242,6 +242,7 @@ export default function SignUp(props) {
                     required
                     fullWidth
                     name="password1"
+                    autoComplete='off'
                     label={
                       formik.errors.password1
                         ? formik.errors.password1
@@ -249,7 +250,6 @@ export default function SignUp(props) {
                     }
                     type="password"
                     id="password1"
-                    autoComplete="current-password"
                     onChange={formik.handleChange}
                     value={formik.values.password1}
                     InputProps={{
@@ -266,6 +266,7 @@ export default function SignUp(props) {
                     required
                     fullWidth
                     name="password2"
+                    autoComplete='off'
                     label={
                       formik.errors.password2
                         ? formik.errors.password2
@@ -273,7 +274,6 @@ export default function SignUp(props) {
                     }
                     type="password"
                     id="password2"
-                    autoComplete="current-password"
                     onChange={formik.handleChange}
                     value={formik.values.password2}
                     InputProps={{
