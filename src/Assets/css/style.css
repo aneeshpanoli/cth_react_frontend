@@ -15,6 +15,10 @@ html {
     scroll-behavior: smooth;
 }
 
+button:active {
+  outline: none;
+}
+
 .hero-div { 
     background-repeat: no-repeat; 
     background-position: center center;

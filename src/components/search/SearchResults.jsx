@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import SearchFilter from "./SearchFilter";
+import Head from "../meta/Head";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,6 +53,7 @@ export default function SearchResults() {
   };
   return (
     <Container>
+      <Head image={searchProjectList&&searchProjectList[0]?searchProjectList[0]._source.image:null}/>
       <Grid container spacing={1}>
 
         {/* filter and results */}

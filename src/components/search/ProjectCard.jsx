@@ -19,7 +19,6 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Chip from "@material-ui/core/Chip";
-
 import { countries } from "./utils";
 import { AUTH_DATA } from "../redux/actionTypes";
 
@@ -231,7 +230,7 @@ export default function ProjectCard(props) {
               style={{ height: "10rem", textAlign: "left" }}
             >
               <Typography
-                variant="body2"
+                variant="body1"
                 color="primary"
                 component="div"
                 style={{ overflow: "hidden" }}

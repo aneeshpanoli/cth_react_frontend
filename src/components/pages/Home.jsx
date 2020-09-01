@@ -2,16 +2,15 @@ import React from "react";
 import Footer from "../footer/Footer";
 import Hero from "../home/Hero";
 import Navbar from "../navigation/TopNav";
-import { queryElasticsearch } from "../backend/AxiosRequest";
-import { FETCH_RANDOM_ON_SESSION } from "../backend/EsQueries";
-import { updateProjectList } from "../redux/actions";
+import Head from '../meta/Head'
+import Activity from '../home/Activity'
 import { useDispatch } from "reactive-react-redux";
 import CarouselHolder from "../home/FeaturedProjects";
 import { useTrackedState } from "reactive-react-redux";
 
 export default function homePage() {
   const dispatch = useDispatch();
-  const { searchProjectList } = useTrackedState();
+  const { authData } = useTrackedState();
 
   // React.useEffect(() => {
   //   if (!searchProjectList) {
@@ -22,10 +21,13 @@ export default function homePage() {
 
   return (
     <React.Fragment>
+      <Head />
       <Navbar />
-      <Hero />
+      {authData.isAuthenticated?<Activity />:
+      <Hero />}
       <CarouselHolder />
       <Footer />
     </React.Fragment>
   );
 }
+

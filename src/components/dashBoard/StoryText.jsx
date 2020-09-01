@@ -18,7 +18,7 @@ import Grid from "@material-ui/core/Grid";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { queryEsById, updateProject } from "../backend/AxiosRequest";
 import { updateSelectedProject } from "../redux/actions";
-import { red, green } from "@material-ui/core/colors";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -134,7 +134,7 @@ export default function Header(props) {
         [...upvotes, authData._source.id],
         [...downvotes].filter((id) => id !== authData._source.id)
       );
-    }else{
+    } else {
       updateVotes(
         [...upvotes].filter((id) => id !== authData._source.id),
         [...downvotes]
@@ -152,9 +152,11 @@ export default function Header(props) {
         [...upvotes].filter((id) => id !== authData._source.id),
         [...downvotes, authData._source.id]
       );
-    }else{
-      updateVotes( [...upvotes],
-      [...downvotes].filter((id) => id !== authData._source.id))
+    } else {
+      updateVotes(
+        [...upvotes],
+        [...downvotes].filter((id) => id !== authData._source.id)
+      );
     }
   };
   // console.log(props.selectedProject)
@@ -255,11 +257,13 @@ export default function Header(props) {
               <Settings selectedProject={props.selectedProject} />
             </Grid>
             <Grid item md={12} sm={12} xs={12}>
-              {parseHtml(
-                props.selectedProject
-                  ? props.selectedProject._source.storyText
-                  : null
-              )}
+              <Typography variant="body1">
+                {parseHtml(
+                  props.selectedProject
+                    ? props.selectedProject._source.storyText
+                    : null
+                )}
+              </Typography>
             </Grid>
           </Grid>
         </Container>

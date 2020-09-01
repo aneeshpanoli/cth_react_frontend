@@ -10,14 +10,15 @@ import { Button, IconButton } from "@material-ui/core";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
 import { useHistory } from "react-router-dom";
 import Collapse from "@material-ui/core/Collapse";
+import { CircularProgress } from '@material-ui/core';
+import FeaturedPlayListOutlinedIcon from '@material-ui/icons/FeaturedPlayListOutlined';
 import CloseIcon from "@material-ui/icons/Close";
 import ChipInput from "material-ui-chip-input";
 import { toTitleCase } from "../js/utils";
 import ProgressBar from "../search/ProgressBar";
 import { updateAuthData, updateProgress } from "../redux/actions";
 import {
-  updateUserInterests,
-  getUserInfoElastic,
+  updateUserInterests
 } from "../backend/AxiosRequest";
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +73,7 @@ export default function FeaturedProjects() {
   const [progress, setProgress] = React.useState(false);
   const history = useHistory();
   const [grow, setGrow] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [formValues, setFormValues] = React.useState({
     interests: [],
     disabled: true,
@@ -94,6 +96,8 @@ export default function FeaturedProjects() {
   const [categories, setCategories] = React.useState([]);
 
   const handleMore = () => {
+    setLoading(true)
+    setTimeout(()=>setLoading(false), 2000)
     setPageNum(pageNum + 3);
     window.scrollTo(0, topDiv.current.offsetTop + topDiv.current.clientHeight);
   };
@@ -183,16 +187,19 @@ export default function FeaturedProjects() {
     <Box>
       <Container>
         <Grid container alignContent="space-between">
-          <Grid item xs={12} sm={6} md={9}>
-            <h3 style={{ fontWeight: 700 }}>FEATURED PROJECTS</h3>
+          <Grid item xs={6} sm={6} md={6}>
+          <h4 style={{ fontWeight: 700 }}>
+            <FeaturedPlayListOutlinedIcon /> {" "}
+              Popular topics
+            </h4>
           </Grid>
-          <Grid item xs={12} sm={6} md={3} align="right">
+          <Grid item xs={6} sm={6} md={6} align="right">
             <Button
               onClick={handlePersonalize}
               startIcon={<TuneIcon />}
-              style={{ color: "grey", fontWeight: 700 }}
+              style={{ color: "grey", fontWeight: 700, textTransform:'none' }}
             >
-              Personalize homepage
+              Customize feed
             </Button>
           </Grid>
           {progress ? <ProgressBar /> : null}
@@ -254,7 +261,7 @@ export default function FeaturedProjects() {
               className={classes.arrowBtn}
               onClick={handleMore}
             >
-              <ArrowDownwardIcon />
+              {loading? <CircularProgress size={20}/>: <ArrowDownwardIcon />}
             </IconButton>
           </Grid>
         )}

@@ -1,9 +1,9 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
+
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -94,8 +94,15 @@ export default function EmailPwdReset(props) {
           autoFocus
           onChange={formik.handleChange}
           value={formik.values.email}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <AlternateEmailIcon style={{color:'#2D7DC1'}}/>
+              </InputAdornment>
+            )}}
         />
         <br />
+
         {authData.error ? (
           <sub className={classes.error}>
             {authData && authData.error ? authData.error : null}{" "}

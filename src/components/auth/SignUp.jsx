@@ -14,10 +14,10 @@ import { updateAuthData } from "../redux/actions";
 import { useHistory } from "react-router-dom";
 import { goBack } from "../js/utils";
 import { disposableEmails } from "./disposableEmails";
-import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import CheckIcon from '@material-ui/icons/Check';
-import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
+import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import CheckIcon from "@material-ui/icons/Check";
+import VisibilityOutlinedIcon from "@material-ui/icons/VisibilityOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -154,10 +154,11 @@ export default function SignUp(props) {
           </Grid>
         ) : (
           <React.Fragment>
-            <h4 style={{ margin: "0 auto" }}>Welcome to CivicTechHub!
-            <hr></hr>
+            <h4 style={{ margin: "0 auto" }}>
+              Welcome to <span style={{ fontWeight: 700 }}>Civic</span>Tech
+              <span style={{ fontWeight: 700 }}>Hub</span>!<hr></hr>
             </h4>
-            
+
             <h6 style={{ margin: "0 auto" }}>
               Sign up to access all the features we have to offer! We promise to
               keep your information safe.
@@ -189,9 +190,10 @@ export default function SignUp(props) {
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <CheckIcon style={{color:'#2F9055'}}/>
+                          <CheckIcon style={{ color: "#2F9055" }} />
                         </InputAdornment>
-                      )}}
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12}>
@@ -212,9 +214,10 @@ export default function SignUp(props) {
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <CheckIcon style={{color:'#2F9055'}}/>
+                          <CheckIcon style={{ color: "#2F9055" }} />
                         </InputAdornment>
-                      )}}
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -231,9 +234,10 @@ export default function SignUp(props) {
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <AlternateEmailIcon style={{color:'#2D7DC1'}}/>
+                          <AlternateEmailIcon style={{ color: "#2D7DC1" }} />
                         </InputAdornment>
-                      )}}
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -242,7 +246,7 @@ export default function SignUp(props) {
                     required
                     fullWidth
                     name="password1"
-                    autoComplete='off'
+                    autoComplete="off"
                     label={
                       formik.errors.password1
                         ? formik.errors.password1
@@ -255,9 +259,10 @@ export default function SignUp(props) {
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <VisibilityOutlinedIcon style={{color:'silver'}}/>
+                          <VisibilityOutlinedIcon style={{ color: "silver" }} />
                         </InputAdornment>
-                      )}}
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -266,7 +271,7 @@ export default function SignUp(props) {
                     required
                     fullWidth
                     name="password2"
-                    autoComplete='off'
+                    autoComplete="off"
                     label={
                       formik.errors.password2
                         ? formik.errors.password2
@@ -279,9 +284,10 @@ export default function SignUp(props) {
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <VisibilityOutlinedIcon style={{color:'silver'}}/>
+                          <VisibilityOutlinedIcon style={{ color: "silver" }} />
                         </InputAdornment>
-                      )}}
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -292,21 +298,24 @@ export default function SignUp(props) {
                   ) : (
                     <sup className={classes.error}>{"*"}</sup>
                   )}
-                  <p style={{verticalAlign:'center'}}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="primary"
-                        onChange={formik.handleChange}
-                        value={formik.values.tAndCond}
-                        id="tAndCond"
-                        required
-                        size="small"
-                      />
-                    }
-                    
-                  />
-                  I agree to the <a href='/terms-and-conditions' target='_blank'>terms and conditions</a></p>
+                  <p style={{ verticalAlign: "center" }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="primary"
+                          onChange={formik.handleChange}
+                          value={formik.values.tAndCond}
+                          id="tAndCond"
+                          required
+                          size="small"
+                        />
+                      }
+                    />
+                    I agree to the{" "}
+                    <a href="/terms-and-conditions" target="_blank">
+                      terms and conditions
+                    </a>
+                  </p>
                 </Grid>
               </Grid>
               {authData && authData.error ? (
@@ -323,11 +332,21 @@ export default function SignUp(props) {
               </Button>
               <Grid container justify="flex-start">
                 <Grid item>
-                <p> Have an account?  
-        <Button style={{textTransform:'none', fontSize:"0.9rem", color:'#2D7DC1'}} size="small" onClick={props.signIn}>
-              Sign in here
-            </Button></p>
-                  
+                  <p>
+                    {" "}
+                    Have an account?
+                    <Button
+                      style={{
+                        textTransform: "none",
+                        fontSize: "0.9rem",
+                        color: "#2D7DC1",
+                      }}
+                      size="small"
+                      onClick={props.signIn}
+                    >
+                      Sign in here
+                    </Button>
+                  </p>
                 </Grid>
               </Grid>
             </form>

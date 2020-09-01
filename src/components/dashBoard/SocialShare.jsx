@@ -148,16 +148,16 @@ export default function MenuListComposition(props) {
                     </FacebookShareButton>
 
                     <TwitterShareButton
-                      title={props.selectedProject._source.title}
-                      hashtags={[
-                        "civictechhub",
-                        "openscience",
-                        "openinnovation",
-                        "FAIR",
-                      ]}
+                      // title={props.selectedProject._source.title}
+                      // hashtags={[
+                      //   "civictechhub",
+                      //   "openscience",
+                      //   "openinnovation",
+                      //   "FAIR",
+                      // ]}
                       url={window.location.href}
                       className={classes.buttonIcon}
-                      related={["civictechhub"]}
+                      // related={["civictechhub"]}
                     >
                       <TwitterIcon />
                     </TwitterShareButton>
@@ -165,8 +165,8 @@ export default function MenuListComposition(props) {
                     <LinkedinShareButton
                       url={window.location.href}
                       className={classes.buttonIcon}
-                      title={props.selectedProject._source.title}
-                      summary={props.selectedProject._source.subtitle}
+                      // title={props.selectedProject._source.title}
+                      // summary={props.selectedProject._source.subtitle}
                       source={"CivicTechHub"}
                     >
                       <LinkedInIcon />

@@ -61,6 +61,7 @@ export default function ProfileCard(props) {
           color="primary"
           className={classes.buttons}
           startIcon={<LinkedInIcon />}
+          href={props.linkedin}
         >
           Connect
         </Button>
@@ -69,6 +70,7 @@ export default function ProfileCard(props) {
           color="primary"
           className={classes.buttons}
           startIcon={<TwitterIcon />}
+          href={props.twitter}
         >
           Follow
         </Button>

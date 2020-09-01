@@ -11,7 +11,8 @@ import Divider from "@material-ui/core/Divider";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
-
+import StopRoundedIcon from '@material-ui/icons/StopRounded';
+import DoubleArrowSharpIcon from '@material-ui/icons/DoubleArrowSharp';
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -155,7 +156,7 @@ export default function HomeCarousel({term}) {
               </Grid>
 
               <Grid item sm={8} xs={8} md={8} align="left">
-                <h4>{term}</h4>
+                <h5><StopRoundedIcon />{" "+term}</h5>
               </Grid>
               <Grid item sm={4} xs={4} md={4} align="right">
                 <Link
@@ -165,11 +166,11 @@ export default function HomeCarousel({term}) {
                   })}
                   style={{
                     textDecoration: "none",
-                    fontSize: "1.2rem",
+                    fontSize: "1rem",
                     color: "black",
                   }}
                 >
-                  View more {">"}
+                  View more {" "}<DoubleArrowSharpIcon />
                 </Link>
               </Grid>
             </Grid>
@@ -188,10 +189,7 @@ export default function HomeCarousel({term}) {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <Container>
-            {/* <sup>Category</sup> */}
-            <h4>{term}</h4>
-          </Container>
+ 
           <Grid item xs={12}>
             <Container>
               <Slider {...settings}>

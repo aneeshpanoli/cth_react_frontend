@@ -16,5 +16,8 @@ export const themeDict = {
       danger: "#e57373",
       safe:"#81c784"
     },
+    typography: {
+      fontFamily: `"Source Sans Pro", sans-serif`,
+    },
 
   }

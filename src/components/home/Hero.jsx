@@ -1,12 +1,11 @@
 import React from "react";
-import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import heroimg from "../../Assets/img/cth_hero_k.svg";
 import heroMobile from "../../Assets/img/hero_mobile.svg";
 import Grid from "@material-ui/core/Grid";
-import SearchField from "./SearchFieldHome";
+import Head from '../meta/Head'
 import SearchForm from "../search/SearchField";
 import Hidden from "@material-ui/core/Hidden";
 import { useTrackedState } from "reactive-react-redux";
@@ -26,6 +25,7 @@ export default function Hero() {
 
   return (
     <Box>
+      <Head image={heroMobile}/>
       <Grid container spacing={0}>
         <Grid
           item

@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import Head from "../meta/Head";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import throttle from "lodash.throttle";
 import { queryElasticsearch, esAxios } from "../backend/AxiosRequest";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import { MATCH } from "../backend/EsQueries";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -158,11 +156,11 @@ export default function SearchField(props) {
       <React.Fragment>
         <Head
           title={
-            params.query
-              ? params.query + " - Search results- CivicTechHub"
+            searchValue
+              ? "Search results for '"+searchValue + "'- CivicTechHub"
               : null
           }
-          description={"List of projects"}
+          description={searchValue?"A list of projects matching the term  `"+searchValue+"'.":null}
         />
         <Autocomplete
           style={props.style}
