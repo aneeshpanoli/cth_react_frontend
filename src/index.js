@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {Suspense} from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { Provider } from 'reactive-react-redux';
@@ -18,6 +18,7 @@ if (process.env.NODE_ENV !== 'development') {
 ReactDOM.render(
   <Provider store={store}>
     <SnackbarProvider>
+   
  <App />
  </SnackbarProvider>
  </Provider>,

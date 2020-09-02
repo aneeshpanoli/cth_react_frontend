@@ -90,7 +90,10 @@ export default function DashBoard() {
     } else {
       const query = MATCH_PROJ_ID(selectedProject._id, "microtasks");
       simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
-      handleActivity();
+      if(authData&&authData.user){
+        handleActivity();
+      }
+      
     }
     setCurrProject(selectedProject);
     setIsFeedback(

@@ -182,9 +182,9 @@ export default function MTSubmitForm(props) {
     let newArr = [...formValues.roles].filter((item) => item !== chip);
     setFormValues(Object.assign({}, formValues, { roles: newArr }));
   };
-  const handleChange = (field, values) => {
+  const handleChange = (event, field) => {
     // copy new values to formValues
-    setFormValues({ ...formValues, [field]: values });
+    setFormValues({ ...formValues, [field]: event.target.value });
   };
 
   React.useEffect(() => {
@@ -279,7 +279,7 @@ export default function MTSubmitForm(props) {
                   label="Microtask title"
                   name="title"
                   autoComplete="none"
-                  onChange={() => handleChange("title", event.target.value)}
+                  onChange={() => handleChange("title")}
                   value={formValues.title}
                 />
               </Grid>
@@ -322,7 +322,7 @@ export default function MTSubmitForm(props) {
                   id="subtitle"
                   label="Subtitle"
                   name="subtitle"
-                  onChange={() => handleChange("subtitle", event.target.value)}
+                  onChange={() => handleChange("subtitle")}
                   value={formValues.subtitle}
                 />
               </Grid>
@@ -578,7 +578,7 @@ export default function MTSubmitForm(props) {
                   type="text"
                   id="videoUrl"
                   autoComplete="current-password"
-                  onChange={() => handleChange("video", event.target.value)}
+                  onChange={() => handleChange("video")}
                   value={formValues.videoUrl}
                 />
               </Grid>

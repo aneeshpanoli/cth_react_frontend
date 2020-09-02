@@ -186,9 +186,14 @@ export default function ProjectForm() {
     let newArr = [...formValues.roles].filter((item) => item !== chip);
     setFormValues(Object.assign({}, formValues, { roles: newArr }));
   };
-  const handleChange = (field, values) => {
+  const handleChange = (event, field) => {
     // copy new values to formValues
-    setFormValues({ ...formValues, [field]: values });
+    setFormValues({ ...formValues, [field]: event.target.value });
+  };
+
+  const handleChangeValue = (field, value) => {
+    // copy new values to formValues
+    setFormValues({ ...formValues, [field]: value });
   };
 
   React.useEffect(() => {
@@ -287,7 +292,7 @@ export default function ProjectForm() {
                   label="Project title"
                   name="title"
                   autoComplete="none"
-                  onChange={() => handleChange("title", event.target.value)}
+                  onChange={(e) => handleChange(e, "title")}
                   value={formValues.title}
                 />
               </Grid>
@@ -330,7 +335,7 @@ export default function ProjectForm() {
                   id="subtitle"
                   label="Subtitle"
                   name="subtitle"
-                  onChange={() => handleChange("subtitle", event.target.value)}
+                  onChange={(e) => handleChange(e, "subtitle")}
                   value={formValues.subtitle}
                 />
               </Grid>
@@ -349,8 +354,8 @@ export default function ProjectForm() {
                   id="motivation"
                   label="Motivation"
                   name="motivation"
-                  onChange={() =>
-                    handleChange("motivation", event.target.value)
+                  onChange={(e) =>
+                    handleChange(e, "motivation")
                   }
                   value={formValues.motivation}
                 />
@@ -382,8 +387,7 @@ export default function ProjectForm() {
                     ]}
                     toolbarButtonSize="small"
                     onChange={(state) =>
-                      handleChange(
-                        "storyText",
+                      handleChangeValue("storyText",
                         convertToHTML({
                           styleToHTML: (style) => {
                             if (style === "BOLD") {
@@ -516,7 +520,7 @@ export default function ProjectForm() {
                   fullWidth
                   label="Important links (press enter to add more than one link)"
                   onAdd={(chip) => {
-                    handleChange("links", [...formValues.links].concat([chip]));
+                    handleChangeValue("links", [...formValues.links].concat([chip]));
                   }}
                   onDelete={(chip, index) => handleDeleteChip(chip, "links")}
                 />
@@ -537,7 +541,7 @@ export default function ProjectForm() {
                   fullWidth
                   label="Technology (press enter to add more than one technologies)"
                   onAdd={(chip) => {
-                    handleChange(
+                    handleChangeValue(
                       "builtWith",
                       [...formValues.builtWith].concat([chip])
                     );
@@ -563,7 +567,7 @@ export default function ProjectForm() {
                   fullWidth
                   label="Tags (press enter to add more than one keyword)"
                   onAdd={(chip) => {
-                    handleChange(
+                    handleChangeValue(
                       "keywords",
                       [...formValues.keywords].concat([chip])
                     );
@@ -586,7 +590,7 @@ export default function ProjectForm() {
                   type="text"
                   id="videoUrl"
                   autoComplete="current-password"
-                  onChange={() => handleChange("video", event.target.value)}
+                  onChange={() => handleChange("video")}
                   value={formValues.videoUrl}
                 />
               </Grid>
@@ -605,7 +609,7 @@ export default function ProjectForm() {
                   }}
                   label="Events/hackathons (press enter to add more than one events/hackathons)"
                   onAdd={(chip) => {
-                    handleChange(
+                    handleChangeValue(
                       "hackathons",
                       [...formValues.hackathons].concat([chip])
                     );

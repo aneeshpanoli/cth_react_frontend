@@ -6,7 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import { createChallenge } from "../backend/AxiosRequest";
+import { createDoc } from "../backend/AxiosRequest";
 import { useHistory } from "react-router-dom";
 
 const validateForm = (challengeFormData) => {
@@ -22,7 +22,7 @@ export default function ConfirmPost(props) {
   const { challengeFormData, userInfo } = useTrackedState();
   const postAxios = () => {
     challengeFormData.owners.push(userInfo.email);
-    createChallenge(challengeFormData);
+    createDoc(challengeFormData);
   };
 
   const handleClickOpen = () => {

@@ -1,14 +1,16 @@
-import React from "react";
+import React, {lazy, Suspense} from "react";
 import Footer from "../footer/Footer";
+import { CircularProgress } from '@material-ui/core';
+
 import Hero from "../home/Hero";
 import Navbar from "../navigation/TopNav";
 import Head from '../meta/Head'
 import Activity from '../home/Activity'
 import { useDispatch } from "reactive-react-redux";
-import CarouselHolder from "../home/FeaturedProjects";
 import { useTrackedState } from "reactive-react-redux";
+const FeaturedProjects = lazy(() => import('../home/FeaturedProjects'));
 
-export default function homePage() {
+export default function HomePage() {
   const dispatch = useDispatch();
   const { authData } = useTrackedState();
 
@@ -23,9 +25,12 @@ export default function homePage() {
     <React.Fragment>
       <Head />
       <Navbar />
+      
       {authData.isAuthenticated?<Activity />:
-      <Hero />}
-      <CarouselHolder />
+     <Hero /> }
+      <Suspense fallback={<CircularProgress/>}>
+      <FeaturedProjects />
+      </Suspense>
       <Footer />
     </React.Fragment>
   );

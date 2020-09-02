@@ -140,9 +140,11 @@ export default function Settings(props) {
         onClick={handleToggle}
         className={classes.buttonRound}
       >
+        
          <ToolTips title="Manage project">
         <SettingsIcon className={classes.buttonIcon} />
         </ToolTips>
+        
       </IconButton>
 
       <Popper
@@ -160,6 +162,7 @@ export default function Settings(props) {
                 placement === "bottom" ? "center top" : "center bottom",
             }}
           >
+            <React.Fragment>
             <ClickAwayListener onClickAway={handleClose}>
               <MenuList
                 autoFocusItem={open}
@@ -199,6 +202,7 @@ export default function Settings(props) {
                 ) : null}
               </MenuList>
             </ClickAwayListener>
+            </React.Fragment>
           </Grow>
         )}
       </Popper>

@@ -7,7 +7,7 @@ import ProjectForm from "../create/ProjectSubmitForm";
 import { useHistory } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 
-export default function homePage() {
+export default function CreateProject() {
   const history = useHistory();
   const { authData } = useTrackedState();
   React.useEffect(() => {

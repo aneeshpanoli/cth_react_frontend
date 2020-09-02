@@ -138,7 +138,7 @@ export default function AvatarIcon() {
             fullWidth
             rows={4}
             defaultValue=""
-            onChange={() => handleChange(event, "proof")}
+            onChange={() => handleChange("proof")}
           />
           <sup>{errors.email}</sup>
           <TextField
@@ -148,7 +148,7 @@ export default function AvatarIcon() {
             label="Email Address"
             name="email"
             autoComplete="email"
-            onChange={() => handleChange(event, "email")}
+            onChange={() => handleChange("email")}
           />
         </form>
       </Grid>

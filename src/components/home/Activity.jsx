@@ -75,7 +75,7 @@ export default function Activity() {
               </h4>
               <hr></hr>
             </Grid>
-            <Grid item xs={12} sm={7} md={7}>
+            <Grid item xs={12} sm={8} md={8}>
               {buildActivityJsx()}
               {/* <h6 style={{ fontWeight: 400 }}>
                 <TimelineOutlinedIcon /> You visited project A
@@ -97,7 +97,7 @@ export default function Activity() {
               </h6> */}
               <hr></hr>
             </Grid>
-            <Grid item xs={12} sm={5} md={5} >
+            <Grid item xs={12} sm={4} md={4} >
               <Grid item xs={12} sm={12} md={12} align="center">
                 <Button
                   onClick={() => history.push("/create-project")}
