@@ -163,6 +163,21 @@ export const MATCH_PROJ_ID = (id, index) => {
   };
 };
 
+export const GET_LATEST = (index, numDocs) => {
+  return {
+    params: {
+      index: index,
+      q: {
+        size: numDocs,
+        sort: { createdAt: "desc" },
+        query: {
+          match_all: {},
+        },
+      },
+    },
+  };
+};
+
 export const MATCH_EMAIL = (email) => {
   return {
     params: {

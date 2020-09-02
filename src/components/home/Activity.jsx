@@ -3,6 +3,7 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
+import { parseToDaysHoursAgo } from '../js/datePrase'
 import MoreHorizOutlinedIcon from "@material-ui/icons/MoreHorizOutlined";
 import Grid from "@material-ui/core/Grid";
 import Head from "../meta/Head";
@@ -16,20 +17,53 @@ import LibraryAddCheckOutlinedIcon from "@material-ui/icons/LibraryAddCheckOutli
 import LibraryAddOutlinedIcon from "@material-ui/icons/LibraryAddOutlined";
 import AddToQueueIcon from "@material-ui/icons/AddToQueue";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
+import { esAxios } from "../backend/AxiosRequest";
+import { GET_LATEST } from "../backend/EsQueries";
 
 export default function Activity() {
   const history = useHistory();
   const { authData } = useTrackedState();
-  const handleClick = () => {
-    setTimeout(() => {
-      history.push("/search");
-    }, 1000);
+  const [activityData, setActivityData] = React.useState([]);
+
+  const buildActivityJsx = () => {
+    const iconMap = {
+      project: <TimelineOutlinedIcon />,
+    };
+    return (
+      <React.Fragment>
+        {activityData.map((doc, i) => {
+          return (
+            <h6 key={i} style={{ fontWeight: 400 }}>
+             
+              {iconMap[doc._source.categoryName]}{" "}
+              {parseToDaysHoursAgo(doc._source.createdAt)}{" "}
+              {authData._source.id === doc._source.userId
+                ? "you"
+                : doc._source.username}{" "}
+              {doc._source.activity} <a href={"/"+doc._source.title+"/"+doc._source.docId}>{doc._source.title}</a>
+            </h6>
+          );
+        })}
+      </React.Fragment>
+    );
   };
 
-  const handleJoin = () => {
-    history.push("/sign-in");
-  };
+  const getActivity = () => {
+    const query = GET_LATEST("activity", 10);
+    esAxios
+      .get(`/q/`, query)
+      .then((response) => {
+        // process response.
 
+        setActivityData(response.data.hits.hits);
+        console.log(response.data.hits);
+      })
+      .catch((error) => {
+        // catch errors.
+        console.log(error);
+      });
+  };
+  React.useEffect(() => getActivity(), []);
   return (
     <Box>
       <Container>
@@ -41,8 +75,9 @@ export default function Activity() {
               </h4>
               <hr></hr>
             </Grid>
-            <Grid item xs={12} sm={6} md={6}>
-              <h6 style={{ fontWeight: 400 }}>
+            <Grid item xs={12} sm={7} md={7}>
+              {buildActivityJsx()}
+              {/* <h6 style={{ fontWeight: 400 }}>
                 <TimelineOutlinedIcon /> You visited project A
               </h6>
               <h6 style={{ fontWeight: 400 }}>
@@ -59,49 +94,46 @@ export default function Activity() {
               </h6>
               <h6 style={{ fontWeight: 400 }}>
                 <LibraryAddOutlinedIcon /> You created a microtask
-              </h6>
+              </h6> */}
               <hr></hr>
             </Grid>
-            <Grid item xs={12} sm={6} md={6} align="right">
-            <Grid item xs={12} sm={12} md={12} align="center">
-            <Button
-            onClick={()=>history.push('/create-project')}
-              startIcon={<AddToQueueIcon />}
-              variant="contained"
-              color="secondary"
-              style={{
-                fontSize: "1.5rem",
-                fontWeight: 700,
-                textTransform: "none",
-              }}
-            >
-              Create a project
-            </Button>
+            <Grid item xs={12} sm={5} md={5} >
+              <Grid item xs={12} sm={12} md={12} align="center">
+                <Button
+                  onClick={() => history.push("/create-project")}
+                  startIcon={<AddToQueueIcon />}
+                  variant="contained"
+                  color="secondary"
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: 700,
+                    textTransform: "none",
+                  }}
+                >
+                  Create a project
+                </Button>
 
-            <hr></hr>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} align="center">
-            <Button
-              startIcon={<GroupAddOutlinedIcon />}
-              variant="contained"
-              color="secondary"
-              style={{
-                fontSize: "1.5rem",
-                fontWeight: 700,
-                textTransform: "none",
-              }}
-            >
-              Start a community
-            </Button>
-            <hr></hr>
-          </Grid>
+                <hr></hr>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} align="center">
+                <Button
+                  startIcon={<GroupAddOutlinedIcon />}
+                  variant="contained"
+                  color="secondary"
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: 700,
+                    textTransform: "none",
+                  }}
+                >
+                  Start a community
+                </Button>
+                <hr></hr>
+              </Grid>
             </Grid>
-            
           </Grid>
         </Grid>
-        <Grid container spacing={0}>
-         
-        </Grid>
+        <Grid container spacing={0}></Grid>
       </Container>
     </Box>
   );

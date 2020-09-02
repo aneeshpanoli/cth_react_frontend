@@ -2,7 +2,7 @@ import { useDispatch, useTrackedState } from "reactive-react-redux";
 import React, { useEffect, useRef } from "react";
 import { MATCH_ID_TITLE } from "../backend/EsQueries";
 import { useParams, useHistory } from "react-router-dom";
-import { queryEsById } from "../backend/AxiosRequest";
+import { queryEsById, createDoc } from "../backend/AxiosRequest";
 import { updateSelectedProject, updateMicrotaskList } from "../redux/actions";
 import TitleSubtitle from "./TitleSubtitle";
 import Container from "@material-ui/core/Container";
@@ -64,12 +64,33 @@ export default function DashBoard() {
     queryEsById(query, dispatch, updateSelectedProject, history);
   };
 
+   function handleActivity(){
+    let data = {
+      params: {
+        index: "activity",
+        q: {
+          categoryName:'project',
+          activity:'visited',
+          docId: selectedProject._id,
+          title:selectedProject._source.title,
+          userId: authData.user.id,
+          username: authData.user.username,
+          createdAt: new Date(),
+        },
+      },
+    };
+
+    createDoc(data, authData.key, null);
+
+  };
+
   useEffect(() => {
     if (!selectedProject) {
       fetchProj(params.id, params.name.replace(/-/g, " "));
     } else {
       const query = MATCH_PROJ_ID(selectedProject._id, "microtasks");
       simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
+      handleActivity();
     }
     setCurrProject(selectedProject);
     setIsFeedback(
@@ -85,6 +106,9 @@ export default function DashBoard() {
         resourceRef.current.getBoundingClientRect().top <
         (window.innerHeight * 1) / 2
       ) {
+        if(authData.isAuthenticated){
+        
+      }
         setSlide(true);
       } else {
         // setSlide(false)
