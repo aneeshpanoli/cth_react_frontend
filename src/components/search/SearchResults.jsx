@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
 import { useTrackedState } from "reactive-react-redux";
-import ProjectCard from "./ProjectCard";
+import SearchCard from "./SearchCard";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
@@ -54,7 +54,7 @@ export default function SearchResults() {
   return (
     <Container>
       <Head image={searchProjectList&&searchProjectList[0]?searchProjectList[0]._source.image:null}/>
-      <Grid container spacing={1}>
+      <Grid container spacing={1} style={{marginTop:'2%'}}>
 
         {/* filter and results */}
         <Grid item xs={12} sm={4} md={3} className={classes.filterGrid}>
@@ -83,8 +83,9 @@ export default function SearchResults() {
         >
           {filterProjectList && filterProjectList[0]
             ? filterProjectList.slice(0, pageNum).map((r, i) => (
-                <Grid item key={i} xs={12} sm={6} md={4} ref={topDiv}>
-                  <ProjectCard r={r} />
+                // <Grid item key={i} xs={12} sm={6} md={4} ref={topDiv}>
+                <Grid item key={i} xs={12} sm={12} md={12} ref={topDiv}>
+                  <SearchCard r={r} />
                 </Grid>
               ))
             : null}

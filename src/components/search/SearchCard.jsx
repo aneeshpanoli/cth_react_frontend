@@ -6,7 +6,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Fade from "@material-ui/core/Fade";
 import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
+import { Typography, Grid } from "@material-ui/core";
 import LongMenu from "../menu/LongMenu";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { updateSelectedProject } from "../redux/actions";
@@ -20,6 +20,8 @@ import Button from "@material-ui/core/Button";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Chip from "@material-ui/core/Chip";
 import { countries } from "./utils";
+import { AUTH_DATA } from "../redux/actionTypes";
+import TurnedInNotOutlinedIcon from '@material-ui/icons/TurnedInNotOutlined';
 
 function countryToIso(country) {
   let filteredData = countries.filter((d) => d.label === country);
@@ -36,9 +38,12 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 15,
   },
   media: {
-    height: "8rem",
-    width: "100%",
-    paddingTop: "50%", // 16:9
+    maxHeight: "auto",
+    maxWidth: "100%",
+    minHeight: "5rem",
+    minWidth: "5rem",
+    objectFit: "cover",
+    borderRadius: 5,
   },
   avatar: {
     backgroundColor: "transparent",
@@ -78,9 +83,14 @@ const useStyles = makeStyles((theme) => ({
   chipRed: {
     backgroundColor: theme.palette.danger,
   },
+  bullet: {
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
+  },
 }));
 
-export default function ProjectCard(props) {
+export default function SearchCard(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -131,6 +141,7 @@ export default function ProjectCard(props) {
       return (
         <Chip
           className={classes.chipGreen}
+          size='small'
           icon={<ThumbUpIcon />}
           label={percentLikes()}
         />
@@ -139,6 +150,7 @@ export default function ProjectCard(props) {
       return (
         <Chip
           className={classes.chipRed}
+          size='small'
           icon={<ThumbUpIcon />}
           label={percentLikes()}
         />
@@ -147,12 +159,14 @@ export default function ProjectCard(props) {
       return (
         <Chip
           className={classes.chipGrey}
+          size='small'
           icon={<ThumbUpIcon />}
           label={percentLikes()}
         />
       );
     }
   };
+  const bull = <span className={classes.bullet}>•</span>;
 
   return (
     <Fade
@@ -160,7 +174,52 @@ export default function ProjectCard(props) {
       key={props.r._id}
       style={{ transitionDelay: checked ? "300ms" : "0ms" }}
     >
-      <Card className={classes.root}>
+      <Grid container spacing={1}>
+        <Grid item md={2} sm={3} xs={4}>
+          <img
+            src={getImgUrl(props.r._source.image)}
+            className={classes.media}
+          />
+        </Grid>
+
+        <Grid item md={10} sm={9} xs={8}>
+          <Link
+            onMouseMove={() => setMouseMoved(true)}
+            onMouseDown={() => setMouseMoved(false)}
+            onMouseUp={() => handleLearnmore(props.r)}
+            style={{ textDecoration: "none", cursor: "pointer" }}
+          >
+            <Grid item xs={12}>
+              <Typography variant="h6">
+                {props.r._source.title} {bull}{" "}
+                <Typography variant="body2" component="span">
+                  {props.r._source.hackathons[0]
+                    ? props.r._source.hackathons[0]
+                    : null}
+                </Typography>
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography>
+                {/* {props.r._source.subtitle.substring(0, 125) + "..."} */}
+                {props.r._source.subtitle}
+              </Typography>
+            </Grid>
+            
+          </Link>
+          <Grid container>
+            
+            <Grid item xs={12}>  <span style={{ display: "flex" , margin:'1rem'}}>
+            
+            {makeChip()}<TurnedInNotOutlinedIcon style={{margin:'auto 1rem'}}/><LongMenu r={props.r} esIndex="projects" /></span></Grid>
+         
+            </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <hr></hr>
+        </Grid>
+      </Grid>
+      {/* <Card className={classes.root}>
         <CardHeader
           action={<LongMenu r={props.r} esIndex="projects" />}
           className={classes.header}
@@ -252,7 +311,7 @@ export default function ProjectCard(props) {
             </CardActions>
           </Link>
         </ButtonBase>
-      </Card>
+      </Card> */}
     </Fade>
   );
 }

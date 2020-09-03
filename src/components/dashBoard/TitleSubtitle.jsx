@@ -31,7 +31,7 @@ export default function TitleSubtitle({ selectedProject }) {
       <Container>
         <Grid container>
           <Grid item xs={12} sm={7} md={7}>
-            <h1 style={{ wordWrap: "break-word", marginTop:"2%"}}>
+            <h1 style={{ wordWrap: "break-word", marginTop:"2rem"}}>
               {selectedProject ? selectedProject._source.title : null}
             </h1>
             <h5 style={{ color: "grey" }}>
@@ -45,8 +45,8 @@ export default function TitleSubtitle({ selectedProject }) {
               alt="hero-img"
               src={coverImgUrl(selectedProject._source.image)}
               style={{
-                height: "40vh",
-                marginTop: "5%",
+                width: "30rem",
+                marginTop: "4rem",
                 marginLeft: "5%",
                 marginBottom: "5%",
                 boxShadow: "0px 0px 5px grey",

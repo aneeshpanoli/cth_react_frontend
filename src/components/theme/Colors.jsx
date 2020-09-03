@@ -18,6 +18,13 @@ export const themeDict = {
     },
     typography: {
       fontFamily: `"Source Sans Pro", sans-serif`,
+      h6:{
+        fontSize: 15,
+        fontWeight: 700,
+      },
+      body2:{
+        color:'grey'
+      }
     },
 
   }
