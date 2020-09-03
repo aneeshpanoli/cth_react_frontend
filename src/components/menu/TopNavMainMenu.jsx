@@ -4,7 +4,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from "react-router-dom";
 import MenuButton from "../buttons/TopNavMenuBttn";
 import AddIcon from "@material-ui/icons/Add";
@@ -12,6 +11,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import HomeIcon from "@material-ui/icons/Home";
 import { useSnackbar } from "notistack";
 import { useTrackedState } from "reactive-react-redux";
+import menuIcon from "../../Assets/img/menuIcon.svg";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -50,7 +50,7 @@ export default function AlertDialogSlide() {
   return (
     <div>
       <Button color="secondary" onClick={handleClickOpen}>
-        <MenuIcon />
+      <img alt="logo" src={menuIcon} style={{ height: "2rem"}} />
       </Button>
 
       <Dialog
@@ -64,7 +64,7 @@ export default function AlertDialogSlide() {
         <DialogTitle id="alert-dialog-slide-title">
           <Button
             disabled
-            startIcon={<MenuIcon />}
+            startIcon={ <img alt="logo" src={menuIcon} style={{ height: "1rem"}} />}
             style={{ color: "black" }}
           >
             Menu

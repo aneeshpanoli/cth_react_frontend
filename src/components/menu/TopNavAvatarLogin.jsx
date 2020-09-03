@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     height: 35,
-    verticalAlign: "top",
+    verticalAlign: "middle",
     justifyContent: "flex-end",
     width: '100%'
   },
@@ -31,7 +31,7 @@ export default function TopNavAvatarLogin() {
   
 
   return (
-    <div className={classes.root}>
+    <div >
       {isAuthenticated?
     <AvararButton />
   :

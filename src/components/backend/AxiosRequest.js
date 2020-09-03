@@ -102,6 +102,7 @@ export const queryElasticsearch = (
     return;
   }
 
+  
   esAxios
     .get(`/q/`, query)
     .then((response) => {

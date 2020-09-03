@@ -11,21 +11,20 @@ export default function AlertDialogSlide() {
   };
 
   return (
-    <div>
       <Button
         color="secondary"
         onClick={handleClickOpen}
         variant="outlined"
         style={{
-          borderRadius: 10,
-          fontSize: "1rem",
+          borderRadius: 5,
+          fontSize: "1.2rem",
           verticalAlign: "center",
-          height: "1.9rem",
-          width:'6.5rem'
+          height: "2.7rem",
+          width:'7rem',
+          marginLeft:'0.5rem',
         }}
       >
        <span style={{whiteSpace:'noWrap'}}>Sign in</span> 
       </Button>
-    </div>
   );
 }
