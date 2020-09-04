@@ -26,8 +26,12 @@ import { updateAuthData } from './components/redux/actions'
 import Loading from "./components/pages/Loading";
 
 //stylesheet
-import "bootstrap/dist/css/bootstrap.css";
+//DO NOT REMOVE BOOTSTRAP
 import "./Assets/css/style.css";
+import "bootstrap/dist/css/bootstrap.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import 'swiper/swiper.less';
 
 const App = () => {
   const theme = createMuiTheme(themeDict);

@@ -25,8 +25,7 @@ import Collapse from "@material-ui/core/Collapse";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import { useHistory } from "react-router-dom";
 import { useTrackedState } from "reactive-react-redux";
-import { useTheme } from '@material-ui/core/styles';
-
+import { useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -98,7 +97,7 @@ export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-const theme = useTheme();
+  const theme = useTheme();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -154,17 +153,24 @@ const theme = useTheme();
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <Button startIcon={<MailIcon />} aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-          Messages
+        <Button
+          startIcon={<MailIcon />}
+          aria-label="show 4 new mails"
+          color="inherit"
+        >
+          <Badge badgeContent={0} color="secondary">
+            Messages
           </Badge>
         </Button>
-        
       </MenuItem>
       <MenuItem>
-        <Button startIcon={ <NotificationsIcon />} aria-label="show 11 new notifications" color="inherit">
+        <Button
+          startIcon={<NotificationsIcon />}
+          aria-label="show 11 new notifications"
+          color="inherit"
+        >
           <Badge badgeContent={0} color="secondary">
-          Notifications
+            Notifications
           </Badge>
         </Button>
       </MenuItem>
@@ -183,10 +189,9 @@ const theme = useTheme();
   );
   const [expanded, setExpanded] = React.useState(true);
   const handleOnFocus = () => {
-    if(theme.breakpoints.down('sm')){
+    if (theme.breakpoints.down("sm")) {
       setExpanded(false);
     }
-   
   };
 
   const handleOnBlur = () => {
@@ -229,10 +234,10 @@ const theme = useTheme();
             <NavSearchField onFocus={handleOnFocus} onBlur={handleOnBlur} />
           </div>
           <Hidden smUp>
-          <Collapse in={expanded} timeout={0} unmountOnExit>
-            {" "}
-            <AvatarMenu />
-          </Collapse>
+            <Collapse in={expanded} timeout={0} unmountOnExit>
+              {" "}
+              <AvatarMenu />
+            </Collapse>
           </Hidden>
           <Hidden xsDown>
             {" "}
@@ -241,31 +246,34 @@ const theme = useTheme();
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-          <Tooltip arrow title="Messages">
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
+            <Tooltip arrow title="Messages">
+              <IconButton aria-label="show new mails" color="inherit">
+                <Badge badgeContent={0} color="secondary">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
             </Tooltip>
             <Tooltip arrow title="Notifications">
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+              <IconButton
+                aria-label="show new notifications"
+                color="inherit"
+              >
+                <Badge badgeContent={0} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
             </Tooltip>
             <Tooltip arrow title="Create project">
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleCreateProject}
-              color="inherit"
-            >
-              <NoteAddIcon />
-            </IconButton>
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleCreateProject}
+                color="inherit"
+              >
+                <NoteAddIcon />
+              </IconButton>
             </Tooltip>
           </div>
           <div className={classes.sectionMobile}>

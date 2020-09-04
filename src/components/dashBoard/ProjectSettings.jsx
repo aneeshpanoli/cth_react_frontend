@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Settings(props) {
+export default function ProjectSettings(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 

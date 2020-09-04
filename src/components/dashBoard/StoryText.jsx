@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import SocialShare from "./SocialShare";
-import Settings from "./Settings";
+import ProjectSettings from "./ProjectSettings";
 import ToolTips from "../menu/ToolTips";
 import { useHistory } from "react-router-dom";
 import Badge from "@material-ui/core/Badge";
@@ -254,7 +254,7 @@ export default function Header(props) {
 
               <SocialShare selectedProject={props.selectedProject} />
 
-              <Settings selectedProject={props.selectedProject} />
+              <ProjectSettings selectedProject={props.selectedProject} />
             </Grid>
             <Grid item md={12} sm={12} xs={12}>
               <Typography variant="body1">

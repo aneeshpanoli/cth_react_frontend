@@ -10,7 +10,7 @@ import SelectFiled from './SelectField';
 import DateTimePicker from './DateTimePicker'
 import TitleField from './SinglelineText'
 import DescriptionField from './MultilineText'
-import ProjectCard from './ProjectCardPreview'
+import ProjectCard from '../home/ProjectCardPreview'
 
 import ConfirmPost from '../dialogue/ConfirmPost'
 import PublishIcon from '@material-ui/icons/Publish';

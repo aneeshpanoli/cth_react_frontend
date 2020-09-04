@@ -1,15 +1,20 @@
 import React from "react";
-import Footer from "../footer/Footer";
-import DashBoard from "../dashBoard/DashBoard";
+
 import TopNav from "../navigation/TopNav";
 
-
+// lazyload
+import LazyLoad from '../meta/LazyLoad'
+import {lazy} from "react";
+const DashBoard = lazy(() => import('../dashBoard/DashBoard'));
+const Footer = lazy(() => import('../footer/Footer'));
 export default function ProjectDashboard() {
   return (
     <React.Fragment>
       <TopNav />
-      <DashBoard />
-      <Footer />
+      <LazyLoad><DashBoard /></LazyLoad>
+      
+      <LazyLoad> <Footer /></LazyLoad>
+     
     </React.Fragment>
   );
 }

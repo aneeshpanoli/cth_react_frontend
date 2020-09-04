@@ -77,6 +77,7 @@ export default function Hero() {
                   fontSize: 20,
                   fontWeight: 400,
                   textTransform: "none",
+                  marginBottom:'2rem'
                 }}
                 onClick={handleJoin}
               >
@@ -84,24 +85,6 @@ export default function Hero() {
               </Button>
             )}
           </Grid>
-          {/* <Grid
-            item
-            xs={12}
-            style={{ marginTop: "2rem", marginBottom: "2rem" }}
-          >
-            <SearchForm
-              style={{
-                margin: "auto 0",
-                maxWidth: "30rem",
-                width: "100%",
-              }}
-              progressStyle={{
-                margin: "auto 0",
-                maxWidth: "0rem",
-                width: "0%",
-              }}
-            />
-          </Grid> */}
         </Grid>
         <Hidden xsDown>
           <Grid item xs={12} sm={4} md={4} container justify="flex-end">

@@ -1,12 +1,16 @@
 import React from 'react';
-import Footer from '../footer/Footer'
 import { useHistory } from 'react-router-dom';
 import TopNav from '../navigation/TopNav'
-import ClaimFrom from '../userProfile/ClaimForm'
 import Container from '@material-ui/core/Container';
 import { useDispatch, useTrackedState } from 'reactive-react-redux';
 import Box from '@material-ui/core/Box';
  
+// lazyload
+import LazyLoad from '../meta/LazyLoad'
+import {lazy} from "react";
+const ClaimFrom = lazy(() => import('../userProfile/ClaimForm'));
+const Footer = lazy(() => import('../footer/Footer'));
+
 
 
 export default function UserProfile (){
@@ -24,9 +28,12 @@ export default function UserProfile (){
         <Box>
         <TopNav />
         <Container>
-        <ClaimFrom />
+            <LazyLoad>        <ClaimFrom />
+        </LazyLoad>
         </Container>
-        <Footer />
+        <LazyLoad>       <Footer />
+        </LazyLoad>
+        
         </Box>
     );
 }

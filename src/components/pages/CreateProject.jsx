@@ -1,11 +1,15 @@
 import React from "react";
-import Footer from "../footer/Footer";
 import TopNav from "../navigation/TopNav";
 import { useTrackedState } from "reactive-react-redux";
 import Container from "@material-ui/core/Container";
-import ProjectForm from "../create/ProjectSubmitForm";
 import { useHistory } from "react-router-dom";
 import Box from "@material-ui/core/Box";
+
+// lazyload
+import LazyLoad from '../meta/LazyLoad'
+import {lazy} from "react";
+const ProjectForm = lazy(() => import('../create/ProjectSubmitForm'));
+const Footer = lazy(() => import('../footer/Footer'));
 
 export default function CreateProject() {
   const history = useHistory();
@@ -20,9 +24,11 @@ export default function CreateProject() {
     <Box>
       <TopNav />
       <Container>
-        <ProjectForm />
+        <LazyLoad><ProjectForm /></LazyLoad>
+        
       </Container>
-      <Footer />
+      <LazyLoad><Footer /></LazyLoad>
+      
     </Box>
   );
 }

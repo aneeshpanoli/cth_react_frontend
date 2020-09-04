@@ -185,10 +185,12 @@ export default function FeaturedProjects() {
 
   return (
     <Box>
+      <hr></hr>
       <Container>
         <Grid container alignContent="space-between">
           <Grid item xs={6} sm={6} md={6}>
           <h4 style={{ fontWeight: 700 }}>
+            
             <FeaturedPlayListOutlinedIcon /> {" "}
               Popular topics
             </h4>

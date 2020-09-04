@@ -19,7 +19,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Chip from "@material-ui/core/Chip";
-import { countries } from "./utils";
+import { countries } from "../search/utils";
 
 function countryToIso(country) {
   let filteredData = countries.filter((d) => d.label === country);
@@ -31,7 +31,7 @@ function countryToIso(country) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: "100%",
+    width: "15rem",
     border: "1px solid #E8E8E8",
     borderRadius: 15,
   },

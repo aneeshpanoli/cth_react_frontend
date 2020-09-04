@@ -1,11 +1,15 @@
 import React from "react";
-import Footer from "../footer/Footer";
 import TopNav from "../navigation/TopNav";
 import { useTrackedState } from "reactive-react-redux";
 import Container from "@material-ui/core/Container";
-import ChallengeForm from "../create/ChallengeForm";
 import { useHistory } from "react-router-dom";
 import Box from "@material-ui/core/Box";
+
+// lazyload
+import LazyLoad from '../meta/LazyLoad'
+import {lazy} from "react";
+const ChallengeForm = lazy(() => import('../create/ChallengeForm'));
+const Footer = lazy(() => import('../footer/Footer'));
 
 export default function CreateChallenge() {
   const history = useHistory();
@@ -20,9 +24,13 @@ export default function CreateChallenge() {
     <Box>
       <TopNav />
       <Container>
+        <LazyLoad>
         <ChallengeForm />
+        </LazyLoad>
+       
       </Container>
-      <Footer />
+      <LazyLoad>       <Footer />
+        </LazyLoad>
     </Box>
   );
 }
