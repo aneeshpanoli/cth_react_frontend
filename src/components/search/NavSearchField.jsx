@@ -21,8 +21,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
+
     width: "100%",
     color:'white',
     height:'3rem',
@@ -204,11 +203,11 @@ export default function SearchField(props) {
 
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon style={{color:'silver'}}/>
+                  <SearchIcon style={{color:'silver', marginLeft:'0.5rem'}}/>
                 </InputAdornment>
               )
             }}
-            placeholder="Search 7,000+ projects" variant="outlined" />
+            placeholder="Search 7,000+ projects" />
           )}
         />
 

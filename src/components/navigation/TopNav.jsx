@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(0),
   },
   title: {
     display: "none",
@@ -214,7 +214,7 @@ setExpanded(true);
           <div style={{width:'100%'}}>
             <NavSearchField onFocus={handleOnFocus} onBlur={handleOnBlur}/>
           </div>
-          <Collapse in={expanded} timeout="auto" unmountOnExit> <AvatarMenu /></Collapse>
+          <Collapse in={expanded} timeout={0} unmountOnExit> <AvatarMenu /></Collapse>
          
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

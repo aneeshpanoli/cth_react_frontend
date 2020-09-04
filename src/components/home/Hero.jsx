@@ -84,7 +84,7 @@ export default function Hero() {
               </Button>
             )}
           </Grid>
-          <Grid
+          {/* <Grid
             item
             xs={12}
             style={{ marginTop: "2rem", marginBottom: "2rem" }}
@@ -101,7 +101,7 @@ export default function Hero() {
                 width: "0%",
               }}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
         <Hidden xsDown>
           <Grid item xs={12} sm={4} md={4} container justify="flex-end">
