@@ -5,10 +5,10 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
-import Badge from "@material-ui/core/Badge";
+import { Badge, Button, Tooltip } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
+import menuIcon from "../../Assets/img/menuIcon.svg";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
@@ -21,7 +21,11 @@ import { Link } from "react-router-dom";
 import Hidden from "@material-ui/core/Hidden";
 import AvatarMenu from "../menu/TopNavAvatarLogin";
 import TopNavMenu from "../menu/TopNavMainMenu";
-import Collapse from '@material-ui/core/Collapse';
+import Collapse from "@material-ui/core/Collapse";
+import NoteAddIcon from "@material-ui/icons/NoteAdd";
+import { useHistory } from "react-router-dom";
+import { useTrackedState } from "reactive-react-redux";
+import { useTheme } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -89,10 +93,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const history = useHistory();
+  const { authData } = useTrackedState();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+const theme = useTheme();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -108,9 +114,16 @@ export default function PrimarySearchAppBar() {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+  const handleCreateProject = () => {
+    if (authData.isAuthenticated) {
+      history.push("/create-project");
+      return;
+    } else {
+      history.push("/sign-in");
+    }
   };
 
   const menuId = "primary-search-account-menu";
@@ -141,45 +154,46 @@ export default function PrimarySearchAppBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
+        <Button startIcon={<MailIcon />} aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="secondary">
-            <MailIcon />
+          Messages
           </Badge>
-        </IconButton>
-        <p>Messages</p>
+        </Button>
+        
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
+        <Button startIcon={ <NotificationsIcon />} aria-label="show 11 new notifications" color="inherit">
+          <Badge badgeContent={0} color="secondary">
+          Notifications
           </Badge>
-        </IconButton>
-        <p>Notifications</p>
+        </Button>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
+      <MenuItem>
+        <Button
+          variant="text"
+          startIcon={<NoteAddIcon />}
+          aria-label="create project"
           color="inherit"
+          onClick={handleCreateProject}
         >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
+          Create a project
+        </Button>
       </MenuItem>
     </Menu>
   );
   const [expanded, setExpanded] = React.useState(true);
-  const handleOnFocus = () =>{
-    console.log('focused')
-setExpanded(false);
-  }
+  const handleOnFocus = () => {
+    if(theme.breakpoints.down('sm')){
+      setExpanded(false);
+    }
+   
+  };
 
-  const handleOnBlur = () =>{
-    console.log('focused')
-setExpanded(true);
-  }
-  
+  const handleOnBlur = () => {
+    console.log("focused");
+    setExpanded(true);
+  };
+
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -211,34 +225,48 @@ setExpanded(true);
               />
             </Link>
           </Hidden>
-          <div style={{width:'100%'}}>
-            <NavSearchField onFocus={handleOnFocus} onBlur={handleOnBlur}/>
+          <div style={{ width: "100%" }}>
+            <NavSearchField onFocus={handleOnFocus} onBlur={handleOnBlur} />
           </div>
-          <Collapse in={expanded} timeout={0} unmountOnExit> <AvatarMenu /></Collapse>
-         
+          <Hidden smUp>
+          <Collapse in={expanded} timeout={0} unmountOnExit>
+            {" "}
+            <AvatarMenu />
+          </Collapse>
+          </Hidden>
+          <Hidden xsDown>
+            {" "}
+            <AvatarMenu />
+          </Hidden>
+
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            
+          <Tooltip arrow title="Messages">
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
               </Badge>
             </IconButton>
+            </Tooltip>
+            <Tooltip arrow title="Notifications">
             <IconButton aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            </Tooltip>
+            <Tooltip arrow title="Create project">
             <IconButton
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={handleCreateProject}
               color="inherit"
             >
-              <AccountCircle />
+              <NoteAddIcon />
             </IconButton>
+            </Tooltip>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -248,7 +276,7 @@ setExpanded(true);
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <img alt="logo" src={menuIcon} style={{ height: "1.2rem" }} />
             </IconButton>
           </div>
         </Toolbar>
