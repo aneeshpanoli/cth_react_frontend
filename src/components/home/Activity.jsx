@@ -75,29 +75,11 @@ export default function Activity() {
               </h4>
               <hr></hr>
             </Grid>
-            <Grid item xs={12} sm={8} md={8}>
+            <Grid item xs={12} sm={12} md={8}>
               {buildActivityJsx()}
-              {/* <h6 style={{ fontWeight: 400 }}>
-                <TimelineOutlinedIcon /> You visited project A
-              </h6>
-              <h6 style={{ fontWeight: 400 }}>
-                <CommentOutlinedIcon /> You commented on project B
-              </h6>
-              <h6 style={{ fontWeight: 400 }}>
-                <ThumbUpOutlinedIcon /> You liked project C
-              </h6>
-              <h6 style={{ fontWeight: 400 }}>
-                <AccountBoxOutlinedIcon /> You checked out John Doe
-              </h6>
-              <h6 style={{ fontWeight: 400 }}>
-                <LibraryAddCheckOutlinedIcon /> You picked up a microtask
-              </h6>
-              <h6 style={{ fontWeight: 400 }}>
-                <LibraryAddOutlinedIcon /> You created a microtask
-              </h6> */}
-              <hr></hr>
+
             </Grid>
-            <Grid item xs={12} sm={4} md={4} >
+            <Grid item xs={12} sm={12} md={4} >
               <Grid item xs={12} sm={12} md={12} align="center">
                 <Button
                   onClick={() => history.push("/create-project")}
@@ -128,7 +110,6 @@ export default function Activity() {
                 >
                   Start a community
                 </Button>
-                <hr></hr>
               </Grid>
             </Grid>
           </Grid>

@@ -31,7 +31,7 @@ function countryToIso(country) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "15rem",
+    width: "100%",
     border: "1px solid #E8E8E8",
     borderRadius: 15,
   },

@@ -437,7 +437,7 @@ export default function ProjectForm() {
                   getOptionLabel={(option) => option.category}
                   fullWidth
                   onChange={(_, value) => {
-                    handleChange("category", value ? value.category : "");
+                    handleChangeValue("category", value ? value.category : "");
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -463,7 +463,7 @@ export default function ProjectForm() {
                   getOptionLabel={(option) => option.role}
                   fullWidth
                   onChange={(_, value) => {
-                    handleChange(
+                    handleChangeValue(
                       "roles",
                       value && !formValues.roles.includes(value.role)
                         ? [...formValues.roles].concat([value.role])
@@ -494,7 +494,7 @@ export default function ProjectForm() {
                   getOptionLabel={(option) => option.label}
                   fullWidth
                   onChange={(_, value) => {
-                    handleChange("country", value ? value.label : "");
+                    handleChangeValue("country", value ? value.label : "");
                   }}
                   renderInput={(params) => (
                     <TextField

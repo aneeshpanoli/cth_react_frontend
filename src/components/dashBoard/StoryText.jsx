@@ -177,8 +177,8 @@ export default function Header(props) {
           >
             <Grid
               item
-              md={3}
-              sm={5}
+              md={4}
+              sm={6}
               xs={12}
               align="center"
               style={{

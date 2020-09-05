@@ -17,6 +17,9 @@ import IconButton from "@material-ui/core/IconButton";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from '@material-ui/icons/Delete';
+import { esAxios } from '../backend/AxiosRequest'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,6 +58,27 @@ export default function ProjectSettings(props) {
 
   const dispatch = useDispatch();
   let history = useHistory();
+
+  const deleteProject = () => {
+    const query = {
+      params:{
+      index:'projects',
+      id : props.selectedProject._id 
+    }}
+    esAxios
+    .get(`/d/`, query)
+    .then((response) => {
+      // process response.
+
+      // this.setState({results: response});
+      console.log(response.data);
+      history.goBack();
+    })
+    .catch((error) => {
+      // catch errors.
+      console.log(error);
+    });
+  }
   const approveProject = () => {
     let data = {
       status: "projectapprove",
@@ -186,6 +210,7 @@ export default function ProjectSettings(props) {
                 ) : null}
 
                 {approvePermission ? (
+                  <React.Fragment>
                   <MenuItem onClick={handleClose} dense>
                     <Button
                       disabled={approved ? true : false}
@@ -199,6 +224,19 @@ export default function ProjectSettings(props) {
                       {approved ? "Approved" : "Approve"}
                     </Button>
                   </MenuItem>
+                  <MenuItem onClick={handleClose} dense>
+                  <Button
+                    color="primary"
+                    endIcon={<DeleteIcon /> }
+                    variant="contained"
+                    size="small"
+                    onClick={deleteProject}
+                    style={{ marginBottom: 10, marginLeft: 10 }}
+                  >
+                    Delete
+                  </Button>
+                </MenuItem>
+                </React.Fragment>
                 ) : null}
               </MenuList>
             </ClickAwayListener>

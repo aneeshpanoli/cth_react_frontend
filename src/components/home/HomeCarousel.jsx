@@ -83,6 +83,8 @@ export default function HomeCarousel({term}) {
       {
         breakpoint: 1024,
         settings: {
+          slidesToScroll: 3,
+
           arrows: true,
           dots: true,
           centerPadding: "4rem",
@@ -92,6 +94,8 @@ export default function HomeCarousel({term}) {
       {
         breakpoint: 800,
         settings: {
+          slidesToScroll: 2,
+
           centerPadding: "1.2rem",
           centerMode: true,
           autoplay: false,
@@ -102,6 +106,7 @@ export default function HomeCarousel({term}) {
       {
         breakpoint: 480,
         settings: {
+          slidesToScroll: 1,
           centerPadding: "1.2rem",
           centerMode: true,
           autoplay: false,
