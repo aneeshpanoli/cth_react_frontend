@@ -156,6 +156,7 @@ export default function ProjectCard(props) {
 
   return (
     <Fade
+    timeout={ 600 }
       in={checked}
       key={props.r._id}
       style={{ transitionDelay: checked ? "300ms" : "0ms" }}

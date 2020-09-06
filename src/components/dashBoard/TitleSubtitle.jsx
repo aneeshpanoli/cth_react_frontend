@@ -6,6 +6,8 @@ import AvatarIcon from "../userProfile/AvatarIcon";
 import Box from "@material-ui/core/Box";
 import ProjHero from "../../Assets/img/project_hero.svg";
 import { coverImgUrl } from "../js/utils";
+import Hidden from '@material-ui/core/Hidden';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,11 +29,23 @@ export default function TitleSubtitle({ selectedProject }) {
       style={{
         backgroundImage: "url(" + ProjHero + ")",
       }}
-    >
+    ><Hidden mdUp>
+    <Grid item xs={12} sm={12} md={12} align="center">
+      <img
+        alt="hero-img"
+        src={coverImgUrl(selectedProject._source.image)}
+        style={{
+          width: "100%",
+          height:'10rem',
+          objectFit:'cover',
+        }}
+      ></img>
+    </Grid>
+    </Hidden>
       <Container>
         <Grid container>
           <Grid item xs={12} sm={7} md={7}>
-            <h1 style={{ wordWrap: "break-word", marginTop:"2rem"}}>
+            <h1 style={{ wordWrap: "break-word", marginTop:"1rem"}}>
               {selectedProject ? selectedProject._source.title : null}
             </h1>
             <h5 style={{ color: "grey" }}>
@@ -39,20 +53,20 @@ export default function TitleSubtitle({ selectedProject }) {
             </h5>
             <AvatarIcon />
           </Grid>
-
-          <Grid item xs={12} sm={5} md={5} align="right">
+<Hidden smDown>
+          <Grid item xs={12} sm={5} md={5} align="center">
             <img
               alt="hero-img"
               src={coverImgUrl(selectedProject._source.image)}
               style={{
-                width: "30rem",
-                marginTop: "4rem",
-                marginLeft: "5%",
-                marginBottom: "5%",
+                width: "100%",
+                marginBottom:'2rem',
+                marginTop:'2rem',
                 boxShadow: "0px 0px 5px grey",
               }}
             ></img>
           </Grid>
+          </Hidden>
         </Grid>
       </Container>
     </Box>

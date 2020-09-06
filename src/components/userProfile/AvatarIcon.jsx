@@ -158,7 +158,6 @@ export default function AvatarIcon() {
             disabled={selectedProject._source.claimed !== "no" ? true : false}
             startIcon={<RedeemIcon />}
             disableElevation
-            size="small"
             color="primary"
             variant="outlined"
             style={{ textTransform: "none", borderRadius: 25 }}
@@ -167,7 +166,7 @@ export default function AvatarIcon() {
             {" "}
             {selectedProject._source.claimed !== "no"
               ? "Claim pending"
-              : "Claim this project"}
+              : "Claim Project"}
           </Button>
         </Grid>
       ) : null}

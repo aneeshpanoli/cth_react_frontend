@@ -32,14 +32,14 @@ export default function AvatarIcon() {
   const validate = () => {
     let newErrors = {};
     if (!values.email) {
-      newErrors.email = "Required*";
+      newErrors.email = "Required";
     } else if (
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
     ) {
-      newErrors.email = "Invalid email address*";
+      newErrors.email = "Invalid email address";
     }
     if (!values.proof) {
-      newErrors.proof = "Required*";
+      newErrors.proof = "Required";
     } else if (values.proof.length < 60) {
       newErrors.proof =
         "Proof of ownership should be atleast 60 characters long";
@@ -115,13 +115,18 @@ export default function AvatarIcon() {
     );
   };
 
+
+
+
   return (
     <Grid container alignItems="center" spacing={3}>
+      
       <Grid item xs={12} sm={12} md={12}>
-        <h1>Claim project</h1>
+      <h4 style={{ marginTop:'2rem', textAlign:'center'}}>Claim Project</h4>
+      <hr></hr>
       </Grid>
       <Grid item xs={12} sm={12} md={12}>
-        <h6>
+      <h6 style={{ margin: "0 auto" }}>
           Please tell us how we can verify your ownership (Include links, and
           other relevent infomation). Also, include a valid email address for
           our staff to contact you.
@@ -129,26 +134,24 @@ export default function AvatarIcon() {
       </Grid>
       <Grid item xs={12} sm={12} md={12}>
         <form noValidate autoComplete="off">
-          <sup>{errors.proof}</sup>
           <TextField
             id="claim"
-            label="Proof of ownership"
+            label={errors.proof?errors.proof:"Proof of ownership"}
             required
             multiline
             fullWidth
             rows={4}
             defaultValue=""
-            onChange={() => handleChange("proof")}
+            onChange={(e) => handleChange(e, "proof")}
           />
-          <sup>{errors.email}</sup>
           <TextField
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label={errors.email?errors.email:"Email Address"}
             name="email"
             autoComplete="email"
-            onChange={() => handleChange("email")}
+            onChange={(e) => handleChange(e, "email")}
           />
         </form>
       </Grid>
