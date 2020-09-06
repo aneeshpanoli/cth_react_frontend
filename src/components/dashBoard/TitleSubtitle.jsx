@@ -13,11 +13,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
+
 }));
 
 export default function TitleSubtitle({ selectedProject }) {
@@ -48,10 +44,12 @@ export default function TitleSubtitle({ selectedProject }) {
             <h1 style={{ wordWrap: "break-word", marginTop:"1rem"}}>
               {selectedProject ? selectedProject._source.title : null}
             </h1>
+            <hr></hr>
             <h5 style={{ color: "grey" }}>
               {selectedProject ? selectedProject._source.subtitle : null}
             </h5>
             <AvatarIcon />
+            
           </Grid>
 <Hidden smDown>
           <Grid item xs={12} sm={5} md={5} align="center">
@@ -60,8 +58,7 @@ export default function TitleSubtitle({ selectedProject }) {
               src={coverImgUrl(selectedProject._source.image)}
               style={{
                 width: "100%",
-                marginBottom:'2rem',
-                marginTop:'2rem',
+                margin:'1rem',
                 boxShadow: "0px 0px 5px grey",
               }}
             ></img>

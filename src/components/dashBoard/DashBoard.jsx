@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import StoryText from "./StoryText";
 import ProjectLinks from "./ProjectLinks";
+import TabsProject from "./TabsProject";
 import ProjectVideo from "./ProjectVideo";
 import ProjectTech from "./ProjectTech";
 import PostComment from "./PostComment";
@@ -166,7 +167,8 @@ export default function DashBoard() {
                     selectedProject={selectedProject}
                   />
                 </Grid>
-              </Collapse> */}
+      </Collapse> */}
+      <TabsProject></TabsProject>
               <Grid item sm={12} md={12} xs={12} ref={resourceRef}>
                 <h2>Resources</h2>
               </Grid>

@@ -9,10 +9,13 @@ import Head from '../meta/Head'
 import SearchForm from "../search/SearchField";
 import Hidden from "@material-ui/core/Hidden";
 import { useTrackedState } from "reactive-react-redux";
+import Fade from '@material-ui/core/Fade'
 
 export default function Hero() {
   const history = useHistory();
   const { authData } = useTrackedState();
+  const [checked] = React.useState(true);
+
   const handleClick = () => {
     setTimeout(() => {
       history.push("/search");
@@ -24,8 +27,14 @@ export default function Hero() {
   };
 
   return (
+   
     <Box>
       <Head image={heroMobile}/>
+      <Fade
+    timeout={600}
+      in={checked}
+      style={{ transitionDelay: checked ? "300ms" : "0ms" }}
+    >
       <Grid container spacing={0}>
         <Grid
           item
@@ -92,6 +101,8 @@ export default function Hero() {
           </Grid>
         </Hidden>
       </Grid>
+      </Fade>
+ 
     </Box>
-  );
+    );
 }
