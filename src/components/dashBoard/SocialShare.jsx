@@ -37,19 +37,15 @@ const useStyles = makeStyles((theme) => ({
     width: "12rem",
   },
   buttonRound: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: 'transparent',
     color: theme.palette.primary.main,
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    margin: theme.spacing(2),
     "&:hover": {
       backgroundColor: theme.palette.secondary.light,
       color: "#000",
     },
   },
   buttonIcon: {
-    width: theme.spacing(5),
-    height: theme.spacing(5),
+
   },
 }));
 

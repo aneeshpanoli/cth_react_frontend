@@ -107,7 +107,7 @@ export default function AvatarIcon() {
   };
 
   return (
-    <Grid container alignItems="center" style={{ marginBottom: "10%" }}>
+    <Grid container alignItems="center" style={{ marginBottom: "1rem" }}>
       <Grid item xs={3} sm={2} md={2} align="right">
         <Button
           disabled={otherUserData ? false : true}

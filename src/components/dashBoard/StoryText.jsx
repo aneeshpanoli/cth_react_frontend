@@ -84,81 +84,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
   const classes = useStyles();
-  let history = useHistory();
-  const dispatch = useDispatch();
-  const { authData } = useTrackedState();
-  const [upvotes, setUpvotes] = React.useState([]);
-  const [downvotes, setDownvotes] = React.useState([]);
 
-  React.useEffect(() => {
-    if (props.selectedProject && props.selectedProject._source.downvotes) {
-      setDownvotes(props.selectedProject._source.downvotes);
-    }
-    if (props.selectedProject && props.selectedProject._source.upvotes) {
-      setUpvotes(props.selectedProject._source.upvotes);
-    }
-  }, [props]);
-  const updateVotes = (field1, field2) => {
-    let data = {
-      status: "projectvote",
-      index: props.selectedProject._index,
-      id: props.selectedProject._id,
-      q: {
-        doc: {
-          upvotes: field1,
-          downvotes: field2,
-        },
-      },
-    };
-    let formData = new FormData();
 
-    formData.append("params", JSON.stringify(data));
 
-    const updateData = (hits) => dispatch(updateSelectedProject(hits));
-    updateProject(
-      formData,
-      authData.key,
-      null,
-      props.selectedProject._source.title,
-      updateData
-    );
-  };
-
-  const handleUpvote = () => {
-    if (!authData.isAuthenticated) {
-      history.push("/sign-in");
-      return;
-    }
-    if (!upvotes.includes(authData._source.id)) {
-      updateVotes(
-        [...upvotes, authData._source.id],
-        [...downvotes].filter((id) => id !== authData._source.id)
-      );
-    } else {
-      updateVotes(
-        [...upvotes].filter((id) => id !== authData._source.id),
-        [...downvotes]
-      );
-    }
-  };
-
-  const handleDownvote = () => {
-    if (!authData.isAuthenticated) {
-      history.push("/sign-in");
-      return;
-    }
-    if (!downvotes.includes(authData._source.id)) {
-      updateVotes(
-        [...upvotes].filter((id) => id !== authData._source.id),
-        [...downvotes, authData._source.id]
-      );
-    } else {
-      updateVotes(
-        [...upvotes],
-        [...downvotes].filter((id) => id !== authData._source.id)
-      );
-    }
-  };
   // console.log(props.selectedProject)
 
   React.useEffect(() => {
@@ -175,87 +103,7 @@ export default function Header(props) {
             // left: "50%",
             // transform: `translateX(-50%)`,
           >
-            <Grid
-              item
-              md={4}
-              sm={6}
-              xs={12}
-              align="center"
-              style={{
-                position: "absolute",
-                top: -38,
-              }}
-            >
-              <IconButton
-                aria-label="back"
-                className={classes.buttonRound}
-                onClick={() => history.goBack()}
-              >
-                <ArrowBackIcon className={classes.buttonIcon} />
-              </IconButton>
-
-              <Badge
-                color="secondary"
-                badgeContent={0}
-                anchorOrigin={{ horizontal: "left", vertical: "top" }}
-              >
-                <ButtonGroup
-                  disableElevation
-                  variant="contained"
-                  color="primary"
-                  disabled={
-                    authData._source &&
-                    authData._source.id === props.selectedProject._source.owners
-                  }
-                >
-                  <ToolTips
-                    title={
-                      authData._source && upvotes.includes(authData._source.id)
-                        ? "You upvoted this"
-                        : "Upvote"
-                    }
-                  >
-                    <IconButton
-                      aria-label="Upvote"
-                      className={
-                        authData._source &&
-                        upvotes.includes(authData._source.id)
-                          ? `${classes.greenButton}`
-                          : `${classes.buttonTup}`
-                      }
-                      onClick={handleUpvote}
-                    >
-                      <ThumbUpIcon />
-                    </IconButton>
-                  </ToolTips>
-                  <ToolTips
-                    title={
-                      authData._source &&
-                      downvotes.includes(authData._source.id)
-                        ? "You downvoted this"
-                        : "Downvote"
-                    }
-                  >
-                    <IconButton
-                      aria-label="add to favorites"
-                      className={
-                        authData._source &&
-                        downvotes.includes(authData._source.id)
-                          ? `${classes.redButton}`
-                          : `${classes.buttonTdown}`
-                      }
-                      onClick={handleDownvote}
-                    >
-                      <ThumbDownIcon />
-                    </IconButton>
-                  </ToolTips>
-                </ButtonGroup>
-              </Badge>
-
-              <SocialShare selectedProject={props.selectedProject} />
-
-              <ProjectSettings selectedProject={props.selectedProject} />
-            </Grid>
+    
             <Grid item md={12} sm={12} xs={12}>
               <Typography variant="body1">
                 {parseHtml(
