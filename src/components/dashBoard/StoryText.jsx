@@ -30,56 +30,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     fontSize: "1.2rem",
   },
-  buttonRound: {
-    backgroundColor: theme.palette.secondary.main,
-    color: theme.palette.primary.main,
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    margin: theme.spacing(2),
-    "&:hover": {
-      backgroundColor: theme.palette.secondary.light,
-      color: "#000",
-    },
-  },
-  redButton: {
-    color: theme.palette.danger,
-    backgroundColor: theme.palette.secondary.light,
-    "&:hover": {
-      backgroundColor: theme.palette.secondary.light,
-    },
-  },
-  greenButton: {
-    color: theme.palette.safe,
-    backgroundColor: theme.palette.secondary.light,
-    "&:hover": {
-      backgroundColor: theme.palette.secondary.light,
-    },
-  },
-  buttonTup: {
-    backgroundColor: theme.palette.secondary.main,
-    color: theme.palette.primary.main,
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    "&:hover": {
-      backgroundColor: theme.palette.secondary.light,
-      color: theme.palette.safe,
-    },
-  },
-  buttonTdown: {
-    backgroundColor: theme.palette.secondary.main,
-    color: theme.palette.primary.main,
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    "&:hover": {
-      backgroundColor: theme.palette.secondary.light,
-      color: theme.palette.danger,
-    },
-  },
 
-  buttonIcon: {
-    width: theme.spacing(5),
-    height: theme.spacing(5),
-  },
+
 }));
 
 export default function Header(props) {
@@ -94,7 +46,7 @@ export default function Header(props) {
   }, []);
   return (
     // <Box className={`${classes.paper} dash-header-div`}
-    <Box className={classes.root}>
+    <Box c>
       {props.selectedProject ? (
         <Container>
           <Grid
