@@ -214,8 +214,8 @@ export default function ProjectVote(props) {
                     variant="text"
                     style={{ fontWeight: 700, fontSize: "1.2rem" }}
                   >
-                    {props.selectedProject._source.upvotes.length -
-                      props.selectedProject._source.downvotes.length}
+                    {props.selectedProject._source.upvotes&&props.selectedProject._source.downvotes?props.selectedProject._source.upvotes.length -
+                      props.selectedProject._source.downvotes.length:0}
                   </Button>
                   <Tooltip
                   arrow

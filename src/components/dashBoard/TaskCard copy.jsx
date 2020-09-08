@@ -10,9 +10,7 @@ import { getImgUrl } from "../js/utils";
 import Link from "@material-ui/core/Link";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Chip from "@material-ui/core/Chip";
-import TurnedInNotOutlinedIcon from '@material-ui/icons/TurnedInNotOutlined';
-
-
+import TurnedInNotOutlinedIcon from "@material-ui/icons/TurnedInNotOutlined";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -124,7 +122,7 @@ export default function SearchCard(props) {
       return (
         <Chip
           className={classes.chipGreen}
-          size='small'
+          size="small"
           icon={<ThumbUpIcon />}
           label={percentLikes()}
         />
@@ -133,7 +131,7 @@ export default function SearchCard(props) {
       return (
         <Chip
           className={classes.chipRed}
-          size='small'
+          size="small"
           icon={<ThumbUpIcon />}
           label={percentLikes()}
         />
@@ -142,7 +140,7 @@ export default function SearchCard(props) {
       return (
         <Chip
           className={classes.chipGrey}
-          size='small'
+          size="small"
           icon={<ThumbUpIcon />}
           label={percentLikes()}
         />
@@ -153,7 +151,7 @@ export default function SearchCard(props) {
 
   return (
     <Fade
-    timeout={600}
+      timeout={600}
       in={checked}
       key={props.r._id}
       style={{ transitionDelay: checked ? "300ms" : "0ms" }}
@@ -161,7 +159,9 @@ export default function SearchCard(props) {
       <Grid container spacing={1}>
         <Grid item md={2} sm={3} xs={4}>
           <img
-            src={getImgUrl(props.r._source.image)}
+            src={
+              props.r._source.image ? getImgUrl(props.r._source.image) : null
+            }
             className={classes.media}
           />
         </Grid>
@@ -177,7 +177,7 @@ export default function SearchCard(props) {
               <Typography variant="h6">
                 {props.r._source.title} {bull}{" "}
                 <Typography variant="body2" component="span">
-                  {props.r._source.hackathons[0]
+                  {props.r._source.hackathons && props.r._source.hackathons[0]
                     ? props.r._source.hackathons[0]
                     : null}
                 </Typography>
@@ -186,116 +186,25 @@ export default function SearchCard(props) {
             <Grid item xs={12}>
               <Typography>
                 {/* {props.r._source.subtitle.substring(0, 125) + "..."} */}
-                {props.r._source.subtitle}
+                {props.r._source.subtitle ? props.r._source.subtitle : null}
               </Typography>
             </Grid>
-            
           </Link>
           <Grid container>
-            
-            <Grid item xs={12}>  <span style={{ display: "flex" , margin:'1rem'}}>
-            
-            {makeChip()}<TurnedInNotOutlinedIcon style={{margin:'auto 1rem'}}/><LongMenu r={props.r} esIndex="projects" /></span></Grid>
-         
+            <Grid item xs={12}>
+              {" "}
+              <span style={{ display: "flex", margin: "1rem" }}>
+                {makeChip()}
+                <TurnedInNotOutlinedIcon style={{ margin: "auto 1rem" }} />
+                {/* <LongMenu r={props.r} esIndex="projects" /> */}
+              </span>
             </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12}>
           <hr></hr>
         </Grid>
       </Grid>
-      {/* <Card className={classes.root}>
-        <CardHeader
-          action={<LongMenu r={props.r} esIndex="projects" />}
-          className={classes.header}
-        />
-        <ButtonBase>
-          <Link
-            onMouseMove={() => setMouseMoved(true)}
-            onMouseDown={() => setMouseMoved(false)}
-            onMouseUp={() => handleLearnmore(props.r)}
-            style={{ textDecoration: "none" }}
-          >
-            <CardMedia
-              className={classes.media}
-              image={getImgUrl(props.r._source.image)}
-              title=""
-            >
-              {" "}
-            </CardMedia>
-            <div className={classes.overlay}></div>
-            <CardHeader
-              title={
-                <span
-                  style={{
-                    fontWeight: 700,
-                    fontSize: 15,
-                    wordBreak: "break-word",
-                    hyphens: "auto",
-                    lineHeight: "1rem",
-                    display: "inline-block",
-                  }}
-                >
-                  {props.r._source.title}
-                </span>
-              }
-              subheader={
-                <span
-                  style={{
-                    wordBreak: "break-word",
-                    hyphens: "auto",
-                    lineHeight: "1rem",
-                    display: "inline-block",
-                  }}
-                >
-                  {props.r._source.hackathons[0]
-                    ? props.r._source.hackathons[0]
-                    : null}
-                </span>
-              }
-              avatar={
-                <Avatar
-                  title={props.r._source.country}
-                  aria-label="project"
-                  className={classes.avatar}
-                >
-                  <Flag
-                    code={countryToIso(props.r._source.country)}
-                    height="35"
-                  />
-                </Avatar>
-              }
-              style={{ height: "5rem", textAlign: "left" }}
-            />
-
-            <CardContent
-              title="Short description"
-              style={{ height: "10rem", textAlign: "left" }}
-            >
-              <Typography
-                variant="body1"
-                color="primary"
-                component="div"
-                style={{ overflow: "hidden" }}
-              >
-                {props.r._source.subtitle.substring(0, 125) + "..."}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              {makeChip()}
-
-              <Button
-                variant="contained"
-                onClick={() => handleLearnmore(props.r)}
-                className={classes.button}
-                disableElevation
-                component="div"
-              >
-                Learn more
-              </Button>
-            </CardActions>
-          </Link>
-        </ButtonBase>
-      </Card> */}
     </Fade>
   );
 }

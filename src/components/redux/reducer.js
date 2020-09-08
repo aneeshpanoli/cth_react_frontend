@@ -31,7 +31,7 @@ const initialState = {
   userOwnChallenge: null,
   commentsData: [],
   otherUserData: null, // user the current user is looking
-  microtaskList: null,
+  microtaskList: [],
 };
 
 export const reducer = (state = initialState, action) => {

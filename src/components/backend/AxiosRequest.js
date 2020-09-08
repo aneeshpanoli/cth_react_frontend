@@ -44,7 +44,7 @@ const preAuthAxios = axios.create({
 });
 
 // use for accessing pages that require user authentication
-const postAuthAxios = (token) =>
+export const postAuthAxios = (token) =>
   axios.create({
     baseURL: BASE_URL,
     headers: {
@@ -163,10 +163,10 @@ export const queryEsById = (query, dispatch, actionCallback, history) => {
 };
 
 export const createDoc = (doc, token, getUpdatedData) => {
-  const userInfoAxios = postAuthAxios(`Token ${token}`);
+  const postpostAuthAxios = postAuthAxios(`Token ${token}`);
   // console.log(doc);
-  userInfoAxios
-    .get(`/create/`, doc)
+  postpostAuthAxios
+    .post(`/create/`, doc)
     .then((response) => {
       console.log(response.data);
       setTimeout(() => {
@@ -185,7 +185,7 @@ export const createDoc = (doc, token, getUpdatedData) => {
     });
 };
 
-export const postProject = (formData, token, history, title) => {
+export const postProject = (formData, token, history, title, updateData=null) => {
   const postpostAuthAxios = postPostAuthAxios(`Token ${token}`);
   postpostAuthAxios
     .post(`/post/`, formData)
@@ -196,6 +196,14 @@ export const postProject = (formData, token, history, title) => {
           "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
         );
       }, 1000);
+      if(updateData){
+        updateData({
+          _index: response.data._index,
+          _type: response._type,
+          _id: response.data._id,
+          _source: response.data.get._source,
+        })
+      }
     })
     .catch((error) => {
       // catch errors.

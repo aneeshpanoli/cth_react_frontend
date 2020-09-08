@@ -14,6 +14,7 @@ import ImageUpload from "../create/ImageUpload";
 import { convertToHTML } from "draft-convert";
 import ChipInput from "material-ui-chip-input";
 import Chip from "@material-ui/core/Chip";
+import {updateMicrotaskList} from '../redux/actions'
 
 const useStyles = makeStyles((theme) => ({
   chipRoot: {
@@ -187,6 +188,11 @@ export default function MTSubmitForm(props) {
     setFormValues({ ...formValues, [field]: event.target.value });
   };
 
+  const handleChangeValue = (field, value) => {
+    // copy new values to formValues
+    setFormValues({ ...formValues, [field]: value });
+  };
+
   React.useEffect(() => {
     // console.log(formValues);
     setFormErrors(validate({ ...formValues, image: embed ? true : false }));
@@ -210,8 +216,8 @@ export default function MTSubmitForm(props) {
 
     formData.append("params", JSON.stringify(data));
     formData.append("image", image, image.path);
-
-    postProject(formData, authData.key, history, formValues.title);
+    const updateData = (data) => dispatch(updateMicrotaskList(data))
+    postProject(formData, authData.key, history, formValues.title, updateData);
     setOpen(true);
   };
 
@@ -279,7 +285,7 @@ export default function MTSubmitForm(props) {
                   label="Microtask title"
                   name="title"
                   autoComplete="none"
-                  onChange={() => handleChange("title")}
+                  onChange={(e) => handleChange(e, "title")}
                   value={formValues.title}
                 />
               </Grid>
@@ -322,7 +328,7 @@ export default function MTSubmitForm(props) {
                   id="subtitle"
                   label="Subtitle"
                   name="subtitle"
-                  onChange={() => handleChange("subtitle")}
+                  onChange={(e) => handleChange(e, "subtitle")}
                   value={formValues.subtitle}
                 />
               </Grid>
@@ -374,7 +380,7 @@ export default function MTSubmitForm(props) {
                     ]}
                     toolbarButtonSize="small"
                     onChange={(state) =>
-                      handleChange(
+                      handleChangeValue(
                         "storyText",
                         convertToHTML({
                           styleToHTML: (style) => {
@@ -425,7 +431,7 @@ export default function MTSubmitForm(props) {
                   getOptionLabel={(option) => option.category}
                   fullWidth
                   onChange={(_, value) => {
-                    handleChange("category", value ? value.category : "");
+                    handleChangeValue("category", value ? value.category : "");
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -451,7 +457,7 @@ export default function MTSubmitForm(props) {
                   getOptionLabel={(option) => option.role}
                   fullWidth
                   onChange={(_, value) => {
-                    handleChange(
+                    handleChangeValue(
                       "roles",
                       value && !formValues.roles.includes(value.role)
                         ? [...formValues.roles].concat([value.role])
@@ -508,7 +514,7 @@ export default function MTSubmitForm(props) {
                   fullWidth
                   label="Important links (press enter to add more than one link)"
                   onAdd={(chip) => {
-                    handleChange("links", [...formValues.links].concat([chip]));
+                    handleChangeValue("links", [...formValues.links].concat([chip]));
                   }}
                   onDelete={(chip, index) => handleDeleteChip(chip, "links")}
                 />
@@ -529,7 +535,7 @@ export default function MTSubmitForm(props) {
                   fullWidth
                   label="Technology (press enter to add more than one technologies)"
                   onAdd={(chip) => {
-                    handleChange(
+                    handleChangeValue(
                       "builtWith",
                       [...formValues.builtWith].concat([chip])
                     );
@@ -555,7 +561,7 @@ export default function MTSubmitForm(props) {
                   fullWidth
                   label="Tags (press enter to add more than one keyword)"
                   onAdd={(chip) => {
-                    handleChange(
+                    handleChangeValue(
                       "keywords",
                       [...formValues.keywords].concat([chip])
                     );
@@ -578,7 +584,7 @@ export default function MTSubmitForm(props) {
                   type="text"
                   id="videoUrl"
                   autoComplete="current-password"
-                  onChange={() => handleChange("video")}
+                  onChange={(e) => handleChange(e, "video")}
                   value={formValues.videoUrl}
                 />
               </Grid>

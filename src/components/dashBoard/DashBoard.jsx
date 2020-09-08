@@ -6,21 +6,18 @@ import { queryEsById, createDoc } from "../backend/AxiosRequest";
 import { updateSelectedProject, updateMicrotaskList } from "../redux/actions";
 import TitleSubtitle from "./TitleSubtitle";
 import Container from "@material-ui/core/Container";
-import MTCarousel from "./MTCarousel";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-import StoryText from "./StoryText";
-import ProjectLinks from "./ProjectLinks";
-import TabsProject from "./TabsProject";
-import ProjectVideo from "./ProjectVideo";
-import ProjectTech from "./ProjectTech";
+
+import ProjectTab from "./ProjectTab";
+
 import PostComment from "./PostComment";
 import ListComments from "./ListComments";
 import { Button, IconButton } from "@material-ui/core";
-import MTSubmitForm from "./MTSubmitForm";
-import Collapse from "@material-ui/core/Collapse";
+
+
 import Box from "@material-ui/core/Box";
 import { simpleQueryElasticsearch } from "../backend/AxiosRequest";
 import { MATCH_PROJ_ID } from "../backend/EsQueries";
@@ -52,9 +49,9 @@ export default function DashBoard() {
   const [slide, setSlide] = React.useState(false);
   const [currProject, setCurrProject] = React.useState();
   const [microtasks, setMicrotasks] = React.useState();
-  const { selectedProject, authData, microtaskList } = useTrackedState();
-  const [openForm, setOpenForm] = React.useState(false);
   const [isFeedback, setIsFeedback] = React.useState(true);
+  const { selectedProject, authData, microtaskList } = useTrackedState();
+
   let params = useParams();
   const dispatch = useDispatch();
   const handleClose = () => {
@@ -65,25 +62,26 @@ export default function DashBoard() {
     queryEsById(query, dispatch, updateSelectedProject, history);
   };
 
-   function handleActivity(){
-    let data = {
-      params: {
+  function handleActivity() {
+
+    let data =  {
         index: "activity",
         q: {
-          categoryName:'project',
-          activity:'visited',
+          categoryName: "project",
+          activity: "visited",
           docId: selectedProject._id,
-          title:selectedProject._source.title,
+          title: selectedProject._source.title,
           userId: authData.user.id,
           username: authData.user.username,
           createdAt: new Date(),
         },
-      },
-    };
+      }
+    let formData = new FormData();
 
-    createDoc(data, authData.key, null);
+    formData.append("params", JSON.stringify(data));
 
-  };
+    createDoc(formData, authData.key, null);
+  }
 
   useEffect(() => {
     if (!selectedProject) {
@@ -91,10 +89,9 @@ export default function DashBoard() {
     } else {
       const query = MATCH_PROJ_ID(selectedProject._id, "microtasks");
       simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
-      if(authData&&authData.user){
+      if (authData && authData.user) {
         handleActivity();
       }
-      
     }
     setCurrProject(selectedProject);
     setIsFeedback(
@@ -110,9 +107,8 @@ export default function DashBoard() {
         resourceRef.current.getBoundingClientRect().top <
         (window.innerHeight * 1) / 2
       ) {
-        if(authData.isAuthenticated){
-        
-      }
+        if (authData.isAuthenticated) {
+        }
         setSlide(true);
       } else {
         // setSlide(false)
@@ -130,9 +126,6 @@ export default function DashBoard() {
     setMicrotasks(microtaskList);
   }, [microtaskList]);
 
-  const handleOpenForm = () => {
-    setOpenForm(!openForm);
-  };
 
   return (
     <Box>
@@ -140,47 +133,18 @@ export default function DashBoard() {
         title={
           currProject ? currProject._source.title + " - CivicTechHub" : null
         }
-        description={
-          currProject ? currProject._source.subtitle:null
-        }
-        image={currProject ? currProject._source.image:null}
+        description={currProject ? currProject._source.subtitle : null}
+        image={currProject ? currProject._source.image : null}
       />
       {currProject ? (
         <React.Fragment>
           <TitleSubtitle selectedProject={currProject} />
-          <StoryText selectedProject={currProject} />
+          <ProjectTab selectedProject={currProject} />
           <Container>
             <Grid container spacing={2}>
-              {/* <Grid item sm={12} md={12} xs={12}>
-                <h2>Microtasks</h2>
-              </Grid>
-              <Grid item sm={12} md={12} xs={12}>
-                <MTCarousel
-                  microtaskList={microtaskList}
-                  openForm={handleOpenForm}
-                />
-              </Grid>
-              <Collapse in={openForm} timeout="auto" unmountOnExit>
-                <Grid item sm={12} md={12} xs={12}>
-                  <MTSubmitForm
-                    openForm={handleOpenForm}
-                    selectedProject={selectedProject}
-                  />
-                </Grid>
-      </Collapse> */}
-      <TabsProject></TabsProject>
-              <Grid item sm={12} md={12} xs={12} ref={resourceRef}>
-                <h2>Resources</h2>
-              </Grid>
-              <Grid item sm={12} md={6} xs={12}>
-                <ProjectVideo selectedProject={currProject} />
-              </Grid>
-              <Grid item sm={12} md={6} xs={12}>
-                <ProjectLinks selectedProject={currProject} />
-                <ProjectTech selectedProject={currProject} />
-              </Grid>
+              
 
-              <Grid item sm={12} xs={12}>
+              <Grid item sm={12} xs={12} ref={resourceRef}>
                 <Paper className={classes.paper}>
                   <h4>Comments</h4>
                   <Divider />
