@@ -167,11 +167,12 @@ export default function MTSubmitForm(props) {
     title: "",
     roles: [],
     projectId: props.selectedProject._id,
+    projectTitle:props.selectedProject._source.title,
     rewards: "",
     crisis: "",
     language: "",
     approved: "no",
-    claimed: "yes",
+    completed: "no",
   });
 
   const handleDeleteChip = (chip, objProp) => {

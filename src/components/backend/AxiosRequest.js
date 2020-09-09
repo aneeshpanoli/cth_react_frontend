@@ -56,7 +56,7 @@ export const postAuthAxios = (token) =>
   });
 
 // use for POST request that require user authentication
-const postPostAuthAxios = (token) =>
+export const postPostAuthAxios = (token) =>
   axios.create({
     baseURL: BASE_URL,
     headers: {

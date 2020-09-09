@@ -121,10 +121,10 @@ export const MORE_LIKE_THIS = (esIndex, id, columns, resSize) => {
   };
 };
 
-export const MATCH_ID_TITLE = (id, title) => {
+export const MATCH_ID_TITLE = (id, title, index) => {
   return {
     params: {
-      index: "projects",
+      index: index,
       q: {
         query: {
           bool: {

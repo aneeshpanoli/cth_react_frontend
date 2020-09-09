@@ -20,7 +20,7 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { postAuthAxios } from "../backend/AxiosRequest";
+import { postPostAuthAxios } from "../backend/AxiosRequest";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,19 +46,17 @@ export default function ProjectSettings(props) {
 
   const deleteProject = () => {
     const query = {
-        index: "projects",
+        index: props.selectedProject._index,
         id: props.selectedProject._id,
       }
     ;
     let formData = new FormData();
-
     formData.append("params", JSON.stringify(query));
-    const authAxios = postAuthAxios(authData.key)
+    const authAxios = postPostAuthAxios(`Token ${authData.key}`)
     authAxios
       .post(`/d/`, formData)
       .then((response) => {
         // process response.
-
         // this.setState({results: response});
         console.log(response.data);
         history.goBack();
@@ -68,6 +66,7 @@ export default function ProjectSettings(props) {
         console.log(error);
       });
   };
+
   const approveProject = () => {
     let data = {
       status: "projectapprove",
@@ -190,7 +189,6 @@ export default function ProjectSettings(props) {
                   autoFocusItem={open}
                   id="menu-list-grow"
                   onKeyDown={handleListKeyDown}
-                  Menulis
                 >
                   {editPermission ? (
                     <MenuItem onClick={handleClose} dense>

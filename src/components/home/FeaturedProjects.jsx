@@ -192,7 +192,7 @@ export default function FeaturedProjects() {
           <h4 style={{ fontWeight: 700 }}>
             
             <FeaturedPlayListOutlinedIcon /> {" "}
-              Popular topics
+             {!authData.isAuthenticated||categories===baseCats? "Popular topics":"Your feed"}
             </h4>
           </Grid>
           <Grid item xs={6} sm={6} md={6} align="right">

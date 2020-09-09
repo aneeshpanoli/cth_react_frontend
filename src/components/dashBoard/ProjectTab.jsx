@@ -4,6 +4,7 @@ import { useDispatch, useTrackedState } from "reactive-react-redux";
 import TaskCard from "./TaskCard";
 import SwipeableViews from "react-swipeable-views";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import {useHistory} from 'react-router-dom'
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -22,6 +23,7 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxOutlinedIcon from "@material-ui/icons/CheckBoxOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import Button from "@material-ui/core/Button";
+import Badge from '@material-ui/core/Badge';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -70,10 +72,9 @@ export default function ProjectTab(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  const { selectedProject, authData, microtaskList } = useTrackedState();
+  const { authData, microtaskList } = useTrackedState();
   const [openForm, setOpenForm] = React.useState(false);
-
-  const addTask = [{ _source: { title: "New Task" } }];
+  const history = useHistory()
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -84,6 +85,10 @@ export default function ProjectTab(props) {
   };
 
   const handleOpenForm = () => {
+    if(!authData.isAuthenticated){
+      history.push("/sign-in")
+      return
+    }
     setOpenForm(!openForm);
   };
 
@@ -98,8 +103,8 @@ export default function ProjectTab(props) {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Details" {...a11yProps(0)} />
-          <Tab label="Microtasks" {...a11yProps(1)} />
+          <Tab label="Microtasks" {...a11yProps(0)} />
+          <Tab label="Details" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -113,7 +118,45 @@ export default function ProjectTab(props) {
           dir={theme.direction}
           className={classes.tabPanel}
         >
-          {props.selectedProject ? (
+         <Container>
+          <h4 style={{ margin: "0 auto", textAlign: "left" }}>Project Tasks</h4>
+          <hr></hr>
+          <Grid container spacing={1}>
+            <Grid item sm={12} md={12} xs={12}>
+            <AddOutlinedIcon style={{marginRight:'0.6rem'}}/>
+              <Button
+                onClick={handleOpenForm}
+                variant="text"
+                style={{textTransform:'none', fontWeight:700, fontSize:'1.2rem'}}
+              >
+                {"  "}
+                New Task
+              </Button>
+            </Grid>
+            <Collapse in={openForm} timeout="auto" unmountOnExit>
+              <Grid item sm={12} md={12} xs={12}>
+                <MTSubmitForm
+                  openForm={handleOpenForm}
+                  selectedProject={props.selectedProject}
+                />
+              </Grid>
+            </Collapse>
+            <Grid item sm={12} md={12} xs={12}>
+              {microtaskList &&
+                microtaskList[0] &&
+                microtaskList.map((r, i) => <TaskCard key={i} r={r} />)}
+            </Grid>
+
+          </Grid>
+          </Container>
+        </TabPanel>
+        <TabPanel
+          value={value}
+          index={1}
+          dir={theme.direction}
+          className={classes.tabPanel}
+        >
+           {props.selectedProject ? (
             <Container>
               <Grid
                 container
@@ -147,41 +190,7 @@ export default function ProjectTab(props) {
               </Grid>
             </Container>
           ) : null}
-        </TabPanel>
-        <TabPanel
-          value={value}
-          index={1}
-          dir={theme.direction}
-          className={classes.tabPanel}
-        >
-          <h4 style={{ margin: "0 auto", textAlign: "left" }}>Project Tasks</h4>
-          <hr></hr>
-          <Grid container spacing={1}>
-            <Grid item sm={12} md={12} xs={12}>
-            <AddOutlinedIcon style={{marginRight:'0.6rem'}}/>
-              <Button
-                onClick={handleOpenForm}
-                variant="text"
-                style={{textTransform:'none', fontWeight:700, fontSize:'1.2rem'}}
-              >
-                {"  "}
-                New Task
-              </Button>
-            </Grid>
-            <Grid item sm={12} md={12} xs={12}>
-              {microtaskList &&
-                microtaskList[0] &&
-                microtaskList.map((r, i) => <TaskCard key={i} r={r} />)}
-            </Grid>
-            <Collapse in={openForm} timeout="auto" unmountOnExit>
-              <Grid item sm={12} md={12} xs={12}>
-                <MTSubmitForm
-                  openForm={handleOpenForm}
-                  selectedProject={props.selectedProject}
-                />
-              </Grid>
-            </Collapse>
-          </Grid>
+          
         </TabPanel>
       </SwipeableViews>
     </div>

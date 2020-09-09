@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { themeDict } from "./components/theme/Colors";
 import { createMuiTheme } from "@material-ui/core/styles";
 import CreateChallenge from "./components/pages/CreateChallenge";
-import ProjectDashboard from "./components/pages/ProjectDashboard";
+import ProjectHome from "./components/pages/ProjectHome";
 import HomePage from "./components/pages/Home";
 import SearchProjects from "./components/pages/SearchProjects";
 import ExploreProjects from "./components/pages/ExploreProjects";
@@ -24,6 +24,7 @@ import { logout, tabLogin } from './components/auth/auth'
 import PwdResetForm from './components/pages/PwdReset'
 import { updateAuthData } from './components/redux/actions'
 import Loading from "./components/pages/Loading";
+import MTHome from './components/pages/MTHome';
 
 //stylesheet
 //DO NOT REMOVE BOOTSTRAP
@@ -133,8 +134,11 @@ const App = () => {
             <Route exact path="/@:user">
               <UserProfile />
             </Route>
+            <Route path="/:name/:mt/:id">
+              <MTHome />
+            </Route>
             <Route path="/:name/:id">
-              <ProjectDashboard />
+              <ProjectHome />
             </Route>
             <Route exact path={["*", "/page-not-found"]}>
               <PageNotFound />

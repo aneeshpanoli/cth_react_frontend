@@ -12,8 +12,7 @@ if (process.env.NODE_ENV !== 'development') {
     console.log = noop;
     console.error = noop;
     console.warn = noop;
-}
-
+} 
 
 ReactDOM.render(
   <Provider store={store}>

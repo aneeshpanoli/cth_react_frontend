@@ -57,8 +57,8 @@ export default function DashBoard() {
   const handleClose = () => {
     setSlide(false);
   };
-  const fetchProj = (id, title) => {
-    let query = MATCH_ID_TITLE(id, title);
+  const fetchProj = (id, title, index) => {
+    let query = MATCH_ID_TITLE(id, title, index);
     queryEsById(query, dispatch, updateSelectedProject, history);
   };
 
@@ -85,7 +85,7 @@ export default function DashBoard() {
 
   useEffect(() => {
     if (!selectedProject) {
-      fetchProj(params.id, params.name.replace(/-/g, " "));
+      fetchProj(params.id, params.name.replace(/-/g, " "), 'projects');
     } else {
       const query = MATCH_PROJ_ID(selectedProject._id, "microtasks");
       simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
@@ -102,7 +102,7 @@ export default function DashBoard() {
     );
   }, [selectedProject]);
   const handleScroll = throttle(() => {
-    if (resourceRef && isFeedback) {
+    if (resourceRef &&resourceRef.current&& isFeedback) {
       if (
         resourceRef.current.getBoundingClientRect().top <
         (window.innerHeight * 1) / 2

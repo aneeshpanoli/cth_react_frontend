@@ -12,6 +12,11 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Chip from "@material-ui/core/Chip";
 import TurnedInNotOutlinedIcon from "@material-ui/icons/TurnedInNotOutlined";
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {IconButton, Button} from '@material-ui/core';
+import ProjectSettings from './ProjectSettings'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -111,6 +116,8 @@ export default function SearchCard(props) {
 
       history.push(
         "/" +
+        selectedProject._source.projectTitle.replace(/\s+/g, "-") +
+        "/" +
           selectedProject._source.title.replace(/\s+/g, "-") +
           "/" +
           selectedProject._id
@@ -157,12 +164,10 @@ export default function SearchCard(props) {
       key={props.r._id}
       style={{ transitionDelay: checked ? "300ms" : "0ms" }}
     >
-      <Grid container spacing={1}>
-
+<React.Fragment>
 
         <Grid item md={12} sm={12} xs={12} align='left' noW>
             <Grid item xs={12}>
-              <p>
             <CheckBoxOutlineBlankIcon style={{ marginRight: "1rem" }}/>
             <Link
             onMouseMove={() => setMouseMoved(true)}
@@ -179,24 +184,24 @@ export default function SearchCard(props) {
                 
               </Typography>
               </Link>
-              <TurnedInNotOutlinedIcon style={{ margin: "auto 1rem" }} />
+              
               <Typography style={{ marginLeft: "2.5rem" }}>
                 {/* {props.r._source.subtitle.substring(0, 125) + "..."} */}
                 {props.r._source.subtitle ? props.r._source.subtitle : null}
               </Typography>
-              
-              </p>
+              <Button style={{marginLeft: "1.5rem", color:'green'}}>Solve</Button>
+             <IconButton style={{marginLeft: "1rem", color:'silver'}}><TurnedInNotOutlinedIcon  /></IconButton> 
+             
+            
+            
+            <IconButton><ExpandMoreIcon style={{marginLeft: "auto 1.5rem", color:'silver'}} /></IconButton>
+            <ProjectSettings selectedProject={props.r} style={{marginLeft: "auto 1.5rem", color:'silver'}} />
             </Grid>
-            <Grid item xs={12}>
-              
-            </Grid>
-       
-        
         </Grid>
         <Grid item xs={12}>
           <hr></hr>
         </Grid>
-      </Grid>
+        </React.Fragment>
     </Fade>
   );
 }
