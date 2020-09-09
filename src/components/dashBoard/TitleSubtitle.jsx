@@ -30,7 +30,7 @@ const breadCrumb = (project, history) => {
     <Breadcrumbs aria-label="breadcrumb" separator={<NavigateNextIcon fontSize="small" />}>
       <Link color="inherit" style={{cursor:'pointer'}} onClick={(event)=>{
         event.preventDefault();
-        history.push("/"+project._source.projectTitle+"/"+project._source.projectId)
+        history.push("/"+project._source.projectTitle.replace(/\s+/g, "-")+"/"+project._source.projectId)
         }}>
       {project._source.projectTitle}
       </Link>

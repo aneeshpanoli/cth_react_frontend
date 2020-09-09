@@ -42,7 +42,7 @@ export default function Activity() {
               {authData._source.id === doc._source.userId
                 ? "you"
                 : doc._source.username}{" "}
-              {doc._source.activity}{" "}{doc._source.categoryName} <a href={"/"+doc._source.title+"/"+doc._source.docId}>{doc._source.title}</a>
+              {doc._source.activity}{" "}{doc._source.categoryName} <a href={"/"+doc._source.title.replace(/\s+/g, "-")+"/"+doc._source.docId}>{doc._source.title}</a>
             </h6>
           );
         })}
