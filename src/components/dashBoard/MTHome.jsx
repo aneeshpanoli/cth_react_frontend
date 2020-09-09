@@ -10,12 +10,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-import ProjectTab from "./ProjectTab";
+import MTTab from "./MTTab";
 
 import PostComment from "./PostComment";
 import ListComments from "./ListComments";
 import { Button, IconButton } from "@material-ui/core";
-
 
 import Box from "@material-ui/core/Box";
 import { simpleQueryElasticsearch } from "../backend/AxiosRequest";
@@ -62,19 +61,20 @@ export default function DashBoard() {
   };
 
   function handleActivity() {
-
-    let data =  {
-        index: "activity",
-        q: {
-          categoryName: "microtask",
-          activity: "visited",
-          docId: selectedProject._id,
-          title: selectedProject._source.title,
-          userId: authData.user.id,
-          username: authData.user.username,
-          createdAt: new Date(),
-        },
-      }
+    let data = {
+      index: "activity",
+      q: {
+        categoryName: "microtask",
+        activity: "visited",
+        docId: selectedProject._id,
+        title: selectedProject._source.title,
+        projectTitle:selectedProject._source.projectTitle,
+        projectId:selectedProject._source.projectId,
+        userId: authData.user.id,
+        username: authData.user.username,
+        createdAt: new Date(),
+      },
+    };
     let formData = new FormData();
 
     formData.append("params", JSON.stringify(data));
@@ -83,8 +83,8 @@ export default function DashBoard() {
   }
 
   useEffect(() => {
-    if (!selectedProject) {
-      fetchProj(params.id, params.mt.replace(/-/g, " "), 'microtasks');
+    if (!selectedProject || !selectedProject._source.projectTitle) {
+      fetchProj(params.id, params.mt.replace(/-/g, " "), "microtasks");
     } else {
       const query = MATCH_PROJ_ID(selectedProject._id, "microtasks");
       simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
@@ -101,7 +101,7 @@ export default function DashBoard() {
     );
   }, [selectedProject]);
   const handleScroll = throttle(() => {
-    if (resourceRef &&resourceRef.current&& isFeedback) {
+    if (resourceRef && resourceRef.current && isFeedback) {
       if (
         resourceRef.current.getBoundingClientRect().top <
         (window.innerHeight * 1) / 2
@@ -125,24 +125,27 @@ export default function DashBoard() {
     setMicrotasks(microtaskList);
   }, [microtaskList]);
 
-
   return (
     <Box>
       <Head
         title={
-          currProject ?  currProject._source.projectTitle+": "+currProject._source.title + " - CivicTechHub" : null
+          currProject
+            ? currProject._source.projectTitle +
+              ": " +
+              currProject._source.title +
+              " - CivicTechHub"
+            : null
         }
         description={currProject ? currProject._source.subtitle : null}
         image={currProject ? currProject._source.image : null}
       />
       {currProject ? (
         <React.Fragment>
+              
           <TitleSubtitle selectedProject={currProject} />
-          <ProjectTab selectedProject={currProject} />
+          <MTTab selectedProject={currProject} />
           <Container>
             <Grid container spacing={2}>
-              
-
               <Grid item sm={12} xs={12} ref={resourceRef}>
                 <Paper className={classes.paper}>
                   <h4>Comments</h4>

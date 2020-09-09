@@ -1,5 +1,4 @@
 import React from "react";
-
 import TopNav from "../navigation/TopNav";
 
 // lazyload
@@ -11,7 +10,7 @@ export default function ProjectDashboard() {
   return (
     <React.Fragment>
       <TopNav />
-      <LazyLoad><MTHome /></LazyLoad>
+      <LazyLoad> <MTHome /></LazyLoad>
       
       <LazyLoad> <Footer /></LazyLoad>
      

@@ -84,7 +84,7 @@ export default function DashBoard() {
   }
 
   useEffect(() => {
-    if (!selectedProject) {
+    if (!selectedProject  || selectedProject._source.projectTitle) {
       fetchProj(params.id, params.name.replace(/-/g, " "), 'projects');
     } else {
       const query = MATCH_PROJ_ID(selectedProject._id, "microtasks");

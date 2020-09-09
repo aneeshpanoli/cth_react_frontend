@@ -19,6 +19,7 @@ import AddToQueueIcon from "@material-ui/icons/AddToQueue";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
 import { esAxios } from "../backend/AxiosRequest";
 import { GET_LATEST } from "../backend/EsQueries";
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 
 export default function Activity() {
   const history = useHistory();
@@ -28,6 +29,7 @@ export default function Activity() {
   const buildActivityJsx = () => {
     const iconMap = {
       project: <TimelineOutlinedIcon />,
+      microtask: <PlaylistAddCheckIcon />,
     };
     return (
       <React.Fragment>
@@ -40,7 +42,7 @@ export default function Activity() {
               {authData._source.id === doc._source.userId
                 ? "you"
                 : doc._source.username}{" "}
-              {doc._source.activity} <a href={"/"+doc._source.title+"/"+doc._source.docId}>{doc._source.title}</a>
+              {doc._source.activity}{" "}{doc._source.categoryName} <a href={"/"+doc._source.title+"/"+doc._source.docId}>{doc._source.title}</a>
             </h6>
           );
         })}
@@ -68,7 +70,7 @@ export default function Activity() {
     <Box>
       <Container>
         <Grid container spacing={0}>
-          <Grid container style={{ marginTop: "2%" }}>
+          <Grid container style={{ marginTop: "2rem" }}>
             <Grid item xs={12} sm={12} md={12}>
               <h4 style={{ fontWeight: 700 }}>
                 <AssessmentOutlinedIcon /> Activity
