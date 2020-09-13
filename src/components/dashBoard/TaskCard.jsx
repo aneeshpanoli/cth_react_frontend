@@ -12,7 +12,7 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Chip from "@material-ui/core/Chip";
 import TurnedInNotOutlinedIcon from "@material-ui/icons/TurnedInNotOutlined";
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import MoneyIcon from '@material-ui/icons/Money';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {IconButton, Button} from '@material-ui/core';
 import ProjectSettings from './ProjectSettings'
@@ -189,12 +189,12 @@ export default function SearchCard(props) {
                 {/* {props.r._source.subtitle.substring(0, 125) + "..."} */}
                 {props.r._source.subtitle ? props.r._source.subtitle : null}
               </Typography>
-              <Button style={{marginLeft: "1.5rem", color:'green'}}>Solve</Button>
-             <IconButton style={{marginLeft: "1rem", color:'silver'}}><TurnedInNotOutlinedIcon  /></IconButton> 
+              {/* <Button style={{marginLeft: "1.5rem", color:'green'}}>Solve</Button> */}
+             <IconButton size='small' style={{marginLeft: "1rem", color:'silver'}}><TurnedInNotOutlinedIcon  /></IconButton> 
              
             
             
-            <IconButton><ExpandMoreIcon style={{marginLeft: "auto 1.5rem", color:'silver'}} /></IconButton>
+            <IconButton size='small' style={{marginLeft: "auto 1.5rem", color:'silver'}} ><MoneyIcon /></IconButton>
             <ProjectSettings selectedProject={props.r} style={{marginLeft: "auto 1.5rem", color:'silver'}} />
             </Grid>
         </Grid>
