@@ -304,7 +304,7 @@ export default function ProjectForm() {
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
-                <ImageUpload onSave={handleEmbed} />
+                <ImageUpload onSave={handleEmbed} acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}/>
                 {embed ? (
                   <Grid item xs={12}>
                     <img

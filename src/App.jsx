@@ -25,6 +25,7 @@ import PwdResetForm from './components/pages/PwdReset'
 import { updateAuthData } from './components/redux/actions'
 import Loading from "./components/pages/Loading";
 import MTHome from './components/pages/MTHome';
+import SolutionHome from './components/pages/SolutionHome';
 
 //stylesheet
 //DO NOT REMOVE BOOTSTRAP
@@ -133,6 +134,9 @@ const App = () => {
             {/* <Route path=":(^/@[a-z0-9]+)"> */}
             <Route exact path="/@:user">
               <UserProfile />
+            </Route>
+            <Route path="/:name/:mt/:mtsol/:id">
+              <SolutionHome />
             </Route>
             <Route path="/:name/:mt/:id">
               <MTHome />

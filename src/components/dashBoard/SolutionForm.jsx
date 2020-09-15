@@ -1,28 +1,20 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import { updateProject } from "../backend/AxiosRequest";
+import { postProject } from "../backend/AxiosRequest";
 import MUIRichTextEditor from "mui-rte";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries, categories, roles } from "../search/utils";
-import { convertToRaw, ContentState, convertFromHTML } from "draft-js";
-import ImageUpload from "./ImageUpload";
+import ImageUpload from "../create/ImageUpload";
 import { convertToHTML } from "draft-convert";
 import ChipInput from "material-ui-chip-input";
 import Chip from "@material-ui/core/Chip";
-import { getImgUrl } from "../js/utils";
-import { queryEsById } from "../backend/AxiosRequest";
-import { updateSelectedProject } from "../redux/actions";
-import { MATCH_ID_TITLE } from "../backend/EsQueries";
+import {updateMicrotaskList} from '../redux/actions'
 
 const useStyles = makeStyles((theme) => ({
   chipRoot: {
@@ -87,11 +79,11 @@ const validate = (values) => {
     errors.subtitle = "The description should be atleast 60 characters long";
   }
 
-  if (!values.motivation) {
-    errors.motivation = "Required";
-  } else if (values.motivation.length < 60) {
-    errors.motivation = "The description should be atleast 60 characters long";
-  }
+  // if (!values.motivation) {
+  //   errors.motivation = "Required";
+  // } else if (values.motivation.length < 60) {
+  //   errors.motivation = "The description should be atleast 60 characters long";
+  // }
 
   if (!values.storyText) {
     errors.storyText = "Required";
@@ -115,13 +107,13 @@ const validate = (values) => {
     }
   }
 
-  if (values.video) {
-    try {
-      new URL(values.video);
-    } catch (error) {
-      errors.video = "Not a valid url";
-    }
-  }
+  // if (values.video) {
+  //   try {
+  //     new URL(values.video);
+  //   } catch (error) {
+  //     errors.video = "Not a valid url";
+  //   }
+  // }
 
   if (values.keywords.length === 0 || !values.keywords) {
     errors.keywords = "Required";
@@ -131,9 +123,9 @@ const validate = (values) => {
     errors.builtWith = "Required";
   }
 
-  if (!values.country) {
-    errors.country = "Required";
-  }
+  // if (!values.country) {
+  //   errors.country = "Required";
+  // }
 
   if (!values.image) {
     errors.image = "Required";
@@ -142,62 +134,104 @@ const validate = (values) => {
   return errors;
 };
 
-export default function ProjectEditForm() {
+export default function MTSubmitForm(props) {
   const [formErrors, setFormErrors] = React.useState({});
-  const classes = useStyles();
   const history = useHistory();
+  const classes = useStyles();
+  const { authData } = useTrackedState();
+  React.useEffect(() => {
+    if (!authData.user) {
+      history.push("/");
+    }
+  });
+
+  const dispatch = useDispatch();
+  const [open, setOpen] = React.useState(false);
   const [embed, setEmbed] = React.useState(null);
-  const [defaultDesc, setDefaultDesc] = React.useState(null);
-  const { authData, selectedProject } = useTrackedState();
+  const [image, setImage] = React.useState(null);
+
+  const [newChips, setNewChips] = React.useState(null);
   const [formValues, setFormValues] = React.useState({
-    builtWith: [],
-    category: "",
+    builtWith: props.selectedProject._source.builtWith,
+    category: props.selectedProject._source.category,
     country: "",
-    updatedAt: new Date(),
+    createdAt: new Date(),
     storyText: "",
     subtitle: "",
+    owners: authData && authData.user ? authData.user.id : "",
     video: "",
     hackathons: [],
+    updatedAt: new Date(),
     links: [],
     keywords: [],
     title: "",
     roles: [],
-    motivation: "",
+    projectId: props.selectedProject._id,
+    projectTitle:props.selectedProject._source.title,
     rewards: "",
     crisis: "",
     language: "",
+    approved: "no",
+    completed: "no",
   });
+
+  const handleDeleteChip = (chip, objProp) => {
+    let newArr = [...formValues[objProp]].filter((item) => item !== chip);
+    setFormValues(Object.assign({}, formValues, { [objProp]: newArr }));
+  };
+
+  const handleDeleteChipRoles = (chip) => {
+    let newArr = [...formValues.roles].filter((item) => item !== chip);
+    setFormValues(Object.assign({}, formValues, { roles: newArr }));
+  };
+  const handleChange = (event, field) => {
+    // copy new values to formValues
+    setFormValues({ ...formValues, [field]: event.target.value });
+  };
+
+  const handleChangeValue = (field, value) => {
+    // copy new values to formValues
+    setFormValues({ ...formValues, [field]: value });
+  };
+
   React.useEffect(() => {
-    if (
-      (selectedProject &&
-        selectedProject._source.owners &&
-        selectedProject._source.owners === authData.user.id) ||
-      (authData && authData.user && authData._source.staff === "yes")
-    ) {
-      setFormValues(Object.assign({}, formValues, selectedProject._source));
-      setEmbed(getImgUrl(selectedProject._source.image)); //dosent affect formvalue jus the embed
-      setDefaultDesc(getDescription());
-    } else {
-      history.push("/page-not-found");
-    }
-  }, []);
-  const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(false);
+    // console.log(formValues);
+    setFormErrors(validate({ ...formValues, image: embed ? true : false }));
+    setNewChips(makeChips(formValues));
+  }, [formValues, embed]);
 
-  const [image, setImage] = React.useState(null);
-
-  const [newChips, setNewChips] = React.useState(null);
-  
-  const getDescription = () => {
-    if (selectedProject) {
-      const contentHTML = convertFromHTML(selectedProject._source.storyText);
-      const state = ContentState.createFromBlockArray(
-        contentHTML.contentBlocks,
-        contentHTML.entityMap
-      );
-      return JSON.stringify(convertToRaw(state));
+  const handleSubmit = () => {
+    console.log(formErrors);
+    if (!Object.keys(formErrors).length === 0) {
+      console.log("not submitting");
+      return;
     }
-    return null;
+    //   alert(JSON.stringify(values, null, 2));
+    console.log("submitting data");
+    let data = {
+      status: "mtsolution",
+      index: "mtsolutions",
+      q: formValues,
+    };
+    let formData = new FormData();
+
+    formData.append("params", JSON.stringify(data));
+    formData.append("image", image, image.path);
+    const updateData = (data) => dispatch(updateMicrotaskList(data))
+    postProject(formData, authData.key, history, formValues.title, updateData);
+    setOpen(true);
+  };
+
+  const handleEmbed = (url) => {
+    setImage(url[0].file);
+    console.log(url[0].file.path);
+    let reader = new FileReader();
+
+    reader.onloadend = () => {
+      setEmbed(reader.result);
+      console.log(embed);
+    };
+    reader.readAsDataURL(url[0].file);
   };
 
   const makeChips = (values) => {
@@ -218,91 +252,12 @@ export default function ProjectEditForm() {
       </div>
     );
   };
-  const handleDeleteChip = (chip, objProp) => {
-    let newArr = [...formValues[objProp]].filter((item) => item !== chip);
-    setFormValues(Object.assign({}, formValues, { [objProp]: newArr }));
-  };
-
-  const handleDeleteChipRoles = (chip) => {
-    let newArr = [...formValues.roles].filter((item) => item !== chip);
-    setFormValues(Object.assign({}, formValues, { roles: newArr }));
-  };
-  const handleChange = (event, field) => {
-    // copy new values to formValues
-    setFormValues({ ...formValues, [field]: event.target.value });
-  };
-  const handleChangeValue = (field, value) => {
-    // copy new values to formValues
-    setFormValues({ ...formValues, [field]: value });
-  };
-
-  React.useEffect(() => {
-    // console.log(formValues);
-    setFormErrors(validate({ ...formValues, image: embed ? true : false }));
-    setNewChips(makeChips(formValues));
-  }, [formValues, embed]);
-
-  const handleSubmit = () => {
-    // console.log(formErrors);
-    if (!Object.keys(formErrors).length === 0) {
-      console.log("not submitting");
-      return;
-    }
-    //   alert(JSON.stringify(values, null, 2));
-    // console.log("submitting data");
-    let data = {
-      status: "projectupdate",
-      index: selectedProject._index,
-      id: selectedProject._id,
-      q: {doc:formValues},
-    };
-    let formData = new FormData();
-
-    formData.append("params", JSON.stringify(data));
-    try {
-      formData.append("image", image, image.path);
-    } catch (error) {
-      formData.append("image", "");
-    }
-    let query = MATCH_ID_TITLE(
-      selectedProject._id,
-      formValues.title.replace(/-/g, " ")
-    );
-    const updateData = (hits) => dispatch(updateSelectedProject(hits));
-    updateProject(
-      formData,
-      authData.key,
-      history,
-      formValues.title,
-      updateData
-    );
-    setOpen(true);
-  };
-
-  const handleEmbed = (url) => {
-    setImage(url[0].file);
-    // console.log(url[0].file.path);
-    let reader = new FileReader();
-
-    reader.onloadend = () => {
-      setEmbed(reader.result);
-      // console.log(embed);
-    };
-    reader.readAsDataURL(url[0].file);
-  };
-
-
 
   return (
-    <Container component="main" maxWidth="md">
-      <CssBaseline />
+    <React.Fragment>
       {!open ? (
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
-            Edit Project
           </Typography>
 
           <form
@@ -327,7 +282,7 @@ export default function ProjectEditForm() {
                   fullWidth
                   multiline
                   id="title"
-                  label="Project title"
+                  label="Solution title"
                   name="title"
                   autoComplete="none"
                   onChange={(e) => handleChange(e, "title")}
@@ -347,7 +302,7 @@ export default function ProjectEditForm() {
                   <Grid item xs={12}>
                     <img
                       src={embed}
-                      alt="title"
+                      alt="title-image"
                       style={{
                         maxHeight: "400px",
                         marginTop: "1rem",
@@ -379,7 +334,7 @@ export default function ProjectEditForm() {
               </Grid>
 
               {/* MOTIVATION               */}
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 {formErrors.motivation ? (
                   <sup className={classes.error}>{formErrors.motivation}</sup>
                 ) : (
@@ -392,12 +347,12 @@ export default function ProjectEditForm() {
                   id="motivation"
                   label="Motivation"
                   name="motivation"
-                  onChange={(e) =>
-                    handleChange(e, "motivation")
+                  onChange={() =>
+                    handleChange("motivation", event.target.value)
                   }
                   value={formValues.motivation}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* DESCRIPTION */}
 
@@ -411,7 +366,6 @@ export default function ProjectEditForm() {
                   style={{ borderBottom: "1px solid grey", minHeight: "4rem" }}
                 >
                   <MUIRichTextEditor
-                    defaultValue={defaultDesc}
                     label="Description *"
                     id="storyText"
                     name="storyText"
@@ -513,7 +467,7 @@ export default function ProjectEditForm() {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Roles needed*"
+                      label="Skills needed*"
                       variant="standard"
                     />
                   )}
@@ -522,7 +476,7 @@ export default function ProjectEditForm() {
 
               {/* COUNTRY */}
 
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 {formErrors.country ? (
                   <sup className={classes.error}>{formErrors.country}</sup>
                 ) : (
@@ -534,7 +488,7 @@ export default function ProjectEditForm() {
                   getOptionLabel={(option) => option.label}
                   fullWidth
                   onChange={(_, value) => {
-                    handleChangeValue("country", value ? value.label : "");
+                    handleChange("country", value ? value.label : "");
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -544,7 +498,7 @@ export default function ProjectEditForm() {
                     />
                   )}
                 />
-              </Grid>
+              </Grid> */}
               {/* LINKS */}
               <Grid item xs={12}>
                 {formErrors.links ? (
@@ -635,7 +589,7 @@ export default function ProjectEditForm() {
                 />
               </Grid>
               {/* EVENTS/HACKATHONS */}
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 {formErrors.hackathons ? (
                   <sup className={classes.error}>{formErrors.hackathons}</sup>
                 ) : (
@@ -649,7 +603,7 @@ export default function ProjectEditForm() {
                   }}
                   label="Events/hackathons (press enter to add more than one events/hackathons)"
                   onAdd={(chip) => {
-                    handleChangeValue(
+                    handleChange(
                       "hackathons",
                       [...formValues.hackathons].concat([chip])
                     );
@@ -658,15 +612,15 @@ export default function ProjectEditForm() {
                     handleDeleteChip(chip, "hackathons")
                   }
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Button
-              onClick={() => history.goBack()}
               type="submit"
               fullWidth
               variant="contained"
               color="secondary"
               className={classes.submit}
+              onClick={props.openForm}
             >
               Cancel
             </Button>
@@ -681,7 +635,7 @@ export default function ProjectEditForm() {
               color="primary"
               className={classes.submit}
             >
-              Update
+              Submit
             </Button>
             <Grid container justify="flex-end">
               <Grid item></Grid>
@@ -701,9 +655,9 @@ export default function ProjectEditForm() {
           >
             <h3>Thank you!</h3>
           </div>
-          <h5 style={{ fontWeight: 400 }}>Your project has been updated.</h5>
+          <h5 style={{ fontWeight: 400 }}>Your Microtask has been submitted.</h5>
         </div>
       )}
-    </Container>
+    </React.Fragment>
   );
 }

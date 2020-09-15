@@ -47,11 +47,11 @@ export default function FeedbackForm(props) {
       </Button>
 
       <DropzoneDialogBase
-        acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+        acceptedFiles={props.acceptedFiles}
         fileObjects={fileObjects}
         cancelButtonText={"cancel"}
         submitButtonText={"OK"}
-        maxFileSize={5000000}
+        maxFileSize={2000000}
         open={fileOpen}
         onAdd={(newFileObjs) => {
           console.log("onAdd", newFileObjs);
