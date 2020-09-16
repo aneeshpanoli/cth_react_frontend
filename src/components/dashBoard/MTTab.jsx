@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import TaskCard from "./TaskCard";
+import SolutionCard from "./SolutionCard";
 import SwipeableViews from "react-swipeable-views";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {useHistory} from 'react-router-dom'
@@ -72,7 +72,7 @@ export default function ProjectTab(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  const { authData, microtaskList } = useTrackedState();
+  const { authData } = useTrackedState();
   const [openForm, setOpenForm] = React.useState(false);
   const history = useHistory()
 
@@ -138,13 +138,14 @@ export default function ProjectTab(props) {
                 <SolutionForm
                   openForm={handleOpenForm}
                   selectedProject={props.selectedProject}
+                  projTitle={props.projTitle}
                 />
               </Grid>
             </Collapse>
             <Grid item sm={12} md={12} xs={12}>
-              {microtaskList &&
-                microtaskList[0] &&
-                microtaskList.map((r, i) => <TaskCard key={i} r={r} />)}
+              {props.solutionsList &&
+                props.solutionsList[0] &&
+                props.solutionsList.map((r, i) => <SolutionCard key={i} r={r} />)}
             </Grid>
 
           </Grid>

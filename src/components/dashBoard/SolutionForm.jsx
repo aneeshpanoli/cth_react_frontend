@@ -134,7 +134,7 @@ const validate = (values) => {
   return errors;
 };
 
-export default function MTSubmitForm(props) {
+export default function SolutionForm(props) {
   const [formErrors, setFormErrors] = React.useState({});
   const history = useHistory();
   const classes = useStyles();
@@ -166,14 +166,36 @@ export default function MTSubmitForm(props) {
     keywords: [],
     title: "",
     roles: [],
-    projectId: props.selectedProject._id,
-    projectTitle:props.selectedProject._source.title,
+    mtId: props.selectedProject._id,
+    mtTitle:props.selectedProject._source.title,
+    projTitle:props.projTitle,
+    projId:props.projId,
     rewards: "",
     crisis: "",
     language: "",
     approved: "no",
     completed: "no",
   });
+
+  const makeChips = (values) => {
+    return (
+      <div className={classes.chipRoot}>
+        {values.roles.map((role, i) => {
+          return (
+            <li key={i}>
+              <Chip
+                label={role}
+                onDelete={() => handleDeleteChipRoles(role)}
+                onClick={() => handleDeleteChipRoles(role)}
+                className={classes.chip}
+              />
+            </li>
+          );
+        })}
+      </div>
+    );
+  };
+
 
   const handleDeleteChip = (chip, objProp) => {
     let newArr = [...formValues[objProp]].filter((item) => item !== chip);
@@ -234,25 +256,7 @@ export default function MTSubmitForm(props) {
     reader.readAsDataURL(url[0].file);
   };
 
-  const makeChips = (values) => {
-    return (
-      <div className={classes.chipRoot}>
-        {values.roles.map((role, i) => {
-          return (
-            <li key={i}>
-              <Chip
-                label={role}
-                onDelete={() => handleDeleteChipRoles(role)}
-                onClick={() => handleDeleteChipRoles(role)}
-                className={classes.chip}
-              />
-            </li>
-          );
-        })}
-      </div>
-    );
-  };
-
+ 
   return (
     <React.Fragment>
       {!open ? (

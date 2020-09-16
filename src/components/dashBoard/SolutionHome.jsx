@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DashBoard() {
+export default function SolutionHome() {
   const classes = useStyles();
   const history = useHistory();
   const resourceRef = useRef(null);
@@ -64,7 +64,7 @@ export default function DashBoard() {
     let data = {
       index: "activity",
       q: {
-        categoryName: "microtask",
+        categoryName: "solution",
         activity: "visited",
         docId: selectedProject._id,
         title: selectedProject._source.title,
@@ -83,10 +83,10 @@ export default function DashBoard() {
   }
 
   useEffect(() => {
-    if (!selectedProject || !selectedProject._source.projectTitle) {
-      fetchProj(params.id, params.mt.replace(/-/g, " "), "microtasks");
+    if (!selectedProject || !selectedProject._source.mtTitle) {
+      fetchProj(params.id, params.mtsol.replace(/-/g, " "), "solutions");
     } else {
-      const query = MATCH_PROJ_ID(selectedProject._id, "microtasks");
+      const query = MATCH_PROJ_ID(selectedProject._id, "solutions");
       simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
       if (authData && authData.user) {
         handleActivity();
@@ -143,7 +143,7 @@ export default function DashBoard() {
         <React.Fragment>
               
           <TitleSubtitle selectedProject={currProject} />
-          <SolutionTab selectedProject={currProject} />
+          <SolutionTab selectedProject={currProject} projTitle={params.name} projId={params.id}/>
           <Container>
             <Grid container spacing={2}>
               <Grid item sm={12} xs={12} ref={resourceRef}>

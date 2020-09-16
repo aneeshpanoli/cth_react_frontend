@@ -17,7 +17,7 @@ import ListComments from "./ListComments";
 import { Button, IconButton } from "@material-ui/core";
 
 import Box from "@material-ui/core/Box";
-import { simpleQueryElasticsearch } from "../backend/AxiosRequest";
+import { esAxios } from "../backend/AxiosRequest";
 import { MATCH_PROJ_ID } from "../backend/EsQueries";
 import throttle from "lodash.throttle";
 import AppBar from "@material-ui/core/AppBar";
@@ -46,9 +46,9 @@ export default function DashBoard() {
   const resourceRef = useRef(null);
   const [slide, setSlide] = React.useState(false);
   const [currProject, setCurrProject] = React.useState();
-  const [microtasks, setMicrotasks] = React.useState();
   const [isFeedback, setIsFeedback] = React.useState(true);
-  const { selectedProject, authData, microtaskList } = useTrackedState();
+  const { selectedProject, authData } = useTrackedState();
+  const [solutionsList, setSolutionsList] = React.useState();
 
   let params = useParams();
   const dispatch = useDispatch();
@@ -68,8 +68,8 @@ export default function DashBoard() {
         activity: "visited",
         docId: selectedProject._id,
         title: selectedProject._source.title,
-        projectTitle:selectedProject._source.projectTitle,
-        projectId:selectedProject._source.projectId,
+        projectTitle: selectedProject._source.projectTitle,
+        projectId: selectedProject._source.projectId,
         userId: authData.user.id,
         username: authData.user.username,
         createdAt: new Date(),
@@ -82,12 +82,42 @@ export default function DashBoard() {
     createDoc(formData, authData.key, null);
   }
 
+  const getSolutions = () => {
+    // update the search project list
+    const query = {
+      params: {
+        index: "solutions",
+        q: {
+          size: 20,
+          query: {
+            match: {
+              mtId: selectedProject._id,
+            },
+          },
+        },
+      },
+    };
+    esAxios
+      .get(`/q/`, query)
+      .then((response) => {
+        // process response.
+
+        // this.setState({results: response});
+        // console.log(response.data.hits);
+        setSolutionsList(response.data.hits.hits);
+      })
+      .catch((error) => {
+        // catch errors.
+        console.log(error);
+        return error;
+      });
+  };
+
   useEffect(() => {
     if (!selectedProject || !selectedProject._source.projectTitle) {
       fetchProj(params.id, params.mt.replace(/-/g, " "), "microtasks");
     } else {
-      const query = MATCH_PROJ_ID(selectedProject._id, "microtasks");
-      simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
+      getSolutions()
       if (authData && authData.user) {
         handleActivity();
       }
@@ -121,9 +151,6 @@ export default function DashBoard() {
     };
   }, []);
 
-  useEffect(() => {
-    setMicrotasks(microtaskList);
-  }, [microtaskList]);
 
   return (
     <Box>
@@ -141,9 +168,8 @@ export default function DashBoard() {
       />
       {currProject ? (
         <React.Fragment>
-              
           <TitleSubtitle selectedProject={currProject} />
-          <MTTab selectedProject={currProject} />
+          <MTTab selectedProject={currProject} solutionsList={solutionsList} projTitle={params.name}/>
           <Container>
             <Grid container spacing={2}>
               <Grid item sm={12} xs={12} ref={resourceRef}>

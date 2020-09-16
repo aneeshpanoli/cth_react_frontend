@@ -11,12 +11,11 @@ import Link from "@material-ui/core/Link";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Chip from "@material-ui/core/Chip";
 import TurnedInNotOutlinedIcon from "@material-ui/icons/TurnedInNotOutlined";
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import MoneyIcon from '@material-ui/icons/Money';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {IconButton, Button} from '@material-ui/core';
-import ProjectSettings from './ProjectSettings'
-
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import MoneyIcon from "@material-ui/icons/Money";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { IconButton, Button } from "@material-ui/core";
+import ProjectSettings from "./ProjectSettings";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchCard(props) {
+export default function SolutionCard(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -111,13 +110,16 @@ export default function SearchCard(props) {
 
   // console.log(r)
   const handleLearnmore = (selectedProject) => {
+    console.log(selectedProject);
     if (selectedProject && !mouseMoved) {
       dispatch(updateSelectedProject(selectedProject));
 
       history.push(
         "/" +
-        selectedProject._source.projectTitle.replace(/\s+/g, "-") +
-        "/" +
+          selectedProject._source.projTitle.replace(/\s+/g, "-") +
+          "/" +
+          selectedProject._source.mtTitle.replace(/\s+/g, "-") +
+          "/" +
           selectedProject._source.title.replace(/\s+/g, "-") +
           "/" +
           selectedProject._id
@@ -164,44 +166,55 @@ export default function SearchCard(props) {
       key={props.r._id}
       style={{ transitionDelay: checked ? "300ms" : "0ms" }}
     >
-<React.Fragment>
-
-        <Grid item md={12} sm={12} xs={12} align='left' noW>
-            <Grid item xs={12}>
-            <CheckBoxOutlineBlankIcon style={{ marginRight: "1rem" }}/>
+      <React.Fragment>
+        <Grid item md={12} sm={12} xs={12} align="left" noW>
+          <Grid item xs={12}>
+            <CheckBoxOutlineBlankIcon style={{ marginRight: "1rem" }} />
             <Link
-            onMouseMove={() => setMouseMoved(true)}
-            onMouseDown={() => setMouseMoved(false)}
-            onMouseUp={() => handleLearnmore(props.r)}
-            style={{ textDecoration: "none", cursor: "pointer" }}
-          >
-            <Typography component='span' style={{fontWeight:700, fontSize:'1.2rem'}}>
-            {props.r._source.title} {bull}{" "}
+              onMouseMove={() => setMouseMoved(true)}
+              onMouseDown={() => setMouseMoved(false)}
+              onMouseUp={() => handleLearnmore(props.r)}
+              style={{ textDecoration: "none", cursor: "pointer" }}
+            >
+              <Typography
+                component="span"
+                style={{ fontWeight: 700, fontSize: "1.2rem" }}
+              >
+                {props.r._source.title} {bull}{" "}
                 <Typography variant="body2" component="span">
-                  {props.r._source.category ?props.r._source.category
-                    : null} 
+                  {props.r._source.category ? props.r._source.category : null}
                 </Typography>
-                
               </Typography>
-              </Link>
-              
-              <Typography style={{ marginLeft: "2.5rem" }}>
-                {/* {props.r._source.subtitle.substring(0, 125) + "..."} */}
-                {props.r._source.subtitle ? props.r._source.subtitle : null}
-              </Typography>
-              {/* <Button style={{marginLeft: "1.5rem", color:'green'}}>Solve</Button> */}
-             <IconButton size='small' style={{marginLeft: "1rem", color:'silver'}}><TurnedInNotOutlinedIcon  /></IconButton> 
-             
-            
-            
-            <IconButton size='small' style={{marginLeft: "auto 1.5rem", color:'silver'}} ><MoneyIcon /></IconButton>
-            <ProjectSettings selectedProject={props.r} style={{marginLeft: "auto 1.5rem", color:'silver'}} />
-            </Grid>
+            </Link>
+
+            <Typography style={{ marginLeft: "2.5rem" }}>
+              {/* {props.r._source.subtitle.substring(0, 125) + "..."} */}
+              {props.r._source.subtitle ? props.r._source.subtitle : null}
+            </Typography>
+            {/* <Button style={{marginLeft: "1.5rem", color:'green'}}>Solve</Button> */}
+            <IconButton
+              size="small"
+              style={{ marginLeft: "1rem", color: "silver" }}
+            >
+              <TurnedInNotOutlinedIcon />
+            </IconButton>
+
+            <IconButton
+              size="small"
+              style={{ marginLeft: "auto 1.5rem", color: "silver" }}
+            >
+              <MoneyIcon />
+            </IconButton>
+            <ProjectSettings
+              selectedProject={props.r}
+              style={{ marginLeft: "auto 1.5rem", color: "silver" }}
+            />
+          </Grid>
         </Grid>
         <Grid item xs={12}>
           <hr></hr>
         </Grid>
-        </React.Fragment>
+      </React.Fragment>
     </Fade>
   );
 }

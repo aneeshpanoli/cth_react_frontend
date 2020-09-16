@@ -37,6 +37,24 @@ const breadCrumb = (project, history) => {
   <Typography color="textPrimary">{project._source.title}</Typography>
     </Breadcrumbs>
   )
+} else if(project && project._source.projTitle){
+  return (
+    <Breadcrumbs aria-label="breadcrumb" separator={<NavigateNextIcon fontSize="small" />}>
+       <Link color="inherit" style={{cursor:'pointer'}} onClick={(event)=>{
+        event.preventDefault();
+        history.push("/"+project._source.projTitle.replace(/\s+/g, "-")+"/"+project._source.projId)
+        }}>
+      {project._source.projTitle}
+      </Link>
+      <Link color="inherit" style={{cursor:'pointer'}} onClick={(event)=>{
+        event.preventDefault();
+        history.push("/"+project._source.projTitle.replace(/\s+/g, "-")+"/"+project._source.mtTitle.replace(/\s+/g, "-")+"/"+project._source.mtId)
+        }}>
+      {project._source.mtTitle}
+      </Link>
+  <Typography color="textPrimary">{project._source.title}</Typography>
+    </Breadcrumbs>
+  )
 }else{
     return project._source.title
   }
