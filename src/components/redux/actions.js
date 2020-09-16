@@ -9,6 +9,16 @@ export const updateProjectList = (newsearchProjectList) => ({
   searchProjectList: newsearchProjectList,
 });
 
+export const updateSelectedMT = (newselectedMT) => ({
+  type: actionType.SELECTED_MT,
+  selectedMT: newselectedMT,
+});
+
+export const updateSelectedSolution = (newselectedSolution) => ({
+  type: actionType.SELECTED_SOLUTION,
+  selectedSolution: newselectedSolution,
+});
+
 export const updateSelectedProject = (newselectedProject) => ({
   type: actionType.SELECTED_PROJECT,
   selectedProject: newselectedProject,

@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { MATCH_ID_TITLE } from "../backend/EsQueries";
 import { useParams, useHistory } from "react-router-dom";
 import { queryEsById, createDoc } from "../backend/AxiosRequest";
-import { updateSelectedProject, updateMicrotaskList } from "../redux/actions";
+import { updateSelectedSolution, updateMicrotaskList } from "../redux/actions";
 import TitleSubtitle from "./TitleSubtitle";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
@@ -48,7 +48,7 @@ export default function SolutionHome() {
   const [currProject, setCurrProject] = React.useState();
   const [microtasks, setMicrotasks] = React.useState();
   const [isFeedback, setIsFeedback] = React.useState(true);
-  const { selectedProject, authData, microtaskList } = useTrackedState();
+  const { selectedSolution, authData, microtaskList } = useTrackedState();
 
   let params = useParams();
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ export default function SolutionHome() {
   };
   const fetchProj = (id, title, index) => {
     let query = MATCH_ID_TITLE(id, title, index);
-    queryEsById(query, dispatch, updateSelectedProject, history);
+    queryEsById(query, dispatch, updateSelectedSolution, history);
   };
 
   function handleActivity() {
@@ -66,10 +66,10 @@ export default function SolutionHome() {
       q: {
         categoryName: "solution",
         activity: "visited",
-        docId: selectedProject._id,
-        title: selectedProject._source.title,
-        projectTitle:selectedProject._source.projectTitle,
-        projectId:selectedProject._source.projectId,
+        docId: selectedSolution._id,
+        title: selectedSolution._source.title,
+        projectTitle:selectedSolution._source.projectTitle,
+        projectId:selectedSolution._source.projectId,
         userId: authData.user.id,
         username: authData.user.username,
         createdAt: new Date(),
@@ -83,23 +83,23 @@ export default function SolutionHome() {
   }
 
   useEffect(() => {
-    if (!selectedProject || !selectedProject._source.mtTitle) {
+    if (!selectedSolution || !selectedSolution._source.mtTitle) {
       fetchProj(params.id, params.mtsol.replace(/-/g, " "), "solutions");
     } else {
-      const query = MATCH_PROJ_ID(selectedProject._id, "solutions");
+      const query = MATCH_PROJ_ID(selectedSolution._id, "solutions");
       simpleQueryElasticsearch(query, dispatch, updateMicrotaskList);
       if (authData && authData.user) {
         handleActivity();
       }
     }
-    setCurrProject(selectedProject);
+    setCurrProject(selectedSolution);
     setIsFeedback(
-      authData._source && selectedProject && selectedProject._source.upvotes
-        ? !selectedProject._source.upvotes.includes(authData._source.id) &&
-            !selectedProject._source.downvotes.includes(authData._source.id)
+      authData._source && selectedSolution && selectedSolution._source.upvotes
+        ? !selectedSolution._source.upvotes.includes(authData._source.id) &&
+            !selectedSolution._source.downvotes.includes(authData._source.id)
         : null
     );
-  }, [selectedProject]);
+  }, [selectedSolution]);
   const handleScroll = throttle(() => {
     if (resourceRef && resourceRef.current && isFeedback) {
       if (

@@ -139,6 +139,7 @@ export default function ProjectTab(props) {
                   openForm={handleOpenForm}
                   selectedProject={props.selectedProject}
                   projTitle={props.projTitle}
+                    projId={props.projId}
                 />
               </Grid>
             </Collapse>

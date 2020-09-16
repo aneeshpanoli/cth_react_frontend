@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { MATCH_ID_TITLE } from "../backend/EsQueries";
 import { useParams, useHistory } from "react-router-dom";
 import { queryEsById, createDoc } from "../backend/AxiosRequest";
-import { updateSelectedProject, updateMicrotaskList } from "../redux/actions";
+import { updateSelectedMT } from "../redux/actions";
 import TitleSubtitle from "./TitleSubtitle";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
@@ -47,7 +47,7 @@ export default function DashBoard() {
   const [slide, setSlide] = React.useState(false);
   const [currProject, setCurrProject] = React.useState();
   const [isFeedback, setIsFeedback] = React.useState(true);
-  const { selectedProject, authData } = useTrackedState();
+  const { selectedMT, authData } = useTrackedState();
   const [solutionsList, setSolutionsList] = React.useState();
 
   let params = useParams();
@@ -57,7 +57,7 @@ export default function DashBoard() {
   };
   const fetchProj = (id, title, index) => {
     let query = MATCH_ID_TITLE(id, title, index);
-    queryEsById(query, dispatch, updateSelectedProject, history);
+    queryEsById(query, dispatch, updateSelectedMT, history);
   };
 
   function handleActivity() {
@@ -66,10 +66,10 @@ export default function DashBoard() {
       q: {
         categoryName: "microtask",
         activity: "visited",
-        docId: selectedProject._id,
-        title: selectedProject._source.title,
-        projectTitle: selectedProject._source.projectTitle,
-        projectId: selectedProject._source.projectId,
+        docId: selectedMT._id,
+        title: selectedMT._source.title,
+        projectTitle: selectedMT._source.projectTitle,
+        projectId: selectedMT._source.projectId,
         userId: authData.user.id,
         username: authData.user.username,
         createdAt: new Date(),
@@ -91,7 +91,7 @@ export default function DashBoard() {
           size: 20,
           query: {
             match: {
-              mtId: selectedProject._id,
+              mtId: selectedMT._id,
             },
           },
         },
@@ -114,22 +114,22 @@ export default function DashBoard() {
   };
 
   useEffect(() => {
-    if (!selectedProject || !selectedProject._source.projectTitle) {
+    if (!selectedMT || !selectedMT._source.projectTitle) {
       fetchProj(params.id, params.mt.replace(/-/g, " "), "microtasks");
     } else {
-      getSolutions()
+      getSolutions();
       if (authData && authData.user) {
         handleActivity();
       }
     }
-    setCurrProject(selectedProject);
+    setCurrProject(selectedMT);
     setIsFeedback(
-      authData._source && selectedProject && selectedProject._source.upvotes
-        ? !selectedProject._source.upvotes.includes(authData._source.id) &&
-            !selectedProject._source.downvotes.includes(authData._source.id)
+      authData._source && selectedMT && selectedMT._source.upvotes
+        ? !selectedMT._source.upvotes.includes(authData._source.id) &&
+            !selectedMT._source.downvotes.includes(authData._source.id)
         : null
     );
-  }, [selectedProject]);
+  }, [selectedMT]);
   const handleScroll = throttle(() => {
     if (resourceRef && resourceRef.current && isFeedback) {
       if (
@@ -151,7 +151,6 @@ export default function DashBoard() {
     };
   }, []);
 
-
   return (
     <Box>
       <Head
@@ -169,7 +168,12 @@ export default function DashBoard() {
       {currProject ? (
         <React.Fragment>
           <TitleSubtitle selectedProject={currProject} />
-          <MTTab selectedProject={currProject} solutionsList={solutionsList} projTitle={params.name}/>
+          <MTTab
+            selectedProject={currProject}
+            solutionsList={solutionsList}
+            projTitle={params.name}
+            projId={params.id}
+          />
           <Container>
             <Grid container spacing={2}>
               <Grid item sm={12} xs={12} ref={resourceRef}>

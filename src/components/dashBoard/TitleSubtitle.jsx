@@ -100,7 +100,7 @@ export default function TitleSubtitle({ selectedProject }) {
               <hr></hr>
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
-              <AvatarIcon />
+              <AvatarIcon selectedProject={selectedProject}/>
               <hr></hr>
             </Grid>
             <Grid container justify="center">

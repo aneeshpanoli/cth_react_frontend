@@ -4,6 +4,8 @@ const initialState = {
   searchProjectList: null,
   filterProjectList: null,
   selectedProject: null,
+  selectedMT: null,
+  selectedSolution: null,
   editProject: null,
   isProgress: false,
   challengeFormData: {
@@ -42,6 +44,10 @@ export const reducer = (state = initialState, action) => {
       return { ...state, challengeFormData: action.challengeFormData };
     case actionType.SELECTED_PROJECT:
       return { ...state, selectedProject: action.selectedProject };
+    case actionType.SELECTED_MT:
+      return { ...state, selectedMT: action.selectedMT };
+    case actionType.SELECTED_SOLUTION:
+      return { ...state, selectedSolution: action.selectedSolution };
     case actionType.AUTH_DATA:
       sessionStorage.setItem("authData", JSON.stringify(action.authData));
       return { ...state, authData: action.authData };

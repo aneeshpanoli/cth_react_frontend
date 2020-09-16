@@ -1,5 +1,7 @@
 export const SEARCH_PROJECT = "SEARCH_PROJECT";
 export const SELECTED_PROJECT = "SELECTED_PROJECT";
+export const SELECTED_MT = "SELECTED_MT";
+export const SELECTED_SOLUTION = "SELECTED_SOLUTION";
 export const AUTH_DATA = 'AUTH_DATA';
 export const USER_INFO = 'USER_INFO';
 export const CHALLENGE_FORM = 'CHALLENGE_FORM';

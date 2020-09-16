@@ -27,10 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AvatarIcon() {
+export default function AvatarIcon({selectedProject}) {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { selectedProject, otherUserData, authData } = useTrackedState();
+  const { otherUserData, authData } = useTrackedState();
 
   const classes = useStyles();
 
@@ -144,7 +144,7 @@ export default function AvatarIcon() {
               ? otherUserData._source.first_name +
                 " " +
                 otherUserData._source.last_name
-              : "claim this project"}
+              : "claim project"}
           </div>
 
           <div style={{ fontWeight: 400, color: "grey" }}>

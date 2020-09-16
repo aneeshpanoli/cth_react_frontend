@@ -173,6 +173,7 @@ export default function MTSubmitForm(props) {
     language: "",
     approved: "no",
     completed: "no",
+    claimed:"yes"
   });
 
   const handleDeleteChip = (chip, objProp) => {

@@ -175,6 +175,7 @@ export default function SolutionForm(props) {
     language: "",
     approved: "no",
     completed: "no",
+    claimed:"yes"
   });
 
   const makeChips = (values) => {

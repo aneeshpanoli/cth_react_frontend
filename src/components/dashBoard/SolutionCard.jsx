@@ -4,7 +4,7 @@ import Fade from "@material-ui/core/Fade";
 import { Typography, Grid } from "@material-ui/core";
 import LongMenu from "../menu/LongMenu";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import { updateSelectedProject } from "../redux/actions";
+import { updateSelectedSolution } from "../redux/actions";
 import { useHistory } from "react-router-dom";
 import { getImgUrl } from "../js/utils";
 import Link from "@material-ui/core/Link";
@@ -112,7 +112,7 @@ export default function SolutionCard(props) {
   const handleLearnmore = (selectedProject) => {
     console.log(selectedProject);
     if (selectedProject && !mouseMoved) {
-      dispatch(updateSelectedProject(selectedProject));
+      dispatch(updateSelectedSolution(selectedProject));
 
       history.push(
         "/" +
