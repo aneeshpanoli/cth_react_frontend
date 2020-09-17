@@ -109,20 +109,20 @@ export default function SolutionCard(props) {
   };
 
   // console.log(r)
-  const handleLearnmore = (selectedProject) => {
-    console.log(selectedProject);
-    if (selectedProject && !mouseMoved) {
-      dispatch(updateSelectedSolution(selectedProject));
+  const handleLearnmore = (selectedSolution) => {
+    console.log(selectedSolution);
+    if (selectedSolution && !mouseMoved) {
+      dispatch(updateSelectedSolution(selectedSolution));
 
       history.push(
         "/" +
-          selectedProject._source.projTitle.replace(/\s+/g, "-") +
+          selectedSolution._source.projTitle.replace(/\s+/g, "-") +
           "/" +
-          selectedProject._source.mtTitle.replace(/\s+/g, "-") +
+          selectedSolution._source.mtTitle.replace(/\s+/g, "-") +
           "/" +
-          selectedProject._source.title.replace(/\s+/g, "-") +
+          selectedSolution._source.title.replace(/\s+/g, "-") +
           "/" +
-          selectedProject._id
+          selectedSolution._id
       );
     }
   };

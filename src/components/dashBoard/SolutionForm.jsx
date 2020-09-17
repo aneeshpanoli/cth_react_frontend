@@ -152,8 +152,8 @@ export default function SolutionForm(props) {
 
   const [newChips, setNewChips] = React.useState(null);
   const [formValues, setFormValues] = React.useState({
-    builtWith: props.selectedProject._source.builtWith,
-    category: props.selectedProject._source.category,
+    builtWith: props.selectedMT._source.builtWith,
+    category: props.selectedMT._source.category,
     country: "",
     createdAt: new Date(),
     storyText: "",
@@ -166,10 +166,10 @@ export default function SolutionForm(props) {
     keywords: [],
     title: "",
     roles: [],
-    mtId: props.selectedProject._id,
-    mtTitle:props.selectedProject._source.title,
-    projTitle:props.projTitle,
-    projId:props.projId,
+    mtId: props.selectedMT._id,
+    mtTitle:props.selectedMT._source.title,
+    projTitle:props.selectedMT._source.projectTitle,
+    projId:props.selectedMT._source.projectId,
     rewards: "",
     crisis: "",
     language: "",

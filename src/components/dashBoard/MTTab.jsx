@@ -137,9 +137,7 @@ export default function ProjectTab(props) {
               <Grid item sm={12} md={12} xs={12}>
                 <SolutionForm
                   openForm={handleOpenForm}
-                  selectedProject={props.selectedProject}
-                  projTitle={props.projTitle}
-                    projId={props.projId}
+                  selectedMT={props.selectedMT}
                 />
               </Grid>
             </Collapse>
@@ -158,7 +156,7 @@ export default function ProjectTab(props) {
           dir={theme.direction}
           className={classes.tabPanel}
         >
-           {props.selectedProject ? (
+           {props.selectedMT ? (
             <Container>
               <Grid
                 container
@@ -173,8 +171,8 @@ export default function ProjectTab(props) {
                   <hr></hr>
                   <Typography variant="body1">
                     {parseHtml(
-                      props.selectedProject
-                        ? props.selectedProject._source.storyText
+                      props.selectedMT
+                        ? props.selectedMT._source.storyText
                         : null
                     )}
                   </Typography>

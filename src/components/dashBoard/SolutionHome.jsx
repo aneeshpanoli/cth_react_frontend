@@ -143,7 +143,7 @@ export default function SolutionHome() {
         <React.Fragment>
               
           <TitleSubtitle selectedProject={currProject} />
-          <SolutionTab selectedProject={currProject} projTitle={params.name} projId={params.id}/>
+          <SolutionTab selectedProject={currProject}/>
           <Container>
             <Grid container spacing={2}>
               <Grid item sm={12} xs={12} ref={resourceRef}>

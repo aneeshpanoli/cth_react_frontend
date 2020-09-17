@@ -25,6 +25,7 @@ import Slide from "@material-ui/core/Slide";
 import Toolbar from "@material-ui/core/Toolbar";
 import CloseIcon from "@material-ui/icons/Close";
 import Head from "../meta/Head";
+import { SELECTED_MT } from "../redux/actionTypes";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +46,7 @@ export default function DashBoard() {
   const history = useHistory();
   const resourceRef = useRef(null);
   const [slide, setSlide] = React.useState(false);
-  const [currProject, setCurrProject] = React.useState();
+  // const [currProject, setCurrProject] = React.useState();
   const [isFeedback, setIsFeedback] = React.useState(true);
   const { selectedMT, authData } = useTrackedState();
   const [solutionsList, setSolutionsList] = React.useState();
@@ -84,26 +85,32 @@ export default function DashBoard() {
 
   const getSolutions = () => {
     // update the search project list
+    console.log(selectedMT);
     const query = {
       params: {
         index: "solutions",
         q: {
           size: 20,
           query: {
-            match: {
-              mtId: selectedMT._id,
+            constant_score: {
+              filter: {
+                term: {
+                  mtId: selectedMT._id,
+                },
+              },
             },
           },
         },
       },
     };
+    console.log(query)
     esAxios
       .get(`/q/`, query)
       .then((response) => {
         // process response.
 
         // this.setState({results: response});
-        // console.log(response.data.hits);
+        console.log(response.data.hits);
         setSolutionsList(response.data.hits.hits);
       })
       .catch((error) => {
@@ -122,7 +129,7 @@ export default function DashBoard() {
         handleActivity();
       }
     }
-    setCurrProject(selectedMT);
+    // setCurrProject(selectedMT);
     setIsFeedback(
       authData._source && selectedMT && selectedMT._source.upvotes
         ? !selectedMT._source.upvotes.includes(authData._source.id) &&
@@ -130,6 +137,7 @@ export default function DashBoard() {
         : null
     );
   }, [selectedMT]);
+
   const handleScroll = throttle(() => {
     if (resourceRef && resourceRef.current && isFeedback) {
       if (
@@ -155,25 +163,20 @@ export default function DashBoard() {
     <Box>
       <Head
         title={
-          currProject
-            ? currProject._source.projectTitle +
+          selectedMT
+            ? selectedMT._source.projectTitle +
               ": " +
-              currProject._source.title +
+              selectedMT._source.title +
               " - CivicTechHub"
             : null
         }
-        description={currProject ? currProject._source.subtitle : null}
-        image={currProject ? currProject._source.image : null}
+        description={selectedMT ? selectedMT._source.subtitle : null}
+        image={selectedMT ? selectedMT._source.image : null}
       />
-      {currProject ? (
+      {selectedMT ? (
         <React.Fragment>
-          <TitleSubtitle selectedProject={currProject} />
-          <MTTab
-            selectedProject={currProject}
-            solutionsList={solutionsList}
-            projTitle={params.name}
-            projId={params.id}
-          />
+          <TitleSubtitle selectedProject={selectedMT} />
+          <MTTab selectedMT={selectedMT} solutionsList={solutionsList} />
           <Container>
             <Grid container spacing={2}>
               <Grid item sm={12} xs={12} ref={resourceRef}>
