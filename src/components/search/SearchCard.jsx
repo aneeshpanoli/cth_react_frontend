@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Fade from "@material-ui/core/Fade";
 import { Typography, Grid } from "@material-ui/core";
 import LongMenu from "../menu/LongMenu";
@@ -11,7 +11,7 @@ import Link from "@material-ui/core/Link";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Chip from "@material-ui/core/Chip";
 import IconButton from "@material-ui/core/IconButton";
-import TurnedInNotOutlinedIcon from "@material-ui/icons/TurnedInNotOutlined";
+import TurnedInIcon from '@material-ui/icons/TurnedIn';
 import { postPostAuthAxios } from "../backend/AxiosRequest";
 
 const useStyles = makeStyles((theme) => ({
@@ -74,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SearchCard(props) {
+  const theme = useTheme()
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -121,27 +122,27 @@ export default function SearchCard(props) {
 
  
   const isBookmarked =
-    authData._source.bookmarks &&
-    authData._source.bookmarks.includes(selectedProject._id);
+    selectedProject._source.bookmarks &&
+    selectedProject._source.bookmarks.includes(authData.user.id);
 
-  const getBookMarkList = (projectId, array) => {
+  const getBookMarkList = (userId, array) => {
     if(isBookmarked){
-      const index = array.indexOf(projectId);
+      const index = array.indexOf(userId);
       if (index > -1) {
         array.splice(index, 1);
       }
       return array;
     } else {
-      return array?array.concat([projectId]):[projectId]
+      return array?array.concat([userId]):[userId]
     }
     }
   
   const bookMark = () => {
-    const bookmarkList = getBookMarkList(selectedProject._id,  authData._source.bookmarks)
+    const bookmarkList = getBookMarkList(authData.user.id,  selectedProject._source.bookmarks)
     let data = {
-      status: "followerupdates",
-      index: "user_data",
-      id: authData._id,
+      status: "projectvote",
+      index: selectedProject._index,
+      id: selectedProject._id,
       q: {
         doc: {
           bookmarks: bookmarkList,
@@ -155,9 +156,9 @@ export default function SearchCard(props) {
     postpostAuthAxios
       .post(`/post/`, formData)
       .then((response) => {
-        // console.log(response.data.get._source);
-        // console.log(authData._source)
-        dispatch(updateAuthData({...authData, _source:response.data.get._source}))
+        console.log(response.data.get._source);
+        console.log(authData.user.id)
+        setSelectedProject({...selectedProject, _source:response.data.get._source})
       })
       .catch((error) => {
         // catch errors.
@@ -242,13 +243,13 @@ export default function SearchCard(props) {
               <span style={{ display: "flex", margin: "1rem" }}>
                 {makeChip()}
                 <IconButton
-                variant='contained'
+                variant=''
                 onClick={bookMark}
-                  color={isBookmarked ? 'primary' : 'secondary'}
+                 
                   size="small"
                   style={{ margin: "auto 1rem" }}
                 >
-                  <TurnedInNotOutlinedIcon />
+                  <TurnedInIcon  color={isBookmarked ? 'primary' : 'secondary'}/>
                 </IconButton>
                 <LongMenu r={selectedProject} esIndex="projects" />
               </span>

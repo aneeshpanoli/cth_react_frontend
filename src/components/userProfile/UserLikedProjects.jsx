@@ -1,6 +1,5 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import { useTrackedState } from "reactive-react-redux";
 import ProjectCard from "../home/ProjectCard";
 import { MATCH } from "../backend/EsQueries";
 import { esAxios } from "../backend/AxiosRequest";
@@ -11,10 +10,11 @@ export default function UserLikedProjects(props) {
     queryDatabase(props.userId);
   }, [props.userId]);
   const queryDatabase = (searchValue) => {
-    let query = MATCH(searchValue, "upvotes", 10);
+    let query = MATCH(searchValue, props.fieldName, 10);
     esAxios
       .get(`/q/`, query)
       .then((response) => {
+        console.log(response.data.hits)
         setProjList(response.data.hits.hits);
       })
       .catch((error) => {
@@ -29,8 +29,8 @@ export default function UserLikedProjects(props) {
        <Grid item xs={12} sm={12} md={12}>
        {projList&&projList.length
         ?
-           <h3>Liked Projects</h3> 
-          : <h3>No liked projects</h3>}</Grid>
+           <h3>{props.fieldName==='upvotes'?"liked projects":"Bookmarks"}</h3> 
+          : <h3>No {props.fieldName==='upvotes'?"liked projects":"Bookmarks"}</h3>}</Grid>
       {projList
         ? projList.map((r, i) => (
          

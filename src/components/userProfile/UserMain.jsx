@@ -72,7 +72,8 @@ export default function UserMain() {
           <Grid item xs={12} sm={12} md={9}>
             <Grid container spacing={2}>
               <UserOwnChallenges />
-              <UserLikedProjects userId={otherUserData._source.id}/>
+              <UserLikedProjects userId={otherUserData._source.id} fieldName='upvotes'/>
+              <UserLikedProjects userId={otherUserData._source.id} fieldName='bookmarks'/>
             </Grid>
 
             <UserActivity />
