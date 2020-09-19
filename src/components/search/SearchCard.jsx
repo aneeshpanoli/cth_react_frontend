@@ -4,15 +4,15 @@ import Fade from "@material-ui/core/Fade";
 import { Typography, Grid } from "@material-ui/core";
 import LongMenu from "../menu/LongMenu";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import { updateSelectedProject } from "../redux/actions";
+import { updateSelectedProject, updateAuthData } from "../redux/actions";
 import { useHistory } from "react-router-dom";
 import { getImgUrl } from "../js/utils";
 import Link from "@material-ui/core/Link";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Chip from "@material-ui/core/Chip";
-import TurnedInNotOutlinedIcon from '@material-ui/icons/TurnedInNotOutlined';
-
-
+import IconButton from "@material-ui/core/IconButton";
+import TurnedInNotOutlinedIcon from "@material-ui/icons/TurnedInNotOutlined";
+import { postPostAuthAxios } from "../backend/AxiosRequest";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,17 +78,17 @@ export default function SearchCard(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [checked] = useState(true);
-  const [mouseMoved, setMouseMoved] = useState(false);
   const [upvotes, setUpvotes] = React.useState([]);
   const [downvotes, setDownvotes] = React.useState([]);
   const { authData } = useTrackedState();
+  const [selectedProject, setSelectedProject] = React.useState(props.r);
 
   React.useEffect(() => {
-    if (props.r && props.r._source.downvotes) {
-      setDownvotes(props.r._source.downvotes);
+    if (selectedProject && selectedProject._source.downvotes) {
+      setDownvotes(selectedProject._source.downvotes);
     }
-    if (props.r && props.r._source.upvotes) {
-      setUpvotes(props.r._source.upvotes);
+    if (selectedProject && selectedProject._source.upvotes) {
+      setUpvotes(selectedProject._source.upvotes);
     }
   }, [props]);
 
@@ -107,7 +107,7 @@ export default function SearchCard(props) {
 
   // console.log(r)
   const handleLearnmore = (selectedProject) => {
-    if (selectedProject && !mouseMoved) {
+    if (selectedProject) {
       dispatch(updateSelectedProject(selectedProject));
 
       history.push(
@@ -119,12 +119,58 @@ export default function SearchCard(props) {
     }
   };
 
+ 
+  const isBookmarked =
+    authData._source.bookmarks &&
+    authData._source.bookmarks.includes(selectedProject._id);
+
+  const getBookMarkList = (projectId, array) => {
+    if(isBookmarked){
+      const index = array.indexOf(projectId);
+      if (index > -1) {
+        array.splice(index, 1);
+      }
+      return array;
+    } else {
+      return array?array.concat([projectId]):[projectId]
+    }
+    }
+  
+  const bookMark = () => {
+    const bookmarkList = getBookMarkList(selectedProject._id,  authData._source.bookmarks)
+    let data = {
+      status: "followerupdates",
+      index: "user_data",
+      id: authData._id,
+      q: {
+        doc: {
+          bookmarks: bookmarkList,
+        },
+      },
+    };
+    let formData = new FormData();
+
+    formData.append("params", JSON.stringify(data));
+    const postpostAuthAxios = postPostAuthAxios(`Token ${authData.key}`);
+    postpostAuthAxios
+      .post(`/post/`, formData)
+      .then((response) => {
+        // console.log(response.data.get._source);
+        // console.log(authData._source)
+        dispatch(updateAuthData({...authData, _source:response.data.get._source}))
+      })
+      .catch((error) => {
+        // catch errors.
+        console.log(error);
+      });
+  };
+
   const makeChip = () => {
     if (authData._source && upvotes.includes(authData._source.id)) {
       return (
         <Chip
           className={classes.chipGreen}
-          size='small'
+          size="small"
           icon={<ThumbUpIcon />}
           label={percentLikes()}
         />
@@ -133,7 +179,7 @@ export default function SearchCard(props) {
       return (
         <Chip
           className={classes.chipRed}
-          size='small'
+          size="small"
           icon={<ThumbUpIcon />}
           label={percentLikes()}
         />
@@ -142,7 +188,7 @@ export default function SearchCard(props) {
       return (
         <Chip
           className={classes.chipGrey}
-          size='small'
+          size="small"
           icon={<ThumbUpIcon />}
           label={percentLikes()}
         />
@@ -153,149 +199,66 @@ export default function SearchCard(props) {
 
   return (
     <Fade
-    timeout={600}
+      timeout={600}
       in={checked}
-      key={props.r._id}
+      key={selectedProject._id}
       style={{ transitionDelay: checked ? "300ms" : "0ms" }}
     >
       <Grid container spacing={1}>
         <Grid item md={2} sm={3} xs={4}>
           <img
-            src={getImgUrl(props.r._source.image)}
+            src={getImgUrl(selectedProject._source.image)}
             className={classes.media}
           />
         </Grid>
 
         <Grid item md={10} sm={9} xs={8}>
           <Link
-            onMouseMove={() => setMouseMoved(true)}
-            onMouseDown={() => setMouseMoved(false)}
-            onMouseUp={() => handleLearnmore(props.r)}
+            // onMouseMove={() => setMouseMoved(true)}
+            // onMouseDown={() => setMouseMoved(false)}
+            onClick={() => handleLearnmore(selectedProject)}
             style={{ textDecoration: "none", cursor: "pointer" }}
           >
             <Grid item xs={12}>
               <Typography variant="h6">
-                {props.r._source.title} {bull}{" "}
+                {selectedProject._source.title} {bull}{" "}
                 <Typography variant="body2" component="span">
-                  {props.r._source.hackathons[0]
-                    ? props.r._source.hackathons[0]
+                  {selectedProject._source.hackathons[0]
+                    ? selectedProject._source.hackathons[0]
                     : null}
                 </Typography>
               </Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography>
-                {/* {props.r._source.subtitle.substring(0, 125) + "..."} */}
-                {props.r._source.subtitle}
+                {/* {selectedProject._source.subtitle.substring(0, 125) + "..."} */}
+                {selectedProject._source.subtitle}
               </Typography>
             </Grid>
-            
           </Link>
           <Grid container>
-            
-            <Grid item xs={12}>  <span style={{ display: "flex" , margin:'1rem'}}>
-            
-            {makeChip()}<TurnedInNotOutlinedIcon style={{margin:'auto 1rem'}}/><LongMenu r={props.r} esIndex="projects" /></span></Grid>
-         
+            <Grid item xs={12}>
+              {" "}
+              <span style={{ display: "flex", margin: "1rem" }}>
+                {makeChip()}
+                <IconButton
+                variant='contained'
+                onClick={bookMark}
+                  color={isBookmarked ? 'primary' : 'secondary'}
+                  size="small"
+                  style={{ margin: "auto 1rem" }}
+                >
+                  <TurnedInNotOutlinedIcon />
+                </IconButton>
+                <LongMenu r={selectedProject} esIndex="projects" />
+              </span>
             </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12}>
           <hr></hr>
         </Grid>
       </Grid>
-      {/* <Card className={classes.root}>
-        <CardHeader
-          action={<LongMenu r={props.r} esIndex="projects" />}
-          className={classes.header}
-        />
-        <ButtonBase>
-          <Link
-            onMouseMove={() => setMouseMoved(true)}
-            onMouseDown={() => setMouseMoved(false)}
-            onMouseUp={() => handleLearnmore(props.r)}
-            style={{ textDecoration: "none" }}
-          >
-            <CardMedia
-              className={classes.media}
-              image={getImgUrl(props.r._source.image)}
-              title=""
-            >
-              {" "}
-            </CardMedia>
-            <div className={classes.overlay}></div>
-            <CardHeader
-              title={
-                <span
-                  style={{
-                    fontWeight: 700,
-                    fontSize: 15,
-                    wordBreak: "break-word",
-                    hyphens: "auto",
-                    lineHeight: "1rem",
-                    display: "inline-block",
-                  }}
-                >
-                  {props.r._source.title}
-                </span>
-              }
-              subheader={
-                <span
-                  style={{
-                    wordBreak: "break-word",
-                    hyphens: "auto",
-                    lineHeight: "1rem",
-                    display: "inline-block",
-                  }}
-                >
-                  {props.r._source.hackathons[0]
-                    ? props.r._source.hackathons[0]
-                    : null}
-                </span>
-              }
-              avatar={
-                <Avatar
-                  title={props.r._source.country}
-                  aria-label="project"
-                  className={classes.avatar}
-                >
-                  <Flag
-                    code={countryToIso(props.r._source.country)}
-                    height="35"
-                  />
-                </Avatar>
-              }
-              style={{ height: "5rem", textAlign: "left" }}
-            />
-
-            <CardContent
-              title="Short description"
-              style={{ height: "10rem", textAlign: "left" }}
-            >
-              <Typography
-                variant="body1"
-                color="primary"
-                component="div"
-                style={{ overflow: "hidden" }}
-              >
-                {props.r._source.subtitle.substring(0, 125) + "..."}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              {makeChip()}
-
-              <Button
-                variant="contained"
-                onClick={() => handleLearnmore(props.r)}
-                className={classes.button}
-                disableElevation
-                component="div"
-              >
-                Learn more
-              </Button>
-            </CardActions>
-          </Link>
-        </ButtonBase>
-      </Card> */}
     </Fade>
   );
 }

@@ -103,8 +103,8 @@ export default function ProjectTab(props) {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Solutions" {...a11yProps(0)} />
-          <Tab label="Details" {...a11yProps(1)} />
+          <Tab label="Details" {...a11yProps(0)} />
+          {/* <Tab label="More" {...a11yProps(1)} /> */}
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -112,9 +112,52 @@ export default function ProjectTab(props) {
         index={value}
         onChangeIndex={handleChangeIndex}
       >
+     
         <TabPanel
           value={value}
           index={0}
+          dir={theme.direction}
+          className={classes.tabPanel}
+        >
+           {props.selectedProject ? (
+            <Container>
+              <Grid
+                container
+
+                // left: "50%",
+                // transform: `translateX(-50%)`,
+              >
+                <Grid item md={12} sm={12} xs={12}>
+                  <h4 style={{ margin: "0 auto", textAlign: "left" }}>
+                    Solution details
+                  </h4>
+                  <hr></hr>
+                  <Typography variant="body1">
+                    {parseHtml(
+                      props.selectedProject
+                        ? props.selectedProject._source.storyText
+                        : null
+                    )}
+                  </Typography>
+                </Grid>
+                <Grid item sm={12} md={12} xs={12}>
+                  <h2>Files</h2>
+                </Grid>
+                <Grid item sm={12} md={6} xs={12}>
+                  <ProjectVideo selectedProject={props.selectedProject} />
+                </Grid>
+                <Grid item sm={12} md={6} xs={12}>
+                  <ProjectLinks selectedProject={props.selectedProject} />
+                  <ProjectTech selectedProject={props.selectedProject} />
+                </Grid>
+              </Grid>
+            </Container>
+          ) : null}
+          
+        </TabPanel>
+        {/* <TabPanel
+          value={value}
+          index={1}
           dir={theme.direction}
           className={classes.tabPanel}
         >
@@ -149,49 +192,7 @@ export default function ProjectTab(props) {
 
           </Grid>
           </Container>
-        </TabPanel>
-        <TabPanel
-          value={value}
-          index={1}
-          dir={theme.direction}
-          className={classes.tabPanel}
-        >
-           {props.selectedProject ? (
-            <Container>
-              <Grid
-                container
-
-                // left: "50%",
-                // transform: `translateX(-50%)`,
-              >
-                <Grid item md={12} sm={12} xs={12}>
-                  <h4 style={{ margin: "0 auto", textAlign: "left" }}>
-                    Task details
-                  </h4>
-                  <hr></hr>
-                  <Typography variant="body1">
-                    {parseHtml(
-                      props.selectedProject
-                        ? props.selectedProject._source.storyText
-                        : null
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item sm={12} md={12} xs={12}>
-                  <h2>Files</h2>
-                </Grid>
-                <Grid item sm={12} md={6} xs={12}>
-                  <ProjectVideo selectedProject={props.selectedProject} />
-                </Grid>
-                <Grid item sm={12} md={6} xs={12}>
-                  <ProjectLinks selectedProject={props.selectedProject} />
-                  <ProjectTech selectedProject={props.selectedProject} />
-                </Grid>
-              </Grid>
-            </Container>
-          ) : null}
-          
-        </TabPanel>
+        </TabPanel> */}
       </SwipeableViews>
     </div>
   );

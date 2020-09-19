@@ -103,8 +103,8 @@ export default function ProjectTab(props) {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Solutions" {...a11yProps(0)} />
-          <Tab label="Details" {...a11yProps(1)} />
+          <Tab label="Details" {...a11yProps(0)} />
+          <Tab label="Solutions" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -112,47 +112,9 @@ export default function ProjectTab(props) {
         index={value}
         onChangeIndex={handleChangeIndex}
       >
-        <TabPanel
+                <TabPanel
           value={value}
           index={0}
-          dir={theme.direction}
-          className={classes.tabPanel}
-        >
-         <Container>
-          <h4 style={{ margin: "0 auto", textAlign: "left" }}>Submitted solutions</h4>
-          <hr></hr>
-          <Grid container spacing={1}>
-            <Grid item sm={12} md={12} xs={12}>
-            <AddOutlinedIcon style={{marginRight:'0.6rem'}}/>
-              <Button
-                onClick={handleOpenForm}
-                variant="text"
-                style={{textTransform:'none', fontWeight:700, fontSize:'1.2rem'}}
-              >
-                {"  "}
-                Submit a solution
-              </Button>
-            </Grid>
-            <Collapse in={openForm} timeout="auto" unmountOnExit>
-              <Grid item sm={12} md={12} xs={12}>
-                <SolutionForm
-                  openForm={handleOpenForm}
-                  selectedMT={props.selectedMT}
-                />
-              </Grid>
-            </Collapse>
-            <Grid item sm={12} md={12} xs={12}>
-              {props.solutionsList &&
-                props.solutionsList[0] &&
-                props.solutionsList.map((r, i) => <SolutionCard key={i} r={r} />)}
-            </Grid>
-
-          </Grid>
-          </Container>
-        </TabPanel>
-        <TabPanel
-          value={value}
-          index={1}
           dir={theme.direction}
           className={classes.tabPanel}
         >
@@ -192,6 +154,45 @@ export default function ProjectTab(props) {
           ) : null}
           
         </TabPanel>
+        <TabPanel
+          value={value}
+          index={1}
+          dir={theme.direction}
+          className={classes.tabPanel}
+        >
+         <Container>
+          <h4 style={{ margin: "0 auto", textAlign: "left" }}>Submitted solutions</h4>
+          <hr></hr>
+          <Grid container spacing={1}>
+            <Grid item sm={12} md={12} xs={12}>
+            <AddOutlinedIcon style={{marginRight:'0.6rem'}}/>
+              <Button
+                onClick={handleOpenForm}
+                variant="text"
+                style={{textTransform:'none', fontWeight:700, fontSize:'1.2rem'}}
+              >
+                {"  "}
+                Submit a solution
+              </Button>
+            </Grid>
+            <Collapse in={openForm} timeout="auto" unmountOnExit>
+              <Grid item sm={12} md={12} xs={12}>
+                <SolutionForm
+                  openForm={handleOpenForm}
+                  selectedMT={props.selectedMT}
+                />
+              </Grid>
+            </Collapse>
+            <Grid item sm={12} md={12} xs={12}>
+              {props.solutionsList &&
+                props.solutionsList[0] &&
+                props.solutionsList.map((r, i) => <SolutionCard key={i} r={r} />)}
+            </Grid>
+
+          </Grid>
+          </Container>
+        </TabPanel>
+
       </SwipeableViews>
     </div>
   );
