@@ -3,7 +3,7 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
-import { parseToDaysHoursAgo } from '../js/datePrase'
+import { parseToDaysHoursAgo } from "../js/datePrase";
 import MoreHorizOutlinedIcon from "@material-ui/icons/MoreHorizOutlined";
 import Grid from "@material-ui/core/Grid";
 import Head from "../meta/Head";
@@ -19,7 +19,7 @@ import AddToQueueIcon from "@material-ui/icons/AddToQueue";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
 import { esAxios } from "../backend/AxiosRequest";
 import { GET_LATEST } from "../backend/EsQueries";
-import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 
 export default function Activity() {
   const history = useHistory();
@@ -36,13 +36,22 @@ export default function Activity() {
         {activityData.map((doc, i) => {
           return (
             <h6 key={i} style={{ fontWeight: 400 }}>
-             
               {iconMap[doc._source.categoryName]}{" "}
               {parseToDaysHoursAgo(doc._source.createdAt)}{" "}
               {authData._source.id === doc._source.userId
                 ? "you"
                 : doc._source.username}{" "}
-              {doc._source.activity}{" "}{doc._source.categoryName} <a href={"/"+doc._source.title.replace(/\s+/g, "-")+"/"+doc._source.docId}>{doc._source.title}</a>
+              {doc._source.activity} {doc._source.categoryName}{" "}
+              <a
+                href={
+                  "/" +
+                  doc._source.title.replace(/\s+/g, "-") +
+                  "/" +
+                  doc._source.docId
+                }
+              >
+                {doc._source.title}
+              </a>
             </h6>
           );
         })}
@@ -79,9 +88,8 @@ export default function Activity() {
             </Grid>
             <Grid item xs={12} sm={12} md={8}>
               {buildActivityJsx()}
-
             </Grid>
-            <Grid item xs={12} sm={12} md={4} >
+            <Grid item xs={12} sm={12} md={4}>
               <Grid item xs={12} sm={12} md={12} align="center">
                 <Button
                   onClick={() => history.push("/create-project")}
@@ -99,7 +107,7 @@ export default function Activity() {
 
                 <hr></hr>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} align="center">
+              {/* <Grid item xs={12} sm={12} md={12} align="center">
                 <Button
                   startIcon={<GroupAddOutlinedIcon />}
                   variant="contained"
@@ -112,7 +120,7 @@ export default function Activity() {
                 >
                   Start a community
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
         </Grid>

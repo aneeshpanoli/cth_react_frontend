@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Fade from "@material-ui/core/Fade";
-import { Typography, Grid } from "@material-ui/core";
+import { Typography, Grid, Tooltip } from "@material-ui/core";
 import LongMenu from "../menu/LongMenu";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
 import { updateSelectedProject, updateAuthData } from "../redux/actions";
@@ -138,6 +138,10 @@ export default function SearchCard(props) {
     }
   
   const bookMark = () => {
+    if(!authData || !authData.user){
+      history.push("/sign-in")
+      return
+    }
     const bookmarkList = getBookMarkList(authData.user.id,  selectedProject._source.bookmarks)
     let data = {
       status: "projectvote",
@@ -242,6 +246,7 @@ export default function SearchCard(props) {
               {" "}
               <span style={{ display: "flex", margin: "1rem" }}>
                 {makeChip()}
+                <Tooltip arrow title="Bookmark">
                 <IconButton
                 variant=''
                 onClick={bookMark}
@@ -251,6 +256,7 @@ export default function SearchCard(props) {
                 >
                   <TurnedInIcon  color={isBookmarked ? 'primary' : 'secondary'}/>
                 </IconButton>
+                </Tooltip>
                 <LongMenu r={selectedProject} esIndex="projects" />
               </span>
             </Grid>

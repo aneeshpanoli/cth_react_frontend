@@ -45,6 +45,9 @@ export default function ProfileCard(props) {
           <Typography gutterBottom variant="h5" component="h2" align="left">
             {props.name}
           </Typography>
+          <Typography gutterBottom variant="h6" component="h2" align="left">
+            {props.title}
+          </Typography>
           <Typography
             variant="body2"
             color="textSecondary"

@@ -20,23 +20,21 @@ import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import { useHistory } from "react-router-dom";
 import { useTrackedState } from "reactive-react-redux";
 import { useTheme } from "@material-ui/core/styles";
-import Fab from '@material-ui/core/Fab';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Zoom from '@material-ui/core/Zoom';
+import Fab from "@material-ui/core/Fab";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import Zoom from "@material-ui/core/Zoom";
 
-
-import PropTypes from 'prop-types';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import Slide from '@material-ui/core/Slide';
-
-
+import GroupIcon from "@material-ui/icons/Group";
+import PropTypes from "prop-types";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import Slide from "@material-ui/core/Slide";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: 'fixed',
+    position: "fixed",
     bottom: theme.spacing(5),
     right: theme.spacing(2),
-    zIndex:999
+    zIndex: 999,
   },
   grow: {
     flexGrow: 1,
@@ -124,7 +122,6 @@ HideOnScroll.propTypes = {
   window: PropTypes.func,
 };
 
-
 function ScrollTop(props) {
   const { children, window } = props;
   const classes = useStyles();
@@ -138,10 +135,12 @@ function ScrollTop(props) {
   });
 
   const handleClick = (event) => {
-    const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
+    const anchor = (event.target.ownerDocument || document).querySelector(
+      "#back-to-top-anchor"
+    );
 
     if (anchor) {
-      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   };
 
@@ -179,6 +178,10 @@ export default function PrimarySearchAppBar(props) {
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
+  };
+
+  const handleAboutUs = () => {
+    history.push("/about-us");
   };
 
   const handleMenuClose = () => {
@@ -226,6 +229,19 @@ export default function PrimarySearchAppBar(props) {
     >
       <MenuItem>
         <Button
+          startIcon={<GroupIcon />}
+          aria-label="show 4 new mails"
+          color="inherit"
+          onClick={handleAboutUs}
+        >
+          <Badge badgeContent={0} color="secondary">
+            About us
+          </Badge>
+        </Button>
+      </MenuItem>
+
+      {/* <MenuItem>
+        <Button
           startIcon={<MailIcon />}
           aria-label="show 4 new mails"
           color="inherit"
@@ -245,7 +261,7 @@ export default function PrimarySearchAppBar(props) {
             Notifications
           </Badge>
         </Button>
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem>
         <Button
           variant="text"
@@ -273,104 +289,113 @@ export default function PrimarySearchAppBar(props) {
 
   return (
     <React.Fragment>
-    <div className={classes.grow}>
-      <HideOnScroll {...props}>
-      <AppBar >
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <Link to={(location) => ({ ...location, pathname: "/" })}>
-              <img
-                alt="logo"
-                src={Logo}
-                style={{ height: "3rem", verticalAlign: "center" }}
-              />
-            </Link>
-          </IconButton>
-          <Hidden smDown>
-            <Link to={(location) => ({ ...location, pathname: "/" })}>
-              <img
-                alt="textlogo"
-                src={TextLogo}
-                style={{
-                  height: "2rem",
-                  margin: "0.5rem",
-                  verticalAlign: "center",
-                }}
-              />
-            </Link>
-          </Hidden>
-          <div style={{ width: "100%" }}>
-            <NavSearchField onFocus={handleOnFocus} onBlur={handleOnBlur} />
-          </div>
-          <Hidden smUp>
-            <Collapse in={expanded} timeout={0} unmountOnExit>
-              {" "}
-              <AvatarMenu />
-            </Collapse>
-          </Hidden>
-          <Hidden xsDown>
-            {" "}
-            <AvatarMenu />
-          </Hidden>
-
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <Tooltip arrow title="Messages">
-              <IconButton aria-label="show new mails" color="inherit">
-                <Badge badgeContent={0} color="secondary">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-            </Tooltip>
-            <Tooltip arrow title="Notifications">
+      <div className={classes.grow}>
+        <HideOnScroll {...props}>
+          <AppBar>
+            <Toolbar>
               <IconButton
-                aria-label="show new notifications"
+                edge="start"
+                className={classes.menuButton}
                 color="inherit"
+                aria-label="open drawer"
               >
-                <Badge badgeContent={0} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
+                <Link to={(location) => ({ ...location, pathname: "/" })}>
+                  <img
+                    alt="logo"
+                    src={Logo}
+                    style={{ height: "3rem", verticalAlign: "center" }}
+                  />
+                </Link>
               </IconButton>
-            </Tooltip>
-            <Tooltip arrow title="Create project">
-              <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleCreateProject}
-                color="inherit"
-              >
-                <NoteAddIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <img alt="logo" src={menuIcon} style={{ height: "1.2rem" }} />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-     
+              <Hidden smDown>
+                <Link to={(location) => ({ ...location, pathname: "/" })}>
+                  <img
+                    alt="textlogo"
+                    src={TextLogo}
+                    style={{
+                      height: "2rem",
+                      margin: "0.5rem",
+                      verticalAlign: "center",
+                    }}
+                  />
+                </Link>
+              </Hidden>
+              <div style={{ width: "100%" }}>
+                <NavSearchField onFocus={handleOnFocus} onBlur={handleOnBlur} />
+              </div>
+              <Hidden smUp>
+                <Collapse in={expanded} timeout={0} unmountOnExit>
+                  {" "}
+                  <AvatarMenu />
+                </Collapse>
+              </Hidden>
+              <Hidden xsDown>
+                {" "}
+                <AvatarMenu />
+              </Hidden>
 
-      </HideOnScroll>
-      <Toolbar id="back-to-top-anchor" />
-      {renderMobileMenu}
-      {renderMenu}
-    </div>
-    <ScrollTop {...props}>
+              <div className={classes.grow} />
+              <div className={classes.sectionDesktop}>
+                <Tooltip arrow title="Who we are">
+                  <IconButton
+                    aria-label="show new mails"
+                    color="inherit"
+                    onClick={handleAboutUs}
+                  >
+                    <Badge badgeContent={0} color="secondary">
+                      <GroupIcon />
+                    </Badge>
+                  </IconButton>
+                </Tooltip>
+                {/* <Tooltip arrow title="Messages">
+                  <IconButton aria-label="show new mails" color="inherit">
+                    <Badge badgeContent={0} color="secondary">
+                      <MailIcon />
+                    </Badge>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip arrow title="Notifications">
+                  <IconButton
+                    aria-label="show new notifications"
+                    color="inherit"
+                  >
+                    <Badge badgeContent={0} color="secondary">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                </Tooltip> */}
+                <Tooltip arrow title="Create project">
+                  <IconButton
+                    edge="end"
+                    aria-label="account of current user"
+                    aria-controls={menuId}
+                    aria-haspopup="true"
+                    onClick={handleCreateProject}
+                    color="inherit"
+                  >
+                    <NoteAddIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className={classes.sectionMobile}>
+                <IconButton
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <img alt="logo" src={menuIcon} style={{ height: "1.2rem" }} />
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
+        </HideOnScroll>
+        <Toolbar id="back-to-top-anchor" />
+        {renderMobileMenu}
+        {renderMenu}
+      </div>
+      <ScrollTop {...props}>
         <Fab color="secondary" size="small" aria-label="scroll back to top">
           <KeyboardArrowUpIcon />
         </Fab>
