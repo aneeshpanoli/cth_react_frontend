@@ -223,6 +223,8 @@ export const disposableEmails = [
   "lr78.com",
   "lroid.com",
   "lukop.dk",
+  "126.com",
+  "163.com",
   "m21.cc",
   "mail-filter.com",
   "mail-temporaire.fr",

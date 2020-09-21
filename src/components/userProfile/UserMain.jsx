@@ -62,20 +62,21 @@ export default function UserMain() {
         <Grid container spacing={3} style={{ marginTop: "1rem" }}>
           <Grid item xs={12} sm={12} md={3}>
             <Header username={params.user} />
-            {authData &&
+            {/* {authData &&
             authData.user &&
             authData._source.staff === "yes" &&
             params.user === "aneesh" ? (
               <Button onClick={sSignIn}>Siginin Test</Button>
-            ) : null}
+            ) : null} */}
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
             <Grid container spacing={2}>
               <UserOwnChallenges />
               <UserLikedProjects userId={otherUserData._source.id} fieldName='upvotes'/>
               <UserLikedProjects userId={otherUserData._source.id} fieldName='bookmarks'/>
+              
             </Grid>
-
+            <hr></hr>
             <UserActivity />
           </Grid>
         </Grid>

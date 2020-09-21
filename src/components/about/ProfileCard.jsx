@@ -40,6 +40,7 @@ export default function ProfileCard(props) {
           className={classes.media}
           image={props.image}
           title={props.name}
+          src="#"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2" align="left">

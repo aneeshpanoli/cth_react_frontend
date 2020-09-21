@@ -18,7 +18,7 @@ export default function UserOwnChallenge() {
         ? 
               <h3>Owned projects</h3>
             :<p><h3>No owned projects</h3><p>
-              <Button onClick={()=> history.push('/create-project')}> Create a project</Button>
+              <Button variant="contained" onClick={()=> history.push('/create-project')}> Create a project</Button>
               </p></p>}</Grid>
       {userOwnChallenge
         ? userOwnChallenge.map((r, i) => (

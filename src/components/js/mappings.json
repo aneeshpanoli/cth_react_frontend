@@ -1,0 +1,64 @@
+{
+  "mappings": {
+    "_doc": {
+      "properties": {
+        "createdAt": {
+          "type": "date"
+        },
+        "activity": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "ignore_above": 256,
+              "type": "keyword"
+            }
+          }
+        },
+        "docId": {
+          "type": "keyword",
+          "index": true
+        },
+        "title": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "ignore_above": 256,
+              "type": "keyword"
+            }
+          }
+        },
+        "categoryName": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "ignore_above": 256,
+              "type": "keyword"
+            }
+          }
+        },
+        "projectId": { "type": "keyword", "index": true },
+        "userId": {
+          "type": "long"
+        },
+        "projectTitle": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "ignore_above": 256,
+              "type": "keyword"
+            }
+          }
+        },
+        "username": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "ignore_above": 256,
+              "type": "keyword"
+            }
+          }
+        }
+      }
+    }
+  }
+}

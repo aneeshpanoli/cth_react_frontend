@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import ProfileCard from "./ProfileCard";
 import apImage from "../../Assets/img/team/aneesh.svg";
 import vvImage from "../../Assets/img/team/vincent.svg";
+import mwImage from "../../Assets/img/team/mika.svg";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,13 +45,13 @@ export default function AboutUsMian() {
           name="Vincent Verheyen"
           image={vvImage}
           bio={
-            <p>
+            <React.Fragment>
               Vincent is a polyglot who worked in multiple countries, including
               Solomon Islands, Taiwan, Sweden, Costa Rica, Germany, Australia,
               Italy, Portugal, Belgium. Wanting to find a broader community to
               increase knowledge transfer, innovation and collaboration led
               Vincent to start CivicTechHub.
-            </p>
+            </React.Fragment>
           }
           linkedin="https://be.linkedin.com/in/vincent-mia-edie-verheyen-79323a167"
           twitter="https://twitter.com/vincentmiaedie"
@@ -65,11 +66,11 @@ export default function AboutUsMian() {
           linkedin="https://www.linkedin.com/in/aneeshpanoli/"
           twitter="https://twitter.com/aneeshpanoli"
           bio={
-            <p>
+            <React.Fragment>
               Aneesh has a very diverse background. He has a Ph.D. in molecular
               genetics and has worked in various industries, such as stock
               trading, gaming, health data, and bioinformatics.
-              <p style={{ fontStyle: "italic" }}>
+              <span style={{ fontStyle: "italic" }}>
                 "Covid19 pandemic has changed our lives in a way we have never
                 imagined. Social distancing and lockdowns have brought even more
                 people on to the internet. With so many great minds on the web,
@@ -77,25 +78,26 @@ export default function AboutUsMian() {
                 #openinnovation, #collaboration, and #openscience. I'm excited
                 about CTH because I believe CTH can do great things in this
                 space"
-              </p>{" "}
-            </p>
+              </span>{" "}
+            </React.Fragment>
           }
         />
       </Grid>
       <Grid item align="center" xs={12} sm={6} md={4}>
         <ProfileCard
           name="Mika White"
+          image={mwImage}
           title="Senior Product designer"
           linkedin="https://www.linkedin.com/in/mika-white-a5663a117/"
           bio={
-            <p>
+            <React.Fragment>
               On March 14, 2020, the Corona virus locked down the west coast and
               Mika’s immediate response was, “How can I help?” Her contributions
               have included sewing protective gowns from Tyvek for healthcare
               workers, creating VR environments and designing digital
               experiences. She joined CivicTechHub in late April and has been
               collaborating with the design team ever since.{" "}
-            </p>
+            </React.Fragment>
           }
         />
       </Grid>

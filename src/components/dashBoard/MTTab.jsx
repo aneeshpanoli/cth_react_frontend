@@ -38,7 +38,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          <Typography component='div'>{children}</Typography>
         </Box>
       )}
     </div>
@@ -131,7 +131,7 @@ export default function ProjectTab(props) {
                     Task details
                   </h4>
                   <hr></hr>
-                  <Typography variant="body1">
+                  <Typography variant="body1" component='span'>
                     {parseHtml(
                       props.selectedMT
                         ? props.selectedMT._source.storyText

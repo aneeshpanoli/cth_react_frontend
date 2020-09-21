@@ -1,6 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import ProjectCard from "../home/ProjectCard";
+import SearchCard from '../search/SearchCard'
 import { MATCH } from "../backend/EsQueries";
 import { esAxios } from "../backend/AxiosRequest";
 
@@ -35,8 +36,8 @@ export default function UserLikedProjects(props) {
       {projList
         ? projList.map((r, i) => (
          
-            <Grid item key={i} xs={12} sm={6} md={4}>
-              <ProjectCard r={r} />
+            <Grid item key={i} xs={12} sm={12} md={12}>
+              <SearchCard r={r} />
             </Grid>
           ))
         : null}

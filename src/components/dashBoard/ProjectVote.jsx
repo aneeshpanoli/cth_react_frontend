@@ -5,19 +5,15 @@ import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-
 import Tooltip from '@material-ui/core/Tooltip';
 import { useHistory } from "react-router-dom";
 import Badge from "@material-ui/core/Badge";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
-import parseHtml from "html-react-parser";
 import Grid from "@material-ui/core/Grid";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { queryEsById, updateProject } from "../backend/AxiosRequest";
+import { updateProject } from "../backend/AxiosRequest";
 import { updateSelectedProject } from "../redux/actions";
-import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
