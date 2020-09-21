@@ -107,7 +107,7 @@ export const MORE_LIKE_THIS = (esIndex, id, columns, resSize) => {
                     },
                   ],
                   min_term_freq: 1,
-                  max_query_terms: 25,
+                  max_query_terms: 12,
                 },
               },
             ],

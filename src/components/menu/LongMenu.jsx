@@ -34,7 +34,7 @@ export default function LongMenu(props) {
     const goTo = () => {
       history.push("/search/@");
     };
-    let query = MORE_LIKE_THIS(props.esIndex, props.r._id, [column], 1000);
+    let query = MORE_LIKE_THIS(props.esIndex, props.r._id, column, 1000);
     queryElasticsearch("", query, dispatch, updateProjectList, goTo);
   };
 
@@ -68,25 +68,25 @@ export default function LongMenu(props) {
         }}
       >
         {props.r._source.storyText || props.r._source.subtitle ? (
-          <MenuItem onClick={() => handleSimilarity("storyText")}>
+          <MenuItem onClick={() => handleSimilarity(["storyText"])}>
             <span> Find Similar Projects</span>
           </MenuItem>
         ) : null}
 
         {props.r._source.builtWith[0] ? (
-          <MenuItem onClick={() => handleSimilarity("builtWith")}>
+          <MenuItem onClick={() => handleSimilarity(["builtWith"])}>
             <span> Find Similar Tech Stack</span>
           </MenuItem>
         ) : null}
 
         {props.r._source.country ? (
-          <MenuItem onClick={() => handleSimilarity("country")}>
+          <MenuItem onClick={() => handleSimilarity(["country"])}>
             <span>Find more from {props.r._source.country}</span>
           </MenuItem>
         ) : null}
 
         {props.r._source.hackathons[0] ? (
-          <MenuItem onClick={() => handleSimilarity("hackathons")}>
+          <MenuItem onClick={() => handleSimilarity(["hackathons"])}>
             <span>Find more from {props.r._source.hackathons[0]}</span>
           </MenuItem>
         ) : null}

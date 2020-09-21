@@ -11,7 +11,7 @@ import Link from "@material-ui/core/Link";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Chip from "@material-ui/core/Chip";
 import IconButton from "@material-ui/core/IconButton";
-import TurnedInIcon from '@material-ui/icons/TurnedIn';
+import TurnedInIcon from "@material-ui/icons/TurnedIn";
 import { postPostAuthAxios } from "../backend/AxiosRequest";
 
 const useStyles = makeStyles((theme) => ({
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SearchCard(props) {
-  const theme = useTheme()
+  const theme = useTheme();
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -84,6 +84,7 @@ export default function SearchCard(props) {
   const { authData } = useTrackedState();
   const [selectedProject, setSelectedProject] = React.useState(props.r);
 
+  React.useEffect(()=>setSelectedProject(props.r), [props.r])
   React.useEffect(() => {
     if (selectedProject && selectedProject._source.downvotes) {
       setDownvotes(selectedProject._source.downvotes);
@@ -120,29 +121,32 @@ export default function SearchCard(props) {
     }
   };
 
- 
-  const isBookmarked =
-    selectedProject._source.bookmarks &&
-    selectedProject._source.bookmarks.includes(authData.user.id);
+  const isBookmarked = authData.user
+    ? selectedProject._source.bookmarks &&
+      selectedProject._source.bookmarks.includes(authData.user.id)
+    : false;
 
   const getBookMarkList = (userId, array) => {
-    if(isBookmarked){
+    if (isBookmarked) {
       const index = array.indexOf(userId);
       if (index > -1) {
         array.splice(index, 1);
       }
       return array;
     } else {
-      return array?array.concat([userId]):[userId]
+      return array ? array.concat([userId]) : [userId];
     }
-    }
-  
+  };
+
   const bookMark = () => {
-    if(!authData || !authData.user){
-      history.push("/sign-in")
-      return
+    if (!authData || !authData.user) {
+      history.push("/sign-in");
+      return;
     }
-    const bookmarkList = getBookMarkList(authData.user.id,  selectedProject._source.bookmarks)
+    const bookmarkList = getBookMarkList(
+      authData.user.id,
+      selectedProject._source.bookmarks
+    );
     let data = {
       status: "projectvote",
       index: selectedProject._index,
@@ -161,8 +165,11 @@ export default function SearchCard(props) {
       .post(`/post/`, formData)
       .then((response) => {
         console.log(response.data.get._source);
-        console.log(authData.user.id)
-        setSelectedProject({...selectedProject, _source:response.data.get._source})
+        console.log(authData.user.id);
+        setSelectedProject({
+          ...selectedProject,
+          _source: response.data.get._source,
+        });
       })
       .catch((error) => {
         // catch errors.
@@ -247,15 +254,16 @@ export default function SearchCard(props) {
               <span style={{ display: "flex", margin: "1rem" }}>
                 {makeChip()}
                 <Tooltip arrow title="Bookmark">
-                <IconButton
-                variant=''
-                onClick={bookMark}
-                 
-                  size="small"
-                  style={{ margin: "auto 1rem" }}
-                >
-                  <TurnedInIcon  color={isBookmarked ? 'primary' : 'secondary'}/>
-                </IconButton>
+                  <IconButton
+                    variant=""
+                    onClick={bookMark}
+                    size="small"
+                    style={{ margin: "auto 1rem" }}
+                  >
+                    <TurnedInIcon
+                      color={isBookmarked ? "primary" : "secondary"}
+                    />
+                  </IconButton>
                 </Tooltip>
                 <LongMenu r={selectedProject} esIndex="projects" />
               </span>

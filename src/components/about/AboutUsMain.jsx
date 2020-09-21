@@ -83,7 +83,21 @@ export default function AboutUsMian() {
         />
       </Grid>
       <Grid item align="center" xs={12} sm={6} md={4}>
-        <ProfileCard name="Mika White" title="UX/UI Designer" />
+        <ProfileCard
+          name="Mika White"
+          title="Senior Product designer"
+          linkedin="https://www.linkedin.com/in/mika-white-a5663a117/"
+          bio={
+            <p>
+              On March 14, 2020, the Corona virus locked down the west coast and
+              Mika’s immediate response was, “How can I help?” Her contributions
+              have included sewing protective gowns from Tyvek for healthcare
+              workers, creating VR environments and designing digital
+              experiences. She joined CivicTechHub in late April and has been
+              collaborating with the design team ever since.{" "}
+            </p>
+          }
+        />
       </Grid>
     </Grid>
   );

@@ -3,6 +3,7 @@ import {
   updateProgress,
   updateFilterProject,
   updateSelectedProject,
+  updateProjectList,
 } from "../redux/actions";
 import { saveSessionStore, retriveSessionStore } from "../localStore/session";
 import { MATCH_USER } from "./EsQueries";
@@ -76,7 +77,7 @@ const postPreAuthAxios = () =>
       "Content-type": "application/json",
     },
   });
-
+  
 export const queryElasticsearch = (
   userInput,
   query,
@@ -90,17 +91,17 @@ export const queryElasticsearch = (
     dispatch(updateProgress(true));
   }
   // update the search project list
-  let proceed =
-    userInput &&
-    retriveSessionStore(userInput + "query", dispatch, actionCallback);
-  if (proceed) {
-    // update filter project list
-    retriveSessionStore(userInput + "query", dispatch, updateFilterProject);
-    if (history && history !== "home") {
-      history();
-    }
-    return;
-  }
+  // let proceed =
+  //   userInput &&
+  //   retriveSessionStore(userInput + "query", dispatch, actionCallback);
+  // if (proceed) {
+  //   // update filter project list
+  //   retriveSessionStore(userInput + "query", dispatch, updateFilterProject);
+  //   if (history && history !== "home") {
+  //     history();
+  //   }
+  //   return;
+  // }
 
   
   esAxios
@@ -110,9 +111,9 @@ export const queryElasticsearch = (
 
       // this.setState({results: response});
       console.log(response.data.hits.hits);
-      dispatch(actionCallback(response.data.hits.hits));
+      dispatch(updateProjectList(response.data.hits.hits));
       dispatch(updateFilterProject(response.data.hits.hits));
-      proceed && saveSessionStore(userInput + "query", response.data.hits.hits);
+      // proceed && saveSessionStore(userInput + "query", response.data.hits.hits);
       if (history && history !== "home") {
         history();
       }

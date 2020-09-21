@@ -27,10 +27,11 @@ export default function UserLikedProjects(props) {
     <React.Fragment>
       
        <Grid item xs={12} sm={12} md={12}>
+         <hr></hr>
        {projList&&projList.length
         ?
-           <h3>{props.fieldName==='upvotes'?"liked projects":"Bookmarks"}</h3> 
-          : <h3>No {props.fieldName==='upvotes'?"liked projects":"Bookmarks"}</h3>}</Grid>
+           <h3>{props.fieldName==='upvotes'?"Liked projects":"Bookmarks"}</h3> 
+          : <h3>No {props.fieldName==='upvotes'?"Liked projects":"Bookmarks"}</h3>}</Grid>
       {projList
         ? projList.map((r, i) => (
          
