@@ -12,8 +12,8 @@ import { MATCH_USER } from "./EsQueries";
 let development = process.env.NODE_ENV !== "production";
 // const BASE_URL = development?'http://13.52.80.115':'https://www.civictechhub.org';
 
-// const BASE_URL = "http://54.215.249.143";
-const BASE_URL = "https://www.civictechhub.org";
+const BASE_URL = "http://54.215.249.143";
+// const BASE_URL = "https://www.civictechhub.org";
 
 // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 // axios.defaults.xsrfCookieName = 'csrftoken';
@@ -77,7 +77,7 @@ const postPreAuthAxios = () =>
       "Content-type": "application/json",
     },
   });
-  
+
 export const queryElasticsearch = (
   userInput,
   query,
@@ -103,7 +103,6 @@ export const queryElasticsearch = (
   //   return;
   // }
 
-  
   esAxios
     .get(`/q/`, query)
     .then((response) => {
@@ -186,7 +185,13 @@ export const createDoc = (doc, token, getUpdatedData) => {
     });
 };
 
-export const postProject = (formData, token, history, title, updateData=null) => {
+export const postProject = (
+  formData,
+  token,
+  history,
+  title,
+  updateData = null
+) => {
   const postpostAuthAxios = postPostAuthAxios(`Token ${token}`);
   postpostAuthAxios
     .post(`/post/`, formData)
@@ -197,13 +202,13 @@ export const postProject = (formData, token, history, title, updateData=null) =>
           "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
         );
       }, 1000);
-      if(updateData){
+      if (updateData) {
         updateData({
           _index: response.data._index,
           _type: response._type,
           _id: response.data._id,
           _source: response.data.get._source,
-        })
+        });
       }
     })
     .catch((error) => {
@@ -232,11 +237,11 @@ export const updateProject = (
           _source: response.data.get._source,
         });
       }
-        if (history) {
-          history.push(
-            "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
-          );
-        }
+      if (history) {
+        history.push(
+          "/" + title.replace(/\s+/g, "-") + "/" + response.data._id
+        );
+      }
     })
     .catch((error) => {
       // catch errors.
@@ -274,8 +279,7 @@ export const updateUserInterests = (formData, token, getUpdatedData) => {
     .post(`/post/`, formData)
     .then((response) => {
       console.log(response.data.get);
-     getUpdatedData(response.data.get)
-
+      getUpdatedData(response.data.get);
     })
     .catch((error) => {
       // catch errors.
@@ -322,7 +326,12 @@ export const fbSignin = (fbData, authData, dispatch, actionCallback) => {
     });
 };
 
-export const googleSignin = (socialData, authData, dispatch, actionCallback) => {
+export const googleSignin = (
+  socialData,
+  authData,
+  dispatch,
+  actionCallback
+) => {
   const postpreAuthAxios = postPreAuthAxios();
   postpreAuthAxios
     .post(`/rest-auth/google/`, {
@@ -330,8 +339,7 @@ export const googleSignin = (socialData, authData, dispatch, actionCallback) => 
     })
     .then((response) => {
       // console.log(response.data);
-      response.data.user.image =
-        socialData._profile.profilePicURL;
+      response.data.user.image = socialData._profile.profilePicURL;
       getUserInfoElastic(response.data, dispatch, actionCallback);
     })
     .catch((error) => {
@@ -346,12 +354,17 @@ export const googleSignin = (socialData, authData, dispatch, actionCallback) => 
     });
 };
 
-export const twitterSignin = (socialData, authData, dispatch, actionCallback) => {
+export const twitterSignin = (
+  socialData,
+  authData,
+  dispatch,
+  actionCallback
+) => {
   const postpreAuthAxios = postPreAuthAxios();
   postpreAuthAxios
     .post(`/rest-auth/twitter/`, {
       access_token: socialData.oauth_token,
-      token_secret: socialData.oauth_token_secret
+      token_secret: socialData.oauth_token_secret,
     })
     .then((response) => {
       // console.log(response.data);
@@ -368,7 +381,6 @@ export const twitterSignin = (socialData, authData, dispatch, actionCallback) =>
           error: error.response.data.non_field_errors[0],
         })
       );
-      
     });
 };
 
@@ -378,7 +390,7 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
   userInfoAxios
     .get(`/q/`, query)
     .then((response) => {
-      console.log(response.data)
+      console.log(response.data);
       if (!response.data.hits.hits[0]) {
         // create a new entry in the elasticsearch db
         const updateData = () => {

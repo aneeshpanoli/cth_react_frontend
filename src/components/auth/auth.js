@@ -56,10 +56,11 @@ export const authCheck = (dispatch) => {
     );
     localStorage.removeItem("REQUESTING_SHARED_CREDENTIALS");
     // console.log("requesting token");
-  }else{
+  } else {
     dispatch(
       updateAuthData({
-        ...authData})
+        ...authData,
+      })
     );
   }
 };

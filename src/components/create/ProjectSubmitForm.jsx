@@ -304,7 +304,10 @@ export default function ProjectForm() {
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
-                <ImageUpload onSave={handleEmbed} acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}/>
+                <ImageUpload
+                  onSave={handleEmbed}
+                  acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+                />
                 {embed ? (
                   <Grid item xs={12}>
                     <img
@@ -354,9 +357,7 @@ export default function ProjectForm() {
                   id="motivation"
                   label="Motivation"
                   name="motivation"
-                  onChange={(e) =>
-                    handleChange(e, "motivation")
-                  }
+                  onChange={(e) => handleChange(e, "motivation")}
                   value={formValues.motivation}
                 />
               </Grid>
@@ -387,7 +388,8 @@ export default function ProjectForm() {
                     ]}
                     toolbarButtonSize="small"
                     onChange={(state) =>
-                      handleChangeValue("storyText",
+                      handleChangeValue(
+                        "storyText",
                         convertToHTML({
                           styleToHTML: (style) => {
                             if (style === "BOLD") {
@@ -520,7 +522,10 @@ export default function ProjectForm() {
                   fullWidth
                   label="Important links (press enter to add more than one link)"
                   onAdd={(chip) => {
-                    handleChangeValue("links", [...formValues.links].concat([chip]));
+                    handleChangeValue(
+                      "links",
+                      [...formValues.links].concat([chip])
+                    );
                   }}
                   onDelete={(chip, index) => handleDeleteChip(chip, "links")}
                 />

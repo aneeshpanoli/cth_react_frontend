@@ -21,26 +21,28 @@ export default function PostComment(props) {
   };
 
   const handlePost = () => {
-    if (!text || text.length < 25) {
+    if (!text || text.length < 9) {
       return;
     }
     // console.log(props.projectId);
     let data = {
-      params: {
-        index: "comments",
-        q: {
-          projectId: props.projectId,
-          userId: authData.user.id,
-          username: authData.user.username,
-          comments: text,
-          createdAt: new Date(),
-        },
+      index: "comments",
+      q: {
+        projectId: props.projectId,
+        userId: authData.user.id,
+        username: authData.user.username,
+        comments: text,
+        createdAt: new Date(),
       },
     };
+    let formData = new FormData();
+
+    formData.append("params", JSON.stringify(data));
+
     const query = MATCH_PROJ_ID(props.projectId, "comments");
     const updateComments = () =>
       simpleQueryElasticsearch(query, dispatch, updateCommentsData);
-    createDoc(data, authData.key, updateComments);
+    createDoc(formData, authData.key, updateComments);
 
     setText("");
   };

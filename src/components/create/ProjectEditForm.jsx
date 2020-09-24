@@ -187,7 +187,7 @@ export default function ProjectEditForm() {
   const [image, setImage] = React.useState(null);
 
   const [newChips, setNewChips] = React.useState(null);
-  
+
   const getDescription = () => {
     if (selectedProject) {
       const contentHTML = convertFromHTML(selectedProject._source.storyText);
@@ -254,7 +254,7 @@ export default function ProjectEditForm() {
       status: "projectupdate",
       index: selectedProject._index,
       id: selectedProject._id,
-      q: {doc:formValues},
+      q: { doc: formValues },
     };
     let formData = new FormData();
 
@@ -290,8 +290,6 @@ export default function ProjectEditForm() {
     };
     reader.readAsDataURL(url[0].file);
   };
-
-
 
   return (
     <Container component="main" maxWidth="md">
@@ -342,7 +340,10 @@ export default function ProjectEditForm() {
                 ) : (
                   <sup className={classes.error}>{""}</sup>
                 )}
-                <ImageUpload onSave={handleEmbed} acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}/>
+                <ImageUpload
+                  onSave={handleEmbed}
+                  acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+                />
                 {embed ? (
                   <Grid item xs={12}>
                     <img
@@ -392,9 +393,7 @@ export default function ProjectEditForm() {
                   id="motivation"
                   label="Motivation"
                   name="motivation"
-                  onChange={(e) =>
-                    handleChange(e, "motivation")
-                  }
+                  onChange={(e) => handleChange(e, "motivation")}
                   value={formValues.motivation}
                 />
               </Grid>
@@ -560,7 +559,10 @@ export default function ProjectEditForm() {
                   fullWidth
                   label="Important links (press enter to add more than one link)"
                   onAdd={(chip) => {
-                    handleChangeValue("links", [...formValues.links].concat([chip]));
+                    handleChangeValue(
+                      "links",
+                      [...formValues.links].concat([chip])
+                    );
                   }}
                   onDelete={(chip, index) => handleDeleteChip(chip, "links")}
                 />
