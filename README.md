@@ -29,6 +29,6 @@ yarn start dev
 ## Running on Production (Should not be done locally)
 ```shell script
 
-yarn start production
+yarn start prod
 
 ```
