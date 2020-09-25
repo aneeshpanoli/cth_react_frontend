@@ -20,3 +20,6 @@ deploy.sh
 .env.development
 index_template.html
 SocialSignin.jsx
+
+# IntelliJ
+.idea
