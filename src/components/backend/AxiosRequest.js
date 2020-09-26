@@ -2,28 +2,12 @@ import axios from "axios";
 import {
   updateProgress,
   updateFilterProject,
-  updateSelectedProject,
   updateProjectList,
 } from "../redux/actions";
-import { saveSessionStore, retriveSessionStore } from "../localStore/session";
+
 import { MATCH_USER } from "./EsQueries";
 
-// switch API url based on environment
-let development = process.env.NODE_ENV !== "production";
-// const BASE_URL = development?'http://13.52.80.115':'https://www.civictechhub.org';
-
-// const BASE_URL = "http://54.215.249.143";
-const BASE_URL = "https://www.civictechhub.org";
-
-// axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-// axios.defaults.xsrfCookieName = 'csrftoken';
-
-// const BASE_API = 'https://www.civictechhub.net/q';
-// const BASE_API = 'http://192.168.68.125:8000/api/';
-//   require('axios').get(
-//   'https://upload.wikimedia.org/wikipedia/commons/f/fe/A_Different_Slant_on_Carina.jpg',
-//   { maxContentLength: 2000 }
-// )
+const BASE_URL = `${process.env.REACT_APP_BASE_URL}`;
 
 export const esAxios = axios.create({
   baseURL: BASE_URL,
