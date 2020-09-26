@@ -21,6 +21,7 @@ import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
 import LanguageIcon from "@material-ui/icons/Language";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import TwitterIcon from "@material-ui/icons/Twitter";
+import Head from "../meta/Head";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -196,10 +197,10 @@ export default function Header(props) {
       q: {
         doc: {
           about: newAvatar,
-          work:"",
-          location:"",
-          website:"",
-          twitter:"",
+          work: "",
+          location: "",
+          website: "",
+          twitter: "",
           lastUpdatedAt: new Date(),
         },
       },
@@ -235,6 +236,10 @@ export default function Header(props) {
 
   return (
     <React.Fragment>
+      <Head
+        title={otherUserData._source.first_name}
+        image={otherUserData._source.avatar}
+      />
       <Grid container spacing={2} alignItems="center">
         <Grid item md={12} sm={12} xs={12} align="center">
           <IconButton onClick={personal ? handleExpandClick : null}>

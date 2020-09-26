@@ -15,19 +15,13 @@ import { fbSignin } from "../backend/AxiosRequest";
 import Button from "@material-ui/core/Button";
 import { updateAuthData } from "../redux/actions";
 
-
 export default function UserMain() {
-  const token =
-    "EAAcfvKwoe9kBAMcLnkPYfSFE1jvHRczhPkINg4wFuO8N9yfeDLEYqo4ZCRcWBhbirEraYzjmGgsfDboLBJy4CF2UndMPSGGaQ7mafZBU8ZC6QNmxvvpEMl2eUfRE4Le19237yWEkc5GM4nsOtVWDNKfC0634yE46DkBisDuMgXFq1WqvZBq7ZAiprat3a7FosvET8OqT1zAZDZD";
   const dispatch = useDispatch();
   const params = useParams();
   // console.log(params.user);
   const { authData, otherUserData } = useTrackedState();
-  const [userExist, setUserExist] = React.useState(true)
+  const [userExist, setUserExist] = React.useState(true);
 
-  const sSignIn = () => {
-    fbSignin(token, authData, dispatch, updateAuthData);
-  };
   React.useEffect(() => {
     getAnotherUserInfoElastic(
       authData,
@@ -38,12 +32,12 @@ export default function UserMain() {
     );
   }, [params.user]);
 
-  React.useEffect(() =>{
+  React.useEffect(() => {
     const timer = setTimeout(() => {
       setUserExist(false);
     }, 1000);
     return () => clearTimeout(timer);
-  })
+  });
 
   const getUserOwnChallenges = () => {
     if (otherUserData && otherUserData._source.id) {
@@ -72,9 +66,14 @@ export default function UserMain() {
           <Grid item xs={12} sm={12} md={9}>
             <Grid container spacing={2}>
               <UserOwnChallenges />
-              <UserLikedProjects userId={otherUserData._source.id} fieldName='upvotes'/>
-              <UserLikedProjects userId={otherUserData._source.id} fieldName='bookmarks'/>
-              
+              <UserLikedProjects
+                userId={otherUserData._source.id}
+                fieldName="upvotes"
+              />
+              <UserLikedProjects
+                userId={otherUserData._source.id}
+                fieldName="bookmarks"
+              />
             </Grid>
             <hr></hr>
             <UserActivity />
@@ -82,8 +81,7 @@ export default function UserMain() {
         </Grid>
       ) : (
         <Grid item xs={12} sm={12} md={3}>
-          
-          {!userExist?<h3> User doesnt exist</h3>:null}
+          {!userExist ? <h3> User doesnt exist</h3> : null}
         </Grid>
       )}
     </React.Fragment>
