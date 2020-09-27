@@ -6,10 +6,9 @@ services:
     build:
       context: ../
       dockerfile: Dockerfile
-    image: cth_frontend:latest
-    environment:
-      NODE_ENV: 'development'
-      BACKEND_URL: 'http://54.215.249.143'
+      args:
+        API_URL: 'http://54.215.249.143'
+    image: cth_frontend:dev
     ports:
       # localhost:container
       - '3000:8080'

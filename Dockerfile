@@ -1,12 +1,15 @@
 # Build
+
 FROM node:13.12.0-alpine as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
+# We set a build arg that can set the backend api base
+ARG API_URL
+ENV BACKEND_URL=$API_URL
 COPY . ./
 COPY package.json /opt/app/package.json
 COPY yarn.lock /opt/app/yarn.lock
-RUN apk add git rsync --no-cache \
-  && yarn build \
+RUN yarn build \
   && rm -rf ./node_modules \
   && yarn install --production
 

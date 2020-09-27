@@ -30,7 +30,7 @@ yarn start:dev
 yarn start:prod
 ```
 
-### Running with Docker
+## Docker
 
 To use docker in this repo, you must first install both docker and docker-compose.  The links below
 direct you to instruction on how to install each.
@@ -38,29 +38,42 @@ direct you to instruction on how to install each.
 Install Docker: https://docs.docker.com/get-docker/
 Install Docker Compose: https://docs.docker.com/compose/install/
 
-Once the required tools have been installed we can build the project locally as an image with the following 
-command at the root.
+#### Building for Docker
+
+We can build the container and pass in a build arg to specify which backend we want to point to.
+Below is an example of building default images which are configured to point to the dev server:
 
 ```shell script
-
-docker build -t cth_frontend:latest .
-
+docker build 
+# At the root of the project
+docker build -t cth_frontend:dev .
 ```
-The above command will create a local docker image for you with the alias 'th_frontend:latest'.
-This is defined by the -t command with docker which stands for tag you want to give to the image 
-being built.
+The above will create an image aliased with 'cth_frontend:dev'.
 
+
+To build one oriented to the production backend we run the following command.
+```shell script
+docker build --build-arg API_URL=https://www.civictechhub.org -t cth_frontend:prod .
+```
+This will create an image aliased with 'cth_frontend:prod' that points to prod server
+The build arg we pass here to API_URL can be changed to build different images for 
+different servers and environments.
+
+Regardless of the API_URL the images are always built for production, making the frontend
+optimized in the container.
+
+#### Running for Docker
 
 The quick way to run the application via docker where it would build and run in one command can 
 be done with the following steps:
 
 ```shell script
+# From project root
+# For Dev Environment Backend running on optimized backend packaged image
+docker-compose -f docker/docker-compose.yml up -d
 
-# Go to docker directory
-cd docker
-
-# From here we will run the docker-compose services as detached from our terminal
-docker-compose up -d
+#  If you would like it to rebuild the package first run the following
+docker-compose -f docker/docker-compose.yml up -d --build
 
 ```
 
