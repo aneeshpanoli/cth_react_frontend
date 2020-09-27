@@ -45,9 +45,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "NODE_ENV=development react-scripts start",
-    "start:prod": "NODE_ENV=production react-scripts start",
-    "start:dev": "NODE_ENV=development react-scripts start",
+    "start": "NODE_ENV=development BACKEND_URL=http://54.215.249.143 react-scripts start",
+    "start:prod": "NODE_ENV=production BACKEND_URL=https://www.civictechhub.org react-scripts start",
+    "start:dev": "NODE_ENV=development BACKEND_URL=http://54.215.249.143 react-scripts start",
     "build": "react-scripts build && rm -rf ../django_build/build/static && rsync -r build ../django_build && cd ../django_build/build/ && git add . && git commit -m 'reg update' && git push",
     "_comment": "build clean, renames js and css to main.js and main.css",
     "build:clean": "cd build && mv static/js/*.js static/js/main.js && mv static/css/*.css static/css/main.css",
