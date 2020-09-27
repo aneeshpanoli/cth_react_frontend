@@ -17,20 +17,17 @@ yarn install
 ## Running on Development
 The following scripts below run the application on development profile.
 ```shell script
-
+# Default profile is dev
 yarn start
-
 # or to be explicit
-
-yarn start dev
+yarn start:dev
 
 ```
 
-## Running on Production (Should not be done locally)
+## Running on Production
 ```shell script
-
-yarn start prod
-
+# To point to the prod server, due to CORS you would not get any response if run locally
+yarn start:prod
 ```
 
 ### Running with Docker
