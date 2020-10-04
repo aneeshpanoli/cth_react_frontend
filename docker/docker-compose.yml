@@ -1,0 +1,14 @@
+---
+version: '3'
+services:
+  frontend:
+    container_name: cth_frontend
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        API_URL: 'http://54.215.249.143'
+    image: cth_frontend:dev
+    ports:
+      # localhost:container
+      - '3000:8080'
