@@ -382,16 +382,15 @@ export const getUserInfoElastic = (loginData, dispatch, actionCallback) => {
             getUserInfoElastic(loginData, dispatch, actionCallback);
           }, 2000);
         };
-        createDoc(
-          {
-            params: {
-              index: "user",
-              q: loginData.user,
-            },
-          },
-          loginData.key,
-          updateData
-        );
+        const data = {
+          index: "user",
+          q: loginData.user,
+        };
+        let formData = new FormData();
+
+        formData.append("params", JSON.stringify(data));
+
+        createDoc(formData, loginData.key, updateData);
       } else {
         // console.log(response.data.hits[0]._source);
         const authData = {
