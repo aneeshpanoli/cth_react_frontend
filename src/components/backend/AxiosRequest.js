@@ -5,22 +5,9 @@ import {
   updateProjectList,
 } from "../redux/actions";
 
-<<<<<<< HEAD
-const BASE_URL = "http://54.215.249.143";
-// const BASE_URL = "https://www.civictechhub.org";
-
-// axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-// axios.defaults.xsrfCookieName = 'csrftoken';
-
-//   require('axios').get(
-//   'https://upload.wikimedia.org/wikipedia/commons/f/fe/A_Different_Slant_on_Carina.jpg',
-//   { maxContentLength: 2000 }
-// )
-=======
 import { MATCH_USER } from "./EsQueries";
 
 const BASE_URL = `${process.env.REACT_APP_BASE_URL}`;
->>>>>>> baf3e3b7d56a4cb01c40744269a1589f0ceee767
 
 export const esAxios = axios.create({
   baseURL: BASE_URL,

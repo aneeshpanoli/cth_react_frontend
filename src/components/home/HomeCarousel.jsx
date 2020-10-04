@@ -1,4 +1,5 @@
 import React from "react";
+import shuffle from 'lodash/shuffle'
 import ProjectCard from "./ProjectCard";
 import Container from "@material-ui/core/Container";
 import Slider from "react-slick";
@@ -132,8 +133,9 @@ export default function HomeCarousel({term}) {
     esAxios
       .get(`/q/`, query)
       .then((response) => {
+        const shuffledProjectList = shuffle(response.data.hits.hits)
         console.log(response.data.hits)
-        setProjList(response.data.hits.hits);
+        setProjList(shuffledProjectList);
       })
       .catch((error) => {
         // catch errors.
