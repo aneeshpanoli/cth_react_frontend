@@ -3,8 +3,8 @@ import Head from "../meta/Head";
 import throttle from "lodash.throttle";
 import { queryElasticsearch, esAxios } from "../backend/AxiosRequest";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { makeStyles } from '@material-ui/core/styles';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { updateProjectList, updateProgress } from "../redux/actions";
 import ProgressBar from "./ProgressBar";
@@ -13,16 +13,12 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import SearchIcon from "@material-ui/icons/Search";
 
-
 const useStyles = makeStyles({
   inputRoot: {
     borderRadius: 20,
   },
-  listbox: {
-  }
+  listbox: {},
 });
-
-
 
 export default function SearchField(props) {
   const classes = useStyles();
@@ -153,34 +149,38 @@ export default function SearchField(props) {
   };
 
   return (
-      <React.Fragment>
-        <Head
-          title={
-            searchValue
-              ? "Search results for '"+searchValue + "'- CivicTechHub"
-              : null
-          }
-          description={searchValue?"A list of projects matching the term  `"+searchValue+"'.":null}
-        />
-        <Autocomplete
-          style={props.style}
-          classes={classes}
-          freeSolo
-          autoComplete
-          id="combo-box-demo"
-          forcePopupIcon={false}
-          options={categories}
-          filterOptions={(options, state) => options}
-          getOptionLabel={(option) => (option.text ? option.text : option)}
-          onChange={(e, value) => {
-            enterKeyPressedHandler(value && value.text ? value.text : value);
-          }}
-          onInputChange={(e) => {
-            handleOnchange(e.target.value);
-          }}
-          renderInput={(params) => (
-            <TextField {...params} 
-            
+    <React.Fragment>
+      <Head
+        title={
+          searchValue
+            ? "Search results for '" + searchValue + "'- CivicTechHub"
+            : null
+        }
+        description={
+          searchValue
+            ? "A list of projects matching the term  `" + searchValue + "'."
+            : null
+        }
+      />
+      <Autocomplete
+        style={props.style}
+        classes={classes}
+        freeSolo
+        autoComplete
+        id="combo-box-demo"
+        forcePopupIcon={false}
+        options={categories}
+        filterOptions={(options, state) => options}
+        getOptionLabel={(option) => (option.text ? option.text : option)}
+        onChange={(e, value) => {
+          enterKeyPressedHandler(value && value.text ? value.text : value);
+        }}
+        onInputChange={(e) => {
+          handleOnchange(e.target.value);
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
             InputProps={{
               ...params.InputProps,
               // endAdornment: (
@@ -188,20 +188,21 @@ export default function SearchField(props) {
               //      {progress ? <ProgressBar style={props.progressStyle}/> : null}
               //   </InputAdornment>
               // ),
-             
 
               endAdornment: (
                 <InputAdornment position="end">
-                  <SearchIcon style={{color:'silver'}}/>
+                  <SearchIcon style={{ color: "silver" }} />
                 </InputAdornment>
-              )
+              ),
             }}
-            label="Search 7,000+ projects" variant="outlined" />
-          )}
-        />
+            label="Search 7,000+ projects"
+            variant="outlined"
+          />
+        )}
+      />
 
-        {progress ? <ProgressBar style={props.progressStyle}/> : null}
-        <br />
-      </React.Fragment>
+      {progress ? <ProgressBar style={props.progressStyle} /> : null}
+      <br />
+    </React.Fragment>
   );
 }

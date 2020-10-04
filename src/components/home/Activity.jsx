@@ -38,7 +38,7 @@ export default function Activity() {
             <h6 key={i} style={{ fontWeight: 400 }}>
               {iconMap[doc._source.categoryName]}{" "}
               {parseToDaysHoursAgo(doc._source.createdAt)}{" "}
-              {authData._source.id === doc._source.userId
+              {authData._source && authData._source.id === doc._source.userId
                 ? "you"
                 : doc._source.username}{" "}
               {doc._source.activity} {doc._source.categoryName}{" "}
