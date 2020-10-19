@@ -3,8 +3,8 @@ import Head from "../meta/Head";
 import throttle from "lodash.throttle";
 import { queryElasticsearch, esAxios } from "../backend/AxiosRequest";
 import { useDispatch, useTrackedState } from "reactive-react-redux";
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import { fade, makeStyles } from "@material-ui/core/styles";
 
 import { updateProjectList, updateProgress } from "../redux/actions";
 import ProgressBar from "./ProgressBar";
@@ -12,7 +12,6 @@ import { useParams, useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import SearchIcon from "@material-ui/icons/Search";
-
 
 const useStyles = makeStyles((theme) => ({
   inputRoot: {
@@ -23,16 +22,12 @@ const useStyles = makeStyles((theme) => ({
     },
 
     width: "100%",
-    color:'white',
-    height:'3rem',
-    border:'0'
+    color: "white",
+    height: "3rem",
+    border: "0",
   },
-  listbox: {
-  },
-  
+  listbox: {},
 }));
-
-
 
 export default function SearchField(props) {
   const classes = useStyles();
@@ -163,35 +158,39 @@ export default function SearchField(props) {
   };
 
   return (
-      <React.Fragment>
-        <Head
-          title={
-            searchValue
-              ? "Search results for '"+searchValue + "'- CivicTechHub"
-              : null
-          }
-          description={searchValue?"A list of projects matching the term  `"+searchValue+"'.":null}
-        />
-        <Autocomplete
-          
-          classes={classes}
-          freeSolo
-          autoComplete
-          id="combo-box-demo"
-          forcePopupIcon={false}
-          options={categories}
-          filterOptions={(options, state) => options}
-          getOptionLabel={(option) => (option.text ? option.text : option)}
-          onChange={(e, value) => {
-            enterKeyPressedHandler(value && value.text ? value.text : value);
-          }}
-          onInputChange={(e) => {
-            handleOnchange(e.target.value);
-          }}
-          renderInput={(params) => (
-            <TextField {...params} 
-            onFocus={()=>props.onFocus()}
-            onBlur={()=>props.onBlur()}
+    <React.Fragment>
+      <Head
+        title={
+          searchValue
+            ? "Search results for '" + searchValue + "'- CivicTechHub"
+            : null
+        }
+        description={
+          searchValue
+            ? "A list of projects matching the term  `" + searchValue + "'."
+            : null
+        }
+      />
+      <Autocomplete
+        classes={classes}
+        freeSolo
+        autoComplete
+        id="combo-box-demo"
+        forcePopupIcon={false}
+        options={categories}
+        filterOptions={(options, state) => options}
+        getOptionLabel={(option) => (option.text ? option.text : option)}
+        onChange={(e, value) => {
+          enterKeyPressedHandler(value && value.text ? value.text : value);
+        }}
+        onInputChange={(e) => {
+          handleOnchange(e.target.value);
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            onFocus={() => props.onFocus()}
+            onBlur={() => props.onBlur()}
             InputProps={{
               ...params.InputProps,
               // endAdornment: (
@@ -199,19 +198,21 @@ export default function SearchField(props) {
               //      {progress ? <ProgressBar style={props.progressStyle}/> : null}
               //   </InputAdornment>
               // ),
-             
 
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon style={{color:'silver', marginLeft:'0.5rem'}}/>
+                  <SearchIcon
+                    style={{ color: "black", marginLeft: "0.5rem" }}
+                  />
                 </InputAdornment>
-              )
+              ),
             }}
-            placeholder="Search 7,000+ projects" />
-          )}
-        />
+            defaultValue="Search 7,000+ projects"
+          />
+        )}
+      />
 
-        {progress ? <ProgressBar style={props.progressStyle}/> : null}
-      </React.Fragment>
+      {progress ? <ProgressBar style={props.progressStyle} /> : null}
+    </React.Fragment>
   );
 }

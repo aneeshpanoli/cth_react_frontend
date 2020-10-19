@@ -10,7 +10,7 @@ import menuIcon from "../../Assets/img/menuIcon.svg";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import NavSearchField from "../search/NavSearchField";
-import Logo from "../../Assets/img/cth_logo.svg";
+import logo from "../../Assets/img/cth_logo.png";
 import TextLogo from "../../Assets/img/cth_text.svg";
 import { Link } from "react-router-dom";
 import Hidden from "@material-ui/core/Hidden";
@@ -302,7 +302,7 @@ export default function PrimarySearchAppBar(props) {
                 <Link to={(location) => ({ ...location, pathname: "/" })}>
                   <img
                     alt="logo"
-                    src={Logo}
+                    src={logo}
                     style={{ height: "3rem", verticalAlign: "center" }}
                   />
                 </Link>
