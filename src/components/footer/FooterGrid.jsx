@@ -9,6 +9,7 @@ import InSvg from "../../Assets/img/in.svg";
 import IgSvg from "../../Assets/img/ig.svg";
 import FbSvg from "../../Assets/img/fb.svg";
 import SlackSvg from "../../Assets/img/slack.svg";
+import telegram from "../../Assets/img/telegram-icon.svg";
 
 const useStyles = makeStyles((theme) => ({
   button: {},
@@ -71,6 +72,11 @@ export default function FooterGrid() {
         iconSvg={SlackSvg}
         alt="Slack"
         href="https://join.slack.com/t/civictechhub/shared_invite/zt-dlw4duki-LjqG1llwXA8KDodp3x34cg"
+      />
+      <FooterIcon
+        iconSvg={telegram}
+        alt="telegram"
+        href="https://t.me/civictechhub"
       />
       <FooterIcon iconSvg={CthIcon} alt="cthIcon" href="/about-us" />
     </React.Fragment>

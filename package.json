@@ -54,6 +54,7 @@
     "build": "react-scripts build -p",
     "_comment": "build clean, renames js and css to main.js and main.css",
     "build:clean": "cd build && mv static/js/*.js static/js/main.js && mv static/css/*.css static/css/main.css",
+    "build:aneesh": "react-scripts build && rm -rf ../build_web/build/static && rsync -r build ../build_web && cd ../build_web/build/ && git add . && git commit -m 'reg update' && git push",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

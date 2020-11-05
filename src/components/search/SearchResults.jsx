@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import SearchFilter from "./SearchFilter";
 import Head from "../meta/Head";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,7 @@ export default function SearchResults() {
   const classes = useStyles();
   const [pageNum, setPageNum] = React.useState(12);
   const topDiv = React.useRef(null);
+  const params = useParams();
 
   // React.useEffect(() => {
   //   window.addEventListener("scroll", handleScroll);
@@ -53,14 +55,20 @@ export default function SearchResults() {
   };
   return (
     <Container>
-      <Head image={searchProjectList&&searchProjectList[0]?searchProjectList[0]._source.image:null}/>
-      <Grid container spacing={1} style={{marginTop:'2%'}}>
-
+      <Head
+        image={
+          searchProjectList && searchProjectList[0]
+            ? searchProjectList[0]._source.image
+            : null
+        }
+        title={params.query + " - CivicTechHub Project Search"}
+      />
+      <Grid container spacing={1} style={{ marginTop: "2%" }}>
         {/* filter and results */}
         <Grid item xs={12} sm={4} md={3} className={classes.filterGrid}>
-          {searchProjectList&&filterProjectList ? (
+          {searchProjectList && filterProjectList ? (
             <Card className={classes.root} variant="outlined">
-               <Grid item xs={12} sm={12} align="center">
+              <Grid item xs={12} sm={12} align="center">
                 {searchProjectList.length >= 1000
                   ? "1,000+"
                   : searchProjectList.length}{" "}

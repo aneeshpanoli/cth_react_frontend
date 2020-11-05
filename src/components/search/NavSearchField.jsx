@@ -207,7 +207,7 @@ export default function SearchField(props) {
                 </InputAdornment>
               ),
             }}
-            defaultValue="Search 7,000+ projects"
+            placeholder="Search 7,000+ projects"
           />
         )}
       />

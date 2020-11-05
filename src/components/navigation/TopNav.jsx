@@ -10,7 +10,7 @@ import menuIcon from "../../Assets/img/menuIcon.svg";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import NavSearchField from "../search/NavSearchField";
-import logo from "../../Assets/img/cth_logo.png";
+import logo from "../../Assets/img/cth_logo.svg";
 import TextLogo from "../../Assets/img/cth_text.svg";
 import { Link } from "react-router-dom";
 import Hidden from "@material-ui/core/Hidden";

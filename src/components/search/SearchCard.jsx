@@ -84,7 +84,7 @@ export default function SearchCard(props) {
   const { authData } = useTrackedState();
   const [selectedProject, setSelectedProject] = React.useState(props.r);
 
-  React.useEffect(()=>setSelectedProject(props.r), [props.r])
+  React.useEffect(() => setSelectedProject(props.r), [props.r]);
   React.useEffect(() => {
     if (selectedProject && selectedProject._source.downvotes) {
       setDownvotes(selectedProject._source.downvotes);
@@ -229,6 +229,12 @@ export default function SearchCard(props) {
             // onMouseMove={() => setMouseMoved(true)}
             // onMouseDown={() => setMouseMoved(false)}
             onClick={() => handleLearnmore(selectedProject)}
+            href={
+              "/" +
+              selectedProject._source.title.replace(/\s+/g, "-") +
+              "/" +
+              selectedProject._id
+            }
             style={{ textDecoration: "none", cursor: "pointer" }}
           >
             <Grid item xs={12}>
