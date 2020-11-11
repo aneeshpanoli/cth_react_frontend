@@ -10,16 +10,15 @@ import { Button, IconButton } from "@material-ui/core";
 import { useTrackedState, useDispatch } from "reactive-react-redux";
 import { useHistory } from "react-router-dom";
 import Collapse from "@material-ui/core/Collapse";
-import { CircularProgress } from '@material-ui/core';
-import FeaturedPlayListOutlinedIcon from '@material-ui/icons/FeaturedPlayListOutlined';
+import { CircularProgress } from "@material-ui/core";
+import FeaturedPlayListOutlinedIcon from "@material-ui/icons/FeaturedPlayListOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import ChipInput from "material-ui-chip-input";
 import { toTitleCase } from "../js/utils";
 import ProgressBar from "../search/ProgressBar";
 import { updateAuthData, updateProgress } from "../redux/actions";
-import {
-  updateUserInterests
-} from "../backend/AxiosRequest";
+import shuffle from "lodash/shuffle";
+import { updateUserInterests } from "../backend/AxiosRequest";
 
 const useStyles = makeStyles((theme) => ({
   arrowBtn: {
@@ -62,10 +61,9 @@ const useStyles = makeStyles((theme) => ({
 // }
 
 export default function FeaturedProjects() {
-  
   const classes = useStyles();
   const dispatch = useDispatch();
-  
+
   const [pageNum, setPageNum] = React.useState(3);
   const topDiv = React.useRef(null);
   const { authData } = useTrackedState();
@@ -96,8 +94,8 @@ export default function FeaturedProjects() {
   const [categories, setCategories] = React.useState([]);
 
   const handleMore = () => {
-    setLoading(true)
-    setTimeout(()=>setLoading(false), 2000)
+    setLoading(true);
+    setTimeout(() => setLoading(false), 2000);
     setPageNum(pageNum + 3);
     window.scrollTo(0, topDiv.current.offsetTop + topDiv.current.clientHeight);
   };
@@ -160,7 +158,7 @@ export default function FeaturedProjects() {
     setGrow(false);
   };
 
-  const setInterests = (authData) =>{
+  const setInterests = (authData) => {
     if (
       authData._source &&
       authData._source.interests &&
@@ -168,15 +166,14 @@ export default function FeaturedProjects() {
     ) {
       setCategories(authData._source.interests);
     } else {
-      setCategories(baseCats);
+      setCategories(shuffle(baseCats));
     }
     if (!authData.isAuthenticated) {
       setGrow(false);
     }
-  }
+  };
 
   React.useEffect(() => {
-    
     const timer = setTimeout(() => {
       setInterests(authData);
     }, 1000);
@@ -189,17 +186,18 @@ export default function FeaturedProjects() {
       <Container>
         <Grid container alignContent="space-between">
           <Grid item xs={6} sm={6} md={6}>
-          <h4 style={{ fontWeight: 700 }}>
-            
-            <FeaturedPlayListOutlinedIcon /> {" "}
-             {!authData.isAuthenticated||categories===baseCats? "Popular topics":"Your feed"}
+            <h4 style={{ fontWeight: 700 }}>
+              <FeaturedPlayListOutlinedIcon />{" "}
+              {!authData.isAuthenticated || categories === baseCats
+                ? "Popular topics"
+                : "Your feed"}
             </h4>
           </Grid>
           <Grid item xs={6} sm={6} md={6} align="right">
             <Button
               onClick={handlePersonalize}
               startIcon={<TuneIcon />}
-              style={{ color: "grey", fontWeight: 700, textTransform:'none' }}
+              style={{ color: "grey", fontWeight: 700, textTransform: "none" }}
             >
               Customize feed
             </Button>
@@ -263,7 +261,7 @@ export default function FeaturedProjects() {
               className={classes.arrowBtn}
               onClick={handleMore}
             >
-              {loading? <CircularProgress size={20}/>: <ArrowDownwardIcon />}
+              {loading ? <CircularProgress size={20} /> : <ArrowDownwardIcon />}
             </IconButton>
           </Grid>
         )}

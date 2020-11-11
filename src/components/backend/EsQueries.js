@@ -50,6 +50,27 @@ export const MATCH = (userInput, column, numResults) => {
   };
 };
 
+export const MATCH_RETURN_RANDOM = (userInput, column, numResults) => {
+  return {
+    params: {
+      index: "projects",
+      q: {
+        size: numResults,
+        query: {
+          function_score: {
+            query: {
+              match: {
+                [column]: userInput,
+              },
+            },
+            random_score: { seed: getRandomInt(1000000000000, 200000000000) },
+          },
+        },
+      },
+    },
+  };
+};
+
 export const MATCH_USER = (userInput, column) => {
   return {
     params: {

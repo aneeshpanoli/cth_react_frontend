@@ -1,17 +1,17 @@
 import React from "react";
-import shuffle from 'lodash/shuffle'
+import shuffle from "lodash/shuffle";
 import ProjectCard from "./ProjectCard";
 import Container from "@material-ui/core/Container";
 import Slider from "react-slick";
 import Grid from "@material-ui/core/Grid";
-import { MATCH } from "../backend/EsQueries";
+import { MATCH, MATCH_RETURN_RANDOM } from "../backend/EsQueries";
 import { esAxios } from "../backend/AxiosRequest";
 import Divider from "@material-ui/core/Divider";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
-import StopRoundedIcon from '@material-ui/icons/StopRounded';
-import DoubleArrowSharpIcon from '@material-ui/icons/DoubleArrowSharp';
+import StopRoundedIcon from "@material-ui/icons/StopRounded";
+import DoubleArrowSharpIcon from "@material-ui/icons/DoubleArrowSharp";
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -57,7 +57,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-export default function HomeCarousel({term}) {
+export default function HomeCarousel({ term }) {
   const settings = {
     className: "center",
     infinite: true,
@@ -118,24 +118,22 @@ export default function HomeCarousel({term}) {
     ],
   };
 
-
   const [projList, setProjList] = React.useState();
-  const [searchTerm, setSearchTerm] = React.useState()
+  const [searchTerm, setSearchTerm] = React.useState();
   React.useEffect(() => {
-    if (term&&term !== searchTerm){
+    if (term && term !== searchTerm) {
       queryDatabase(term);
-      setSearchTerm(term)
+      setSearchTerm(term);
     }
-    
   }, [term]);
   const queryDatabase = (searchValue) => {
-    let query = MATCH(searchValue, "storyText", 10);
+    let query = MATCH_RETURN_RANDOM(searchValue, "storyText", 10);
     esAxios
       .get(`/q/`, query)
       .then((response) => {
-        const shuffledProjectList = shuffle(response.data.hits.hits)
-        console.log(response.data.hits)
-        setProjList(shuffledProjectList);
+        const shuffledProjectList = shuffle(response.data.hits.hits);
+        console.log(response.data.hits);
+        setProjList(response.data.hits.hits);
       })
       .catch((error) => {
         // catch errors.
@@ -161,7 +159,10 @@ export default function HomeCarousel({term}) {
               </Grid>
 
               <Grid item sm={8} xs={8} md={8} align="left">
-                <h5><StopRoundedIcon />{" "+term}</h5>
+                <h5>
+                  <StopRoundedIcon />
+                  {" " + term}
+                </h5>
               </Grid>
               <Grid item sm={4} xs={4} md={4} align="right">
                 <Link
@@ -175,7 +176,7 @@ export default function HomeCarousel({term}) {
                     color: "black",
                   }}
                 >
-                  View more {" "}<DoubleArrowSharpIcon />
+                  View more <DoubleArrowSharpIcon />
                 </Link>
               </Grid>
             </Grid>
@@ -194,7 +195,6 @@ export default function HomeCarousel({term}) {
         </React.Fragment>
       ) : (
         <React.Fragment>
- 
           <Grid item xs={12}>
             <Container>
               <Slider {...settings}>
