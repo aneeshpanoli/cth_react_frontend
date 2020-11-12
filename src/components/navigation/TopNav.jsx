@@ -389,6 +389,19 @@ export default function PrimarySearchAppBar(props) {
                 </IconButton>
               </div>
             </Toolbar>
+            {process.env.REACT_APP_BASE_URL ==
+            "https://www.civictechhub.org" ? null : (
+              <Toolbar style={{ backgroundColor: "red" }}>
+                {" "}
+                CAUTION: This is the DEVELOPMENT version of the CivicTechHub
+                website. Any changes you make on this site will be LOST during
+                updates. <a href="https://www.civictechhub.org">
+                  {" "}
+                  Click here{" "}
+                </a>{" "}
+                for our PUBLIC STABLE website.
+              </Toolbar>
+            )}
           </AppBar>
         </HideOnScroll>
         <Toolbar id="back-to-top-anchor" />

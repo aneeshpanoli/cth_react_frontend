@@ -90,6 +90,8 @@ export default function FeaturedProjects() {
     "Distance Learning",
     "Bioinformatics",
     "Databases",
+    "Blockchain",
+    "Cryptocurrency",
   ];
   const [categories, setCategories] = React.useState([]);
 

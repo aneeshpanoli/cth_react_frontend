@@ -136,7 +136,6 @@ export default function HomeCarousel({ term }) {
         setProjList(response.data.hits.hits);
       })
       .catch((error) => {
-        // catch errors.
         console.log(error);
       });
   };

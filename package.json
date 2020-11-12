@@ -48,9 +48,9 @@
     "dotenv-expand": "^5.1.0"
   },
   "scripts": {
-    "start": "NODE_ENV=development BACKEND_URL=http://54.215.249.143 react-scripts start",
+    "start": "NODE_ENV=development BACKEND_URL=https://staging.civictechhub.org react-scripts start",
     "start:prod": "NODE_ENV=production BACKEND_URL=https://www.civictechhub.org react-scripts start",
-    "start:dev": "NODE_ENV=development BACKEND_URL=http://54.215.249.143 react-scripts start",
+    "start:dev": "NODE_ENV=development BACKEND_URL=https://staging.civictechhub.org react-scripts start",
     "build": "react-scripts build -p",
     "_comment": "build clean, renames js and css to main.js and main.css",
     "build:clean": "cd build && mv static/js/*.js static/js/main.js && mv static/css/*.css static/css/main.css",
